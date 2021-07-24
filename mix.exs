@@ -26,7 +26,8 @@ defmodule ExCommerce.Umbrella.MixProject do
   defp deps do
     [
       # Code quality and Testing
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
