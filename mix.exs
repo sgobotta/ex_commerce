@@ -27,7 +27,8 @@ defmodule ExCommerce.Umbrella.MixProject do
     [
       # Code quality and Testing
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
