@@ -1,4 +1,6 @@
 defmodule ExCommerceWeb.PageLive do
+  @moduledoc false
+
   use ExCommerceWeb, :live_view
 
   @impl true
