@@ -1,0 +1,25 @@
+{
+  "default_stop_words": [
+    "apply",
+    "defdata",
+    "defimpl",
+    "defmodule",
+    "defrecord",
+    "defstruct",
+    "defsum",
+    "def.+(.+\/\/.+).+do",
+    "live_dashboard",
+    "use"
+  ],
+
+  "custom_stop_words": [
+    "Logger."
+  ],
+
+  "skip_files": [
+    "test/",
+    "lib/ex_commerce_web/views/",
+    "lib/ex_commerce_web/telemetry.ex",
+    "lib/ex_commerce_web/live/live_helpers.ex"
+  ]
+}

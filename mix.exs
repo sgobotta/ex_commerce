@@ -7,7 +7,14 @@ defmodule ExCommerce.Umbrella.MixProject do
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -28,7 +35,8 @@ defmodule ExCommerce.Umbrella.MixProject do
       # Code quality and Testing
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
-      {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false}
+      {:excoveralls, "~> 0.14", only: [:test]},
+      {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false},
     ]
   end
 

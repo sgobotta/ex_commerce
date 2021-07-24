@@ -21,3 +21,6 @@ erl_crash.dump
 
 # Environment
 .env
+
+# Coverage
+coverage/report/
