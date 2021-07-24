@@ -36,7 +36,8 @@ defmodule ExCommerce.Umbrella.MixProject do
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.14", only: [:test]},
-      {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false},
+      {:git_hooks, "~> 0.6.2", only: [:dev], runtime: false},
+      {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
