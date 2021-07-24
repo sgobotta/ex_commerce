@@ -17,9 +17,10 @@ defmodule ExCommerceWeb.PageLive do
   def handle_event("search", %{"q" => query}, socket) do
     case search(query) do
       %{^query => vsn} ->
-        {:noreply, redirect(socket, external: "https://hexdocs.pm/#{query}/#{vsn}")}
+        {:noreply,
+         redirect(socket, external: "https://hexdocs.pm/#{query}/#{vsn}")}
 
-      _ ->
+      _query ->
         {:noreply,
          socket
          |> put_flash(:error, "No dependencies found matching \"#{query}\"")
@@ -34,7 +35,8 @@ defmodule ExCommerceWeb.PageLive do
 
     for {app, desc, vsn} <- Application.started_applications(),
         app = to_string(app),
-        String.starts_with?(app, query) and not List.starts_with?(desc, ~c"ERTS"),
+        String.starts_with?(app, query) and
+          not List.starts_with?(desc, ~c"ERTS"),
         into: %{},
         do: {app, vsn}
   end

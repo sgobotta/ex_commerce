@@ -15,6 +15,9 @@ defmodule ExCommerce.Application do
       # {ExCommerce.Worker, arg}
     ]
 
-    Supervisor.start_link(children, strategy: :one_for_one, name: ExCommerce.Supervisor)
+    Supervisor.start_link(children,
+      strategy: :one_for_one,
+      name: ExCommerce.Supervisor
+    )
   end
 end

@@ -20,8 +20,13 @@ config :ex_commerce_web,
 # Configures the endpoint
 config :ex_commerce_web, ExCommerceWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "DflQfo+1YHhFStwkli7dL1zFqxXeuo+yY0XJB5thNL/+jOpOKbTscWxhRpJUgq6n",
-  render_errors: [view: ExCommerceWeb.ErrorView, accepts: ~w(html json), layout: false],
+  secret_key_base:
+    "DflQfo+1YHhFStwkli7dL1zFqxXeuo+yY0XJB5thNL/+jOpOKbTscWxhRpJUgq6n",
+  render_errors: [
+    view: ExCommerceWeb.ErrorView,
+    accepts: ~w(html json),
+    layout: false
+  ],
   pubsub_server: ExCommerce.PubSub,
   live_view: [signing_salt: "M+Dyy4Zh"]
 

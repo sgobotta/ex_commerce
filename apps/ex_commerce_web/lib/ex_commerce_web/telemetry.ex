@@ -34,7 +34,9 @@ defmodule ExCommerceWeb.Telemetry do
 
       # Database Metrics
       summary("ex_commerce.repo.query.total_time", unit: {:native, :millisecond}),
-      summary("ex_commerce.repo.query.decode_time", unit: {:native, :millisecond}),
+      summary("ex_commerce.repo.query.decode_time",
+        unit: {:native, :millisecond}
+      ),
       summary("ex_commerce.repo.query.query_time", unit: {:native, :millisecond}),
       summary("ex_commerce.repo.query.queue_time", unit: {:native, :millisecond}),
       summary("ex_commerce.repo.query.idle_time", unit: {:native, :millisecond}),
