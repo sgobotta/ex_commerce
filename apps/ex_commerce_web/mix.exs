@@ -59,7 +59,14 @@ defmodule ExCommerceWeb.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
+      # Run lint tasks
+      lint: ["format.check", "eslint"],
+      "format.check": ["format --check-formatted"],
+      eslint: ["cmd npm run eslint --prefix assets"],
+      "eslint.fix": ["cmd npm run eslint-fix --prefix assets"],
+      # Setup deps
       setup: ["deps.get", "cmd npm install --prefix assets"],
+      # Run tests
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end

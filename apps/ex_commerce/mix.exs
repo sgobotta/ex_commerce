@@ -49,9 +49,14 @@ defmodule ExCommerce.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
+      # Run lint tasks
+      lint: ["format.check"],
+      "format.check": ["format --check-formatted"],
+      # Setup deps
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
+      # Run tests
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]
   end
