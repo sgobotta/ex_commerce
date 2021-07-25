@@ -82,7 +82,7 @@ config :git_hooks,
   hooks: [
     pre_commit: [
       tasks: [
-        {:mix_task, :format, ["--check-formatted"]}
+        {:mix_task, :check}
       ]
     ]
   ]

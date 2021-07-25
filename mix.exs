@@ -54,8 +54,13 @@ defmodule ExCommerce.Umbrella.MixProject do
     [
       # Run `mix setup` in all child apps
       setup: ["cmd mix setup"],
-      # Run `mix lint` in all child apps
-      lint: ["cmd mix lint"]
+      # Run code checks
+      check: [
+        # Run `mix lint` in all child apps
+        "cmd mix lint",
+        "credo --strict",
+        "dialyzer --format dialyxir"
+      ]
     ]
   end
 end
