@@ -66,6 +66,13 @@ defmodule ExCommerceWeb.MixProject do
       "eslint.fix": ["cmd npm run eslint-fix --prefix assets"],
       # Setup deps
       setup: ["deps.get", "cmd npm install --prefix assets"],
+      # Reset deps
+      reset: ["deps.reset"],
+      "deps.reset": [
+        "deps.clean --all",
+        "cmd npm clean-install --prefix assets"
+      ],
+      "reset.ecto": [],
       # Run tests
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]

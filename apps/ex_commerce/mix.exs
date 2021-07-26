@@ -52,10 +52,13 @@ defmodule ExCommerce.MixProject do
       # Run lint tasks
       lint: ["format.check"],
       "format.check": ["format --check-formatted"],
-      # Setup deps
+      # Setup deps and database
       setup: ["deps.get", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
-      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      # Reset deps and database
+      reset: ["ecto.drop", "deps.reset"],
+      "deps.reset": ["deps.clean --all"],
+      "reset.ecto": ["ecto.drop", "ecto.setup"],
       # Run tests
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
     ]

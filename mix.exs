@@ -53,14 +53,20 @@ defmodule ExCommerce.Umbrella.MixProject do
   defp aliases do
     [
       # Run `mix setup` in all child apps
-      setup: ["cmd mix setup"],
+      setup: ["cmd mix setup", "deps.compile", "compile"],
       # Run code checks
       check: [
         # Run `mix lint` in all child apps
-        "cmd mix lint",
-        "credo --strict",
-        "dialyzer --format dialyxir"
-      ]
+        "check.format",
+        "check.credo",
+        "check.dialyzer"
+      ],
+      "check.format": ["cmd mix lint"],
+      "check.credo": ["credo --strict"],
+      "check.dialyzer": ["dialyzer --format dialyxir"],
+      # Reset applications
+      reset: ["cmd mix reset", "setup"],
+      "reset.ecto": ["cmd mix reset.ecto"]
     ]
   end
 end
