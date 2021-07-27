@@ -7,7 +7,7 @@
   >
     <img
       width="150px" src="logo.svg"
-      alt="DjRumble logo"
+      alt="ExCommerce logo"
     />
   </a>
 </p>
