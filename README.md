@@ -155,6 +155,12 @@ make
 make setup
 ```
 
+> *Installs dependencies only.*
+
+```bash
+make setup.deps
+```
+
 > *Simulates a complete envrionment re-installation. This is useful when stepping into client or server dependencies conflicts, migration issues or PR revisions that are not backwards compatible to current versions.*
 
 ```bash

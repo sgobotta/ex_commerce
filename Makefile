@@ -27,7 +27,7 @@ docs:
 help:
 	@grep -E '[a-zA-Z\.\-]+:.*?@ .*$$' $(MAKEFILE_LIST)| tr -d '#'  | awk 'BEGIN {FS = ":.*?@ "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}'
 
-#💻 lint: @ Runs a code formatter
+#💻 lint: @ Formats code
 lint:
 	@mix format
 	@mix check.credo
@@ -41,11 +41,15 @@ reset:
 reset.ecto:
 	@mix reset.ecto
 
-#📦 setup: @ Installs and compiles dependencies
+#📦 setup: @ Installs dependencies and set up database
 setup:
 	@mix setup
 
-#💻 start: @ ‍💻 Starts a server with an interactive elixir shell.
+#📦 setup.deps: @ Installs dependencies only
+setup.deps:
+	@mix install
+
+#💻 start: @ Starts a server with an interactive elixir shell.
 start: SHELL:=/bin/bash
 start:
 	@source ${ENV_FILE} && iex --name ${APP_NAME}@127.0.0.1 -S mix phx.server
@@ -56,7 +60,7 @@ test: SHELL:=/bin/bash
 test:
 	source ${ENV_FILE} && mix test
 
-#🧪 test.cover: @ Runs mix tests and generates coverage
+#🧪 test.cover: @ Runs all tests and generates a coverage report
 test.cover: MIX_ENV=test
 test.cover: SHELL:=/bin/bash
 test.cover:

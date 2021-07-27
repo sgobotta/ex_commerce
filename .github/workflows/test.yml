@@ -34,12 +34,12 @@ jobs:
       with:
         elixir-version: '1.11.4'
         otp-version: '23.3'
-    - name: Restore dependencies cache
-      uses: actions/cache@v2
-      with:
-        path: deps
-        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-        restore-keys: ${{ runner.os }}-mix-
+    # - name: Restore dependencies cache
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: deps
+    #     key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+    #     restore-keys: ${{ runner.os }}-mix-
     - name: Output Elixir version
       run: elixir --version
     - name: Output PostgreSQL version
@@ -47,7 +47,9 @@ jobs:
     - name: Output Node.js version
       run: node --version
     - name: Install dependencies
-      run: make setup
+      run: |
+        make setup
+        mix deps.get
     - name: Run tests
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
