@@ -147,6 +147,22 @@ make help
 make
 ```
 
+#### Docker services commands
+
+Docker services are defined in [`docker-compose.yml`](docker-compose.yml).
+
+> *Starts dockerized services.*
+
+```bash
+make start
+```
+
+> *Stops dockerized services.*
+
+```bash
+make stop
+```
+
 #### Configuration commands
 
 > *Installs a complete development environment. This is useful when changing branches or testing PRs with new dependencies.*
@@ -184,7 +200,7 @@ make reset.ecto.test
 > *Starts an Elixir server with an interactive shell sesion.*
 
 ```bash
-make start
+make server
 ```
 
 #### Testing commands
