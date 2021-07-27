@@ -37,8 +37,6 @@ services:
         aliases:
           - pgadmin
 networks:
-  open:
-    driver: bridge
   close:
     driver: bridge
 volumes:
