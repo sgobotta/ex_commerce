@@ -65,7 +65,9 @@ defmodule ExCommerceWeb.MixProject do
       eslint: ["cmd npm run eslint --prefix assets"],
       "eslint.fix": ["cmd npm run eslint-fix --prefix assets"],
       # Setup deps
-      setup: ["deps.get", "cmd npm install --prefix assets"],
+      install: ["deps.get", "cmd npm install --prefix assets"],
+      # Setup deps and database
+      setup: ["install"],
       # Reset deps
       reset: ["deps.reset"],
       "deps.reset": [

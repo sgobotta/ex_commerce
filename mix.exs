@@ -52,6 +52,8 @@ defmodule ExCommerce.Umbrella.MixProject do
   # and cannot be accessed from applications inside the apps/ folder.
   defp aliases do
     [
+      # Rin `mix install in all child apps
+      install: ["cmd mix install"],
       # Run `mix setup` in all child apps
       setup: ["cmd mix setup", "deps.compile", "compile"],
       # Run code checks
