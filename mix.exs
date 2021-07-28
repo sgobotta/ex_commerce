@@ -14,6 +14,14 @@ defmodule ExCommerce.Umbrella.MixProject do
         "coveralls.detail": :test,
         "coveralls.post": :test,
         "coveralls.html": :test
+      ],
+
+      # Docs
+      name: "Ex Commerce",
+      source_url: "https://github.com/sgobotta/ex_commerce",
+      docs: [
+        main: "ExCommerce",
+        extras: ["README.md"]
       ]
     ]
   end
@@ -37,7 +45,9 @@ defmodule ExCommerce.Umbrella.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.14", only: [:test]},
       {:git_hooks, "~> 0.6.2", only: [:dev], runtime: false},
-      {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false}
+      {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false},
+      # Documentation
+      {:ex_doc, "~> 0.24", only: :dev, runtime: false}
     ]
   end
 
