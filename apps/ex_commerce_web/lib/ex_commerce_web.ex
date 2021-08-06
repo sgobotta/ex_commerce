@@ -37,6 +37,8 @@ defmodule ExCommerceWeb do
       import Phoenix.Controller,
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
 
+      import PhoenixInlineSvg.Helpers
+
       # Include shared imports and aliases for views
       unquote(view_helpers())
     end
@@ -46,6 +48,8 @@ defmodule ExCommerceWeb do
     quote do
       use Phoenix.LiveView,
         layout: {ExCommerceWeb.LayoutView, "live.html"}
+
+      import PhoenixInlineSvg.Helpers
 
       unquote(view_helpers())
     end
@@ -83,6 +87,8 @@ defmodule ExCommerceWeb do
 
       # Import LiveView helpers (live_render, live_component, live_patch, etc)
       import Phoenix.LiveView.Helpers
+
+      import PhoenixInlineSvg.Helpers
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
