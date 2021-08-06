@@ -38,10 +38,11 @@ defmodule ExCommerceWeb.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      # Default Phoenix deps
       {:phoenix, "~> 1.5.9"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_live_view, "~> 0.15.1"},
-      {:floki, ">= 0.30.0", only: :test},
+      {:floki, ">= 0.30.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
@@ -50,7 +51,9 @@ defmodule ExCommerceWeb.MixProject do
       {:gettext, "~> 0.11"},
       {:ex_commerce, in_umbrella: true},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      # Helpers
+      {:phoenix_inline_svg, "~> 1.4"}
     ]
   end
 
