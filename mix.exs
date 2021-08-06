@@ -63,7 +63,7 @@ defmodule ExCommerce.Umbrella.MixProject do
   defp aliases do
     [
       # Rin `mix install in all child apps
-      install: ["cmd mix install"],
+      install: ["deps.get", "cmd mix install"],
       # Run `mix setup` in all child apps
       setup: ["cmd mix setup", "deps.compile", "compile"],
       # Run code checks
