@@ -1,5 +1,9 @@
 use Mix.Config
 
+# ------------------------------------------------------------------------------
+# Ex Commerce configuration
+#
+
 # Configure your database
 config :ex_commerce, ExCommerce.Repo,
   username: System.get_env("DB_USERNAME", "postgres"),
@@ -8,6 +12,10 @@ config :ex_commerce, ExCommerce.Repo,
   hostname: System.get_env("DB_HOSTNAME", "localhost"),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
+
+# ------------------------------------------------------------------------------
+# Ex Commerce Web configuration
+#
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -65,15 +73,19 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
     ]
   ]
 
-# Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
-
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
+
+# ------------------------------------------------------------------------------
+# Shared configuration
+#
+
+# Do not include metadata nor timestamps in development logs
+config :logger, :console, format: "[$level] $message\n"
 
 # Configures git pre-commit hook to run the formatter
 config :git_hooks,

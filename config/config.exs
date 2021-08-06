@@ -9,9 +9,17 @@
 # move said applications out of the umbrella.
 use Mix.Config
 
+# ------------------------------------------------------------------------------
+# Ex Commerce configuration
+#
+
 # Configure Mix tasks and generators
 config :ex_commerce,
   ecto_repos: [ExCommerce.Repo]
+
+# ------------------------------------------------------------------------------
+# Ex Commerce Web configuration
+#
 
 config :ex_commerce_web,
   ecto_repos: [ExCommerce.Repo],
@@ -30,13 +38,19 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
   pubsub_server: ExCommerce.PubSub,
   live_view: [signing_salt: "M+Dyy4Zh"]
 
+config :phoenix_inline_svg, default_collection: ""
+
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
+
+# ------------------------------------------------------------------------------
+# Shared configuration
+#
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id, :mfa]
-
-# Use Jason for JSON parsing in Phoenix
-config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

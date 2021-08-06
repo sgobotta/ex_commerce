@@ -1,5 +1,9 @@
 use Mix.Config
 
+# ------------------------------------------------------------------------------
+# Ex Commerce configuration
+#
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
@@ -13,11 +17,19 @@ config :ex_commerce, ExCommerce.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
   timeout: :infinity
 
+# ------------------------------------------------------------------------------
+# Ex Commerce Web configuration
+#
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :ex_commerce_web, ExCommerceWeb.Endpoint,
   http: [port: 4002],
   server: false
+
+# ------------------------------------------------------------------------------
+# Shared configuration
+#
 
 # Print only warnings and errors during test
 config :logger, level: :warn
