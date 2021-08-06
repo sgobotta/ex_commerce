@@ -58,6 +58,7 @@ reset.ecto:
 
 #📦 setup: @ Installs dependencies and set up database
 setup:
+	@mix install
 	@mix setup
 
 #📦 setup.deps: @ Installs dependencies only
