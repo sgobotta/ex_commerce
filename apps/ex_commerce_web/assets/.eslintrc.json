@@ -1,6 +1,8 @@
 {
     "globals": {
+        "__dirname": true,
         "module": true,
+        "require": true,
         "YT": true,
         "Promise": true
     },
