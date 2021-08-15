@@ -56,7 +56,7 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
 # Email configuration
 #
 
-config :ex_commerce, :from_email, System.fetch_env!("EX_COMMERCE_FROM_EMAIL")
+config :ex_commerce, from_email: System.fetch_env!("EX_COMMERCE_FROM_EMAIL")
 
 config :ex_commerce, DjRumble.Mailer,
   adapter: Bamboo.SendGridAdapter,

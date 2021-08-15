@@ -18,7 +18,7 @@
       <%= checkbox f, :remember_me %>
 
       <p>
-        <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "text-2xl link" %> |
+        <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "link" %> |
         <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new), class: "link" %>
       </p>
 

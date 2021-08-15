@@ -2,6 +2,18 @@
 
 <h3>Change email</h3>
 
+<ul>
+<%= if @current_user do %>
+  <li><%= @current_user.email %></li>
+  <li><%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %></li>
+  <li><%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete %></li>
+<% else %>
+  <li><%= link "Register", to: Routes.user_registration_path(@conn, :new) %></li>
+  <li><%= link "Log in", to: Routes.user_session_path(@conn, :new) %></li>
+<% end %>
+</ul>
+
+
 <%= form_for @email_changeset, Routes.user_settings_path(@conn, :update), fn f -> %>
   <%= if @email_changeset.action do %>
     <div class="alert alert-danger">

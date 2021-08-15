@@ -1,8 +1,6 @@
 <div>
 
-  <header class="h-20 flex items-center px-4">
-    <span class="font-bold">ExCommerce</span>
-  </header>
+  <%= render ExCommerceWeb.HeaderView, "header.html" %>
 
   <div class="absolute inset-1/4">
 

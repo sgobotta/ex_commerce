@@ -68,6 +68,8 @@ defmodule ExCommerceWeb.Router do
     get "/users/settings/confirm_email/:token",
         UserSettingsController,
         :confirm_email
+
+    get "/users/settings/confirm_email", UserSettingsController, :email_sent
   end
 
   scope "/", ExCommerceWeb do
