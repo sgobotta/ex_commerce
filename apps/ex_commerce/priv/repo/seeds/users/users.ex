@@ -22,7 +22,6 @@ defmodule ExCommerce.Seeds.Users do
       end
 
       {count, _} = Repo.insert_all(User, users)
-      count
 
       :ok = Logger.info("✅ Inserted #{count} users.")
 

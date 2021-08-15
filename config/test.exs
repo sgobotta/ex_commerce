@@ -31,6 +31,14 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
   server: false
 
 # ------------------------------------------------------------------------------
+# Email configuration
+#
+
+config :ex_commerce, :from_email, "info@ex.commerce"
+
+config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
+
+# ------------------------------------------------------------------------------
 # Shared configuration
 #
 

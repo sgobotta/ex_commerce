@@ -53,6 +53,19 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
 # Check `Plug.SSL` for all available options in `force_ssl`.
 
 # ------------------------------------------------------------------------------
+# Email configuration
+#
+
+config :ex_commerce, :from_email, System.fetch_env!("EX_COMMERCE_FROM_EMAIL")
+
+config :ex_commerce, DjRumble.Mailer,
+  adapter: Bamboo.SendGridAdapter,
+  api_key: System.get_env("SENDGRID_API_KEY"),
+  hackney_opts: [
+    recv_timeout: :timer.minutes(1)
+  ]
+
+# ------------------------------------------------------------------------------
 # Shared configuration
 #
 
