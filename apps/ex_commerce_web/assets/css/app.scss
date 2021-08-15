@@ -8,6 +8,10 @@
 @tailwind utilities;
 
 @import "./components/buttons.scss";
+@import "./components/cards.scss";
+@import "./components/inputs.scss";
+@import "./components/layout.scss";
+@import "./components/links.scss";
 
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,

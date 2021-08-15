@@ -10,7 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
-      boxShadow: {},
+      boxShadow: {
+        'button': '5px 5px 7px 0px rgba(0, 0, 0, 0.3)'
+      },
       gridRow: {
         'span-10': 'span 10 / span 10',
         'span-11': 'span 11 / span 11',

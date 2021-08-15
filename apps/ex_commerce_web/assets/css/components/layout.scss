@@ -1,0 +1,5 @@
+@layer components {
+  .centered {
+    @apply flex h-screen justify-center items-center;
+  }
+}

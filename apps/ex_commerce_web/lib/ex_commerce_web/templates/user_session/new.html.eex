@@ -1,27 +1,30 @@
-<h1>Log in</h1>
+<div class="centered bg-gray-200">
 
-<%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user], fn f -> %>
-  <%= if @error_message do %>
-    <div class="alert alert-danger">
-      <p><%= @error_message %></p>
-    </div>
-  <% end %>
+  <div class="card">
+    <%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user, class: "m-0"], fn f -> %>
+      <%= if @error_message do %>
+        <div class="alert alert-danger">
+          <p><%= @error_message %></p>
+        </div>
+      <% end %>
 
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
+      <%= label f, :email, "Enter your email", class: "my-2" %>
+      <%= email_input f, :email, required: true, placeholder: "Email", class: "input" %>
 
-  <%= label f, :password %>
-  <%= password_input f, :password, required: true %>
+      <%= label f, :password, "Enter your password", class: "my-2" %>
+      <%= password_input f, :password, required: true, placeholder: "Password", class: "input" %>
 
-  <%= label f, :remember_me, "Keep me logged in for 60 days" %>
-  <%= checkbox f, :remember_me %>
+      <%= label f, :remember_me, "Keep me logged in for 60 days", class: "mt-2 text-xl font-normal" %>
+      <%= checkbox f, :remember_me %>
 
-  <div>
-    <%= submit "Log in" %>
+      <p>
+        <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "text-2xl link" %> |
+        <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new), class: "link" %>
+      </p>
+
+      <div class="flex justify-end mt-6">
+        <%= submit "Log in", class: "button" %>
+      </div>
+    <% end %>
   </div>
-<% end %>
-
-<p>
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
-</p>
+</div>

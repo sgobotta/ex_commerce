@@ -1,0 +1,5 @@
+@layer components {
+  .link {
+    @apply text-2xl text-blue-500 hover:text-blue-300 transition duration-200;
+  }
+}
