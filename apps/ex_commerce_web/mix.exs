@@ -53,7 +53,9 @@ defmodule ExCommerceWeb.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       # Helpers
-      {:phoenix_inline_svg, "~> 1.4"}
+      {:phoenix_inline_svg, "~> 1.4"},
+      # Authentication
+      {:phx_gen_auth, "~> 0.7", only: [:dev], runtime: false}
     ]
   end
 
