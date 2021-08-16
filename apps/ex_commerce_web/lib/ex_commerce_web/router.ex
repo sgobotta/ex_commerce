@@ -6,6 +6,13 @@ defmodule ExCommerceWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
+
+    plug Cldr.Plug.SetLocale,
+      apps: [:cldr, :gettext],
+      from: [:path, :query],
+      gettext: ExCommerceWeb.Gettext,
+      cldr: ExCommerceWeb.Cldr
+
     plug :fetch_live_flash
     plug :put_root_layout, {ExCommerceWeb.LayoutView, :root}
     plug :protect_from_forgery

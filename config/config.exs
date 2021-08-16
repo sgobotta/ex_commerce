@@ -44,6 +44,14 @@ config :phoenix_inline_svg, default_collection: ""
 config :phoenix, :json_library, Jason
 
 # ------------------------------------------------------------------------------
+# i18n and l10n configuration
+#
+
+config :ex_cldr,
+  default_backend: ExCommerceWeb.Cldr,
+  json_library: Jason
+
+# ------------------------------------------------------------------------------
 # Shared configuration
 #
 
