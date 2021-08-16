@@ -9,7 +9,7 @@ defmodule ExCommerceWeb.Router do
 
     plug Cldr.Plug.SetLocale,
       apps: [:cldr, :gettext],
-      from: [:path, :query],
+      from: [:accept_language, :cookie, :session, :path, :query],
       gettext: ExCommerceWeb.Gettext,
       cldr: ExCommerceWeb.Cldr
 

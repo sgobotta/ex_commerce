@@ -1,0 +1,47 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: es\n"
+"Plural-Forms: nplurals=2\n"
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:8
+msgid "Thanks for registering your business"
+msgstr "Gracias por registrar tu negocio!"
+
+#, elixir-format
+#: lib/ex_commerce_web/live/page_live.html.leex:2
+msgid "Welcome to %{name}!"
+msgstr "Te damos la bienvenida a %{name}!"
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:16
+msgid "Please check your inbox and/or spam folders"
+msgstr "Revisa tu buzón de entrada o spam"
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:20
+msgid "There you'll find a confirmation link to get started!"
+msgstr "Encontrarás un link de confirmación para comenzar!"
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:12
+msgid "We've just sent you a confirmation email"
+msgstr "Hemos enviado un correo al email que ingresaste"
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:25
+msgid "Didn't receive the email?"
+msgstr "No he recibido el correo"
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:27
+msgid "Resend notification"
+msgstr "Reenviar notificación"

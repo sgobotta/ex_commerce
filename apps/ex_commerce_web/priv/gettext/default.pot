@@ -1,0 +1,46 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here as no
+## effect: edit them in PO (.po) files instead.
+msgid ""
+msgstr ""
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:8
+msgid "Thanks for registering your business"
+msgstr ""
+
+#, elixir-format
+#: lib/ex_commerce_web/live/page_live.html.leex:2
+msgid "Welcome to %{name}!"
+msgstr ""
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:16
+msgid "Please check your inbox and/or spam folders"
+msgstr ""
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:20
+msgid "There you'll find a confirmation link to get started!"
+msgstr ""
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:12
+msgid "We've just sent you a confirmation email"
+msgstr ""
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:25
+msgid "Didn't receive the email?"
+msgstr ""
+
+#, elixir-format
+#: lib/ex_commerce_web/templates/user_settings/email_sent.html.eex:27
+msgid "Resend notification"
+msgstr ""

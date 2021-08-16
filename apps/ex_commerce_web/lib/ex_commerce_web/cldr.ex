@@ -4,7 +4,7 @@ defmodule ExCommerceWeb.Cldr do
   """
   use Cldr,
     default_locale: "en",
-    locales: ["en", "en"],
+    locales: ["en", "es"],
     add_fallback_locales: false,
     gettext: ExCommerceWeb.Gettext,
     data_dir: "./priv/cldr",
