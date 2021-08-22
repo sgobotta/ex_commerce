@@ -108,6 +108,8 @@
   </div>
 </nav>
 
+<%= @inner_content %>
+
 <script>
   const navIconButton = document.querySelector(".nav-icon-button")
   const menu = document.querySelector(".mobile-menu")

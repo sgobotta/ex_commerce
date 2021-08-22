@@ -1,29 +1,31 @@
-<%= render ExCommerceWeb.NavbarView, "navbar.html" %>
+<%= render_layout ExCommerceWeb.NavbarView, "navbar.html", [] do %>
 
-<div>
-  <div class="l-centered h-screen bg-purple-200">
-    <div class="">
-      Welcome layout
+  <div>
+    <div class="l-centered h-screen bg-purple-200">
+      <div class="">
+        Welcome layout
+      </div>
+    </div>
+
+    <div class="l-centered h-screen-1/4 bg-red-200">
+      <div class="">
+        Corousel (recently added shops)
+      </div>
+    </div>
+
+    <div class="l-centered h-screen-1/2 bg-yellow-200">
+      <div class="relative">
+        Benefits (cards)
+      </div>
+    </div>
+
+    <div class="l-centered h-screen-3/4 bg-green-200">
+      <div class="relative">
+        Features/Plans
+      </div>
     </div>
   </div>
 
-  <div class="l-centered h-screen-1/4 bg-red-200">
-    <div class="">
-      Corousel (recently added shops)
-    </div>
-  </div>
-
-  <div class="l-centered h-screen-1/3 bg-yellow-200">
-    <div class="relative">
-      Benefits (cards)
-    </div>
-  </div>
-
-  <div class="l-centered h-screen-3/4 bg-green-200">
-    <div class="relative">
-      Features/Plans
-    </div>
-  </div>
-</div>
+<% end %>
 
 <%= render ExCommerceWeb.FooterView, "landing_footer.html" %>
