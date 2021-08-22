@@ -1,0 +1,9 @@
+<!-- Website Logo -->
+<a class="flex items-center py-4 px-2">
+  <img
+    src="<%= Routes.static_path(ExCommerceWeb.Endpoint, "/images/logo/icon.png") %>"
+    alt="ExCommerce"
+    class="h-12 w-12 mr-2"
+  >
+  <span class="font-semibold text-gray-700 text-xl">Ex Commerce</span>
+</a>
