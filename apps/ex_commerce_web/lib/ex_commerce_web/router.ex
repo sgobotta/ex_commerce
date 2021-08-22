@@ -82,7 +82,7 @@ defmodule ExCommerceWeb.Router do
   scope "/", ExCommerceWeb do
     pipe_through [:browser]
 
-    get "/", WelcomePageController, :index
+    get "/", WebController, :index
 
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new

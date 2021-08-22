@@ -1,4 +1,4 @@
-defmodule ExCommerceWeb.WelcomePageController do
+defmodule ExCommerceWeb.WebController do
   use ExCommerceWeb, :controller
 
   def index(conn, _params) do

@@ -44,4 +44,4 @@
 
 <% end %>
 
-<%= render ExCommerceWeb.FooterView, "landing_footer.html" %>
+<%= render ExCommerceWeb.WebView, "footer" %>
