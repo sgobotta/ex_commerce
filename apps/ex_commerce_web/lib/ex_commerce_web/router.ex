@@ -30,6 +30,16 @@ defmodule ExCommerceWeb.Router do
     live "/live", PageLive, :index
   end
 
+  scope "/admin", ExCommerceWeb do
+    pipe_through [
+      :browser,
+      :require_authenticated_user,
+      :require_confirmed_user
+    ]
+
+    live "/", AdminDashboardLive, :index
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", ExCommerceWeb do
   #   pipe_through :api
