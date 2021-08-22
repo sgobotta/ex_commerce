@@ -1,4 +1,4 @@
-<nav class="bg-white shadow-lg">
+<nav class="bg-white shadow-lg fixed w-full">
   <div class="max-w-6xl mx-auto px-4">
     <div class="flex justify-between">
       <div class="flex space-x-7">
@@ -16,7 +16,7 @@
 
         <!-- Primary Navbar items -->
         <div class="hidden md:flex items-center space-x-1">
-          <a href="" class="nv-link nv-link-active text-xl">
+          <a href="" class="nv-link nv-link-activee text-xl">
             <%= gettext("Home") %>
           </a>
           <a href="" class="nv-link text-xl text-gray-700">
