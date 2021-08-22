@@ -1,4 +1,4 @@
-<div class="centered bg-gray-200">
+<div class="l-centered h-screen bg-gray-200">
 
   <div class="card">
     <h1 class="text-3xl my-20">Resend confirmation instructions</h1>

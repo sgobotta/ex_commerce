@@ -1,4 +1,4 @@
-<div class="centered bg-gray-200">
+<div class="l-centered h-screen bg-gray-200">
 
   <div class="card">
     <%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user, class: "m-0"], fn f -> %>
