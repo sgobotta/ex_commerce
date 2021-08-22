@@ -27,7 +27,7 @@ defmodule ExCommerceWeb.Router do
   scope "/", ExCommerceWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    live "/live", PageLive, :index
   end
 
   # Other scopes may use custom stacks.
@@ -81,6 +81,8 @@ defmodule ExCommerceWeb.Router do
 
   scope "/", ExCommerceWeb do
     pipe_through [:browser]
+
+    get "/", WelcomePageController, :index
 
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new
