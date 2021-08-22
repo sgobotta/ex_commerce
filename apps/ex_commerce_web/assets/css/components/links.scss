@@ -2,4 +2,21 @@
   .link {
     @apply text-2xl text-blue-500 hover:text-blue-300 transition duration-200;
   }
+
+  /* Navbar links */
+  .nv-link {
+    @apply py-4 px-2 font-normal hover:text-purple-500 transition duration-300;
+  }
+
+  .nv-link-active {
+    @apply border-b-2 text-purple-500 border-purple-500;
+  }
+
+  .m-nv-link {
+    @apply block py-4 px-2 text-sm transition duration-300;
+  }
+
+  .m-nv-link-active {
+    @apply font-semibold;
+  }
 }
