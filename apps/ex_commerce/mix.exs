@@ -58,7 +58,7 @@ defmodule ExCommerce.MixProject do
       # Deps install
       install: ["deps.get"],
       # Setup deps and database
-      setup: ["install", "ecto.setup"],
+      setup: ["install", "ecto.drop", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       # Reset deps and database
       reset: ["ecto.drop", "deps.reset"],
