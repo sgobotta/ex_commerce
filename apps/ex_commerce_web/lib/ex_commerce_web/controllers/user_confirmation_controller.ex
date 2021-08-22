@@ -19,8 +19,10 @@ defmodule ExCommerceWeb.UserConfirmationController do
     conn
     |> put_flash(
       :info,
-      "If your email is in our system and it has not been confirmed yet, " <>
-        "you will receive an email with instructions shortly."
+      gettext(
+        "If your email is in our system and it has not been confirmed yet, " <>
+          "you will receive an email with instructions shortly."
+      )
     )
     |> redirect(to: Routes.user_settings_path(conn, :email_sent))
   end
@@ -31,7 +33,7 @@ defmodule ExCommerceWeb.UserConfirmationController do
     case Accounts.confirm_user(token) do
       {:ok, _} ->
         conn
-        |> put_flash(:info, "User confirmed successfully.")
+        |> put_flash(:info, gettext("User confirmed successfully."))
         |> redirect(to: "/")
 
       :error ->
@@ -48,7 +50,7 @@ defmodule ExCommerceWeb.UserConfirmationController do
             conn
             |> put_flash(
               :error,
-              "User confirmation link is invalid or it has expired."
+              gettext("User confirmation link is invalid or it has expired.")
             )
             |> redirect(to: Routes.user_confirmation_path(conn, :new))
         end
