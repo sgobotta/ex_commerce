@@ -3,63 +3,38 @@
     <div class="flex justify-between">
       <div class="flex space-x-7">
         <div>
-          <!-- Website Logo -->
-          <a class="flex items-center py-4 px-2">
-            <img
-              src="<%= Routes.static_path(ExCommerceWeb.Endpoint, "/images/logo/icon.png") %>"
-              alt="ExCommerce"
-              class="h-12 w-12 mr-2"
-            >
-            <span class="font-semibold text-gray-700 text-xl">Ex Commerce</span>
-          </a>
+          <%= assigns[:logo] %>
         </div>
 
         <!-- Primary Navbar items -->
-        <div class="hidden md:flex items-center space-x-1">
-          <a href="" class="nv-link nv-link-activee text-xl">
-            <%= gettext("Home") %>
-          </a>
-          <a href="" class="nv-link text-xl text-gray-700">
-            <%= gettext("Search") %>
-          </a>
-          <a href="" class="nv-link text-xl text-gray-700">
-            <%= gettext("About us") %>
-          </a>
-          <a href="" class="nv-link text-xl text-gray-700">
-            <%= gettext("Help") %>
-          </a>
-        </div>
+        <%= if not assigns[:exclude_menu] do %>
+          <div class="hidden md:flex items-center space-x-1">
+            <%= for link <- assigns[:links] do %>
+              <a href="<%= link.href %>" class="nv-link nv-link-activee text-xl">
+                <%= link[:text] %>
+              </a>
+            <% end %>
+          </div>
+        <% end %>
       </div>
 
       <!-- Secondary Navbar items -->
       <div class="flex items-center space-x-3">
-        <a href="" class="
-          py-3 px-4 rounded-full
-          uppercase text-xl font-medium text-gray-700 hover:text-white
-          hover:bg-purple-400
-          transition duration-200
-        ">
-          <%= gettext("Log in") %>
-        </a>
-        <a href="" class="
-          py-3 px-2 sm:px-4 rounded-full
-          uppercase text-sm sm:text-xl font-medium text-white
-          bg-purple-500 hover:bg-purple-400
-          shadow-button
-          transition duration-200
-        ">
-          <%= gettext("Start for free") %>
-        </a>
+        <%= for button <- assigns[:header_buttons] do %>
+          <%= button %>
+        <% end %>
       </div>
 
       <!-- Mobile menu button -->
-      <div class="my-2 nav-icon-button md:hidden mt-6 cursor-pointer">
-        <div class="nav-icon m-0">
-          <span class="bg-black"></span>
-          <span class="bg-black"></span>
-          <span class="bg-black"></span>
+      <%= if not assigns[:exclude_menu] do %>
+        <div class="my-2 nav-icon-button md:hidden mt-6 cursor-pointer">
+          <div class="nav-icon m-0">
+            <span class="bg-black"></span>
+            <span class="bg-black"></span>
+            <span class="bg-black"></span>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 
@@ -67,42 +42,19 @@
   <div class="relative">
     <div class="transition duration-300 transform hidden mobile-menu absolute top-0 w-full bg-white">
       <ul class="">
-        <li class="mb-0">
-          <a
-            onclick="closeMenu()"
-            href="#home"
-            class="m-nv-link m-nv-link-active text-white bg-purple-500"
-          >
-            <%= gettext("Home") %>
-          </a>
-        </li>
-        <li class="mb-0">
-          <a
-            onclick="closeMenu()"
-            href="#services"
-            class="m-nv-link hover:text-white hover:bg-purple-500"
-          >
-            <%= gettext("Search") %>
-          </a>
-        </li>
-        <li class="mb-0">
-          <a
-            onclick="closeMenu()"
-            href="#about"
-            class="m-nv-link hover:text-white hover:bg-purple-500"
-          >
-            <%= gettext("About us") %>
-          </a>
-        </li>
-        <li class="mb-0">
-          <a
-            onclick="closeMenu()"
-            href="#contact"
-            class="m-nv-link hover:text-white hover:bg-purple-500"
-          >
-            <%= gettext("Help") %>
-          </a>
-        </li>
+        <%= for link <- assigns[:links] do %>
+
+          <li class="mb-0">
+            <a
+              onclick="closeMenu()"
+              href="<%= link.href %>"
+              class="m-nv-link m-nv-link-active-FIXME text-white-FIXME bg-purple-500-FIXME"
+            >
+              <%= link[:text] %>
+            </a>
+          </li>
+
+        <% end %>
       </ul>
     </div>
   </div>

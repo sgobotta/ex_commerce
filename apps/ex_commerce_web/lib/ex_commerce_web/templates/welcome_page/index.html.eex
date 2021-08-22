@@ -1,25 +1,41 @@
-<%= render_layout ExCommerceWeb.NavbarView, "navbar.html", [] do %>
+<%= render_layout ExCommerceWeb.NavbarView,
+  "navbar",
+  [
+    exclude_menu: false,
+    header_buttons: [
+      render(ExCommerceWeb.Buttons, "login_button"),
+      render(ExCommerceWeb.Buttons, "register_button")
+    ],
+    links: [
+      %{text: gettext("Welcome"), href: "#welcome"},
+      %{text: gettext("Search"), href: "#carousel"},
+      %{text: gettext("About us"), href: "#benefits"},
+      %{text: gettext("Help"), href: "#plans"}
+    ],
+    logo: render(ExCommerceWeb.Buttons, "icon_button")
+  ]
+ do %>
 
   <div>
-    <div class="l-centered h-screen bg-purple-200">
+    <div ID="welcome" class="l-centered h-screen bg-purple-200">
       <div class="">
         Welcome layout
       </div>
     </div>
 
-    <div class="l-centered h-screen-1/4 bg-red-200">
+    <div ID="carousel" class="l-centered h-screen-1/4 bg-red-200">
       <div class="">
         Corousel (recently added shops)
       </div>
     </div>
 
-    <div class="l-centered h-screen-1/2 bg-yellow-200">
+    <div ID="benefits" class="l-centered h-screen-1/2 bg-yellow-200">
       <div class="relative">
         Benefits (cards)
       </div>
     </div>
 
-    <div class="l-centered h-screen-3/4 bg-green-200">
+    <div ID="plans" class="l-centered h-screen-3/4 bg-green-200">
       <div class="relative">
         Features/Plans
       </div>
