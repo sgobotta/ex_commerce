@@ -2,7 +2,10 @@ defmodule ExCommerceWeb.NavbarView do
   use ExCommerceWeb, :view
 
   def render("navbar", assigns) do
-    opts = Map.put_new(assigns, :exclude_menu, true)
+    opts =
+      assigns
+      |> Map.put_new(:exclude_menu, true)
+      |> Map.put_new(:mode, :topmenu)
 
     render("navbar.html", opts)
   end

@@ -1,6 +1,7 @@
 <%= render_layout ExCommerceWeb.NavbarView,
   "navbar",
   [
+    mode: :sidemenu,
     exclude_menu: false,
     header_buttons: [
       render(ExCommerceWeb.Buttons, "login_button"),
