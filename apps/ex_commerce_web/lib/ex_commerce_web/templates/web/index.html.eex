@@ -1,19 +1,27 @@
 <%= render_layout ExCommerceWeb.NavbarView,
   "navbar",
   [
-    mode: :topmenu,
+    mode: :sidemenu,
     exclude_menu: false,
-    header_buttons: [
-      render(ExCommerceWeb.Buttons, "login_button"),
-      render(ExCommerceWeb.Buttons, "register_button")
-    ],
+    header_buttons:
+      if @current_user do
+        [
+          render(ExCommerceWeb.ButtonsView, "logout_button"),
+          render(ExCommerceWeb.ButtonsView, "admin_dashboard_button")
+        ]
+      else
+        [
+          render(ExCommerceWeb.ButtonsView, "login_button"),
+          render(ExCommerceWeb.ButtonsView, "register_button")
+        ]
+      end,
     links: [
       %{text: gettext("Welcome"), href: "#welcome"},
       %{text: gettext("Search"), href: "#carousel"},
       %{text: gettext("About us"), href: "#benefits"},
       %{text: gettext("Help"), href: "#plans"}
     ],
-    logo: render(ExCommerceWeb.Buttons, "icon_button")
+    logo: render(ExCommerceWeb.ButtonsView, "icon_button")
   ]
  do %>
 
