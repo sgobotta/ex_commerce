@@ -1,1 +1,24 @@
-<h1>Admin Dashboard</h1>
+<div class="">
+  <%= render_layout ExCommerceWeb.NavbarView,
+    "navbar",
+    [
+      mode: :sidemenu,
+      exclude_menu: false,
+      header_buttons: [
+        Phoenix.View.render(ExCommerceWeb.ButtonsView, "logout_button", classes: "capitalize"),
+      ],
+      links: [
+        %{text: gettext("Welcome"), href: "#welcome"},
+      ],
+      logo: Phoenix.View.render(ExCommerceWeb.ButtonsView, "icon_button", [])
+    ]
+  do %>
+
+    <div class="">
+
+      <h1>Dashboard</h1>
+
+    </div>
+
+  <% end %>
+</div>
