@@ -1,4 +1,4 @@
-<nav class="bg-white shadow-lg sticky w-full">
+<nav class="bg-white shadow-lg sticky top-0 w-full">
   <div class="px-4">
     <div class="flex justify-between">
       <div class="flex space-x-7">
@@ -64,40 +64,40 @@
   </div>
 </nav>
 
-<div>
-  <%= if assigns[:mode] == :sidemenu do %>
-    <div class="grid grid-cols-6">
-      <div class="
-        hidden md:block md:col-span-1
-        border-r-2 border-gray-300
-        bg-white
-      ">
-        <ul class="">
-          <%= for link <- assigns[:links] do %>
+<%= if assigns[:mode] == :sidemenu do %>
+  <div class="grid grid-cols-6">
+    <div class="
+      hidden md:block md:col-span-1
+      border-r-2 border-gray-300
+      bg-white
+      sticky bottom-0 top-0
+      h-screen
+    ">
+      <ul class="">
+        <%= for link <- assigns[:links] do %>
 
-            <li class="mb-0">
-              <a
-                onclick="closeMenu()"
-                href="<%= link.href %>"
-                class="m-nv-link m-nv-link-active-FIXME text-white-FIXME bg-purple-500-FIXME"
-              >
-                <%= link[:text] %>
-              </a>
-            </li>
+          <li class="mb-0">
+            <a
+              onclick="closeMenu()"
+              href="<%= link.href %>"
+              class="m-nv-link m-nv-link-active-FIXME text-white-FIXME bg-purple-500-FIXME"
+            >
+              <%= link[:text] %>
+            </a>
+          </li>
 
-          <% end %>
-        </ul>
-      </div>
-      <div class="block col-span-6 md:col-span-5 bg-yellow-500">
-        <%= @inner_content %>
-      </div>
+        <% end %>
+      </ul>
     </div>
-  <% end %>
+    <div class="block col-span-6 md:col-span-5 bg-white">
+      <%= @inner_content %>
+    </div>
+  </div>
+<% end %>
 
-  <%= if assigns[:mode] == :topmenu do %>
-    <%= @inner_content %>
-  <% end %>
-</div>
+<%= if assigns[:mode] == :topmenu do %>
+  <%= @inner_content %>
+<% end %>
 
 <script>
   const navIconButton = document.querySelector(".nav-icon-button")
