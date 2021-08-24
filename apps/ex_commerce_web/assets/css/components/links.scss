@@ -28,7 +28,7 @@
 }
 
 /* :checked - resize to full height */
-.tab input:checked ~ .tab-content {
+.tab input:not(:checked) ~ .tab-content {
   max-height: 100vh;
 }
 
@@ -47,12 +47,22 @@
   transition: all .35s;
 }
 
-/* Icon formatting - closed */
-.tab input[type=checkbox] + label span {
+/* Formatting - closed */
+
+.tab input[type=checkbox]:checked + label span {
+  transform: rotate(0deg);
   font-weight: bold;
 }
 
-/* Icon formatting - open */
-.tab input[type=checkbox]:checked + label span {
+.tab input[type=checkbox]:checked + label {
+  background-color: transparent;
+}
+
+/* Formatting - open */
+.tab input[type=checkbox]:not(checked) + label span {
   transform: rotate(90deg);
+}
+
+.tab input[type=checkbox]:not(checked) + label {
+  background-color: #D1D5DB;
 }
