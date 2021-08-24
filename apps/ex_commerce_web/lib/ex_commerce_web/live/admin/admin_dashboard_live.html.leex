@@ -8,10 +8,8 @@
         render_logout_button(classes: "capitalize")
       ],
       links: [
-        render_navbar_link(text: gettext("Welcome"), href: "#welcome"),
-        render_navbar_link(text: gettext("Search"), href: "#carousel"),
-        render_navbar_link(text: gettext("About"), href: "#benefits"),
-        render_navbar_link(text: gettext("Help"), href: "#plans")
+        render_navbar_link_group([]),
+        render_navbar_link(text: gettext("Welcome"), href: "#welcome")
       ],
       logo: render_image_button(text: "Ex Commerce")
     ]

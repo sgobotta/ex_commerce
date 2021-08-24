@@ -4,9 +4,21 @@ defmodule ExCommerceWeb.LiveHelpers do
   """
   import Phoenix.View
 
+  # ----------------------------------------------------------------------------
+  # Navbar helpers
+  #
+
   def render_navbar_link(opts) do
     render(ExCommerceWeb.NavbarView, "navbar_link", opts)
   end
+
+  def render_navbar_link_group(opts) do
+    render(ExCommerceWeb.NavbarView, "navbar_link_group", opts)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Button helpers
+  #
 
   def render_logout_button(opts) do
     render(ExCommerceWeb.ButtonsView, "logout_button", opts)
@@ -41,5 +53,14 @@ defmodule ExCommerceWeb.LiveHelpers do
   @spec render_tooltip(keyword) :: any
   def render_tooltip(opts \\ []) do
     render(ExCommerceWeb.DataDisplayView, "tooltip", opts)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Svg helpers
+  #
+
+  @spec render_svg(String.t(), any()) :: {:safe, any}
+  def render_svg(path, opts \\ []) do
+    PhoenixInlineSvg.Helpers.svg_image(ExCommerceWeb.Endpoint, path, opts)
   end
 end

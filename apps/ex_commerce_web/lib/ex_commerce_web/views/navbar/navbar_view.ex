@@ -19,4 +19,8 @@ defmodule ExCommerceWeb.NavbarView do
 
     render("navbar_link.html", opts)
   end
+
+  def render("navbar_link_group", _assigns) do
+    render("navbar_link_group.html", [])
+  end
 end
