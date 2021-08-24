@@ -5,7 +5,7 @@
 
   /* Navbar links */
   .nv-link {
-    @apply py-4 px-2 font-normal hover:text-purple-500 transition duration-300;
+    @apply py-3 px-2 font-normal hover:text-purple-500 transition duration-300;
   }
 
   .nv-link-active {
@@ -13,10 +13,46 @@
   }
 
   .m-nv-link {
-    @apply block py-4 px-2 text-2xl transition duration-300;
+    @apply block py-3 px-2 text-2xl transition duration-300;
   }
 
   .m-nv-link-active {
     @apply font-semibold;
   }
+}
+
+/* Tab content - closed */
+.tab-content {
+  max-height: 0;
+  transition: max-height .35s;
+}
+
+/* :checked - resize to full height */
+.tab input:checked ~ .tab-content {
+  max-height: 100vh;
+}
+
+/* Label formatting when open */
+
+/*
+.tab input:checked + label {
+
+}
+*/
+
+/* Icon */
+.tab label span {
+  float: right;
+  padding-top: 2px;
+  transition: all .35s;
+}
+
+/* Icon formatting - closed */
+.tab input[type=checkbox] + label span {
+  font-weight: bold;
+}
+
+/* Icon formatting - open */
+.tab input[type=checkbox]:checked + label span {
+  transform: rotate(90deg);
 }
