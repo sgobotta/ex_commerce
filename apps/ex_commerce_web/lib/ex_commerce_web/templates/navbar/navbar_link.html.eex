@@ -1,0 +1,9 @@
+<li class="mb-0">
+  <a
+    onclick="<%= assigns[:on_click] %>"
+    href="<%= assigns[:href] %>"
+    class="m-nv-link m-nv-link-active-FIXME text-white-FIXME bg-purple-500-FIXME"
+  >
+    <%= assigns[:text] %>
+  </a>
+</li>

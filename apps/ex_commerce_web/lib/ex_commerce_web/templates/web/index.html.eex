@@ -6,7 +6,7 @@
     header_buttons:
       if @current_user do
         [
-          render(ExCommerceWeb.ButtonsView, "logout_button"),
+          render_logout_button([]),
           render(ExCommerceWeb.ButtonsView, "admin_dashboard_button")
         ]
       else
@@ -16,12 +16,12 @@
         ]
       end,
     links: [
-      %{text: gettext("Welcome"), href: "#welcome"},
-      %{text: gettext("Search"), href: "#carousel"},
-      %{text: gettext("About us"), href: "#benefits"},
-      %{text: gettext("Help"), href: "#plans"}
+      render_navbar_link(text: gettext("Welcome"), href: "#welcome"),
+      render_navbar_link(text: gettext("Search"), href: "#carousel"),
+      render_navbar_link(text: gettext("About"), href: "#benefits"),
+      render_navbar_link(text: gettext("Help"), href: "#plans")
     ],
-    logo: render(ExCommerceWeb.ButtonsView, "icon_button")
+    logo: render_image_button(text: "Ex Commerce")
   ]
  do %>
 

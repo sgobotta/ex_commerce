@@ -47,17 +47,7 @@
     <div class="transition duration-300 transform hidden mobile-menu absolute top-0 w-full bg-white">
       <ul class="">
         <%= for link <- assigns[:links] do %>
-
-          <li class="mb-0">
-            <a
-              onclick="closeMenu()"
-              href="<%= link.href %>"
-              class="m-nv-link m-nv-link-active-FIXME text-white-FIXME bg-purple-500-FIXME"
-            >
-              <%= link[:text] %>
-            </a>
-          </li>
-
+          <%= link %>
         <% end %>
       </ul>
     </div>
@@ -75,17 +65,7 @@
     ">
       <ul class="">
         <%= for link <- assigns[:links] do %>
-
-          <li class="mb-0">
-            <a
-              onclick="closeMenu()"
-              href="<%= link.href %>"
-              class="m-nv-link m-nv-link-active-FIXME text-white-FIXME bg-purple-500-FIXME"
-            >
-              <%= link[:text] %>
-            </a>
-          </li>
-
+          <%= link %>
         <% end %>
       </ul>
     </div>

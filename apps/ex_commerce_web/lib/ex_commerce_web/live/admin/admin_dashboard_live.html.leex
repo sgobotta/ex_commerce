@@ -5,19 +5,26 @@
       mode: :sidemenu,
       exclude_menu: false,
       header_buttons: [
-        Phoenix.View.render(ExCommerceWeb.ButtonsView, "logout_button", classes: "capitalize"),
+        render_logout_button(classes: "capitalize")
       ],
       links: [
-        %{text: gettext("Welcome"), href: "#welcome"},
+        render_navbar_link(text: gettext("Welcome"), href: "#welcome"),
+        render_navbar_link(text: gettext("Search"), href: "#carousel"),
+        render_navbar_link(text: gettext("About"), href: "#benefits"),
+        render_navbar_link(text: gettext("Help"), href: "#plans")
       ],
-      logo: Phoenix.View.render(ExCommerceWeb.ButtonsView, "icon_button", [])
+      logo: render_image_button(text: "Ex Commerce")
     ]
   do %>
 
-    <div class="">
+    <div class="l-centered h-screen">
 
-      <h1>Dashboard</h1>
+      <div class="group relative">
 
+        <h1>Dashboard</h1>
+
+        <%= render_tooltip(text: "Dashboard tooltip") %>
+      </div>
     </div>
 
   <% end %>
