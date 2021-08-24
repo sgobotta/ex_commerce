@@ -1,20 +1,17 @@
 <li>
-  <div class="tab w-full overflow-hidden border-t relative">
+  <div class="tab w-full overflow-hidden relative">
     <input class="absolute opacity-0 w-full h-16 cursor-pointer" type="checkbox" name="tabs">
     <label class="block p-3 leading-normal cursor-pointer border-l-4 border-gray-300" for="tab-multi-one">
-      Group name
+      <%= @group_name %>
       <span>
         <%= render_svg("icons/chevron-right", class: "stroke-current text-gray-500") %>
       </span>
     </label>
     <div class="tab-content overflow-hidden border-l-4 border-gray-300">
       <ul class="">
-        <li class="">
-          <a href="#" class="m-nv-link">Link 1</a>
-        </li>
-        <li class="">
-          <a href="#" class="m-nv-link">Link 2</a>
-        </li>
+        <%= for link <- @links do %>
+          <%= link %>
+        <% end %>
       </ul>
     </div>
   </div>

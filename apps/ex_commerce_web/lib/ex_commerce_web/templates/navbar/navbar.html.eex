@@ -55,9 +55,9 @@
 </nav>
 
 <%= if assigns[:mode] == :sidemenu do %>
-  <div class="grid grid-cols-6">
+  <div class="grid grid-cols-12">
     <div class="
-      hidden md:block md:col-span-1
+      hidden md:block md:col-span-3 lg:col-span-2
       border-r-2 border-gray-300
       bg-white
       sticky bottom-0 top-0
@@ -69,7 +69,7 @@
         <% end %>
       </ul>
     </div>
-    <div class="block col-span-6 md:col-span-5 bg-white">
+    <div class="block col-span-12 md:col-span-9 lg:col-span-10 bg-white">
       <%= @inner_content %>
     </div>
   </div>

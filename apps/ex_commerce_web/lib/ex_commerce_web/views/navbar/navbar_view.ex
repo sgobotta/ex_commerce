@@ -20,7 +20,12 @@ defmodule ExCommerceWeb.NavbarView do
     render("navbar_link.html", opts)
   end
 
-  def render("navbar_link_group", _assigns) do
-    render("navbar_link_group.html", [])
+  def render("navbar_link_group", assigns) do
+    opts =
+      assigns
+      |> Map.put_new(:group_name, gettext("Placeholder text"))
+      |> Map.put_new(:links, [])
+
+    render("navbar_link_group.html", opts)
   end
 end
