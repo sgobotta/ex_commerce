@@ -2,6 +2,7 @@ defmodule ExCommerceWeb.LiveHelpers do
   @moduledoc """
   Implements reusable helpers for live views
   """
+  import Phoenix.LiveView.Helpers
   import Phoenix.View
 
   # ----------------------------------------------------------------------------
@@ -62,5 +63,29 @@ defmodule ExCommerceWeb.LiveHelpers do
   @spec render_svg(String.t(), any()) :: {:safe, any}
   def render_svg(path, opts \\ []) do
     PhoenixInlineSvg.Helpers.svg_image(ExCommerceWeb.Endpoint, path, opts)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Modal helpers
+  #
+
+  @doc """
+  Renders a component inside the `ExCommerceWeb.ModalComponent` component.
+
+  The rendered modal receives a `:return_to` option to properly update
+  the URL when the modal is closed.
+
+  ## Examples
+
+      <%= live_modal @socket, ExCommerceWeb.FormComponent,
+        id: @shop.id || :new,
+        action: @live_action,
+        shop: @shop,
+        return_to: Routes.shop_index_path(@socket, :index) %>
+  """
+  def live_modal(_socket, component, opts) do
+    path = Keyword.fetch!(opts, :return_to)
+    modal_opts = [id: :modal, return_to: path, component: component, opts: opts]
+    live_component(ExCommerceWeb.ModalComponent, modal_opts)
   end
 end

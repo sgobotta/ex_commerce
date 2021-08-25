@@ -1,0 +1,37 @@
+<h1>Listing Shops</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, ExCommerceWeb.ShopLive.FormComponent,
+    id: @shop.id || :new,
+    title: @page_title,
+    action: @live_action,
+    shop: @shop,
+    return_to: Routes.shop_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Slug</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="shops">
+    <%= for shop <- @shops do %>
+      <tr id="shop-<%= shop.id %>">
+        <td><%= shop.name %></td>
+        <td><%= shop.slug %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.shop_show_path(@socket, :show, shop) %></span>
+          <span><%= live_patch "Edit", to: Routes.shop_index_path(@socket, :edit, shop) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: shop.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Shop", to: Routes.shop_index_path(@socket, :new) %></span>
