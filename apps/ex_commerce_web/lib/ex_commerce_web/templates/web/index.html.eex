@@ -1,7 +1,7 @@
 <%= render_layout ExCommerceWeb.NavbarView,
   "navbar",
   [
-    mode: :sidemenu,
+    mode: :topmenu,
     exclude_menu: false,
     header_buttons:
       if @current_user do
@@ -51,6 +51,5 @@
     </div>
   </div>
 
+  <%= render ExCommerceWeb.WebView, "footer" %>
 <% end %>
-
-<%= render ExCommerceWeb.WebView, "footer" %>
