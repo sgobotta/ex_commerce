@@ -40,14 +40,19 @@
     </div>
 
     <!-- Mobile menu -->
-    <div class="relative">
-      <div class="transition duration-300 transform hidden mobile-menu absolute top-0 w-full bg-white">
-        <ul class="">
-          <%= for link <- @links do %>
-            <%= link %>
-          <% end %>
-        </ul>
-      </div>
+    <div class="
+      collapsable-b mobile-menu
+      hidden md:hidden w-full
+      pb-6 rounded-b-lg
+      border-gray-400 border-l-1 border-r-1 border-b-1
+      bg-white
+      transition duration-300 transform
+    ">
+      <ul>
+        <%= for link <- @links do %>
+          <%= link %>
+        <% end %>
+      </ul>
     </div>
   </nav>
 

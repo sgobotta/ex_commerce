@@ -1,0 +1,17 @@
+.collapsable-b {
+  animation: collapse-b 0.15s linear;
+}
+
+.collapsable-b.hidden {
+  animation: collapsable-b 0.15s linear reverse;
+  transform: translateY(-100%);
+}
+
+@keyframes collapse-b {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}

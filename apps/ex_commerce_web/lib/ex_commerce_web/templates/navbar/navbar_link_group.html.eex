@@ -1,7 +1,12 @@
 <li>
-  <div class="tab w-full overflow-hidden relative">
-    <input class="absolute opacity-0 w-full h-16 cursor-pointer" type="checkbox" name="tabs">
-    <label class="block p-3 leading-normal cursor-pointer border-l-4 border-gray-300" for="tab-multi-one">
+  <div class="tab w-full overflow-hidden">
+    <label
+      onclick="toggle(event)"
+      class="
+        tag-input open
+        block p-3 leading-normal cursor-pointer border-l-4 border-gray-300
+      "
+    >
       <%= @group_name %>
       <span>
         <%= render_svg("icons/chevron-right", class: "stroke-current text-gray-500") %>
@@ -16,3 +21,10 @@
     </div>
   </div>
 </li>
+
+<script>
+function toggle(event) {
+  const input = event.target
+  input.classList.toggle("open")
+}
+</script>
