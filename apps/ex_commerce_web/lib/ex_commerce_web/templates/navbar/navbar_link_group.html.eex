@@ -5,6 +5,7 @@
       class="
         tag-input open
         block p-3 leading-normal cursor-pointer border-l-4 border-gray-300
+        <%= @class %>
       "
     >
       <%= @group_name %>

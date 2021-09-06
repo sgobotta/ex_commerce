@@ -18,19 +18,19 @@ defmodule ExCommerceWeb.ShopLive.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Shop")
+    |> assign(:page_title, gettext("Edit Shop"))
     |> assign(:shop, Marketplaces.get_shop!(id))
   end
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "New Shop")
+    |> assign(:page_title, gettext("New Shop"))
     |> assign(:shop, %Shop{})
   end
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Shops")
+    |> assign(:page_title, gettext("Listing Shops"))
     |> assign(:shop, nil)
   end
 

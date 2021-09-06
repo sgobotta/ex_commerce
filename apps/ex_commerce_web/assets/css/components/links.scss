@@ -19,6 +19,10 @@
   .m-nv-link-active {
     @apply font-semibold;
   }
+
+  .nv-link-group-active {
+    @apply bg-gray-400 #{!important};
+  }
 }
 
 /* Tab content - closed */

@@ -1,5 +1,3 @@
-<h1>Show Shop</h1>
-
 <%= if @live_action in [:edit] do %>
   <%= live_modal @socket, ExCommerceWeb.ShopLive.FormComponent,
     id: @shop.id,
@@ -9,19 +7,25 @@
     return_to: Routes.shop_show_path(@socket, :show, @shop) %>
 <% end %>
 
-<ul>
+<%= render_layout(ExCommerceWeb.DashboardView, "dashboard", [current_page: "shops"]) do %>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @shop.name %>
-  </li>
+  <h1>Show Shop</h1>
 
-  <li>
-    <strong>Slug:</strong>
-    <%= @shop.slug %>
-  </li>
+  <ul>
 
-</ul>
+    <li>
+      <strong>Name:</strong>
+      <%= @shop.name %>
+    </li>
 
-<span><%= live_patch "Edit", to: Routes.shop_show_path(@socket, :edit, @shop), class: "button" %></span>
-<span><%= live_redirect "Back", to: Routes.shop_index_path(@socket, :index) %></span>
+    <li>
+      <strong>Slug:</strong>
+      <%= @shop.slug %>
+    </li>
+
+  </ul>
+
+  <span><%= live_patch "Edit", to: Routes.shop_show_path(@socket, :edit, @shop), class: "button" %></span>
+  <span><%= live_redirect "Back", to: Routes.shop_index_path(@socket, :index) %></span>
+
+<% end %>

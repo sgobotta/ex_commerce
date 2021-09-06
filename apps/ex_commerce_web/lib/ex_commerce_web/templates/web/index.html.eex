@@ -16,10 +16,10 @@
         ]
       end,
     links: [
-      render_navbar_link(text: gettext("Welcome"), href: "#welcome"),
-      render_navbar_link(text: gettext("Search"), href: "#carousel"),
-      render_navbar_link(text: gettext("About"), href: "#benefits"),
-      render_navbar_link(text: gettext("Help"), href: "#plans")
+      render_navbar_link(text: gettext("Welcome"), to: "#welcome"),
+      render_navbar_link(text: gettext("Search"), to: "#carousel"),
+      render_navbar_link(text: gettext("About"), to: "#benefits"),
+      render_navbar_link(text: gettext("Help"), to: "#plans")
     ],
     logo: render_image_button(text: "Ex Commerce")
   ]

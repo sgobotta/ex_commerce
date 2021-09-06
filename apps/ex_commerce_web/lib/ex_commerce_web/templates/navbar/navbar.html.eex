@@ -72,7 +72,7 @@
           <% end %>
         </ul>
       </div>
-      <div class="block col-span-12 md:col-span-9 lg:col-span-10 bg-white overflow-y-scroll h-full">
+      <div class="block col-span-12 md:col-span-9 lg:col-span-10 bg-white overflow-y-scroll h-full px-4">
         <%= @inner_content %>
       </div>
     </div>
