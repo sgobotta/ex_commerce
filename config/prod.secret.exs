@@ -16,7 +16,7 @@ database_url =
     """
 
 config :ex_commerce, ExCommerce.Repo,
-  # ssl: true,
+  ssl: true,
   url: database_url,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 

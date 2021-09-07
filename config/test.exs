@@ -34,7 +34,7 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
 # Email configuration
 #
 
-config :ex_commerce, from_email: "info@ex.commerce"
+config :ex_commerce, from_email: "test@ex.commerce"
 
 config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
 
