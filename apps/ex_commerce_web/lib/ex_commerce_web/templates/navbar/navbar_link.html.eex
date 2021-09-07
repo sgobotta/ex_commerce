@@ -1,0 +1,3 @@
+<li class="mb-0">
+  <%= link assigns[:text], Keyword.new(@link_props) %>
+</li>

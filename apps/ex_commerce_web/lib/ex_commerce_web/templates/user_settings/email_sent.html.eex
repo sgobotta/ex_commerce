@@ -1,0 +1,31 @@
+<div>
+
+  <%= render ExCommerceWeb.HeaderView, "header.html" %>
+
+  <div class="absolute inset-1/4 text-center">
+
+    <h1 class="text-5xl my-20">
+      <%= gettext "Thanks for registering your business" %>
+    </h1>
+
+    <p class="my-8">
+      <%= gettext "We've just sent you a confirmation email" %>
+    </p>
+
+    <p class="my-8">
+      <%= gettext "Please check your inbox and/or spam folders" %>
+    </p>
+
+    <p class="my-8">
+      <%= gettext "There you'll find a confirmation link to get started!" %>
+    </p>
+
+    <p>
+      <span class="text-2xl">
+        <%= gettext "Didn't receive the email?" %>
+      </span>
+      <%= link gettext("Resend notification"), to: Routes.user_confirmation_path(@conn, :new), class: "link" %>
+    </p>
+  </div>
+
+</div>

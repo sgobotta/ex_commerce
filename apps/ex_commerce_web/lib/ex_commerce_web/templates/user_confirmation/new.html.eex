@@ -1,15 +1,21 @@
-<h1>Resend confirmation instructions</h1>
+<div class="l-centered h-screen bg-gray-200">
 
-<%= form_for :user, Routes.user_confirmation_path(@conn, :create), fn f -> %>
-  <%= label f, :email %>
-  <%= email_input f, :email, required: true %>
+  <div class="card">
+    <h1 class="text-3xl my-20">Resend confirmation instructions</h1>
 
-  <div>
-    <%= submit "Resend confirmation instructions" %>
+    <%= form_for :user, Routes.user_confirmation_path(@conn, :create), fn f -> %>
+      <%= label f, :email, "Enter your email", class: "my-2" %>
+      <%= email_input f, :email, required: true, placeholder: "Email", class: "input" %>
+
+      <div class="flex justify-end mt-6">
+        <%= submit "Send", class: "button" %>
+      </div>
+    <% end %>
+
+    <p>
+      <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "link" %> |
+      <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "link" %>
+    </p>
   </div>
-<% end %>
 
-<p>
-  <%= link "Register", to: Routes.user_registration_path(@conn, :new) %> |
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
-</p>
+</div>

@@ -20,7 +20,11 @@ defmodule ExCommerceWeb.UserRegistrationController do
           )
 
         conn
-        |> put_flash(:info, "User created successfully.")
+        |> put_flash(:info, "Please check #{user.email} inbox.")
+        |> put_session(
+          :user_return_to,
+          Routes.user_settings_path(conn, :email_sent)
+        )
         |> UserAuth.log_in_user(user)
 
       {:error, %Ecto.Changeset{} = changeset} ->

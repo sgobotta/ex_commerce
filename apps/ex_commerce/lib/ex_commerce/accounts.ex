@@ -387,4 +387,11 @@ defmodule ExCommerce.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  @doc """
+  Verifies user email confirmation
+  """
+  def is_confirmed(%User{confirmed_at: confirmed_at}) do
+    confirmed_at != nil
+  end
 end

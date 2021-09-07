@@ -47,7 +47,10 @@ defmodule ExCommerce.Umbrella.MixProject do
       {:git_hooks, "~> 0.6.2", only: [:dev], runtime: false},
       {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false},
       # Documentation
-      {:ex_doc, "~> 0.24", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.24", only: :dev, runtime: false},
+      # i18n and l10n
+      {:ex_cldr, "~> 2.23"},
+      {:ex_cldr_numbers, "~> 2.0"}
     ]
   end
 

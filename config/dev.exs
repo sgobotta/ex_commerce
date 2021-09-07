@@ -81,6 +81,14 @@ config :phoenix, :plug_init_mode, :runtime
 config :phoenix, :stacktrace_depth, 20
 
 # ------------------------------------------------------------------------------
+# Email configuration
+#
+
+config :ex_commerce, from_email: "info@ex.commerce"
+
+config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
+
+# ------------------------------------------------------------------------------
 # Shared configuration
 #
 

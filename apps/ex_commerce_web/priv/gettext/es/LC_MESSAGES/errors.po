@@ -1,0 +1,87 @@
+## "msgid"s in this file come from POT (.pot) files.
+##
+## Do not add, change, or remove "msgid"s manually here as
+## they're tied to the ones in the corresponding POT file
+## (with the same domain).
+##
+## Use "mix gettext.extract --merge" or "mix gettext.merge"
+## to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: es\n"
+"Plural-Forms: nplurals=2\n"
+
+msgid "can't be blank"
+msgstr "no puede estar vacío"
+
+msgid "has already been taken"
+msgstr "ya se ha tomado"
+
+msgid "is invalid"
+msgstr "inválido"
+
+msgid "must be accepted"
+msgstr "debe ser aceptado"
+
+msgid "has invalid format"
+msgstr "formato inválido"
+
+msgid "has an invalid entry"
+msgstr "entrada inválida"
+
+msgid "is reserved"
+msgstr "reservado"
+
+msgid "does not match confirmation"
+msgstr "la confirmación no coincide"
+
+msgid "is still associated with this entry"
+msgstr "todavía está asociado con este registro"
+
+msgid "are still associated with this entry"
+msgstr "todavía están asociados con este registro"
+
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "debe tener %{count} caracter(es)"
+msgstr[1] ""
+
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "debe tener %{count} item(s)"
+msgstr[1] ""
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "debe tener al menos %{count} caracter(es)"
+msgstr[1] ""
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "debe tener al menos %{count} item(s)"
+msgstr[1] ""
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "debe tener como máximo %{count} caracter(es)"
+msgstr[1] ""
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "debe tener como máximo %{count} item(s)"
+msgstr[1] ""
+
+msgid "must be less than %{number}"
+msgstr "debe ser menos a %{number}"
+
+msgid "must be greater than %{number}"
+msgstr "debe ser mayor a %{number}"
+
+msgid "must be less than or equal to %{number}"
+msgstr "debe ser menor o igual a %{number}"
+
+msgid "must be greater than or equal to %{number}"
+msgstr "debe ser mayor o igual a %{number}"
+
+msgid "must be equal to %{number}"
+msgstr "debe ser igual a %{number}"

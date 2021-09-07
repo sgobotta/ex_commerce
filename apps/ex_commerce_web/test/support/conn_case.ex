@@ -57,6 +57,25 @@ defmodule ExCommerceWeb.ConnCase do
   end
 
   @doc """
+  Setup helper that registers and logs in confirmed users.
+
+      setup :register_and_log_in_user
+
+  It stores an updated connection and a registered user in the
+  test context.
+  """
+  def register_and_log_in_confirmed_user(%{conn: conn}) do
+    {:ok, confirmed_at} = Ecto.Type.cast(:naive_datetime, DateTime.utc_now())
+
+    user =
+      ExCommerce.AccountsFixtures.user_fixture(%{
+        confirmed_at: confirmed_at
+      })
+
+    %{conn: log_in_user(conn, user), user: user}
+  end
+
+  @doc """
   Logs the given `user` into the `conn`.
 
   It returns an updated `conn`.

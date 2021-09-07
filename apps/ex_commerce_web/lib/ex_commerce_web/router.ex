@@ -6,6 +6,13 @@ defmodule ExCommerceWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
+
+    plug Cldr.Plug.SetLocale,
+      apps: [:cldr, :gettext],
+      from: [:accept_language, :cookie, :session, :path, :query],
+      gettext: ExCommerceWeb.Gettext,
+      cldr: ExCommerceWeb.Cldr
+
     plug :fetch_live_flash
     plug :put_root_layout, {ExCommerceWeb.LayoutView, :root}
     plug :protect_from_forgery
@@ -20,7 +27,24 @@ defmodule ExCommerceWeb.Router do
   scope "/", ExCommerceWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    live "/live", PageLive, :index
+  end
+
+  scope "/admin", ExCommerceWeb do
+    pipe_through [
+      :browser,
+      :require_authenticated_user,
+      :require_confirmed_user
+    ]
+
+    live "/", AdminDashboardLive, :index
+
+    live "/shops", ShopLive.Index, :index
+    live "/shops/new", ShopLive.Index, :new
+    live "/shops/:id/edit", ShopLive.Index, :edit
+
+    live "/shops/:id", ShopLive.Show, :show
+    live "/shops/:id/show/edit", ShopLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
@@ -68,10 +92,14 @@ defmodule ExCommerceWeb.Router do
     get "/users/settings/confirm_email/:token",
         UserSettingsController,
         :confirm_email
+
+    get "/users/settings/confirm_email", UserSettingsController, :email_sent
   end
 
   scope "/", ExCommerceWeb do
     pipe_through [:browser]
+
+    get "/", WebController, :index
 
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new

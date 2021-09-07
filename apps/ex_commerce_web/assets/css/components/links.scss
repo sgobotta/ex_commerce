@@ -1,0 +1,66 @@
+@layer components {
+  .link {
+    @apply text-2xl text-blue-500 hover:text-blue-300 transition duration-200;
+  }
+
+  /* Navbar links */
+  .nv-link {
+    @apply py-3 px-2 font-normal hover:text-purple-500 transition duration-300;
+  }
+
+  .nv-link-active {
+    @apply border-b-2 text-purple-500 border-purple-500;
+  }
+
+  .m-nv-link {
+    @apply block py-3 px-2 text-2xl transition duration-300;
+  }
+
+  .m-nv-link-active {
+    @apply font-semibold;
+  }
+
+  .nv-link-group-active {
+    @apply bg-gray-400 #{!important};
+  }
+}
+
+/* Tab content - closed */
+.tab-content {
+  max-height: 0;
+  transition: max-height .35s;
+}
+
+/* :checked - resize to full height */
+.tab label.tag-input.open ~ .tab-content {
+  max-height: 100vh;
+}
+
+/* Label formatting when open */
+
+/* Icon */
+.tab label span {
+  float: right;
+  padding-top: 2px;
+  transition: all .35s;
+}
+
+/* Formatting - closed */
+
+.tab label.tag-input span {
+  transform: rotate(0deg);
+  font-weight: bold;
+}
+
+.tab label.tag-input {
+  background-color: transparent;
+}
+
+/* Formatting - open */
+.tab label.tag-input.open  span {
+  transform: rotate(90deg);
+}
+
+.tab label.tag-input.open {
+  background-color: #D1D5DB;
+}

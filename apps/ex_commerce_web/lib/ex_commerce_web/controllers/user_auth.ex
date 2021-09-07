@@ -2,6 +2,7 @@ defmodule ExCommerceWeb.UserAuth do
   @moduledoc """
   Controller for user authentication.
   """
+  import ExCommerceWeb.Gettext
   import Plug.Conn
   import Phoenix.Controller
 
@@ -97,7 +98,16 @@ defmodule ExCommerceWeb.UserAuth do
   def fetch_current_user(conn, _opts) do
     {user_token, conn} = ensure_user_token(conn)
     user = user_token && Accounts.get_user_by_session_token(user_token)
-    assign(conn, :current_user, user)
+
+    %{user: user, visitor: visitor} =
+      case user do
+        nil -> %{user: nil, visitor: true}
+        user -> %{user: user, visitor: false}
+      end
+
+    conn
+    |> assign(:current_user, user)
+    |> assign(:visitor, visitor)
   end
 
   defp ensure_user_token(conn) do
@@ -138,9 +148,23 @@ defmodule ExCommerceWeb.UserAuth do
       conn
     else
       conn
-      |> put_flash(:error, "You must log in to access this page.")
+      |> put_flash(:error, gettext("You must log in to access this page."))
       |> maybe_store_return_to()
       |> redirect(to: Routes.user_session_path(conn, :new))
+      |> halt()
+    end
+  end
+
+  def require_confirmed_user(conn, _opts) do
+    if Accounts.is_confirmed(conn.assigns[:current_user]) do
+      conn
+    else
+      conn
+      |> put_flash(
+        :error,
+        gettext("You must confirm your email to access this page.")
+      )
+      |> redirect(to: Routes.user_confirmation_path(conn, :create))
       |> halt()
     end
   end

@@ -1,0 +1,31 @@
+<li>
+  <div class="tab w-full overflow-hidden">
+    <label
+      onclick="toggle(event)"
+      class="
+        tag-input open
+        block p-3 leading-normal cursor-pointer border-l-4 border-gray-300
+        <%= @class %>
+      "
+    >
+      <%= @group_name %>
+      <span>
+        <%= render_svg("icons/chevron-right", class: "stroke-current text-gray-500") %>
+      </span>
+    </label>
+    <div class="tab-content overflow-hidden border-l-4 border-gray-300">
+      <ul class="">
+        <%= for link <- @links do %>
+          <%= link %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</li>
+
+<script>
+function toggle(event) {
+  const input = event.target
+  input.classList.toggle("open")
+}
+</script>

@@ -25,7 +25,7 @@ defmodule ExCommerceWeb.MixProject do
   def application do
     [
       mod: {ExCommerceWeb.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :ex_cldr, :ex_cldr_numbers]
     ]
   end
 
@@ -49,9 +49,10 @@ defmodule ExCommerceWeb.MixProject do
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
-      {:ex_commerce, in_umbrella: true},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      # Umbrella deps
+      {:ex_commerce, in_umbrella: true},
       # Helpers
       {:phoenix_inline_svg, "~> 1.4"},
       # Authentication

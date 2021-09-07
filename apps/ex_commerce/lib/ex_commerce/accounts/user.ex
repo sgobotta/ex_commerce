@@ -36,7 +36,7 @@ defmodule ExCommerce.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :confirmed_at])
     |> validate_email()
     |> validate_password(opts)
   end

@@ -41,7 +41,9 @@ defmodule ExCommerce.MixProject do
       {:phoenix_pubsub, "~> 2.0"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
-      {:jason, "~> 1.0"}
+      {:jason, "~> 1.0"},
+      # Email configuration
+      {:bamboo, "~> 2.2.0"}
     ]
   end
 
@@ -56,7 +58,7 @@ defmodule ExCommerce.MixProject do
       # Deps install
       install: ["deps.get"],
       # Setup deps and database
-      setup: ["install", "ecto.setup"],
+      setup: ["install", "ecto.drop", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       # Reset deps and database
       reset: ["ecto.drop", "deps.reset"],
