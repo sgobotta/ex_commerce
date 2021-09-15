@@ -24,12 +24,12 @@
       <%= for shop <- @shops do %>
         <tr id="shop-<%= shop.id %>">
           <td><%= shop.name %></td>
-          <td><%= shop.slug %></td>
+          <td><%= shop.address %></td>
 
           <td>
             <span><%= live_redirect "Show", to: Routes.shop_show_path(@socket, :show, shop) %></span>
             <span><%= live_patch "Edit", to: Routes.shop_index_path(@socket, :edit, shop) %></span>
-            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: shop.id, data: [confirm: "Are you sure?"] %></span>
+            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: shop.id, data: [confirm: gettext("Are you sure?")] %></span>
           </td>
         </tr>
       <% end %>

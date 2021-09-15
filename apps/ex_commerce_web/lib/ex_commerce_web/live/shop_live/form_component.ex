@@ -5,6 +5,8 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
 
   alias ExCommerce.Marketplaces
 
+  @app_host System.get_env("APP_HOST")
+
   @impl true
   def update(%{shop: shop} = assigns, socket) do
     changeset = Marketplaces.change_shop(shop)
@@ -12,7 +14,8 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:changeset, changeset)}
+     |> assign(:changeset, changeset)
+     |> assign_slug_placeholder()}
   end
 
   @impl true
@@ -22,7 +25,9 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
       |> Marketplaces.change_shop(shop_params)
       |> Map.put(:action, :validate)
 
-    {:noreply, assign(socket, :changeset, changeset)}
+    {:noreply,
+     assign(socket, :changeset, changeset)
+     |> assign_slug_placeholder()}
   end
 
   def handle_event("save", %{"shop" => shop_params}, socket) do
@@ -53,5 +58,22 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
+  end
+
+  defp assign_slug_placeholder(socket) do
+    base_placeholder = "Your shop will be available at #{@app_host}/"
+
+    placeholder =
+      case Map.has_key?(socket.assigns.changeset.changes, :slug) do
+        true ->
+          slug = Map.get(socket.assigns.changeset.changes, :slug)
+          base_placeholder <> slug
+
+        false ->
+          %{assigns: %{shop: %{slug: slug}}} = socket
+          base_placeholder <> (slug || "")
+      end
+
+    assign(socket, :slug_placeholder, placeholder)
   end
 end
