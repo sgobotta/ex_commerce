@@ -7,9 +7,30 @@ defmodule ExCommerceWeb.ShopLiveTest do
 
   alias ExCommerce.Marketplaces
 
-  @create_attrs %{name: "some name", slug: "some slug"}
-  @update_attrs %{name: "some updated name", slug: "some updated slug"}
-  @invalid_attrs %{name: nil, slug: nil}
+  @create_attrs %{
+    name: "some name",
+    slug: "some-slug",
+    description: "some description",
+    telephone: "some telephone",
+    banner_message: "some banner_message",
+    address: "some address"
+  }
+  @update_attrs %{
+    name: "some updated name",
+    slug: "some-updated slug",
+    description: "some updated description",
+    telephone: "some updated telephone",
+    banner_message: "some updated banner_message",
+    address: "some updated address"
+  }
+  @invalid_attrs %{
+    name: nil,
+    slug: nil,
+    description: nil,
+    telephone: nil,
+    banner_message: nil,
+    address: nil
+  }
 
   defp fixture(:shop) do
     {:ok, shop} = Marketplaces.create_shop(@create_attrs)

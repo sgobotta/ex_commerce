@@ -8,9 +8,30 @@ defmodule ExCommerce.MarketplacesTest do
   describe "shops" do
     alias ExCommerce.Marketplaces.Shop
 
-    @valid_attrs %{name: "some name", slug: "some slug"}
-    @update_attrs %{name: "some updated name", slug: "some updated slug"}
-    @invalid_attrs %{name: nil, slug: nil}
+    @valid_attrs %{
+      name: "some name",
+      slug: "some-slug",
+      description: "some description",
+      telephone: "some telephone",
+      banner_message: "some banner_message",
+      address: "some address"
+    }
+    @update_attrs %{
+      name: "some updated name",
+      slug: "some-updated-slug",
+      description: "some updated description",
+      telephone: "some updated telephone",
+      banner_message: "some updated banner_message",
+      address: "some updated address"
+    }
+    @invalid_attrs %{
+      name: nil,
+      slug: nil,
+      description: nil,
+      telephone: nil,
+      banner_message: nil,
+      address: nil
+    }
 
     def shop_fixture(attrs \\ %{}) do
       {:ok, shop} =
@@ -34,7 +55,11 @@ defmodule ExCommerce.MarketplacesTest do
     test "create_shop/1 with valid data creates a shop" do
       assert {:ok, %Shop{} = shop} = Marketplaces.create_shop(@valid_attrs)
       assert shop.name == "some name"
-      assert shop.slug == "some slug"
+      assert shop.slug == "some-slug"
+      assert shop.description == "some description"
+      assert shop.telephone == "some telephone"
+      assert shop.banner_message == "some banner_message"
+      assert shop.address == "some address"
     end
 
     test "create_shop/1 with invalid data returns error changeset" do
@@ -49,7 +74,11 @@ defmodule ExCommerce.MarketplacesTest do
                Marketplaces.update_shop(shop, @update_attrs)
 
       assert shop.name == "some updated name"
-      assert shop.slug == "some updated slug"
+      assert shop.slug == "some-updated-slug"
+      assert shop.description == "some updated description"
+      assert shop.telephone == "some updated telephone"
+      assert shop.banner_message == "some updated banner_message"
+      assert shop.address == "some updated address"
     end
 
     test "update_shop/2 with invalid data returns error changeset" do
