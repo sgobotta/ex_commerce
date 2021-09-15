@@ -5,12 +5,14 @@ defmodule ExCommerce.Seeds.Dev do
 
   require Logger
 
+  alias ExCommerce.Seeds.Shops
   alias ExCommerce.Seeds.Users
 
   @spec populate :: :ok
   def populate do
     # Run seeds here
     :ok = Users.populate()
+    :ok = Shops.populate()
 
     :ok = Logger.info("🌱 Succesfully created development seeds.")
 
