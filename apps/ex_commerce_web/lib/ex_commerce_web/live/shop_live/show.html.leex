@@ -4,7 +4,8 @@
     title: @page_title,
     action: @live_action,
     shop: @shop,
-    return_to: Routes.shop_show_path(@socket, :show, @shop) %>
+    return_to: Routes.shop_show_path(@socket, :show, @shop)
+  %>
 <% end %>
 
 <%= render_layout(ExCommerceWeb.DashboardView, "dashboard", [current_page: "shops"]) do %>
@@ -23,9 +24,33 @@
       <%= @shop.slug %>
     </li>
 
+    <li>
+      <strong>Description:</strong>
+      <%= @shop.description %>
+    </li>
+
+    <li>
+      <strong>Telephone:</strong>
+      <%= @shop.telephone %>
+    </li>
+
+    <li>
+      <strong>Banner message:</strong>
+      <%= @shop.banner_message %>
+    </li>
+
+    <li>
+      <strong>Address:</strong>
+      <%= @shop.address %>
+    </li>
+
   </ul>
 
-  <span><%= live_patch "Edit", to: Routes.shop_show_path(@socket, :edit, @shop), class: "button" %></span>
-  <span><%= live_redirect "Back", to: Routes.shop_index_path(@socket, :index) %></span>
+  <span>
+    <%= live_patch gettext("Edit"), to: Routes.shop_show_path(@socket, :edit, @shop), class: "button" %>
+  </span>
+  <span>
+    <%= live_redirect gettext("Back"), to: Routes.shop_index_path(@socket, :index), class: "link" %>
+  </span>
 
 <% end %>

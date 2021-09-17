@@ -1,5 +1,5 @@
 @layer components {
   .button {
-    @apply rounded-full border-gray-800 bg-gray-800 text-gray-100 text-2xl px-6 shadow-button transition duration-200 hover:border-gray-700 hover:bg-gray-700;
+    @apply inline-flex items-center rounded-full border-gray-800 bg-gray-800 text-gray-100 text-2xl px-6 shadow-button transition duration-200 hover:border-gray-700 hover:bg-gray-700;
   }
 }

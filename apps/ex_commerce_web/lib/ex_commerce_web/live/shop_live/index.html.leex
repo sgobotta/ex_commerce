@@ -9,13 +9,15 @@
 
 <%= render_layout(ExCommerceWeb.DashboardView, "dashboard", [current_page: "shops"]) do %>
 
-  <h1>Listing Shops</h1>
+  <h1>
+    <%= gettext("My Shops") %>
+  </h1>
 
   <table>
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Slug</th>
+        <th><%= gettext("Name") %></th>
+        <th><%= gettext("Address") %></th>
 
         <th></th>
       </tr>
@@ -36,6 +38,8 @@
     </tbody>
   </table>
 
-  <span><%= live_patch "New Shop", to: Routes.shop_index_path(@socket, :new) %></span>
+  <span>
+    <%= live_patch gettext("New Shop"), to: Routes.shop_index_path(@socket, :new), class: "button" %>
+  </span>
 
 <% end %>
