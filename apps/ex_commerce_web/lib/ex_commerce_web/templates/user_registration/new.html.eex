@@ -1,0 +1,35 @@
+<div>
+
+  <%= render ExCommerceWeb.HeaderView, "header.html" %>
+
+  <div class="absolute inset-1/4">
+
+    <h1 class="text-5xl my-20">Start for free today</h1>
+
+    <%= form_for @changeset, Routes.user_registration_path(@conn, :create), fn f -> %>
+      <%= if @changeset.action do %>
+        <div class="alert alert-danger">
+          <p>Oops, something went wrong! Please check the errors below.</p>
+        </div>
+      <% end %>
+
+      <%= label f, :email, "Enter your email", class: "my-2" %>
+      <%= email_input f, :email, required: true, placeholder: "Email", class: "input" %>
+      <%= error_tag f, :email %>
+
+      <%= label f, :password, "Enter your password", class: "my-2" %>
+      <%= password_input f, :password, required: true, placeholder: "Password", class: "input" %>
+      <%= error_tag f, :password %>
+
+      <div class="flex justify-end mt-6">
+        <%= submit "Register", class: "button" %>
+      </div>
+    <% end %>
+
+    <p>
+      <span class="text-2xl">Already registered?</span>
+      <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "link" %>
+    </p>
+  </div>
+
+</div>

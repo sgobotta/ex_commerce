@@ -1,0 +1,102 @@
+<div class="">
+  <nav class="bg-white shadow-lg w-full h-screen-1/20">
+    <div class="px-4">
+      <div class="flex justify-between">
+
+        <div class="flex space-x-7">
+          <div>
+            <%= @logo %>
+          </div>
+          <!-- Primary Navbar items -->
+          <%= if not @exclude_menu do %>
+            <%= if @mode == :topmenu do %>
+              <div class="hidden md:flex items-center space-x-1">
+                <%= for link <- @links do %>
+                  <%= link %>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+        <!-- Secondary Navbar items -->
+        <div class="flex items-center space-x-3">
+          <%= for button <- @header_buttons do %>
+            <%= button %>
+          <% end %>
+        </div>
+
+        <!-- Mobile menu button -->
+        <%= if not @exclude_menu do %>
+          <div class="my-2 nav-icon-button md:hidden mt-6 cursor-pointer">
+            <div class="nav-icon m-0">
+              <span class="bg-black"></span>
+              <span class="bg-black"></span>
+              <span class="bg-black"></span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="
+      collapsable-b mobile-menu
+      hidden md:hidden w-full
+      pb-6 rounded-b-lg
+      border-gray-400 border-l-1 border-r-1 border-b-1
+      bg-white
+      transition duration-300 transform
+    ">
+      <ul>
+        <%= for link <- @links do %>
+          <%= link %>
+        <% end %>
+      </ul>
+    </div>
+  </nav>
+
+  <%= if @mode == :sidemenu do %>
+    <div class="grid grid-cols-12 h-screen-19/20">
+      <div class="
+        hidden md:block md:col-span-3 lg:col-span-2
+        border-r-2 border-gray-300
+        bg-white
+        sticky bottom-0 top-0
+        overflow-y-scroll
+
+      ">
+        <ul class="">
+          <%= for link <- @links do %>
+            <%= link %>
+          <% end %>
+        </ul>
+      </div>
+      <div class="block col-span-12 md:col-span-9 lg:col-span-10 bg-white overflow-y-scroll h-full px-4">
+        <%= @inner_content %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= if @mode == :topmenu do %>
+    <div class="overflow-y-scroll h-screen-19/20">
+      <%= @inner_content %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  const navIconButton = document.querySelector(".nav-icon-button")
+  const menu = document.querySelector(".mobile-menu")
+  const navIcon = document.querySelector(".nav-icon")
+
+  navIconButton.addEventListener("click", () => {
+    navIcon.classList.toggle("open")
+    menu.classList.toggle("hidden")
+  })
+
+  function closeMenu() {
+    navIcon.classList.remove("open")
+    menu.classList.add("hidden")
+  }
+</script>

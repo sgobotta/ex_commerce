@@ -38,17 +38,17 @@
 </p>
 
 <p align="center" style="margin-top: 14px;">
-  <a href="https://www.codacy.com/gh/sgobotta/ex_commerce/"
+  <a href="https://www.codacy.com/gh/sgobotta/ex_commerce/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgobotta/ex_commerce&amp;utm_campaign=Badge_Grade"
   >
     <img
-      src=""
+      src="https://app.codacy.com/project/badge/Grade/5697c08197114d8d918c251be1b5d8a7"
       alt="Code Quality Status"
       />
     </a>
-  <a href='https://coveralls.io/github/sgobotta/ex_commerce'>
+  <a href="https://coveralls.io/github/sgobotta/ex_commerce">
     <img
-      src='https://coveralls.io/repos/github/sgobotta/ex_commerce/badge.svg'
-      alt='Test Coverage Status'
+      src="https://coveralls.io/repos/github/sgobotta/ex_commerce/badge.svg"
+      alt="Test Coverage Status"
     />
   </a>
 </p>
@@ -58,7 +58,7 @@
     href="https://github.com/sgobotta/ex_commerce/blob/main/LICENSE"
   >
     <img
-      src=""
+      src="https://img.shields.io/badge/License-GPL%20v3-white.svg"
       alt="License"
     >
   </a>
@@ -72,13 +72,15 @@
 + [Docker Compose](https://docs.docker.com/compose/install/)
 + [Elixir `1.11.4`](https://elixir-lang.org/install.html)
 + [Erlang `23.3.4`](https://erlang.org/doc/installation_guide/users_guide.html)
++ [Node `14.16.1`](https://nodejs.org/es/)
 
-Elixir and Erlang can be also installed using [`asdf`](https://asdf-vm.com/#/core-manage-asdf?id=install). [Personal installation notes](https://gist.github.com/sgobotta/514a3e452f7bc37c558fc93a2768ccd2).
+Elixir, Erlang and Node can also be installed using [`asdf`](https://asdf-vm.com/#/core-manage-asdf?id=install). [Personal installation notes](https://gist.github.com/sgobotta/514a3e452f7bc37c558fc93a2768ccd2).
 
  ```bash
  asdf plugin-update --all
  asdf plugin-add erlang
  asdf plugin-add elixir
+ asdf plugin-add nodejs
  asdf install
  ```
 

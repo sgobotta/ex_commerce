@@ -7,7 +7,17 @@
 
 @tailwind utilities;
 
+@import "./themes/colors.scss";
+
+@import "./widgets/collapsables.scss";
+@import "./widgets/scrollbar.scss";
+
 @import "./components/buttons.scss";
+@import "./components/cards.scss";
+@import "./components/icons.scss";
+@import "./components/inputs.scss";
+@import "./components/layout.scss";
+@import "./components/links.scss";
 
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,

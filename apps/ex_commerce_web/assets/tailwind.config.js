@@ -10,7 +10,12 @@ module.exports = {
   ],
   theme: {
     extend: {
-      boxShadow: {},
+      borderWidth: {
+        '1': '1px'
+      },
+      boxShadow: {
+        'button': '5px 5px 7px 0px rgba(0, 0, 0, 0.3)'
+      },
       gridRow: {
         'span-10': 'span 10 / span 10',
         'span-11': 'span 11 / span 11',
@@ -35,7 +40,15 @@ module.exports = {
         '8': '8',
         '9': '9'
       },
-      height: {},
+      height: {
+        'screen-1/2': '50vh',
+        'screen-1/20': '5vh',
+        'screen-1/3': '33vh',
+        'screen-1/4': '25vh',
+        'screen-19/20': '95vh',
+        'screen-2/3': '66vh',
+        'screen-3/4': '75vh'
+      },
       maxHeight: {},
       minHeight: {},
       top: {},
@@ -49,8 +62,7 @@ module.exports = {
     },
     fontFamily: {
       'sans': ['Helvetica', 'Arial', 'sans-serif']
-    },
-    zIndex: {}
+    }
   },
   variants: {
     extend: {

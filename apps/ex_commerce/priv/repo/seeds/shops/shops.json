@@ -1,0 +1,22 @@
+[
+  {
+    "name": "The Green Leaf",
+    "slug": "the-green-leaf",
+    "description": "Fresh vegetarian and vegan meals specially made for you",
+    "telephone": "+54 9 11 2345 6789",
+    "banner_message": "We deliver fresh products from Mondays to Sundays between 9:00 a.m. and 11:00 p.m.",
+    "address": "Nicolás Videla 420",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "name": "Machinery Repairs LLC",
+    "slug": "machinery-repairs",
+    "description": "Spare parts and technical service for your machinery",
+    "telephone": "+54 9 11 2345 6789",
+    "banner_message": "Open from 9 a.m. to 11 p.m.",
+    "address": "Av. Warnes 4200",
+    "inserted_at": "2020-11-17 14:15:57",
+    "updated_at": "2020-11-17 14:15:57"
+  }
+]

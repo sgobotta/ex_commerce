@@ -1,0 +1,11 @@
+<!-- Website Logo -->
+<a class="flex items-center py-4 px-2">
+  <img
+    src="<%= Routes.static_path(ExCommerceWeb.Endpoint, @image_path) %>"
+    alt="<%= @text %>"
+    class="h-12 w-12 mr-2 <%= @img_classes %>"
+  >
+  <span class="font-semibold text-gray-700 text-xl <%= @text_classes %>">
+    <%= @text %>
+  </span>
+</a>

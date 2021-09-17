@@ -29,18 +29,21 @@ defmodule ExCommerce.MixProject do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
+  defp elixirc_paths(:test), do: ["lib", "priv/repo/seeds", "test/support"]
+  defp elixirc_paths(_), do: ["lib", "priv/repo/seeds"]
 
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 2.0"},
       {:phoenix_pubsub, "~> 2.0"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
-      {:jason, "~> 1.0"}
+      {:jason, "~> 1.0"},
+      # Email configuration
+      {:bamboo, "~> 2.2.0"}
     ]
   end
 
@@ -55,7 +58,7 @@ defmodule ExCommerce.MixProject do
       # Deps install
       install: ["deps.get"],
       # Setup deps and database
-      setup: ["install", "ecto.setup"],
+      setup: ["install", "ecto.drop", "ecto.setup"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       # Reset deps and database
       reset: ["ecto.drop", "deps.reset"],

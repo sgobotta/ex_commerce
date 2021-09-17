@@ -37,9 +37,9 @@ defmodule ExCommerceWeb do
       import Phoenix.Controller,
         only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
 
+      # Include shared imports and aliases for views
       import PhoenixInlineSvg.Helpers
 
-      # Include shared imports and aliases for views
       unquote(view_helpers())
     end
   end
@@ -87,7 +87,7 @@ defmodule ExCommerceWeb do
 
       # Import LiveView helpers (live_render, live_component, live_patch, etc)
       import Phoenix.LiveView.Helpers
-
+      import ExCommerceWeb.LiveHelpers
       import PhoenixInlineSvg.Helpers
 
       # Import basic rendering functionality (render, render_layout, etc)

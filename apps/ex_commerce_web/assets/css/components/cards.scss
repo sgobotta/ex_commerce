@@ -1,0 +1,5 @@
+@layer components {
+  .card {
+    @apply p-8 bg-gray-100 rounded-2xl shadow-2xl;
+  }
+}

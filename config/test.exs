@@ -1,5 +1,8 @@
 use Mix.Config
 
+# Only in tests, remove the complexity from the password hashing algorithm
+config :bcrypt_elixir, :log_rounds, 1
+
 # ------------------------------------------------------------------------------
 # Ex Commerce configuration
 #
@@ -26,6 +29,14 @@ config :ex_commerce, ExCommerce.Repo,
 config :ex_commerce_web, ExCommerceWeb.Endpoint,
   http: [port: 4002],
   server: false
+
+# ------------------------------------------------------------------------------
+# Email configuration
+#
+
+config :ex_commerce, from_email: "test@ex.commerce"
+
+config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
 
 # ------------------------------------------------------------------------------
 # Shared configuration

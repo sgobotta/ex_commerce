@@ -1,0 +1,56 @@
+html {
+  scrollbar-color: $white transparent;
+  scrollbar-width: thin !important;
+}
+
+$scrollbar-border-style: ridge;
+$scrollbar-thumb: $neutral-dark;
+$scrollbar-thumb-active-color: $disabled;
+$scrollbar-thumb-hover-color: $disabled;
+$scrollbar-active-color: $neutral-dark;
+$scrollbar-track-color: transparent;
+$scrollbar-track-hover-color: transparent;
+$scrollbar-track-active-color: transparent;
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 4px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: $scrollbar-thumb;
+  border: 1px solid $scrollbar-thumb;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  border: 1px solid $scrollbar-thumb-hover-color;
+  background: $scrollbar-thumb-hover-color;
+}
+::-webkit-scrollbar-thumb:active {
+  border: 1px double $scrollbar-thumb-active-color;
+  background: $scrollbar-thumb-active-color;
+}
+::-webkit-scrollbar-track {
+  border-style: $scrollbar-border-style;
+  border-width: 1px;
+  border-color: $scrollbar-track-color;
+  background: transparent;
+}
+::-webkit-scrollbar-track:hover {
+  border-style: $scrollbar-border-style;
+  border-width: 1px;
+  border-color: $scrollbar-track-hover-color;
+  background: transparent;
+}
+::-webkit-scrollbar-track:active {
+  border-style: $scrollbar-border-style;
+  border-width: 1px;
+  border-color: $scrollbar-track-active-color;
+  background: transparent;;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
