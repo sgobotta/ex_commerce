@@ -1,5 +1,7 @@
 defmodule ExCommerceWeb.ShopLive.FormComponent do
-  @moduledoc false
+  @moduledoc """
+  Form for shops create/edit actions
+  """
 
   use ExCommerceWeb, :live_component
 

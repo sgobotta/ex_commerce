@@ -39,12 +39,29 @@ defmodule ExCommerceWeb.Router do
 
     live "/", AdminDashboardLive, :index
 
+    # ==========================================================================
+    # Marketplaces routes
+    #
+
+    # --------------------------------------------------------------------------
+    # Shops routes
+
     live "/shops", ShopLive.Index, :index
     live "/shops/new", ShopLive.Index, :new
     live "/shops/:id/edit", ShopLive.Index, :edit
 
     live "/shops/:id", ShopLive.Show, :show
     live "/shops/:id/show/edit", ShopLive.Show, :edit
+
+    # --------------------------------------------------------------------------
+    # Brands routes
+
+    live "/brands", BrandLive.Index, :index
+    live "/brands/new", BrandLive.Index, :new
+    live "/brands/:id/edit", BrandLive.Index, :edit
+
+    live "/brands/:id", BrandLive.Show, :show
+    live "/brands/:id/show/edit", BrandLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.

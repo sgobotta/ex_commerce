@@ -1,5 +1,7 @@
 defmodule ExCommerce.Marketplaces.Shop do
-  @moduledoc false
+  @moduledoc """
+  The Shop schema
+  """
 
   use Ecto.Schema
   import Ecto.Changeset

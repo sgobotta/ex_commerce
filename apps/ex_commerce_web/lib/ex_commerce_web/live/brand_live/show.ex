@@ -1,8 +1,7 @@
-defmodule ExCommerceWeb.ShopLive.Show do
+defmodule ExCommerceWeb.BrandLive.Show do
   @moduledoc """
-  Shows a single shop
+  Shows a single brand
   """
-
   use ExCommerceWeb, :live_view
 
   alias ExCommerce.Marketplaces
@@ -17,9 +16,9 @@ defmodule ExCommerceWeb.ShopLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:shop, Marketplaces.get_shop!(id))}
+     |> assign(:brand, Marketplaces.get_brand!(id))}
   end
 
-  defp page_title(:show), do: "Show Shop"
-  defp page_title(:edit), do: "Edit Shop"
+  defp page_title(:show), do: "Show Brand"
+  defp page_title(:edit), do: "Edit Brand"
 end

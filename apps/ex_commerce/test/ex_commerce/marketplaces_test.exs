@@ -104,4 +104,73 @@ defmodule ExCommerce.MarketplacesTest do
       assert %Ecto.Changeset{} = Marketplaces.change_shop(shop)
     end
   end
+
+  describe "brands" do
+    alias ExCommerce.Marketplaces.Brand
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    def brand_fixture(attrs \\ %{}) do
+      {:ok, brand} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Marketplaces.create_brand()
+
+      brand
+    end
+
+    test "list_brands/0 returns all brands" do
+      brand = brand_fixture()
+      assert Marketplaces.list_brands() == [brand]
+    end
+
+    test "get_brand!/1 returns the brand with given id" do
+      brand = brand_fixture()
+      assert Marketplaces.get_brand!(brand.id) == brand
+    end
+
+    test "create_brand/1 with valid data creates a brand" do
+      assert {:ok, %Brand{} = brand} = Marketplaces.create_brand(@valid_attrs)
+      assert brand.name == "some name"
+    end
+
+    test "create_brand/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               Marketplaces.create_brand(@invalid_attrs)
+    end
+
+    test "update_brand/2 with valid data updates the brand" do
+      brand = brand_fixture()
+
+      assert {:ok, %Brand{} = brand} =
+               Marketplaces.update_brand(brand, @update_attrs)
+
+      assert brand.name == "some updated name"
+    end
+
+    test "update_brand/2 with invalid data returns error changeset" do
+      brand = brand_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Marketplaces.update_brand(brand, @invalid_attrs)
+
+      assert brand == Marketplaces.get_brand!(brand.id)
+    end
+
+    test "delete_brand/1 deletes the brand" do
+      brand = brand_fixture()
+      assert {:ok, %Brand{}} = Marketplaces.delete_brand(brand)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Marketplaces.get_brand!(brand.id)
+      end
+    end
+
+    test "change_brand/1 returns a brand changeset" do
+      brand = brand_fixture()
+      assert %Ecto.Changeset{} = Marketplaces.change_brand(brand)
+    end
+  end
 end

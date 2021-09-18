@@ -67,7 +67,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
       {:ok, index_live, _html} =
         live(conn, Routes.shop_index_path(conn, :index))
 
-      assert index_live |> element("a", "New Shop") |> render_click() =~
+      assert index_live |> element("a", "+") |> render_click() =~
                "New Shop"
 
       assert_patch(index_live, Routes.shop_index_path(conn, :new))

@@ -1,5 +1,7 @@
 defmodule ExCommerceWeb.ShopLive.Index do
-  @moduledoc false
+  @moduledoc """
+  Lists available shops
+  """
 
   use ExCommerceWeb, :live_view
 

@@ -1,0 +1,24 @@
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, ExCommerceWeb.BrandLive.FormComponent,
+    id: @brand.id,
+    title: @page_title,
+    action: @live_action,
+    brand: @brand,
+    return_to: Routes.brand_show_path(@socket, :show, @brand) %>
+<% end %>
+
+<%= render_layout(ExCommerceWeb.DashboardView, "dashboard", [current_page: "brands"]) do %>
+
+  <ul>
+
+    <li>
+      <strong><%= gettext("Name") %>:</strong>
+      <%= @brand.name %>
+    </li>
+
+  </ul>
+
+  <span><%= live_patch "Edit", to: Routes.brand_show_path(@socket, :edit, @brand), class: "button" %></span>
+  <span><%= live_redirect "Back", to: Routes.brand_index_path(@socket, :index) %></span>
+
+<% end %>

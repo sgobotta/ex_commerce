@@ -41,8 +41,8 @@ defmodule ExCommerceWeb.DashboardView do
           ),
           navbar_link_group(
             [
-              children: ["shops", "inventory"],
-              group_name: "Shops",
+              children: ["shops", "brands"],
+              group_name: gettext("Marketplaces"),
               links: [
                 navbar_link(
                   [
@@ -54,9 +54,9 @@ defmodule ExCommerceWeb.DashboardView do
                 ),
                 navbar_link(
                   [
-                    name: "inventory",
-                    text: gettext("Inventory/Menu"),
-                    to: "#inventory"
+                    name: "brands",
+                    text: gettext("Brands"),
+                    to: Routes.brand_index_path(ExCommerceWeb.Endpoint, :index)
                   ],
                   navbar_opts
                 )
