@@ -22,7 +22,8 @@ defmodule ExCommerceWeb.SelectsView do
           w-full h-full
           """
 
-          Map.put_new(opts, :icon, content_tag(:span, "S", class: class))
+          icon_text = String.capitalize(String.first(opts.text))
+          Map.put_new(opts, :icon, content_tag(:span, icon_text, class: class))
       end
 
     render("select.html", opts)
