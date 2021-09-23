@@ -14,9 +14,14 @@ import "../css/app.scss"
 //     import socket from "./socket"
 //
 import "phoenix_html"
+import Alpine from 'alpinejs'
 import {LiveSocket} from "phoenix_live_view"
 import {Socket} from "phoenix"
 import topbar from "topbar"
+
+window.Alpine = Alpine
+
+Alpine.start()
 
 const csrfToken = document
   .querySelector("meta[name='csrf-token']")
@@ -24,7 +29,14 @@ const csrfToken = document
 const liveSocket = new LiveSocket(
   "/live",
   Socket,
-  {params: {_csrf_token: csrfToken}}
+  {
+    dom: {
+      onBeforeElUpdated(from, to){
+        if (from._x_dataStack) { window.Alpine.clone(from, to) }
+      }
+    },
+    params: {_csrf_token: csrfToken}
+  }
 )
 
 // Show progress bar on live navigation and form submits
