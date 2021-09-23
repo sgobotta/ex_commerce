@@ -18,6 +18,14 @@ defmodule ExCommerceWeb.LiveHelpers do
   end
 
   # ----------------------------------------------------------------------------
+  # Link helpers
+  #
+
+  def render_link(opts) do
+    render(ExCommerceWeb.LinksView, "link", opts)
+  end
+
+  # ----------------------------------------------------------------------------
   # Button helpers
   #
 
@@ -27,6 +35,14 @@ defmodule ExCommerceWeb.LiveHelpers do
 
   def render_image_button(opts \\ []) do
     render(ExCommerceWeb.ButtonsView, "image_button", opts)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Select helpers
+  #
+
+  def render_select(opts \\ []) do
+    render(ExCommerceWeb.SelectsView, "select", opts)
   end
 
   # ----------------------------------------------------------------------------
