@@ -65,12 +65,12 @@ defmodule ExCommerceWeb.ShopLiveTest do
 
     test "saves new shop", %{conn: conn} do
       {:ok, index_live, _html} =
-        live(conn, Routes.shop_index_path(conn, :index))
+        live(conn, Routes.shop_index_path(conn, :index, "12"))
 
       assert index_live |> element("a", "+") |> render_click() =~
                "New Shop"
 
-      assert_patch(index_live, Routes.shop_index_path(conn, :new))
+      assert_patch(index_live, Routes.shop_index_path(conn, :new, "12"))
 
       assert index_live
              |> form("#shop-form", shop: @invalid_attrs)
@@ -80,7 +80,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         index_live
         |> form("#shop-form", shop: @create_attrs)
         |> render_submit()
-        |> follow_redirect(conn, Routes.shop_index_path(conn, :index))
+        |> follow_redirect(conn, Routes.shop_index_path(conn, :index, "12"))
 
       assert html =~ "Shop created successfully"
       assert html =~ "some name"
@@ -88,14 +88,14 @@ defmodule ExCommerceWeb.ShopLiveTest do
 
     test "updates shop in listing", %{conn: conn, shop: shop} do
       {:ok, index_live, _html} =
-        live(conn, Routes.shop_index_path(conn, :index))
+        live(conn, Routes.shop_index_path(conn, :index, "12"))
 
       assert index_live
              |> element("#shop-#{shop.id} a", "Edit")
              |> render_click() =~
                "Edit Shop"
 
-      assert_patch(index_live, Routes.shop_index_path(conn, :edit, shop))
+      assert_patch(index_live, Routes.shop_index_path(conn, :edit, "12", shop))
 
       assert index_live
              |> form("#shop-form", shop: @invalid_attrs)
@@ -105,7 +105,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         index_live
         |> form("#shop-form", shop: @update_attrs)
         |> render_submit()
-        |> follow_redirect(conn, Routes.shop_index_path(conn, :index))
+        |> follow_redirect(conn, Routes.shop_index_path(conn, :index, "12"))
 
       assert html =~ "Shop updated successfully"
       assert html =~ "some updated name"
@@ -128,7 +128,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
 
     test "displays shop", %{conn: conn, shop: shop} do
       {:ok, _show_live, html} =
-        live(conn, Routes.shop_show_path(conn, :show, shop))
+        live(conn, Routes.shop_show_path(conn, :show, "12", shop))
 
       assert html =~ "Show Shop"
       assert html =~ shop.name
@@ -141,17 +141,17 @@ defmodule ExCommerceWeb.ShopLiveTest do
       to = Routes.user_session_path(conn, :new)
 
       assert {:error, {:redirect, %{flash: _token, to: ^to}}} =
-               live(conn, Routes.shop_show_path(conn, :show, shop))
+               live(conn, Routes.shop_show_path(conn, :show, "12", shop))
     end
 
     test "updates shop within modal", %{conn: conn, shop: shop} do
       {:ok, show_live, _html} =
-        live(conn, Routes.shop_show_path(conn, :show, shop))
+        live(conn, Routes.shop_show_path(conn, :show, "12", shop))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
                "Edit Shop"
 
-      assert_patch(show_live, Routes.shop_show_path(conn, :edit, shop))
+      assert_patch(show_live, Routes.shop_show_path(conn, :edit, "12", shop))
 
       assert show_live
              |> form("#shop-form", shop: @invalid_attrs)
@@ -161,7 +161,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         show_live
         |> form("#shop-form", shop: @update_attrs)
         |> render_submit()
-        |> follow_redirect(conn, Routes.shop_show_path(conn, :show, shop))
+        |> follow_redirect(conn, Routes.shop_show_path(conn, :show, "12", shop))
 
       assert html =~ "Shop updated successfully"
       assert html =~ "some updated name"

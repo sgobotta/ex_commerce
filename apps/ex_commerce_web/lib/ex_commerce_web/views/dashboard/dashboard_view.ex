@@ -3,8 +3,38 @@ defmodule ExCommerceWeb.DashboardView do
 
   import Phoenix.View
 
-  def render("dashboard", assigns) do
+  def render("brands", assigns) do
     %{user_email: user_email} = assigns
+
+    render_layout(
+      ExCommerceWeb.NavbarView,
+      "navbar",
+      [
+        mode: :topmenu,
+        exclude_menu: false,
+        header_buttons: [
+          render_select(
+            use_icon: true,
+            icon:
+              img_tag(
+                "https://images.unsplash.com/photo-1610397095767-84a5b4736cbd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80",
+                class: "w-full h-full object-cover",
+                alt: "Menu"
+              ),
+            text: user_email,
+            links: []
+          ),
+          render_logout_button(classes: "capitalize")
+        ],
+        links: [],
+        logo: render_image_button(text: "Ex Commerce")
+      ],
+      do: assigns.inner_content
+    )
+  end
+
+  def render("dashboard", assigns) do
+    %{user_email: user_email, brand: brand} = assigns
 
     navbar_opts =
       assigns
@@ -30,7 +60,7 @@ defmodule ExCommerceWeb.DashboardView do
               render_link(
                 text: "Brands",
                 name: "brands",
-                to: "#"
+                to: Routes.brand_index_path(ExCommerceWeb.Endpoint, :index)
               )
             ]
           ),
@@ -67,15 +97,12 @@ defmodule ExCommerceWeb.DashboardView do
                   [
                     name: "shops",
                     text: gettext("Shops"),
-                    to: Routes.shop_index_path(ExCommerceWeb.Endpoint, :index)
-                  ],
-                  navbar_opts
-                ),
-                navbar_link(
-                  [
-                    name: "brands",
-                    text: gettext("Brands"),
-                    to: Routes.brand_index_path(ExCommerceWeb.Endpoint, :index)
+                    to:
+                      Routes.shop_index_path(
+                        ExCommerceWeb.Endpoint,
+                        :index,
+                        brand
+                      )
                   ],
                   navbar_opts
                 )

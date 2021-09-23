@@ -4,7 +4,9 @@
     class="bg-transparent flex justify-center items-center"
   >
     <div
-      @click="open = !open"
+      <%= if @links != [] do %>
+        @click="open = !open"
+      <% end %>
       class="relative border-b-4 border-transparent py-3 mt-2"
       :class="{'border-indigo-700 transform transition duration-300': open}"
       x-transition:enter-end="transform opacity-100 scale-100"
@@ -23,15 +25,18 @@
             <%= @text %>
           </div>
         </div>
-        <span
-          class="transition ease-out duration-300 transform -rotate-90 my-0"
-          :class="open ? 'transform scale-x-default' : 'transform scale-x-mirror'"
-        >
-          <%= render_svg(
-            "icons/chevron-right",
-            class: "stroke-current text-gray-500 w-5 h-5"
-          ) %>
-        </span>
+
+        <%= if @links != [] do %>
+          <span
+            class="transition ease-out duration-300 transform -rotate-90 my-0"
+            :class="open ? 'transform scale-x-default' : 'transform scale-x-mirror'"
+          >
+            <%= render_svg(
+              "icons/chevron-right",
+              class: "stroke-current text-gray-500 w-5 h-5"
+            ) %>
+          </span>
+        <% end %>
       </div>
       <div
         x-show="open"

@@ -9,6 +9,8 @@ defmodule ExCommerceWeb.ShopLive.Show do
 
   @impl true
   def mount(params, session, socket) do
+    socket = assign_params(params, socket)
+
     case connected?(socket) do
       true ->
         %{assigns: %{user: user}} =
@@ -24,11 +26,16 @@ defmodule ExCommerceWeb.ShopLive.Show do
   end
 
   @impl true
-  def handle_params(%{"id" => id}, _session, socket) do
+  def handle_params(%{"id" => id}, _url, socket) do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:shop, Marketplaces.get_shop!(id))}
+  end
+
+  defp assign_params(%{"brand" => brand}, socket) do
+    socket
+    |> assign(:brand, brand)
   end
 
   defp page_title(:show), do: "Show Shop"

@@ -6,14 +6,15 @@
       title: @page_title,
       action: @live_action,
       shop: @shop,
-      return_to: Routes.shop_show_path(@socket, :show, @shop)
+      return_to: Routes.shop_show_path(@socket, :show, @brand, @shop),
+      patch_to: Routes.shop_show_path(@socket, :show, @brand, @shop)
     %>
   <% end %>
 
   <%= render_layout(
       ExCommerceWeb.DashboardView,
       "dashboard",
-      [current_page: "shops", user_email: @user.email]
+      [current_page: "shops", user_email: @user.email, brand: @brand]
     )
   do %>
 
@@ -54,10 +55,10 @@
     </ul>
 
     <span>
-      <%= live_patch gettext("Edit"), to: Routes.shop_show_path(@socket, :edit, @shop), class: "button" %>
+      <%= live_patch gettext("Edit"), to: Routes.shop_show_path(@socket, :edit, @brand, @shop), class: "button" %>
     </span>
     <span>
-      <%= live_redirect gettext("Back"), to: Routes.shop_index_path(@socket, :index), class: "link" %>
+      <%= live_redirect gettext("Back"), to: Routes.shop_index_path(@socket, :index, "12"), class: "link" %>
     </span>
 
   <% end %>

@@ -3,7 +3,7 @@
   <%= render_layout(
         ExCommerceWeb.DashboardView,
         "dashboard",
-        [current_page: "home", user_email: @user.email]
+        [current_page: "home", user_email: @user.email, brand: @brand]
       )
   do %>
 

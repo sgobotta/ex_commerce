@@ -42,7 +42,7 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Shop updated successfully")
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> push_redirect(to: socket.assigns.patch_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
@@ -55,7 +55,7 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Shop created successfully")
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> push_redirect(to: socket.assigns.patch_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

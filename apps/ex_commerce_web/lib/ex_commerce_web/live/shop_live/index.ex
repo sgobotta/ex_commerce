@@ -10,6 +10,8 @@ defmodule ExCommerceWeb.ShopLive.Index do
 
   @impl true
   def mount(params, session, socket) do
+    socket = assign_params(params, socket)
+
     case connected?(socket) do
       true ->
         %{assigns: %{user: user}} =
@@ -28,6 +30,17 @@ defmodule ExCommerceWeb.ShopLive.Index do
   @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  end
+
+  defp assign_params(%{"brand" => brand}, socket) do
+    socket
+    |> assign(:brand, brand)
+  end
+
+  defp assign_params(params, socket) do
+    # Find and assign the default brand
+    socket
+    |> assign(:brand, "12")
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do

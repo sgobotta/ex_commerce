@@ -27,8 +27,6 @@ defmodule ExCommerceWeb.Router do
   scope "/", ExCommerceWeb do
     pipe_through :browser
 
-    # live "/live", PageLive, :index
-
     scope "/admin" do
       pipe_through [
         :require_authenticated_user,
@@ -36,16 +34,6 @@ defmodule ExCommerceWeb.Router do
       ]
 
       live "/", AdminDashboardLive, :index
-
-      # ------------------------------------------------------------------------
-      # Shops routes
-
-      live "/shops", ShopLive.Index, :index
-      live "/shops/new", ShopLive.Index, :new
-      live "/shops/:id/edit", ShopLive.Index, :edit
-
-      live "/shops/:id", ShopLive.Show, :show
-      live "/shops/:id/show/edit", ShopLive.Show, :edit
 
       # ------------------------------------------------------------------------
       # Brands routes
@@ -56,6 +44,24 @@ defmodule ExCommerceWeb.Router do
 
       live "/brands/:id", BrandLive.Show, :show
       live "/brands/:id/show/edit", BrandLive.Show, :edit
+
+      # ------------------------------------------------------------------------
+      # Default routes
+      live "/shops", ShopLive.Index, :index
+
+      scope "/:brand" do
+        live "/", AdminDashboardLive, :index
+
+        # ----------------------------------------------------------------------
+        # Shops routes
+
+        live "/shops", ShopLive.Index, :index
+        live "/shops/new", ShopLive.Index, :new
+        live "/shops/:id/edit", ShopLive.Index, :edit
+
+        live "/shops/:id", ShopLive.Show, :show
+        live "/shops/:id/show/edit", ShopLive.Show, :edit
+      end
     end
   end
 
