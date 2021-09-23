@@ -95,6 +95,7 @@ defmodule ExCommerceWeb do
 
       import ExCommerceWeb.ErrorHelpers
       import ExCommerceWeb.Gettext
+      import ExCommerceWeb.MountHelpers
       alias ExCommerceWeb.Router.Helpers, as: Routes
     end
   end

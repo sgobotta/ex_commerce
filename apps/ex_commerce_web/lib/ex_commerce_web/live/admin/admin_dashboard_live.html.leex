@@ -1,5 +1,14 @@
-<%= render_layout(ExCommerceWeb.DashboardView, "dashboard", [current_page: "home"]) do %>
+<%= if connected?(@socket) do %>
 
-  <div>Home</div>
+  <%= render_layout(
+        ExCommerceWeb.DashboardView,
+        "dashboard",
+        [current_page: "home", user_email: @user.email]
+      )
+  do %>
+
+    <div>Home</div>
+
+  <% end %>
 
 <% end %>

@@ -8,8 +8,20 @@ defmodule ExCommerceWeb.BrandLive.Index do
   alias ExCommerce.Marketplaces.Brand
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :brands, list_brands())}
+  def mount(params, session, socket) do
+    case connected?(socket) do
+      true ->
+        %{assigns: %{user: user}} =
+          socket = assign_defaults(socket, params, session)
+
+        {:ok,
+         socket
+         |> assign(:user, user)
+         |> assign(:brands, list_brands())}
+
+      false ->
+        {:ok, socket}
+    end
   end
 
   @impl true

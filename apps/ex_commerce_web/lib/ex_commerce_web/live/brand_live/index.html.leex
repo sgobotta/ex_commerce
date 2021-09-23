@@ -1,41 +1,50 @@
-<%= if @live_action in [:new, :edit] do %>
-  <%= live_modal @socket, ExCommerceWeb.BrandLive.FormComponent,
-    id: @brand.id || :new,
-    title: @page_title,
-    action: @live_action,
-    brand: @brand,
-    return_to: Routes.brand_index_path(@socket, :index) %>
-<% end %>
+<%= if connected?(@socket) do %>
 
-<%= render_layout(ExCommerceWeb.DashboardView, "dashboard", [current_page: "brands"]) do %>
+  <%= if @live_action in [:new, :edit] do %>
+    <%= live_modal @socket, ExCommerceWeb.BrandLive.FormComponent,
+      id: @brand.id || :new,
+      title: @page_title,
+      action: @live_action,
+      brand: @brand,
+      return_to: Routes.brand_index_path(@socket, :index) %>
+  <% end %>
 
-  <h1>
-    <%= gettext("My Brands") %>
-  </h1>
+  <%= render_layout(
+        ExCommerceWeb.DashboardView,
+        "dashboard",
+        [current_page: "brands", user_email: @user.email]
+      )
+  do %>
 
-  <table>
-    <thead>
-      <tr>
-        <th><%= gettext("Name") %></th>
+    <h1>
+      <%= gettext("My Brands") %>
+    </h1>
 
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="brands">
-      <%= for brand <- @brands do %>
-        <tr id="brand-<%= brand.id %>">
-          <td><%= brand.name %></td>
+    <table>
+      <thead>
+        <tr>
+          <th><%= gettext("Name") %></th>
 
-          <td>
-            <span><%= live_redirect "Show", to: Routes.brand_show_path(@socket, :show, brand) %></span>
-            <span><%= live_patch "Edit", to: Routes.brand_index_path(@socket, :edit, brand) %></span>
-            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: brand.id, data: [confirm: "Are you sure?"] %></span>
-          </td>
+          <th></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody id="brands">
+        <%= for brand <- @brands do %>
+          <tr id="brand-<%= brand.id %>">
+            <td><%= brand.name %></td>
 
-  <span><%= live_patch "+", to: Routes.brand_index_path(@socket, :new), class: "button" %></span>
+            <td>
+              <span><%= live_redirect "Show", to: Routes.brand_show_path(@socket, :show, brand) %></span>
+              <span><%= live_patch "Edit", to: Routes.brand_index_path(@socket, :edit, brand) %></span>
+              <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: brand.id, data: [confirm: "Are you sure?"] %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <span><%= live_patch "+", to: Routes.brand_index_path(@socket, :new), class: "button" %></span>
+
+  <% end %>
 
 <% end %>

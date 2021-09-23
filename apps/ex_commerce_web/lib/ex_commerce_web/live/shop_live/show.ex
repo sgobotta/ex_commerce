@@ -8,8 +8,19 @@ defmodule ExCommerceWeb.ShopLive.Show do
   alias ExCommerce.Marketplaces
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, socket}
+  def mount(params, session, socket) do
+    case connected?(socket) do
+      true ->
+        %{assigns: %{user: user}} =
+          socket = assign_defaults(socket, params, session)
+
+        {:ok,
+         socket
+         |> assign(:user, user)}
+
+      false ->
+        {:ok, socket}
+    end
   end
 
   @impl true

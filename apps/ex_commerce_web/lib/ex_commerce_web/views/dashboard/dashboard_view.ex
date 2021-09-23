@@ -4,6 +4,8 @@ defmodule ExCommerceWeb.DashboardView do
   import Phoenix.View
 
   def render("dashboard", assigns) do
+    %{user_email: user_email} = assigns
+
     navbar_opts =
       assigns
       |> Map.put_new(:current_page, "home")
@@ -15,6 +17,21 @@ defmodule ExCommerceWeb.DashboardView do
         mode: :sidemenu,
         exclude_menu: false,
         header_buttons: [
+          render_select(
+            use_icon: true,
+            icon: img_tag(
+              "https://images.unsplash.com/photo-1610397095767-84a5b4736cbd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80",
+              [class: "w-full h-full object-cover", alt: "Menu"]
+            ),
+            text: user_email,
+            links: [
+              render_link(
+                text: "Brands",
+                name: "brands",
+                to: "#"
+              )
+            ]
+          ),
           render_logout_button(classes: "capitalize")
         ],
         links: [
