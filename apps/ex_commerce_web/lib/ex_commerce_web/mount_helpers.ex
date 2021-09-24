@@ -28,6 +28,17 @@ defmodule ExCommerceWeb.MountHelpers do
     end
   end
 
+  def assign_brand(socket, %{"brand" => brand}, _session) do
+    socket
+    |> assign(:brand, brand)
+  end
+
+  def assign_brand(socket, params, _session) do
+    # Find and assign the default brand
+    socket
+    |> assign(:brand, "12")
+  end
+
   defp assign_user(socket, session) do
     user = Accounts.get_user_by_session_token(session["user_token"])
 

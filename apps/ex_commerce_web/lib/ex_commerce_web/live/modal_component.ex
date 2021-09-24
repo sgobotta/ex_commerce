@@ -22,7 +22,7 @@ defmodule ExCommerceWeb.ModalComponent do
   end
 
   @impl true
-  def handle_event("close", params, socket) do
+  def handle_event("close", _params, socket) do
     {:noreply,
      push_patch(socket, to: Keyword.get(socket.assigns.opts, :patch_to))}
   end

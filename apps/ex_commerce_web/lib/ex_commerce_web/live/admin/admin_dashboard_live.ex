@@ -5,10 +5,10 @@ defmodule ExCommerceWeb.AdminDashboardLive do
 
   @impl true
   def mount(params, session, socket) do
-    socket = assign_params(params, socket)
-
     case connected?(socket) do
       true ->
+        socket = assign_brand(socket, params, session)
+
         %{assigns: %{user: user}} =
           socket = assign_defaults(socket, params, session)
 
@@ -17,16 +17,5 @@ defmodule ExCommerceWeb.AdminDashboardLive do
       false ->
         {:ok, socket}
     end
-  end
-
-  defp assign_params(%{"brand" => brand}, socket) do
-    socket
-    |> assign(:brand, brand)
-  end
-
-  defp assign_params(params, socket) do
-    # Find and assign the default brand
-    socket
-    |> assign(:brand, "12")
   end
 end

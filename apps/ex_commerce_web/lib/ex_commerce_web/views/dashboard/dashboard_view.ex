@@ -79,7 +79,8 @@ defmodule ExCommerceWeb.DashboardView do
                     to:
                       Routes.admin_dashboard_path(
                         ExCommerceWeb.Endpoint,
-                        :index
+                        :index,
+                        brand
                       )
                   ],
                   navbar_opts
