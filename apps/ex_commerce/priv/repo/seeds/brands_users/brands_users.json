@@ -1,0 +1,23 @@
+[
+  {
+    "user_id": "b41fbc4f-e55c-4cf1-afbd-250e266f5898",
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "is_owner": true,
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "user_id": "f9b2bf41-b4f0-4f85-9914-88ac4830f39e",
+    "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
+    "is_owner": true,
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "user_id": "b41fbc4f-e55c-4cf1-afbd-250e266f5898",
+    "brand_id": "97d4d4f1-ab03-40b4-aecb-005808795b7a",
+    "is_owner": true,
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  }
+]

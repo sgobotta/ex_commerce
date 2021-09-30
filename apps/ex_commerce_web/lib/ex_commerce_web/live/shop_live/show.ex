@@ -11,10 +11,10 @@ defmodule ExCommerceWeb.ShopLive.Show do
   def mount(params, session, socket) do
     case connected?(socket) do
       true ->
-        socket = assign_brand(socket, params, session)
-
         %{assigns: %{user: user}} =
           socket = assign_defaults(socket, params, session)
+
+        socket = assign_brand(socket, params, session)
 
         {:ok,
          socket

@@ -58,7 +58,7 @@
       <%= live_patch gettext("Edit"), to: Routes.shop_show_path(@socket, :edit, @brand, @shop), class: "button" %>
     </span>
     <span>
-      <%= live_redirect gettext("Back"), to: Routes.shop_index_path(@socket, :index, "12"), class: "link" %>
+      <%= live_redirect gettext("Back"), to: Routes.shop_index_path(@socket, :index, @brand), class: "link" %>
     </span>
 
   <% end %>

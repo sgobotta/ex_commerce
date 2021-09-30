@@ -50,6 +50,9 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
   end
 
   defp save_shop(socket, :new, shop_params) do
+    shop_params =
+      Map.merge(shop_params, %{"brand_id" => socket.assigns.shop.brand_id})
+
     case Marketplaces.create_shop(shop_params) do
       {:ok, _shop} ->
         {:noreply,

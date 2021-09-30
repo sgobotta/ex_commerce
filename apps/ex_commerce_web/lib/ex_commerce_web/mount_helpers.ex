@@ -5,6 +5,10 @@ defmodule ExCommerceWeb.MountHelpers do
   import Phoenix.LiveView
 
   alias ExCommerce.Accounts
+  alias ExCommerce.Marketplaces
+  alias ExCommerce.Marketplaces.Brand
+  alias ExCommerce.Repo
+  alias ExCommerceWeb.Router.Helpers, as: Routes
 
   @default_locale "en"
   @default_timezone "UTC"
@@ -28,19 +32,39 @@ defmodule ExCommerceWeb.MountHelpers do
     end
   end
 
-  def assign_brand(socket, %{"brand" => brand}, _session) do
-    socket
-    |> assign(:brand, brand)
+  def assign_brand(socket, %{"brand" => brand_id}, _session) do
+    %{user: %{brands: brands}} = socket.assigns
+
+    case Enum.find(brands, nil, &(&1.id == brand_id)) do
+      nil ->
+        socket
+        |> redirect(to: Routes.brand_index_path(socket, :new))
+
+      %Brand{id: brand_id} ->
+        socket
+        |> assign(:brand, brand_id)
+    end
   end
 
-  def assign_brand(socket, params, _session) do
-    # Find and assign the default brand
-    socket
-    |> assign(:brand, "12")
+  def assign_brand(socket, _params, _session) do
+    # Find and assign the first found brand
+    %{user: %{brands: brands}} = socket.assigns
+
+    case Enum.at(brands, 0) do
+      nil ->
+        socket
+        |> redirect(to: Routes.brand_index_path(socket, :new))
+
+      brand ->
+        socket
+        |> assign(:brand, brand.id)
+    end
   end
 
   defp assign_user(socket, session) do
-    user = Accounts.get_user_by_session_token(session["user_token"])
+    user =
+      Accounts.get_user_by_session_token(session["user_token"])
+      |> Repo.preload([:brands])
 
     socket
     |> assign_new(:user, fn -> user end)

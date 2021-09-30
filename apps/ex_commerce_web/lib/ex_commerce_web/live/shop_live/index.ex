@@ -10,12 +10,13 @@ defmodule ExCommerceWeb.ShopLive.Index do
 
   @impl true
   def mount(params, session, socket) do
+    # socket = assign_defaults(socket, params, session)
     case connected?(socket) do
       true ->
-        socket = assign_brand(socket, params, session)
-
         %{assigns: %{user: user}} =
           socket = assign_defaults(socket, params, session)
+
+        socket = assign_brand(socket, params, session)
 
         {:ok,
          socket
@@ -41,7 +42,7 @@ defmodule ExCommerceWeb.ShopLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, gettext("New Shop"))
-    |> assign(:shop, %Shop{})
+    |> assign(:shop, prepare_new_shop(socket.assigns))
   end
 
   defp apply_action(socket, :index, _params) do
@@ -60,5 +61,9 @@ defmodule ExCommerceWeb.ShopLive.Index do
 
   defp list_shops do
     Marketplaces.list_shops()
+  end
+
+  defp prepare_new_shop(%{brand: brand}) do
+    %Shop{brand_id: brand}
   end
 end

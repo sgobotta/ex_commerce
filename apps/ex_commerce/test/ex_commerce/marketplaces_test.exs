@@ -6,6 +6,7 @@ defmodule ExCommerce.MarketplacesTest do
   alias ExCommerce.Marketplaces
 
   describe "shops" do
+    alias ExCommerce.BrandsFixtures
     alias ExCommerce.Marketplaces.Shop
 
     @valid_attrs %{
@@ -30,8 +31,15 @@ defmodule ExCommerce.MarketplacesTest do
       description: nil,
       telephone: nil,
       banner_message: nil,
-      address: nil
+      address: nil,
+      brand_id: nil
     }
+
+    setup do
+      %{id: brand_id} = BrandsFixtures.create()
+
+      %{brand_id: brand_id}
+    end
 
     def shop_fixture(attrs \\ %{}) do
       {:ok, shop} =
@@ -42,18 +50,20 @@ defmodule ExCommerce.MarketplacesTest do
       shop
     end
 
-    test "list_shops/0 returns all shops" do
-      shop = shop_fixture()
+    test "list_shops/0 returns all shops", %{brand_id: brand_id} do
+      shop = shop_fixture(%{brand_id: brand_id})
       assert Marketplaces.list_shops() == [shop]
     end
 
-    test "get_shop!/1 returns the shop with given id" do
-      shop = shop_fixture()
+    test "get_shop!/1 returns the shop with given id", %{brand_id: brand_id} do
+      shop = shop_fixture(%{brand_id: brand_id})
       assert Marketplaces.get_shop!(shop.id) == shop
     end
 
-    test "create_shop/1 with valid data creates a shop" do
-      assert {:ok, %Shop{} = shop} = Marketplaces.create_shop(@valid_attrs)
+    test "create_shop/1 with valid data creates a shop", %{brand_id: brand_id} do
+      valid_attrs = Map.merge(@valid_attrs, %{brand_id: brand_id})
+
+      assert {:ok, %Shop{} = shop} = Marketplaces.create_shop(valid_attrs)
       assert shop.name == "some name"
       assert shop.slug == "some-slug"
       assert shop.description == "some description"
@@ -67,8 +77,8 @@ defmodule ExCommerce.MarketplacesTest do
                Marketplaces.create_shop(@invalid_attrs)
     end
 
-    test "update_shop/2 with valid data updates the shop" do
-      shop = shop_fixture()
+    test "update_shop/2 with valid data updates the shop", %{brand_id: brand_id} do
+      shop = shop_fixture(%{brand_id: brand_id})
 
       assert {:ok, %Shop{} = shop} =
                Marketplaces.update_shop(shop, @update_attrs)
@@ -81,8 +91,10 @@ defmodule ExCommerce.MarketplacesTest do
       assert shop.address == "some updated address"
     end
 
-    test "update_shop/2 with invalid data returns error changeset" do
-      shop = shop_fixture()
+    test "update_shop/2 with invalid data returns error changeset", %{
+      brand_id: brand_id
+    } do
+      shop = shop_fixture(%{brand_id: brand_id})
 
       assert {:error, %Ecto.Changeset{}} =
                Marketplaces.update_shop(shop, @invalid_attrs)
@@ -90,8 +102,8 @@ defmodule ExCommerce.MarketplacesTest do
       assert shop == Marketplaces.get_shop!(shop.id)
     end
 
-    test "delete_shop/1 deletes the shop" do
-      shop = shop_fixture()
+    test "delete_shop/1 deletes the shop", %{brand_id: brand_id} do
+      shop = shop_fixture(%{brand_id: brand_id})
       assert {:ok, %Shop{}} = Marketplaces.delete_shop(shop)
 
       assert_raise Ecto.NoResultsError, fn ->
@@ -99,8 +111,8 @@ defmodule ExCommerce.MarketplacesTest do
       end
     end
 
-    test "change_shop/1 returns a shop changeset" do
-      shop = shop_fixture()
+    test "change_shop/1 returns a shop changeset", %{brand_id: brand_id} do
+      shop = shop_fixture(%{brand_id: brand_id})
       assert %Ecto.Changeset{} = Marketplaces.change_shop(shop)
     end
   end
@@ -171,6 +183,77 @@ defmodule ExCommerce.MarketplacesTest do
     test "change_brand/1 returns a brand changeset" do
       brand = brand_fixture()
       assert %Ecto.Changeset{} = Marketplaces.change_brand(brand)
+    end
+  end
+
+  describe "brands_users" do
+    alias ExCommerce.Marketplaces.BrandUser
+
+    @valid_attrs %{is_owner: true}
+    @update_attrs %{is_owner: false}
+    @invalid_attrs %{is_owner: nil}
+
+    def brand_user_fixture(attrs \\ %{}) do
+      {:ok, brand_user} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Marketplaces.create_brand_user()
+
+      brand_user
+    end
+
+    test "list_brands_users/0 returns all brands_users" do
+      brand_user = brand_user_fixture()
+      assert Marketplaces.list_brands_users() == [brand_user]
+    end
+
+    test "get_brand_user!/1 returns the brand_user with given id" do
+      brand_user = brand_user_fixture()
+      assert Marketplaces.get_brand_user!(brand_user.id) == brand_user
+    end
+
+    test "create_brand_user/1 with valid data creates a brand_user" do
+      assert {:ok, %BrandUser{} = brand_user} =
+               Marketplaces.create_brand_user(@valid_attrs)
+
+      assert brand_user.is_owner == true
+    end
+
+    test "create_brand_user/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               Marketplaces.create_brand_user(@invalid_attrs)
+    end
+
+    test "update_brand_user/2 with valid data updates the brand_user" do
+      brand_user = brand_user_fixture()
+
+      assert {:ok, %BrandUser{} = brand_user} =
+               Marketplaces.update_brand_user(brand_user, @update_attrs)
+
+      assert brand_user.is_owner == false
+    end
+
+    test "update_brand_user/2 with invalid data returns error changeset" do
+      brand_user = brand_user_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Marketplaces.update_brand_user(brand_user, @invalid_attrs)
+
+      assert brand_user == Marketplaces.get_brand_user!(brand_user.id)
+    end
+
+    test "delete_brand_user/1 deletes the brand_user" do
+      brand_user = brand_user_fixture()
+      assert {:ok, %BrandUser{}} = Marketplaces.delete_brand_user(brand_user)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Marketplaces.get_brand_user!(brand_user.id)
+      end
+    end
+
+    test "change_brand_user/1 returns a brand_user changeset" do
+      brand_user = brand_user_fixture()
+      assert %Ecto.Changeset{} = Marketplaces.change_brand_user(brand_user)
     end
   end
 end

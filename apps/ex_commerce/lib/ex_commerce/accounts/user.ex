@@ -14,6 +14,10 @@ defmodule ExCommerce.Accounts.User do
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
 
+    many_to_many :brands,
+                 ExCommerce.Marketplaces.Brand,
+                 join_through: ExCommerce.Marketplaces.BrandUser
+
     timestamps()
   end
 

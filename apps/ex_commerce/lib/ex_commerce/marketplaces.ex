@@ -197,4 +197,100 @@ defmodule ExCommerce.Marketplaces do
   def change_brand(%Brand{} = brand, attrs \\ %{}) do
     Brand.changeset(brand, attrs)
   end
+
+  alias ExCommerce.Marketplaces.BrandUser
+
+  @doc """
+  Returns the list of brands_users.
+
+  ## Examples
+
+      iex> list_brands_users()
+      [%BrandUser{}, ...]
+
+  """
+  def list_brands_users do
+    Repo.all(BrandUser)
+  end
+
+  @doc """
+  Gets a single brand_user.
+
+  Raises `Ecto.NoResultsError` if the Brand user does not exist.
+
+  ## Examples
+
+      iex> get_brand_user!(123)
+      %BrandUser{}
+
+      iex> get_brand_user!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_brand_user!(id), do: Repo.get!(BrandUser, id)
+
+  @doc """
+  Creates a brand_user.
+
+  ## Examples
+
+      iex> create_brand_user(%{field: value})
+      {:ok, %BrandUser{}}
+
+      iex> create_brand_user(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_brand_user(attrs \\ %{}) do
+    %BrandUser{}
+    |> BrandUser.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a brand_user.
+
+  ## Examples
+
+      iex> update_brand_user(brand_user, %{field: new_value})
+      {:ok, %BrandUser{}}
+
+      iex> update_brand_user(brand_user, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_brand_user(%BrandUser{} = brand_user, attrs) do
+    brand_user
+    |> BrandUser.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a brand_user.
+
+  ## Examples
+
+      iex> delete_brand_user(brand_user)
+      {:ok, %BrandUser{}}
+
+      iex> delete_brand_user(brand_user)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_brand_user(%BrandUser{} = brand_user) do
+    Repo.delete(brand_user)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking brand_user changes.
+
+  ## Examples
+
+      iex> change_brand_user(brand_user)
+      %Ecto.Changeset{data: %BrandUser{}}
+
+  """
+  def change_brand_user(%BrandUser{} = brand_user, attrs \\ %{}) do
+    BrandUser.changeset(brand_user, attrs)
+  end
 end
