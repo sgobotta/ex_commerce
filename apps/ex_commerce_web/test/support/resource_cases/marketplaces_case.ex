@@ -49,7 +49,6 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
         %{shop: shop}
       end
 
-
       defp assert_redirects_with_error(conn, from: from, to: to) do
         assert {:error, {:redirect, %{to: ^to}}} = live(conn, from)
       end

@@ -4,8 +4,6 @@ defmodule ExCommerce.BrandsFixtures do
   entities via the `ExCommerce.Marketplaces.Brand` context.
   """
 
-  alias ExCommerce.AccountsFixtures
-
   def unique_brand_name, do: "brand#{System.unique_integer()}"
 
   def valid_brand_attributes(attrs \\ %{}) do

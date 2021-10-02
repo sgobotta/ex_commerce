@@ -82,9 +82,10 @@ defmodule ExCommerceWeb.BrandLiveTest do
       assert html =~ "some updated name"
     end
 
-    test "[Failure] updates brand in listing - redirects to brands on invalid brand id", %{
-      conn: conn
-    } do
+    test "[Failure] updates brand in listing - redirects to brands on invalid brand id",
+         %{
+           conn: conn
+         } do
       assert_redirects_with_error(
         conn,
         from: Routes.brand_index_path(conn, :edit, Ecto.UUID.generate()),
