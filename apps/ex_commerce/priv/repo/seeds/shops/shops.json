@@ -1,7 +1,45 @@
 [
   {
-    "name": "The Green Leaf",
-    "slug": "the-green-leaf",
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "f83e31bd-d5c7-4bbf-bddb-56a7ef59f339",
+    "name": "Let it beer Palermo",
+    "slug": "let-it-beer-palermo",
+    "description": "A beer in the life: craft beer",
+    "telephone": "+54 9 11 2345 6789",
+    "banner_message": "We deliver fresh products from Mondays to Sundays between 9:00 a.m. and 11:00 p.m.",
+    "address": "República de Eslovenia 1831, C1426CZE CABA",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "31e58f7f-f6db-4e5f-bd74-8f2e298c2dfa",
+    "name": "Let it beer Colegiales",
+    "slug": "let-it-beer-colegiales",
+    "description": "Fresh vegetarian and vegan meals specially made for you",
+    "telephone": "+54 9 11 2345 6789",
+    "banner_message": "We deliver fresh products from Mondays to Sundays between 9:00 a.m. and 11:00 p.m.",
+    "address": "Zapiola 1420, C1426 CABA",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "3843f016-ed3f-40c5-b06a-c58a0570977b",
+    "name": "Let it beer Belgrano",
+    "slug": "let-it-beer-belgrano",
+    "description": "Fresh vegetarian and vegan meals specially made for you",
+    "telephone": "+54 9 11 2345 6789",
+    "banner_message": "We deliver fresh products from Mondays to Sundays between 9:00 a.m. and 11:00 p.m.",
+    "address": "Vuelta de Obligado 2421, C1428 CABA",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
+    "id": "630e6211-6410-4343-88c8-c983a48f7734",
+    "name": "The Green Leaf Chacarita",
+    "slug": "the-green-leaf-chacarita",
     "description": "Fresh vegetarian and vegan meals specially made for you",
     "telephone": "+54 9 11 2345 6789",
     "banner_message": "We deliver fresh products from Mondays to Sundays between 9:00 a.m. and 11:00 p.m.",
@@ -10,6 +48,8 @@
     "updated_at": "2020-11-17 14:15:00"
   },
   {
+    "brand_id": "97d4d4f1-ab03-40b4-aecb-005808795b7a",
+    "id": "0c8e1e4a-d6e9-4c87-9cca-0eaf70375a15",
     "name": "Machinery Repairs LLC",
     "slug": "machinery-repairs",
     "description": "Spare parts and technical service for your machinery",

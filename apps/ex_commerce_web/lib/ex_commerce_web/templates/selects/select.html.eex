@@ -1,0 +1,63 @@
+<div class="flex justify-center items-center">
+  <div
+    x-data="{ open: false }"
+    class="bg-transparent flex justify-center items-center"
+  >
+    <div
+      <%= if @links != [] do %>
+        @click="open = !open"
+      <% end %>
+      class="relative border-b-4 border-transparent py-3 mt-2"
+      :class="{'border-indigo-700 transform transition duration-300': open}"
+      x-transition:enter-end="transform opacity-100 scale-100"
+      x-transition:leave="transition ease-in duration-75"
+      x-transition:leave-start="transform opacity-100 scale-100"
+    >
+      <div class="flex justify-center items-center space-x-3 cursor-pointer">
+        <div class="
+          w-12 h-12 rounded-full
+          overflow-hidden border-2 dark:border-white border-gray-900
+        ">
+          <%= @icon %>
+        </div>
+        <div class="text-gray-700 text-xl font-medium">
+          <div class="cursor-pointer">
+            <%= @text %>
+          </div>
+        </div>
+
+        <%= if @links != [] do %>
+          <span
+            class="transition ease-out duration-300 transform -rotate-90 my-0"
+            :class="open ? 'transform scale-x-default' : 'transform scale-x-mirror'"
+          >
+            <%= render_svg(
+              "icons/chevron-right",
+              class: "stroke-current text-gray-500 w-5 h-5"
+            ) %>
+          </span>
+        <% end %>
+      </div>
+      <div
+        x-show="open"
+        x-transition:enter="transition ease-out duration-100"
+        x-transition:enter-start="transform opacity-0 scale-95"
+        x-transition:enter-end="transform opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-75"
+        x-transition:leave-start="transform opacity-100 scale-100"
+        x-transition:leave-end="transform opacity-0 scale-95"
+        class="
+          absolute w-60 px-2 py-3 mt-5
+          dark:bg-gray-800 bg-white
+          rounded-lg shadow border dark:border-transparent
+        "
+      >
+        <ul class="space-y-3 dark:text-white">
+          <%= for link <- @links do %>
+            <%= link %>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

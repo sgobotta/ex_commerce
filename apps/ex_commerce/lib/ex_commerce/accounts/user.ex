@@ -5,7 +5,7 @@ defmodule ExCommerce.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Inspect, except: [:password]}
+  @derive {Inspect, except: [:password, :__meta__, :hashed_password]}
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "users" do
@@ -13,6 +13,10 @@ defmodule ExCommerce.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+
+    many_to_many :brands,
+                 ExCommerce.Marketplaces.Brand,
+                 join_through: ExCommerce.Marketplaces.BrandUser
 
     timestamps()
   end

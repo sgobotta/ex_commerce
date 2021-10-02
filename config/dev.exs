@@ -96,7 +96,7 @@ config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
 config :logger, :console, format: "[$level] $message\n"
 
 # Configures git pre-commit hook to run the formatter
-config :git_hooks,
+config :pre_push,
   auto_install: true,
   verbose: true,
   hooks: [

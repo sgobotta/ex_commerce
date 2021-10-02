@@ -1,0 +1,57 @@
+<%= if connected?(@socket) do %>
+
+  <%= if @live_action in [:new, :edit] do %>
+    <%= live_modal @socket, ExCommerceWeb.BrandLive.FormComponent,
+      id: @brand.id || :new,
+      title: @page_title,
+      action: @live_action,
+      brand: @brand,
+      return_to: Routes.brand_index_path(@socket, :index),
+      patch_to: Routes.brand_index_path(@socket, :index),
+      user: @user
+    %>
+  <% end %>
+
+  <%= render_layout(
+        ExCommerceWeb.DashboardView,
+        "brands",
+        [current_page: "shops", user_email: @user.email, brand: @brand]
+      )
+  do %>
+
+    <div class="p-12">
+      <h1>
+        <%= gettext("My Brands") %>
+      </h1>
+
+      <table>
+        <thead>
+          <tr>
+            <th><%= gettext("Name") %></th>
+
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="brands">
+          <%= for brand <- @brands do %>
+            <tr id="brand-<%= brand.id %>">
+              <td><%= brand.name %></td>
+
+              <td>
+                <span><%= live_redirect "Manage", to: Routes.admin_dashboard_path(@socket, :index, brand.id) %></span>
+                <span><%= live_redirect "Show", to: Routes.brand_show_path(@socket, :show, brand.id) %></span>
+                <span><%= live_patch "Edit", to: Routes.brand_index_path(@socket, :edit, brand.id) %></span>
+                <!-- <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: brand.id, data: [confirm: "Are you sure?"] %></span> -->
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <span><%= live_patch "+", to: Routes.brand_index_path(@socket, :new), class: "button" %></span>
+
+    </div>
+
+  <% end %>
+
+<% end %>

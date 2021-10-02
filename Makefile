@@ -48,13 +48,17 @@ lint:
 	@mix check.credo
 
 #💣 reset: @ Cleans dependencies then re-installs and compiles them
+reset: SHELL:=/bin/bash
 reset:
 	@echo "🧹 Cleaning db and dependencies..."
-	@mix reset
+	@source ${ENV_FILE} && MIX_ENV=dev mix reset
+	@source ${ENV_FILE} && MIX_ENV=test mix reset
 
 #💣 reset.ecto: @ Resets database
+reset.ecto: SHELL:=/bin/bash
 reset.ecto:
-	@mix reset.ecto
+	@source ${ENV_FILE} && MIX_ENV=dev mix reset.ecto
+	@source ${ENV_FILE} && MIX_ENV=test mix reset.ecto
 
 #📦 setup: @ Installs dependencies and set up database
 setup:

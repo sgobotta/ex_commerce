@@ -1,5 +1,7 @@
 defmodule ExCommerce.Marketplaces.Shop do
-  @moduledoc false
+  @moduledoc """
+  The Shop schema
+  """
 
   use Ecto.Schema
   import Ecto.Changeset
@@ -13,6 +15,8 @@ defmodule ExCommerce.Marketplaces.Shop do
     :address
   ]
 
+  @foreign_fields [:brand_id]
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "shops" do
@@ -23,14 +27,18 @@ defmodule ExCommerce.Marketplaces.Shop do
     field :banner_message, :string, size: 128
     field :address, :string
 
+    belongs_to :brand,
+               ExCommerce.Marketplaces.Brand,
+               type: :binary_id
+
     timestamps()
   end
 
   @doc false
   def changeset(shop, attrs) do
     shop
-    |> cast(attrs, @fields)
-    |> validate_required(@fields)
+    |> cast(attrs, @fields ++ @foreign_fields)
+    |> validate_required(@fields ++ @foreign_fields)
     |> format_slug()
     |> unique_constraint(:slug)
   end

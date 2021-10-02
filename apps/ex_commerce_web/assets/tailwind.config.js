@@ -51,6 +51,10 @@ module.exports = {
       },
       maxHeight: {},
       minHeight: {},
+      scale: {
+        'default': '1',
+        'mirror': '-1'
+      },
       top: {},
       transitionDuration: {
         '1500': '1500ms',
@@ -66,6 +70,7 @@ module.exports = {
   },
   variants: {
     extend: {
+      borderRadius: ['active', 'hover', 'focus'],
       scale: ['focus-within']
     }
   }

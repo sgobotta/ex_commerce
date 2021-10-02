@@ -27,24 +27,42 @@ defmodule ExCommerceWeb.Router do
   scope "/", ExCommerceWeb do
     pipe_through :browser
 
-    live "/live", PageLive, :index
-  end
+    scope "/admin" do
+      pipe_through [
+        :require_authenticated_user,
+        :require_confirmed_user
+      ]
 
-  scope "/admin", ExCommerceWeb do
-    pipe_through [
-      :browser,
-      :require_authenticated_user,
-      :require_confirmed_user
-    ]
+      live "/", AdminDashboardLive, :index
 
-    live "/", AdminDashboardLive, :index
+      # ------------------------------------------------------------------------
+      # Brands routes
 
-    live "/shops", ShopLive.Index, :index
-    live "/shops/new", ShopLive.Index, :new
-    live "/shops/:id/edit", ShopLive.Index, :edit
+      live "/brands", BrandLive.Index, :index
+      live "/brands/new", BrandLive.Index, :new
+      live "/brands/:id/edit", BrandLive.Index, :edit
 
-    live "/shops/:id", ShopLive.Show, :show
-    live "/shops/:id/show/edit", ShopLive.Show, :edit
+      live "/brands/:id", BrandLive.Show, :show
+      live "/brands/:id/show/edit", BrandLive.Show, :edit
+
+      # ------------------------------------------------------------------------
+      # Default routes
+      live "/shops", ShopLive.Index, :index
+
+      scope "/:brand" do
+        live "/", AdminDashboardLive, :index
+
+        # ----------------------------------------------------------------------
+        # Shops routes
+
+        live "/shops", ShopLive.Index, :index
+        live "/shops/new", ShopLive.Index, :new
+        live "/shops/:id/edit", ShopLive.Index, :edit
+
+        live "/shops/:id", ShopLive.Show, :show
+        live "/shops/:id/show/edit", ShopLive.Show, :edit
+      end
+    end
   end
 
   # Other scopes may use custom stacks.
