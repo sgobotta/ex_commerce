@@ -6,22 +6,17 @@ defmodule ExCommerceWeb.ShopLive.Index do
   use ExCommerceWeb, :live_view
 
   alias ExCommerce.Marketplaces
+  alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Marketplaces.Shop
 
   @impl true
   def mount(params, session, socket) do
-    # socket = assign_defaults(socket, params, session)
     case connected?(socket) do
       true ->
-        %{assigns: %{user: user}} =
-          socket = assign_defaults(socket, params, session)
-
-        socket = assign_brand(socket, params, session)
-
         {:ok,
          socket
-         |> assign(:user, user)
-         |> assign(:shops, list_shops())}
+         |> assign_defaults(params, session)
+         |> assign_brand(params, session)}
 
       false ->
         {:ok, socket}
@@ -29,14 +24,50 @@ defmodule ExCommerceWeb.ShopLive.Index do
   end
 
   @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  def handle_params(%{"brand" => _brand_id} = params, _url, socket) do
+    socket =
+      case connected?(socket) do
+        true ->
+          %{assigns: %{brand: %Brand{shops: shops}}} = socket
+
+          socket
+          |> assign(:shops, shops)
+          |> apply_action(socket.assigns.live_action, params)
+
+        false ->
+          socket
+      end
+
+    {:noreply, socket}
   end
 
-  defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, gettext("Edit Shop"))
-    |> assign(:shop, Marketplaces.get_shop!(id))
+  @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply,
+     socket
+     |> put_flash(
+       :info,
+       gettext("Please Manage a brand to continue browsing shops")
+     )
+     |> apply_action(socket.assigns.live_action, params)
+     |> redirect(to: Routes.brand_index_path(socket, :index))}
+  end
+
+  defp apply_action(socket, :edit, %{"id" => shop_id}) do
+    %{assigns: %{shops: shops}} = socket
+
+    case Enum.find(shops, nil, &(&1.id == shop_id)) do
+      nil ->
+        %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+        socket
+        |> put_flash(:error, gettext("The given shop could not be found"))
+        |> redirect(to: Routes.shop_index_path(socket, :index, brand_id))
+
+      %Shop {} = shop ->
+        socket
+        |> assign(:page_title, gettext("Edit Shop"))
+        |> assign(:shop, shop)
+    end
   end
 
   defp apply_action(socket, :new, _params) do
@@ -53,17 +84,19 @@ defmodule ExCommerceWeb.ShopLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
+    %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
     shop = Marketplaces.get_shop!(id)
     {:ok, _} = Marketplaces.delete_shop(shop)
 
-    {:noreply, assign(socket, :shops, list_shops())}
+    {:noreply, assign(socket, :shops, list_shops(brand_id))}
   end
 
-  defp list_shops do
-    Marketplaces.list_shops()
+  defp prepare_new_shop(%{brand: %Brand{id: brand_id}}) do
+    %Shop{brand_id: brand_id}
   end
 
-  defp prepare_new_shop(%{brand: brand}) do
-    %Shop{brand_id: brand}
+  defp list_shops(brand_id) do
+    Marketplaces.list_shops_by_brand(brand_id)
   end
 end

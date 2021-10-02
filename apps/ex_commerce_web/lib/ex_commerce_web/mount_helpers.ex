@@ -3,9 +3,10 @@ defmodule ExCommerceWeb.MountHelpers do
   Responsible for implementing reusable mount helpers
   """
   import Phoenix.LiveView
+  import ExCommerceWeb.Gettext
 
   alias ExCommerce.Accounts
-  alias ExCommerce.Marketplaces
+  alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Repo
   alias ExCommerceWeb.Router.Helpers, as: Routes
@@ -19,50 +20,46 @@ defmodule ExCommerceWeb.MountHelpers do
   browser locale, timezone and timezone offset.
   """
   def assign_defaults(socket, _params, session) do
-    case connected?(socket) do
-      true ->
-        socket
-        |> assign_user(session)
-        |> assign_locale()
-        |> assign_timezone()
-        |> assign_timezone_offset()
-
-      false ->
-        socket
-    end
+    socket
+    |> assign_user(session)
+    |> assign_locale()
+    |> assign_timezone()
+    |> assign_timezone_offset()
   end
 
   def assign_brand(socket, %{"brand" => brand_id}, _session) do
-    %{user: %{brands: brands}} = socket.assigns
+    %{user: %User{brands: brands}} = socket.assigns
 
     case Enum.find(brands, nil, &(&1.id == brand_id)) do
       nil ->
         socket
-        |> redirect(to: Routes.brand_index_path(socket, :new))
+        |> put_flash(:error, gettext("The given brand could not be found"))
+        |> redirect(to: Routes.brand_index_path(socket, :index))
 
-      %Brand{id: brand_id} ->
+      %Brand{} = brand ->
         socket
-        |> assign(:brand, brand_id)
+        |> assign(:brand, Repo.preload(brand, [:shops]))
     end
   end
 
   def assign_brand(socket, _params, _session) do
     # Find and assign the first found brand
-    %{user: %{brands: brands}} = socket.assigns
+    %{user: %User{brands: brands}} = socket.assigns
 
     case Enum.at(brands, 0) do
       nil ->
         socket
-        |> redirect(to: Routes.brand_index_path(socket, :new))
+        |> put_flash(:error, gettext("The given brand could not be found"))
+        |> redirect(to: Routes.brand_index_path(socket, :index))
 
-      brand ->
+      %Brand{} = brand ->
         socket
-        |> assign(:brand, brand.id)
+        |> assign(:brand, Repo.preload(brand, [:shops]))
     end
   end
 
   defp assign_user(socket, session) do
-    user =
+    %User{} = user =
       Accounts.get_user_by_session_token(session["user_token"])
       |> Repo.preload([:brands])
 

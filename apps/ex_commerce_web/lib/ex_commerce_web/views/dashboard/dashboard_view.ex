@@ -3,6 +3,8 @@ defmodule ExCommerceWeb.DashboardView do
 
   import Phoenix.View
 
+  alias ExCommerce.Marketplaces.Brand
+
   def render("brands", assigns) do
     %{user_email: user_email} = assigns
 
@@ -34,7 +36,7 @@ defmodule ExCommerceWeb.DashboardView do
   end
 
   def render("dashboard", assigns) do
-    %{user_email: user_email, brand: brand} = assigns
+    %{user_email: user_email, brand: %Brand{id: brand_id}} = assigns
 
     navbar_opts =
       assigns
@@ -80,7 +82,7 @@ defmodule ExCommerceWeb.DashboardView do
                       Routes.admin_dashboard_path(
                         ExCommerceWeb.Endpoint,
                         :index,
-                        brand
+                        brand_id
                       )
                   ],
                   navbar_opts
@@ -102,7 +104,7 @@ defmodule ExCommerceWeb.DashboardView do
                       Routes.shop_index_path(
                         ExCommerceWeb.Endpoint,
                         :index,
-                        brand
+                        brand_id
                       )
                   ],
                   navbar_opts

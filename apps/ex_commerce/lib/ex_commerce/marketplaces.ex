@@ -22,6 +22,20 @@ defmodule ExCommerce.Marketplaces do
   end
 
   @doc """
+  Given a brand id returns a list of shops that belong to it.
+
+  ## Examples
+
+      iex> list_shops_by_brand("658e944a-e882-4318-8364-8abaffe7ce71")
+      [%Shop{}, ...]
+
+  """
+  def list_shops_by_brand(brand_id) do
+    from(s in Shop, where: s.brand_id == ^brand_id)
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single shop.
 
   Raises `Ecto.NoResultsError` if the Shop does not exist.

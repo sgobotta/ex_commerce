@@ -5,20 +5,17 @@ defmodule ExCommerceWeb.ShopLive.Show do
 
   use ExCommerceWeb, :live_view
 
-  alias ExCommerce.Marketplaces
+  alias ExCommerce.Marketplaces.Brand
+  alias ExCommerce.Marketplaces.Shop
 
   @impl true
   def mount(params, session, socket) do
     case connected?(socket) do
       true ->
-        %{assigns: %{user: user}} =
-          socket = assign_defaults(socket, params, session)
-
-        socket = assign_brand(socket, params, session)
-
         {:ok,
          socket
-         |> assign(:user, user)}
+         |> assign_defaults(params, session)
+         |> assign_brand(params, session)}
 
       false ->
         {:ok, socket}
@@ -26,11 +23,28 @@ defmodule ExCommerceWeb.ShopLive.Show do
   end
 
   @impl true
-  def handle_params(%{"id" => id}, _url, socket) do
-    {:noreply,
-     socket
-     |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:shop, Marketplaces.get_shop!(id))}
+  def handle_params(%{"id" => shop_id}, _url, socket) do
+    case connected?(socket) do
+      true ->
+        %{assigns: %{brand: %Brand{shops: shops}}} = socket
+
+        case Enum.find(shops, nil, &(&1.id == shop_id)) do
+          nil ->
+            %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+            {:noreply,
+             socket
+             |> redirect(to: Routes.shop_index_path(socket, :index, brand_id))}
+
+          %Shop{} = shop ->
+            {:noreply,
+             socket
+             |> assign(:page_title, page_title(socket.assigns.live_action))
+             |> assign(:shop, shop)}
+        end
+
+      false ->
+        {:noreply, socket}
+    end
   end
 
   defp page_title(:show), do: "Show Shop"

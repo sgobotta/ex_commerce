@@ -46,6 +46,8 @@ defmodule ExCommerceWeb.BrandLive.FormComponent do
   defp save_brand(socket, :new, brand_params) do
     case Marketplaces.create_brand(brand_params) do
       {:ok, _brand} ->
+        # TODO: Assoc brand to current user
+
         {:noreply,
          socket
          |> put_flash(:info, "Brand created successfully")
