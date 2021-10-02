@@ -33,7 +33,7 @@ defmodule ExCommerceWeb.Router do
         :require_confirmed_user
       ]
 
-      live "/", AdminDashboardLive, :index
+      live "/", HomeLive.Index, :index
 
       # ------------------------------------------------------------------------
       # Brands routes
@@ -49,8 +49,10 @@ defmodule ExCommerceWeb.Router do
       # Default routes
       live "/shops", ShopLive.Index, :index
 
+      live "/shops/:shop_id", ShopLive.Show, :show
+
       scope "/:brand_id" do
-        live "/", AdminDashboardLive, :index
+        live "/", HomeLive.Index, :index
 
         # ----------------------------------------------------------------------
         # Shops routes

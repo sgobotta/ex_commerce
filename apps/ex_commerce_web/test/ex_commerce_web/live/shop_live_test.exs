@@ -7,11 +7,9 @@ defmodule ExCommerceWeb.ShopLiveTest do
   import Phoenix.LiveViewTest
 
   alias ExCommerce.Accounts.User
-  alias ExCommerce.BrandsFixtures
   alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Marketplaces.Shop
-  alias ExCommerce.ShopsFixtures
 
   @create_attrs %{
     name: "some name",
@@ -37,16 +35,6 @@ defmodule ExCommerceWeb.ShopLiveTest do
     banner_message: nil,
     address: nil
   }
-
-  defp create_shop(_context) do
-    shop = ShopsFixtures.create()
-    %{shop: shop}
-  end
-
-  defp create_brand(_context) do
-    brand = BrandsFixtures.create()
-    %{brand: brand}
-  end
 
   describe "Index" do
     setup [
@@ -183,13 +171,13 @@ defmodule ExCommerceWeb.ShopLiveTest do
     test "[Failure] does not display a shop when user is not confirmed", %{
       brand: %Brand{id: brand_id}
     } do
-      %{shop: %Shop{} = shop} = create_shop(%{})
+      %{shop: %Shop{id: shop_id}} = create_shop(%{})
       conn = build_conn()
 
       to = Routes.user_session_path(conn, :new)
 
       assert {:error, {:redirect, %{flash: _token, to: ^to}}} =
-               live(conn, Routes.shop_show_path(conn, :show, brand_id, shop))
+               live(conn, Routes.shop_show_path(conn, :show, brand_id, shop_id))
     end
 
     test "[Success] updates shop within modal", %{

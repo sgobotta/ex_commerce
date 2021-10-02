@@ -13,16 +13,6 @@ defmodule ExCommerceWeb.BrandLiveTest do
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
 
-  defp fixture(:brand) do
-    {:ok, brand} = Marketplaces.create_brand(@create_attrs)
-    brand
-  end
-
-  defp create_brand(_context) do
-    brand = fixture(:brand)
-    %{brand: brand}
-  end
-
   describe "Index" do
     setup [
       :register_and_log_in_confirmed_user,

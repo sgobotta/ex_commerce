@@ -25,38 +25,24 @@ defmodule ExCommerceWeb.BrandLive.Index do
   end
 
   @impl true
-  def handle_params(%{"brand_id" => _brand_id} = params, _url, socket) do
-    socket =
-      case connected?(socket) do
-        true ->
-          socket
-          |> apply_action(socket.assigns.live_action, params)
-
-        false ->
-          socket
-      end
-
-    {:noreply, socket}
+  def handle_params(params, _url, socket) do
+    {:noreply, apply_action_maybe(socket, socket.assigns.live_action, params)}
   end
 
-  @impl true
-  def handle_params(params, _url, socket) do
-    socket =
-      case connected?(socket) do
-        true ->
-          apply_action(socket, socket.assigns.live_action, params)
+  defp apply_action_maybe(socket, live_action, params) do
+    case connected?(socket) do
+      true ->
+        apply_action(socket, live_action, params)
 
-        false ->
-          socket
-      end
-
-    {:noreply, socket}
+      false ->
+        socket
+    end
   end
 
   defp apply_action(socket, :edit, %{"brand_id" => _brand_id} = params) do
     socket
     |> assign(:page_title, gettext("Edit Brand"))
-    |> assign_brand(params, %{})
+    |> assign_brand_or_redirect(params, %{})
   end
 
   defp apply_action(socket, :new, _params) do
