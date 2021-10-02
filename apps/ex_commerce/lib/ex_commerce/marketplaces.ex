@@ -313,15 +313,32 @@ defmodule ExCommerce.Marketplaces do
   # ----------------------------------------------------------------------------
   # Associations
 
+  @doc """
+  Given a `user_id` and `brand_attrs`, attempts to create a brand and
+  associated it with the given `user_id`. If there is an error, the whole
+  operation should be aborted and no records should be created.
+
+  ## Examples
+
+      iex> assoc_user_brand(
+        %User{id: Ecto.UUID.generate()},
+        %{name: "some name}}
+      )
+      {:ok, %{brand: %Brand{}, brand_user: %BrandUser{}}}
+
+      iex> assoc_user_brand(
+        %User{id: Ecto.UUID.generate()},
+        %{name: "some name}}
+      )
+      {:ok, %{brand: %Brand{}, brand_user: %BrandUser{}}}
+
+  """
   def assoc_user_brand(%User{id: user_id}, brand_attrs) do
-    Repo.transaction(fn ->
-      {:ok, %Brand{id: brand_id} = brand} =
-        Marketplaces.create_brand(brand_attrs)
-
-      {:ok, %BrandUser{}} =
-        Marketplaces.create_brand_user(%{user_id: user_id, brand_id: brand_id})
-
-      brand
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:brand, change_brand(%Brand{}, brand_attrs))
+    |> Ecto.Multi.insert(:brand_user, fn %{brand: %Brand{id: brand_id}} ->
+      change_brand_user(%BrandUser{}, %{user_id: user_id, brand_id: brand_id})
     end)
+    |> Repo.transaction()
   end
 end
