@@ -18,7 +18,7 @@ defmodule ExCommerceWeb.AdminDashboardLive do
   end
 
   @impl true
-  def handle_params(%{"brand" => _brand_id} = params, _url, socket) do
+  def handle_params(%{"brand_id" => _brand_id} = params, _url, socket) do
     {:noreply,
      socket
      |> apply_action(socket.assigns.live_action, params)}

@@ -18,14 +18,14 @@ defmodule ExCommerceWeb.BrandLive.Show do
   end
 
   @impl true
-  def handle_params(%{"id" => id}, _session, socket) do
+  def handle_params(%{"brand_id" => id}, _session, socket) do
     case connected?(socket) do
       true ->
         case Enum.find(socket.assigns.user.brands, nil, &(&1.id == id)) do
           nil ->
             {:noreply,
              socket
-             |> put_flash(:error, gettext("The given shop could not be found"))
+             |> put_flash(:error, gettext("The given brand could not be found"))
              |> redirect(to: Routes.brand_index_path(socket, :index))}
 
           %Brand{} = brand ->

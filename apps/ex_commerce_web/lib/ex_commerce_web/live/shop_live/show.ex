@@ -23,7 +23,7 @@ defmodule ExCommerceWeb.ShopLive.Show do
   end
 
   @impl true
-  def handle_params(%{"id" => shop_id}, _url, socket) do
+  def handle_params(%{"shop_id" => shop_id}, _url, socket) do
     case connected?(socket) do
       true ->
         %{assigns: %{brand: %Brand{shops: shops}}} = socket
@@ -34,6 +34,7 @@ defmodule ExCommerceWeb.ShopLive.Show do
 
             {:noreply,
              socket
+             |> put_flash(:error, gettext("The given shop could not be found"))
              |> redirect(to: Routes.shop_index_path(socket, :index, brand_id))}
 
           %Shop{} = shop ->

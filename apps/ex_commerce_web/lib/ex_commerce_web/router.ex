@@ -40,16 +40,16 @@ defmodule ExCommerceWeb.Router do
 
       live "/brands", BrandLive.Index, :index
       live "/brands/new", BrandLive.Index, :new
-      live "/brands/:id/edit", BrandLive.Index, :edit
+      live "/brands/:brand_id/edit", BrandLive.Index, :edit
 
-      live "/brands/:id", BrandLive.Show, :show
-      live "/brands/:id/show/edit", BrandLive.Show, :edit
+      live "/brands/:brand_id", BrandLive.Show, :show
+      live "/brands/:brand_id/show/edit", BrandLive.Show, :edit
 
       # ------------------------------------------------------------------------
       # Default routes
       live "/shops", ShopLive.Index, :index
 
-      scope "/:brand" do
+      scope "/:brand_id" do
         live "/", AdminDashboardLive, :index
 
         # ----------------------------------------------------------------------
@@ -57,10 +57,10 @@ defmodule ExCommerceWeb.Router do
 
         live "/shops", ShopLive.Index, :index
         live "/shops/new", ShopLive.Index, :new
-        live "/shops/:id/edit", ShopLive.Index, :edit
+        live "/shops/:shop_id/edit", ShopLive.Index, :edit
 
-        live "/shops/:id", ShopLive.Show, :show
-        live "/shops/:id/show/edit", ShopLive.Show, :edit
+        live "/shops/:shop_id", ShopLive.Show, :show
+        live "/shops/:shop_id/show/edit", ShopLive.Show, :edit
       end
     end
   end

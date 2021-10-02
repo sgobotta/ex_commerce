@@ -27,7 +27,7 @@ defmodule ExCommerceWeb.MountHelpers do
     |> assign_timezone_offset()
   end
 
-  def assign_brand(socket, %{"brand" => brand_id}, _session) do
+  def assign_brand(socket, %{"brand_id" => brand_id}, _session) do
     %{user: %User{brands: brands}} = socket.assigns
 
     case Enum.find(brands, nil, &(&1.id == brand_id)) do

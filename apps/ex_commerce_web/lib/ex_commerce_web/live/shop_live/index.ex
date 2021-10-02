@@ -24,7 +24,7 @@ defmodule ExCommerceWeb.ShopLive.Index do
   end
 
   @impl true
-  def handle_params(%{"brand" => _brand_id} = params, _url, socket) do
+  def handle_params(%{"brand_id" => _brand_id} = params, _url, socket) do
     socket =
       case connected?(socket) do
         true ->
@@ -53,7 +53,7 @@ defmodule ExCommerceWeb.ShopLive.Index do
      |> redirect(to: Routes.brand_index_path(socket, :index))}
   end
 
-  defp apply_action(socket, :edit, %{"id" => shop_id}) do
+  defp apply_action(socket, :edit, %{"shop_id" => shop_id}) do
     %{assigns: %{shops: shops}} = socket
 
     case Enum.find(shops, nil, &(&1.id == shop_id)) do
@@ -84,10 +84,10 @@ defmodule ExCommerceWeb.ShopLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
+  def handle_event("delete", %{"id" => shop_id}, socket) do
     %{assigns: %{brand: %Brand{id: brand_id}}} = socket
 
-    shop = Marketplaces.get_shop!(id)
+    %Shop{} = shop = Marketplaces.get_shop!(shop_id)
     {:ok, _} = Marketplaces.delete_shop(shop)
 
     {:noreply, assign(socket, :shops, list_shops(brand_id))}
