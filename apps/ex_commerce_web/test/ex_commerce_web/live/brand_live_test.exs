@@ -2,7 +2,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
   @moduledoc false
 
   use ExCommerceWeb.ConnCase
-  use ExCommerceWeb.ResourceCases.BrandCase
+  use ExCommerceWeb.ResourceCases.MarketplacesCase
 
   import Phoenix.LiveViewTest
 

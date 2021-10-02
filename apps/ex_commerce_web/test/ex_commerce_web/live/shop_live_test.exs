@@ -2,6 +2,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
   @moduledoc false
 
   use ExCommerceWeb.ConnCase
+  use ExCommerceWeb.ResourceCases.MarketplacesCase
 
   import Phoenix.LiveViewTest
 
@@ -45,25 +46,6 @@ defmodule ExCommerceWeb.ShopLiveTest do
   defp create_brand(_context) do
     brand = BrandsFixtures.create()
     %{brand: brand}
-  end
-
-  defp assoc_user_brand(%{user: %User{id: user_id}, brand: %Brand{id: brand_id}}) do
-    {:ok, _brand_user} =
-      Marketplaces.create_brand_user(%{
-        user_id: user_id,
-        brand_id: brand_id
-      })
-
-    %{}
-  end
-
-  defp assoc_brand_shop(%{brand: %Brand{id: brand_id}, shop: %Shop{} = shop}) do
-    {:ok, shop} =
-      Marketplaces.update_shop(shop, %{
-        brand_id: brand_id
-      })
-
-    %{shop: shop}
   end
 
   describe "Index" do
@@ -129,7 +111,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         live(conn, Routes.shop_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element("#shop-#{shop.id} a", "Edit")
+             |> element("#shop-#{shop_id} a", "Edit")
              |> render_click() =~
                "Edit Shop"
 
