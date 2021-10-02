@@ -69,7 +69,7 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
         end)
 
       conn = get(conn, Routes.user_confirmation_path(conn, :confirm, token))
-      assert redirected_to(conn) == Routes.admin_dashboard_path(conn, :index)
+      assert redirected_to(conn) == Routes.home_index_path(conn, :index)
       assert get_flash(conn, :info) =~ "User confirmed successfully"
       assert Accounts.get_user!(user.id).confirmed_at
       refute get_session(conn, :user_token)

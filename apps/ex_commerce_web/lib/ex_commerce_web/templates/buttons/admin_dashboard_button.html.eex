@@ -1,5 +1,5 @@
 <%= link gettext("Admin Dashboard"),
-  to: Routes.admin_dashboard_path(ExCommerceWeb.Endpoint, :index),
+  to: Routes.home_index_path(ExCommerceWeb.Endpoint, :index),
   class: "
     py-3 px-2 sm:px-4 rounded-full
     uppercase text-sm sm:text-xl font-medium text-white

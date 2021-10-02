@@ -79,7 +79,7 @@ defmodule ExCommerceWeb.DashboardView do
                     name: "home",
                     text: gettext("Home"),
                     to:
-                      Routes.admin_dashboard_path(
+                      Routes.home_index_path(
                         ExCommerceWeb.Endpoint,
                         :index,
                         brand_id
