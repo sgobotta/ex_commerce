@@ -30,11 +30,14 @@ defmodule ExCommerceWeb.BrandLiveTest do
       :assoc_user_brand
     ]
 
-    test "[Success] lists all brands", %{conn: conn, brand: %Brand{name: brand_name}} do
+    test "[Success] lists all brands", %{
+      conn: conn,
+      brand: %Brand{name: brand_name}
+    } do
       {:ok, _index_live, html} =
         live(conn, Routes.brand_index_path(conn, :index))
 
-      assert html =~ "Listing Brands"
+      assert html =~ "My Brands"
       assert html =~ brand_name
     end
 
@@ -61,7 +64,10 @@ defmodule ExCommerceWeb.BrandLiveTest do
       assert html =~ "some name"
     end
 
-    test "[Success] updates brand in listing", %{conn: conn, brand: %Brand{id: brand_id}} do
+    test "[Success] updates brand in listing", %{
+      conn: conn,
+      brand: %Brand{id: brand_id}
+    } do
       {:ok, index_live, _html} =
         live(conn, Routes.brand_index_path(conn, :index))
 
@@ -99,7 +105,10 @@ defmodule ExCommerceWeb.BrandLiveTest do
     end
 
     @tag :skip
-    test "[Success] deletes brand in listing", %{conn: conn, brand: %Brand{id: brand_id}} do
+    test "[Success] deletes brand in listing", %{
+      conn: conn,
+      brand: %Brand{id: brand_id}
+    } do
       {:ok, index_live, _html} =
         live(conn, Routes.brand_index_path(conn, :index))
 

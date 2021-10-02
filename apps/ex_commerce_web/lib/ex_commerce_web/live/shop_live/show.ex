@@ -31,6 +31,7 @@ defmodule ExCommerceWeb.ShopLive.Show do
         case Enum.find(shops, nil, &(&1.id == shop_id)) do
           nil ->
             %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
             {:noreply,
              socket
              |> redirect(to: Routes.shop_index_path(socket, :index, brand_id))}
@@ -47,6 +48,6 @@ defmodule ExCommerceWeb.ShopLive.Show do
     end
   end
 
-  defp page_title(:show), do: "Show Shop"
-  defp page_title(:edit), do: "Edit Shop"
+  defp page_title(:show), do: gettext("Show Shop")
+  defp page_title(:edit), do: gettext("Edit Shop")
 end

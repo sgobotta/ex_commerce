@@ -4,7 +4,9 @@ defmodule ExCommerceWeb.BrandLive.FormComponent do
   """
   use ExCommerceWeb, :live_component
 
+  alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces
+  alias ExCommerce.Marketplaces.Brand
 
   @impl true
   def update(%{brand: brand} = assigns, socket) do
@@ -31,11 +33,13 @@ defmodule ExCommerceWeb.BrandLive.FormComponent do
   end
 
   defp save_brand(socket, :edit, brand_params) do
-    case Marketplaces.update_brand(socket.assigns.brand, brand_params) do
+    %{assigns: %{brand: %Brand{} = brand}} = socket
+
+    case Marketplaces.update_brand(brand, brand_params) do
       {:ok, _brand} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Brand updated successfully")
+         |> put_flash(:info, gettext("Brand updated successfully"))
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -44,13 +48,13 @@ defmodule ExCommerceWeb.BrandLive.FormComponent do
   end
 
   defp save_brand(socket, :new, brand_params) do
-    case Marketplaces.create_brand(brand_params) do
-      {:ok, _brand} ->
-        # TODO: Assoc brand to current user
+    %{assigns: %{user: %User{} = user}} = socket
 
+    case Marketplaces.assoc_user_brand(user, brand_params) do
+      {:ok, _user_brand} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Brand created successfully")
+         |> put_flash(:info, gettext("Brand created successfully"))
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

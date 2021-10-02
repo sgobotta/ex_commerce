@@ -7,7 +7,8 @@
       action: @live_action,
       brand: @brand,
       return_to: Routes.brand_index_path(@socket, :index),
-      patch_to: Routes.brand_index_path(@socket, :index)
+      patch_to: Routes.brand_index_path(@socket, :index),
+      user: @user
     %>
   <% end %>
 

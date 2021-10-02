@@ -4,9 +4,11 @@ defmodule ExCommerce.Marketplaces do
   """
 
   import Ecto.Query, warn: false
-  alias ExCommerce.Repo
 
+  alias __MODULE__
+  alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces.Shop
+  alias ExCommerce.Repo
 
   @doc """
   Returns the list of shops.
@@ -306,5 +308,20 @@ defmodule ExCommerce.Marketplaces do
   """
   def change_brand_user(%BrandUser{} = brand_user, attrs \\ %{}) do
     BrandUser.changeset(brand_user, attrs)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Associations
+
+  def assoc_user_brand(%User{id: user_id}, brand_attrs) do
+    Repo.transaction(fn ->
+      {:ok, %Brand{id: brand_id} = brand} =
+        Marketplaces.create_brand(brand_attrs)
+
+      {:ok, %BrandUser{}} =
+        Marketplaces.create_brand_user(%{user_id: user_id, brand_id: brand_id})
+
+      brand
+    end)
   end
 end

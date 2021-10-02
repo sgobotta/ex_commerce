@@ -59,11 +59,12 @@ defmodule ExCommerceWeb.ShopLive.Index do
     case Enum.find(shops, nil, &(&1.id == shop_id)) do
       nil ->
         %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
         socket
         |> put_flash(:error, gettext("The given shop could not be found"))
         |> redirect(to: Routes.shop_index_path(socket, :index, brand_id))
 
-      %Shop {} = shop ->
+      %Shop{} = shop ->
         socket
         |> assign(:page_title, gettext("Edit Shop"))
         |> assign(:shop, shop)

@@ -36,7 +36,6 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
 
         %{shop: shop}
       end
-
     end
   end
 end

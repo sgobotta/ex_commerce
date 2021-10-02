@@ -40,6 +40,6 @@ defmodule ExCommerceWeb.BrandLive.Show do
     end
   end
 
-  defp page_title(:show), do: "Show Brand"
-  defp page_title(:edit), do: "Edit Brand"
+  defp page_title(:show), do: gettext("Show Brand")
+  defp page_title(:edit), do: gettext("Edit Brand")
 end

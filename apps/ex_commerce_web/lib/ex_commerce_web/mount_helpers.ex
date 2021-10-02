@@ -59,7 +59,8 @@ defmodule ExCommerceWeb.MountHelpers do
   end
 
   defp assign_user(socket, session) do
-    %User{} = user =
+    %User{} =
+      user =
       Accounts.get_user_by_session_token(session["user_token"])
       |> Repo.preload([:brands])
 
