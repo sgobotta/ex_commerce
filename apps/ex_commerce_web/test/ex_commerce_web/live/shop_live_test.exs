@@ -7,11 +7,9 @@ defmodule ExCommerceWeb.ShopLiveTest do
   import Phoenix.LiveViewTest
 
   alias ExCommerce.Accounts.User
-  alias ExCommerce.BrandsFixtures
   alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Marketplaces.Shop
-  alias ExCommerce.ShopsFixtures
 
   @create_attrs %{
     name: "some name",
@@ -38,16 +36,6 @@ defmodule ExCommerceWeb.ShopLiveTest do
     address: nil
   }
 
-  defp create_shop(_context) do
-    shop = ShopsFixtures.create()
-    %{shop: shop}
-  end
-
-  defp create_brand(_context) do
-    brand = BrandsFixtures.create()
-    %{brand: brand}
-  end
-
   describe "Index" do
     setup [
       :register_and_log_in_confirmed_user,
@@ -69,14 +57,25 @@ defmodule ExCommerceWeb.ShopLiveTest do
       assert html =~ shop_name
     end
 
+    test "[Failure] lists all shops for a brand - redirects to brands", %{
+      conn: conn
+    } do
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_index_path(conn, :index),
+        to: Routes.brand_index_path(conn, :index)
+      )
+    end
+
     test "[Failure] does not list all shops when user is not confirmed" do
       %{shop: _shop} = create_shop(%{})
       conn = build_conn()
 
-      to = Routes.user_session_path(conn, :new)
-
-      assert {:error, {:redirect, %{flash: _token, to: ^to}}} =
-               live(conn, Routes.shop_index_path(conn, :index))
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_index_path(conn, :index),
+        to: Routes.user_session_path(conn, :new)
+      )
     end
 
     test "[Success] saves new shop", %{brand: %Brand{id: brand_id}, conn: conn} do
@@ -134,6 +133,44 @@ defmodule ExCommerceWeb.ShopLiveTest do
       assert html =~ "some updated name"
     end
 
+    test "[Failure] updates shop in listing - redirects to brands when invalid brand id is provided",
+         %{
+           conn: conn,
+           shop: %Shop{id: shop_id}
+         } do
+      assert_redirects_with_error(
+        conn,
+        from:
+          Routes.shop_index_path(conn, :edit, Ecto.UUID.generate(), shop_id),
+        to: Routes.brand_index_path(conn, :index)
+      )
+
+      assert_redirects_with_error(
+        conn,
+        from:
+          Routes.shop_index_path(
+            conn,
+            :edit,
+            Ecto.UUID.generate(),
+            Ecto.UUID.generate()
+          ),
+        to: Routes.brand_index_path(conn, :index)
+      )
+    end
+
+    test "[Failure] updates shop in listing - redirects to shops when invalid shop id is provided",
+         %{
+           brand: %Brand{id: brand_id},
+           conn: conn
+         } do
+      assert_redirects_with_error(
+        conn,
+        from:
+          Routes.shop_index_path(conn, :edit, brand_id, Ecto.UUID.generate()),
+        to: Routes.shop_index_path(conn, :index, brand_id)
+      )
+    end
+
     test "[Success] deletes shop in listing", %{
       brand: %Brand{id: brand_id},
       conn: conn,
@@ -147,15 +184,6 @@ defmodule ExCommerceWeb.ShopLiveTest do
              |> render_click()
 
       refute has_element?(index_live, "#shop-#{shop_id}")
-    end
-
-    test "[Failure] redirects to brands list when no shop id is provided", %{
-      conn: conn
-    } do
-      assert {:error, {:redirect, %{to: to}}} =
-               live(conn, Routes.shop_index_path(conn, :index))
-
-      assert to == Routes.brand_index_path(conn, :index)
     end
   end
 
@@ -180,16 +208,66 @@ defmodule ExCommerceWeb.ShopLiveTest do
       assert html =~ shop_name
     end
 
-    test "[Failure] does not display a shop when user is not confirmed", %{
+    test "[Failure] displays shop - redirects to brands when invalid brand id is provided",
+         %{
+           conn: conn,
+           shop: %Shop{id: shop_id}
+         } do
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :show, Ecto.UUID.generate(), shop_id),
+        to: Routes.brand_index_path(conn, :index)
+      )
+
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :show, "123", shop_id),
+        to: Routes.brand_index_path(conn, :index)
+      )
+
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :show, "123", Ecto.UUID.generate()),
+        to: Routes.brand_index_path(conn, :index)
+      )
+
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :show, "123", "123"),
+        to: Routes.brand_index_path(conn, :index)
+      )
+    end
+
+    test "[Failure] displays shop - redirects to shops when invalid shop id is provided",
+         %{
+           brand: %Brand{id: brand_id},
+           conn: conn
+         } do
+      assert_redirects_with_error(
+        conn,
+        from:
+          Routes.shop_show_path(conn, :show, brand_id, Ecto.UUID.generate()),
+        to: Routes.shop_index_path(conn, :index, brand_id)
+      )
+
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :show, brand_id, "123"),
+        to: Routes.shop_index_path(conn, :index, brand_id)
+      )
+    end
+
+    test "[Failure] displays shop - redirects when user is not confirmed", %{
       brand: %Brand{id: brand_id}
     } do
-      %{shop: %Shop{} = shop} = create_shop(%{})
+      %{shop: %Shop{id: shop_id}} = create_shop(%{})
       conn = build_conn()
 
-      to = Routes.user_session_path(conn, :new)
-
-      assert {:error, {:redirect, %{flash: _token, to: ^to}}} =
-               live(conn, Routes.shop_show_path(conn, :show, brand_id, shop))
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :show, brand_id, shop_id),
+        to: Routes.user_session_path(conn, :new)
+      )
     end
 
     test "[Success] updates shop within modal", %{
@@ -225,68 +303,70 @@ defmodule ExCommerceWeb.ShopLiveTest do
       assert html =~ "some updated name"
     end
 
-    @tag :wip
-    test "[Failure] redirects to brands when invalid brand id is provided", %{
-      conn: conn,
-      shop: %Shop{id: shop_id}
-    } do
-      assert {:error, {:redirect, %{to: to}}} =
-               live(
-                 conn,
-                 Routes.shop_show_path(
-                   conn,
-                   :show,
-                   Ecto.UUID.generate(),
-                   shop_id
-                 )
-               )
+    test "[Failure] updates shop within modal - redirects to brands when invalid brand id is provided",
+         %{
+           conn: conn,
+           shop: %Shop{id: shop_id}
+         } do
+      assert_redirects_with_error(conn,
+        from: Routes.shop_show_path(conn, :edit, Ecto.UUID.generate(), shop_id),
+        to: Routes.brand_index_path(conn, :index)
+      )
 
-      assert to == Routes.brand_index_path(conn, :index)
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :edit, "123", shop_id),
+        to: Routes.brand_index_path(conn, :index)
+      )
 
-      assert {:error, {:redirect, %{to: to}}} =
-               live(
-                 conn,
-                 Routes.shop_show_path(
-                   conn,
-                   :edit,
-                   Ecto.UUID.generate(),
-                   shop_id
-                 )
-               )
+      assert_redirects_with_error(
+        conn,
+        from:
+          Routes.shop_show_path(
+            conn,
+            :edit,
+            Ecto.UUID.generate(),
+            Ecto.UUID.generate()
+          ),
+        to: Routes.brand_index_path(conn, :index)
+      )
 
-      assert to == Routes.brand_index_path(conn, :index)
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :edit, Ecto.UUID.generate(), "123"),
+        to: Routes.brand_index_path(conn, :index)
+      )
+
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :edit, "123", Ecto.UUID.generate()),
+        to: Routes.brand_index_path(conn, :index)
+      )
+
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :edit, "123", "123"),
+        to: Routes.brand_index_path(conn, :index)
+      )
     end
 
-    @tag :wip
-    test "[Failure] redirects to shops when invalid shop id is provided", %{
-      brand: %Brand{id: brand_id},
-      conn: conn
-    } do
-      assert {:error, {:redirect, %{to: to}}} =
-               live(
-                 conn,
-                 Routes.shop_show_path(
-                   conn,
-                   :show,
-                   brand_id,
-                   Ecto.UUID.generate()
-                 )
-               )
+    test "[Failure] updates shop within modal - redirects to shops when invalid shop id is provided",
+         %{
+           brand: %Brand{id: brand_id},
+           conn: conn
+         } do
+      assert_redirects_with_error(
+        conn,
+        from:
+          Routes.shop_show_path(conn, :edit, brand_id, Ecto.UUID.generate()),
+        to: Routes.shop_index_path(conn, :index, brand_id)
+      )
 
-      assert to == Routes.shop_index_path(conn, :index, brand_id)
-
-      assert {:error, {:redirect, %{to: to}}} =
-               live(
-                 conn,
-                 Routes.shop_show_path(
-                   conn,
-                   :edit,
-                   brand_id,
-                   Ecto.UUID.generate()
-                 )
-               )
-
-      assert to == Routes.shop_index_path(conn, :index, brand_id)
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_show_path(conn, :edit, brand_id, "123"),
+        to: Routes.shop_index_path(conn, :index, brand_id)
+      )
     end
   end
 end

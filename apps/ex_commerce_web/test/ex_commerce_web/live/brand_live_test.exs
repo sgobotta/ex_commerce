@@ -13,16 +13,6 @@ defmodule ExCommerceWeb.BrandLiveTest do
   @update_attrs %{name: "some updated name"}
   @invalid_attrs %{name: nil}
 
-  defp fixture(:brand) do
-    {:ok, brand} = Marketplaces.create_brand(@create_attrs)
-    brand
-  end
-
-  defp create_brand(_context) do
-    brand = fixture(:brand)
-    %{brand: brand}
-  end
-
   describe "Index" do
     setup [
       :register_and_log_in_confirmed_user,
@@ -92,16 +82,21 @@ defmodule ExCommerceWeb.BrandLiveTest do
       assert html =~ "some updated name"
     end
 
-    test "[Failure] updates brand in listing - redirects to brands", %{
-      conn: conn
-    } do
-      assert {:error, {:redirect, %{to: to}}} =
-               live(
-                 conn,
-                 Routes.brand_index_path(conn, :edit, Ecto.UUID.generate())
-               )
+    test "[Failure] updates brand in listing - redirects to brands on invalid brand id",
+         %{
+           conn: conn
+         } do
+      assert_redirects_with_error(
+        conn,
+        from: Routes.brand_index_path(conn, :edit, Ecto.UUID.generate()),
+        to: Routes.brand_index_path(conn, :index)
+      )
 
-      assert to == Routes.brand_index_path(conn, :index)
+      assert_redirects_with_error(
+        conn,
+        from: Routes.brand_index_path(conn, :edit, "123"),
+        to: Routes.brand_index_path(conn, :index)
+      )
     end
 
     @tag :skip
@@ -140,18 +135,17 @@ defmodule ExCommerceWeb.BrandLiveTest do
     test "[Failure] displays brand - redirects on invalid brand id", %{
       conn: conn
     } do
-      assert {:error, {:redirect, %{to: to}}} =
-               live(
-                 conn,
-                 Routes.brand_show_path(conn, :show, Ecto.UUID.generate())
-               )
+      assert_redirects_with_error(
+        conn,
+        from: Routes.brand_show_path(conn, :show, Ecto.UUID.generate()),
+        to: Routes.brand_index_path(conn, :index)
+      )
 
-      assert to == Routes.brand_index_path(conn, :index)
-
-      assert {:error, {:redirect, %{to: to}}} =
-               live(conn, Routes.brand_show_path(conn, :show, "123"))
-
-      assert to == Routes.brand_index_path(conn, :index)
+      assert_redirects_with_error(
+        conn,
+        from: Routes.brand_show_path(conn, :show, "123"),
+        to: Routes.brand_index_path(conn, :index)
+      )
     end
 
     test "[Success] updates brand within modal", %{
@@ -182,17 +176,17 @@ defmodule ExCommerceWeb.BrandLiveTest do
 
     test "[Failure] updates brand within modal - redirects on invalid brand id",
          %{conn: conn} do
-      assert {:error, {:redirect, %{to: to}}} =
-               live(
-                 conn,
-                 Routes.brand_show_path(conn, :edit, Ecto.UUID.generate())
-               )
+      assert_redirects_with_error(
+        conn,
+        from: Routes.brand_show_path(conn, :edit, Ecto.UUID.generate()),
+        to: Routes.brand_index_path(conn, :index)
+      )
 
-      assert to == Routes.brand_index_path(conn, :index)
-
-      live(conn, Routes.brand_show_path(conn, :edit, "123"))
-
-      assert to == Routes.brand_index_path(conn, :index)
+      assert_redirects_with_error(
+        conn,
+        from: Routes.brand_show_path(conn, :edit, "123"),
+        to: Routes.brand_index_path(conn, :index)
+      )
     end
   end
 end

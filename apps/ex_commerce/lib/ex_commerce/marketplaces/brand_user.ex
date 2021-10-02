@@ -23,6 +23,7 @@ defmodule ExCommerce.Marketplaces.BrandUser do
   def changeset(brand_user, attrs) do
     brand_user
     |> cast(attrs, @fields ++ @foreign_fields)
-    |> validate_required(@fields)
+    |> validate_required(@fields ++ @foreign_fields)
+    |> foreign_key_constraint(:user_id)
   end
 end

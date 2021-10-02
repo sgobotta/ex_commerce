@@ -1,4 +1,4 @@
-defmodule ExCommerceWeb.AdminDashboardLive do
+defmodule ExCommerceWeb.HomeLive.Index do
   @moduledoc false
 
   use ExCommerceWeb, :live_view
@@ -10,7 +10,7 @@ defmodule ExCommerceWeb.AdminDashboardLive do
         {:ok,
          socket
          |> assign_defaults(params, session)
-         |> assign_brand(params, session)}
+         |> assign_brand_or_redirect(params, session)}
 
       false ->
         {:ok, socket}
@@ -18,18 +18,15 @@ defmodule ExCommerceWeb.AdminDashboardLive do
   end
 
   @impl true
-  def handle_params(%{"brand" => _brand_id} = params, _url, socket) do
+  def handle_params(%{"brand_id" => _brand_id} = params, _url, socket) do
     {:noreply,
      socket
      |> apply_action(socket.assigns.live_action, params)}
   end
 
   @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply,
-     socket
-     |> apply_action(socket.assigns.live_action, params)
-     |> redirect(to: Routes.brand_index_path(socket, :index))}
+  def handle_params(_params, _url, socket) do
+    {:noreply, socket}
   end
 
   defp apply_action(socket, :index, _params) do

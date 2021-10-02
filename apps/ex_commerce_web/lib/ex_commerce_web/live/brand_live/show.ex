@@ -4,8 +4,6 @@ defmodule ExCommerceWeb.BrandLive.Show do
   """
   use ExCommerceWeb, :live_view
 
-  alias ExCommerce.Marketplaces.Brand
-
   @impl true
   def mount(params, session, socket) do
     case connected?(socket) do
@@ -18,22 +16,13 @@ defmodule ExCommerceWeb.BrandLive.Show do
   end
 
   @impl true
-  def handle_params(%{"id" => id}, _session, socket) do
+  def handle_params(%{"brand_id" => _brand_id} = params, _session, socket) do
     case connected?(socket) do
       true ->
-        case Enum.find(socket.assigns.user.brands, nil, &(&1.id == id)) do
-          nil ->
-            {:noreply,
-             socket
-             |> put_flash(:error, gettext("The given shop could not be found"))
-             |> redirect(to: Routes.brand_index_path(socket, :index))}
-
-          %Brand{} = brand ->
-            {:noreply,
-             socket
-             |> assign(:page_title, page_title(socket.assigns.live_action))
-             |> assign(:brand, brand)}
-        end
+        {:noreply,
+         socket
+         |> assign(:page_title, page_title(socket.assigns.live_action))
+         |> assign_brand_or_redirect(params, %{})}
 
       false ->
         {:noreply, socket}

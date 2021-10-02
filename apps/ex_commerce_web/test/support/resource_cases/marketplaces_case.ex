@@ -8,12 +8,24 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
 
   using do
     quote do
-      # Import conveniences for testing with brands
+      import Phoenix.LiveViewTest
 
       alias ExCommerce.Accounts.User
+      alias ExCommerce.BrandsFixtures
       alias ExCommerce.Marketplaces
       alias ExCommerce.Marketplaces.Brand
       alias ExCommerce.Marketplaces.Shop
+      alias ExCommerce.ShopsFixtures
+
+      defp create_shop(_context) do
+        shop = ShopsFixtures.create()
+        %{shop: shop}
+      end
+
+      defp create_brand(_context) do
+        brand = BrandsFixtures.create()
+        %{brand: brand}
+      end
 
       defp assoc_user_brand(%{
              user: %User{id: user_id},
@@ -35,6 +47,10 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
           })
 
         %{shop: shop}
+      end
+
+      defp assert_redirects_with_error(conn, from: from, to: to) do
+        assert {:error, {:redirect, %{to: ^to}}} = live(conn, from)
       end
     end
   end

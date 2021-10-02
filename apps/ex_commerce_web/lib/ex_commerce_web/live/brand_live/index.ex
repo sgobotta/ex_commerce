@@ -25,48 +25,24 @@ defmodule ExCommerceWeb.BrandLive.Index do
   end
 
   @impl true
-  def handle_params(%{"id" => _brand_id} = params, _url, socket) do
-    socket =
-      case connected?(socket) do
-        true ->
-          socket
-          |> apply_action(socket.assigns.live_action, params)
-
-        false ->
-          socket
-      end
-
-    {:noreply, socket}
-  end
-
-  @impl true
   def handle_params(params, _url, socket) do
-    socket =
-      case connected?(socket) do
-        true ->
-          apply_action(socket, socket.assigns.live_action, params)
-
-        false ->
-          socket
-      end
-
-    {:noreply, socket}
+    {:noreply, apply_action_maybe(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :edit, %{"id" => brand_id}) do
-    %{assigns: %{user: %User{brands: brands}}} = socket
+  defp apply_action_maybe(socket, live_action, params) do
+    case connected?(socket) do
+      true ->
+        apply_action(socket, live_action, params)
 
-    case Enum.find(brands, nil, &(&1.id == brand_id)) do
-      nil ->
+      false ->
         socket
-        |> put_flash(:error, gettext("The given brand could not be found"))
-        |> redirect(to: Routes.brand_index_path(socket, :index))
-
-      %Brand{} = brand ->
-        socket
-        |> assign(:page_title, gettext("Edit Brand"))
-        |> assign(:brand, brand)
     end
+  end
+
+  defp apply_action(socket, :edit, %{"brand_id" => _brand_id} = params) do
+    socket
+    |> assign(:page_title, gettext("Edit Brand"))
+    |> assign_brand_or_redirect(params, %{})
   end
 
   defp apply_action(socket, :new, _params) do
@@ -82,7 +58,7 @@ defmodule ExCommerceWeb.BrandLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
+  def handle_event("delete", %{"brand_id" => id}, socket) do
     %Brand{} = brand = Marketplaces.get_brand!(id)
     {:ok, _} = Marketplaces.delete_brand(brand)
 

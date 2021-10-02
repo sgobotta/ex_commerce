@@ -7,7 +7,7 @@ defmodule ExCommerceWeb.MountHelpers do
 
   alias ExCommerce.Accounts
   alias ExCommerce.Accounts.User
-  alias ExCommerce.Marketplaces.Brand
+  alias ExCommerce.Marketplaces.{Brand, Shop}
   alias ExCommerce.Repo
   alias ExCommerceWeb.Router.Helpers, as: Routes
 
@@ -15,6 +15,11 @@ defmodule ExCommerceWeb.MountHelpers do
   @default_timezone "UTC"
   @default_timezone_offset 0
 
+  @spec assign_defaults(
+          Phoenix.LiveView.Socket.t(),
+          any,
+          nil | maybe_improper_list | map
+        ) :: any
   @doc """
   Mount helper to assign defaults values to the socket. Includes: `%User{}` and
   browser locale, timezone and timezone offset.
@@ -27,14 +32,23 @@ defmodule ExCommerceWeb.MountHelpers do
     |> assign_timezone_offset()
   end
 
-  def assign_brand(socket, %{"brand" => brand_id}, _session) do
+  # ----------------------------------------------------------------------------
+  # Brand helpers
+
+  @spec assign_brand_or_redirect(Phoenix.LiveView.Socket.t(), map(), map()) ::
+          Phoenix.LiveView.Socket.t()
+  @doc """
+  Useful for `:brand_id` scoped routes or routes that need brand params
+  validation.
+  Checks a `brand_id` param is present to assign a valid %Brand{} to the
+  socket or redirect.
+  """
+  def assign_brand_or_redirect(socket, %{"brand_id" => brand_id}, _session) do
     %{user: %User{brands: brands}} = socket.assigns
 
-    case Enum.find(brands, nil, &(&1.id == brand_id)) do
+    case find_by(brands, :id, brand_id) do
       nil ->
-        socket
-        |> put_flash(:error, gettext("The given brand could not be found"))
-        |> redirect(to: Routes.brand_index_path(socket, :index))
+        brands_redirect(socket, to: Routes.brand_index_path(socket, :index))
 
       %Brand{} = brand ->
         socket
@@ -42,21 +56,47 @@ defmodule ExCommerceWeb.MountHelpers do
     end
   end
 
-  def assign_brand(socket, _params, _session) do
-    # Find and assign the first found brand
-    %{user: %User{brands: brands}} = socket.assigns
+  def assign_brand_or_redirect(socket, _params, _session),
+    do: brands_redirect(socket, to: Routes.brand_index_path(socket, :index))
 
-    case Enum.at(brands, 0) do
+  # ----------------------------------------------------------------------------
+  # Shop helpers
+
+  @spec assign_shop_or_redirect(Phoenix.LiveView.Socket.t(), map(), map()) ::
+          Phoenix.LiveView.Socket.t()
+  @doc """
+  This function expects a `%Brand{shops: shops}` struct to be assigned to the
+  socket, where shops are preloaded.
+  Useful for `:shop_id` scoped routes or routes that need shop params
+  validation.
+  Checks a `shop_id` param is present to assign a valid %Shop{} to the
+  socket or redirect.
+  """
+  def assign_shop_or_redirect(socket, %{"shop_id" => shop_id}, _session) do
+    %{assigns: %{brand: %Brand{shops: shops}}} = socket
+
+    case find_by(shops, :id, shop_id) do
       nil ->
-        socket
-        |> put_flash(:error, gettext("The given brand could not be found"))
-        |> redirect(to: Routes.brand_index_path(socket, :index))
+        %{assigns: %{brand: %Brand{id: brand_id}}} = socket
 
-      %Brand{} = brand ->
+        shops_redirect(socket,
+          to: Routes.shop_index_path(socket, :index, brand_id)
+        )
+
+      %Shop{} = shop ->
         socket
-        |> assign(:brand, Repo.preload(brand, [:shops]))
+        |> assign(:shop, shop)
     end
   end
+
+  def assign_shop_or_redirect(socket, _params, _session) do
+    %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
+    shops_redirect(socket, to: Routes.shop_index_path(socket, :index, brand_id))
+  end
+
+  # ----------------------------------------------------------------------------
+  # Private helpers
 
   defp assign_user(socket, session) do
     %User{} =
@@ -83,5 +123,21 @@ defmodule ExCommerceWeb.MountHelpers do
       get_connect_params(socket)["timezone_offset"] || @default_timezone_offset
 
     assign(socket, timezone_offset: timezone_offset)
+  end
+
+  defp brands_redirect(socket, to: to) do
+    socket
+    |> put_flash(:error, gettext("The given brand could not be found"))
+    |> redirect(to: to)
+  end
+
+  defp shops_redirect(socket, to: to) do
+    socket
+    |> put_flash(:error, gettext("The given shop could not be found"))
+    |> redirect(to: to)
+  end
+
+  defp find_by(elements, attr, value) do
+    Enum.find(elements, nil, &(Map.get(&1, attr) == value))
   end
 end
