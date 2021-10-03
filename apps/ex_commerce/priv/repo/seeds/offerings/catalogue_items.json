@@ -1,0 +1,101 @@
+[
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "c4df5917-9ba3-457f-b27e-3efd5e5c5edc",
+    "code": "BEER-000",
+    "name": "Indian Pale Ale",
+    "description": "Characterized by floral, fruity, citrus-like, piney or resinous American-variety hop character, the IPA beer style is all about hop flavor, aroma and bitterness.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "0f8f8614-47bf-4710-871d-5c65bdb58a38",
+    "code": "BEER-001",
+    "name": "American Pale Ale",
+    "description": "Characterized by floral, fruity, citrus-like, piney, resinous American hops, the American pale ale is a medium-bodied beer with low to medium caramel, and carries with it a toasted maltiness.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "fffa1a42-c59e-474c-b87f-6fb2402bf209",
+    "code": "BEER-002",
+    "name": "Scotch Ale",
+    "description": "Overwhelmingly malty, with a rich and dominant sweet malt flavor and aroma.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
+    "code": "FINGERFOOD-00",
+    "name": "Fried potatoes",
+    "description": "Just fried potatoes",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "42cf48ab-4fb0-47cc-9e9e-fd04f4368179",
+    "code": "FINGERFOOD-01",
+    "name": "Spicy fried potatoes",
+    "description": "Fried potatoes with chili sauce",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "110ec880-b01c-4db7-b0f1-b156b43214d0",
+    "code": "FINGERFOOD-02",
+    "name": "Mozzarella sticks",
+    "description": "Mozzarella sticks with special mayonnaise",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
+    "id": "b76e97a4-4187-4e48-b447-96fdd0f71e27",
+    "code": "SANDWICH-00",
+    "name": "Eggplant",
+    "description": "Eggplant sandwich with carrot, tomatoes and potatoes",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
+    "id": "1a9e7783-918b-41ff-b12e-c1b1b8279134",
+    "code": "SANDWICH-01",
+    "name": "Mushroom",
+    "description": "Spicy Mushrooms with cheese and potatoes",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
+    "id": "4c1876d6-b2a4-40f3-9a52-3a1a6248d843",
+    "code": "DRINKS-00",
+    "name": "Drinks",
+    "description": "Beer and Sodas",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "97d4d4f1-ab03-40b4-aecb-005808795b7a",
+    "id": "33fcb61e-8b4c-4a53-a385-26acb0d81ecc",
+    "code": "FRIDGE-00",
+    "name": "Fridge repairing",
+    "description": "Contact for detailed information",
+    "inserted_at": "2020-11-17 14:15:57",
+    "updated_at": "2020-11-17 14:15:57"
+  },
+  {
+    "brand_id": "97d4d4f1-ab03-40b4-aecb-005808795b7a",
+    "id": "0ffd3ee5-8610-4847-8cf8-5c7a7a591404",
+    "code": "FRIDGE-01",
+    "name": "Fridge revision",
+    "description": "Contact for detailed information",
+    "inserted_at": "2020-11-17 14:15:57",
+    "updated_at": "2020-11-17 14:15:57"
+  }
+]
