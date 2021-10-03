@@ -11,14 +11,19 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
       import Phoenix.LiveViewTest
 
       alias ExCommerce.Accounts.User
-      alias ExCommerce.BrandsFixtures
-      alias ExCommerce.CatalogueCategoriesFixtures
-      alias ExCommerce.CataloguesFixtures
+
+      alias ExCommerce.{
+        BrandsFixtures,
+        CatalogueCategoriesFixtures,
+        CatalogueItemsFixtures,
+        CataloguesFixtures,
+        ShopsFixtures
+      }
+
       alias ExCommerce.Marketplaces
       alias ExCommerce.Marketplaces.{Brand, BrandUser, Shop}
       alias ExCommerce.Offerings
-      alias ExCommerce.Offerings.{Catalogue, CatalogueCategory}
-      alias ExCommerce.ShopsFixtures
+      alias ExCommerce.Offerings.{Catalogue, CatalogueCategory, CatalogueItem}
 
       defp create_shop(_context) do
         shop = ShopsFixtures.create()
@@ -36,6 +41,10 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
 
       defp create_catalogue_category(_context) do
         %{catalogue_category: CatalogueCategoriesFixtures.create()}
+      end
+
+      defp create_catalogue_item(_context) do
+        %{catalogue_item: CatalogueItemsFixtures.create()}
       end
 
       defp assoc_user_brand(%{
@@ -82,6 +91,18 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
           })
 
         %{catalogue_category: catalogue_category}
+      end
+
+      defp assoc_brand_catalogue_item(%{
+             brand: %Brand{id: brand_id},
+             catalogue_item: %CatalogueItem{} = catalogue_item
+           }) do
+        {:ok, %CatalogueItem{} = catalogue_item} =
+          Offerings.update_catalogue_item(catalogue_item, %{
+            brand_id: brand_id
+          })
+
+        %{catalogue_item: catalogue_item}
       end
 
       defp assert_redirects_with_error(conn, from: from, to: to) do

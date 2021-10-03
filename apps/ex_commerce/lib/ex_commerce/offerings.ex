@@ -231,4 +231,114 @@ defmodule ExCommerce.Offerings do
       ) do
     CatalogueCategory.changeset(catalogue_category, attrs)
   end
+
+  alias ExCommerce.Offerings.CatalogueItem
+
+  @doc """
+  Returns the list of catalogue_items.
+
+  ## Examples
+
+      iex> list_catalogue_items()
+      [%CatalogueItem{}, ...]
+
+  """
+  def list_catalogue_items do
+    Repo.all(CatalogueItem)
+  end
+
+  @doc """
+  Given a brand id returns a list of catalogue items that belong to it.
+
+  ## Examples
+
+      iex> list_catalogue_items_by_brand("658e944a-e882-4318-8364-8abaffe7ce71")
+      [%CatalogueItem{}, ...]
+
+  """
+  def list_catalogue_items_by_brand(brand_id) do
+    from(s in CatalogueItem, where: s.brand_id == ^brand_id)
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets a single catalogue_item.
+
+  Raises `Ecto.NoResultsError` if the Catalogue item does not exist.
+
+  ## Examples
+
+      iex> get_catalogue_item!(123)
+      %CatalogueItem{}
+
+      iex> get_catalogue_item!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_catalogue_item!(id), do: Repo.get!(CatalogueItem, id)
+
+  @doc """
+  Creates a catalogue_item.
+
+  ## Examples
+
+      iex> create_catalogue_item(%{field: value})
+      {:ok, %CatalogueItem{}}
+
+      iex> create_catalogue_item(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_catalogue_item(attrs \\ %{}) do
+    %CatalogueItem{}
+    |> CatalogueItem.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a catalogue_item.
+
+  ## Examples
+
+      iex> update_catalogue_item(catalogue_item, %{field: new_value})
+      {:ok, %CatalogueItem{}}
+
+      iex> update_catalogue_item(catalogue_item, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_catalogue_item(%CatalogueItem{} = catalogue_item, attrs) do
+    catalogue_item
+    |> CatalogueItem.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a catalogue_item.
+
+  ## Examples
+
+      iex> delete_catalogue_item(catalogue_item)
+      {:ok, %CatalogueItem{}}
+
+      iex> delete_catalogue_item(catalogue_item)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_catalogue_item(%CatalogueItem{} = catalogue_item) do
+    Repo.delete(catalogue_item)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking catalogue_item changes.
+
+  ## Examples
+
+      iex> change_catalogue_item(catalogue_item)
+      %Ecto.Changeset{data: %CatalogueItem{}}
+
+  """
+  def change_catalogue_item(%CatalogueItem{} = catalogue_item, attrs \\ %{}) do
+    CatalogueItem.changeset(catalogue_item, attrs)
+  end
 end

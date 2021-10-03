@@ -10,6 +10,7 @@ defmodule ExCommerce.Seeds.Dev do
     BrandsUsers,
     Catalogues,
     CatalogueCategories,
+    CatalogueItems,
     Shops,
     Users
   }
@@ -23,6 +24,7 @@ defmodule ExCommerce.Seeds.Dev do
     :ok = Shops.populate()
     :ok = Catalogues.populate()
     :ok = CatalogueCategories.populate()
+    :ok = CatalogueItems.populate()
 
     :ok = Logger.info("🌱 Succesfully created development seeds.")
 

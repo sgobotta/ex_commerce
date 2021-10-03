@@ -8,7 +8,7 @@ defmodule ExCommerceWeb.MountHelpers do
   alias ExCommerce.Accounts
   alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces.{Brand, Shop}
-  alias ExCommerce.Offerings.{Catalogue, CatalogueCategory}
+  alias ExCommerce.Offerings.{Catalogue, CatalogueCategory, CatalogueItem}
   alias ExCommerce.Repo
   alias ExCommerceWeb.Router.Helpers, as: Routes
 
@@ -55,7 +55,12 @@ defmodule ExCommerceWeb.MountHelpers do
         socket
         |> assign(
           :brand,
-          Repo.preload(brand, [:shops, :catalogues, :catalogue_categories])
+          Repo.preload(brand, [
+            :shops,
+            :catalogues,
+            :catalogue_categories,
+            :catalogue_items
+          ])
         )
     end
   end
@@ -161,6 +166,35 @@ defmodule ExCommerceWeb.MountHelpers do
     )
   end
 
+  def assign_catalogue_item_or_redirect(
+        socket,
+        %{"catalogue_item_id" => catalogue_item_id},
+        _session
+      ) do
+    %{assigns: %{brand: %Brand{catalogue_items: catalogue_items}}} = socket
+
+    case find_by(catalogue_items, :id, catalogue_item_id) do
+      nil ->
+        %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
+        catalogue_items_redirect(socket,
+          to: Routes.catalogue_item_index_path(socket, :index, brand_id)
+        )
+
+      %CatalogueItem{} = catalogue_item ->
+        socket
+        |> assign(:catalogue_item, catalogue_item)
+    end
+  end
+
+  def assign_catalogue_item_or_redirect(socket, _params, _session) do
+    %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
+    catalogue_items_redirect(socket,
+      to: Routes.catalogue_index_path(socket, :index, brand_id)
+    )
+  end
+
   # ----------------------------------------------------------------------------
   # Private helpers
 
@@ -214,6 +248,15 @@ defmodule ExCommerceWeb.MountHelpers do
     |> put_flash(
       :error,
       gettext("The given catalogue category could not be found")
+    )
+    |> redirect(to: to)
+  end
+
+  defp catalogue_items_redirect(socket, to: to) do
+    socket
+    |> put_flash(
+      :error,
+      gettext("The given catalogue item could not be found")
     )
     |> redirect(to: to)
   end
