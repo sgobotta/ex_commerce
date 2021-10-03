@@ -48,8 +48,10 @@ defmodule ExCommerceWeb.Router do
       # ------------------------------------------------------------------------
       # Default routes
       live "/shops", ShopLive.Index, :index
-
       live "/shops/:shop_id", ShopLive.Show, :show
+
+      live "/catalogues", CatalogueLive.Index, :index
+      live "/catalogues/:catalogue_id", CatalogueLive.Show, :show
 
       scope "/:brand_id" do
         live "/", HomeLive.Index, :index
@@ -63,6 +65,16 @@ defmodule ExCommerceWeb.Router do
 
         live "/shops/:shop_id", ShopLive.Show, :show
         live "/shops/:shop_id/show/edit", ShopLive.Show, :edit
+
+        # ----------------------------------------------------------------------
+        # Offerings routes
+
+        live "/catalogues", CatalogueLive.Index, :index
+        live "/catalogues/new", CatalogueLive.Index, :new
+        live "/catalogues/:catalogue_id/edit", CatalogueLive.Index, :edit
+
+        live "/catalogues/:catalogue_id", CatalogueLive.Show, :show
+        live "/catalogues/:catalogue_id/show/edit", CatalogueLive.Show, :edit
       end
     end
   end

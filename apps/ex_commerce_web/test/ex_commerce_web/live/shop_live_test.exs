@@ -57,9 +57,10 @@ defmodule ExCommerceWeb.ShopLiveTest do
       assert html =~ shop_name
     end
 
-    test "[Failure] lists all shops for a brand - redirects to brands", %{
-      conn: conn
-    } do
+    test "[Failure] lists all shops for a brand - redirects to brands when invalid brand id is provided",
+         %{
+           conn: conn
+         } do
       assert_redirects_with_error(
         conn,
         from: Routes.shop_index_path(conn, :index),
@@ -67,8 +68,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
       )
     end
 
-    test "[Failure] does not list all shops when user is not confirmed" do
-      %{shop: _shop} = create_shop(%{})
+    test "[Failure] lists all shops for a brand - redirects to brands when user is not confirmed" do
       conn = build_conn()
 
       assert_redirects_with_error(
@@ -257,9 +257,10 @@ defmodule ExCommerceWeb.ShopLiveTest do
       )
     end
 
-    test "[Failure] displays shop - redirects when user is not confirmed", %{
-      brand: %Brand{id: brand_id}
-    } do
+    test "[Failure] displays shop - redirects to log in when user is not confirmed",
+         %{
+           brand: %Brand{id: brand_id}
+         } do
       %{shop: %Shop{id: shop_id}} = create_shop(%{})
       conn = build_conn()
 

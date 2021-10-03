@@ -112,6 +112,28 @@ defmodule ExCommerceWeb.DashboardView do
               ]
             ],
             navbar_opts
+          ),
+          navbar_link_group(
+            [
+              children: ["catalogues"],
+              group_name: gettext("Offerings"),
+              links: [
+                navbar_link(
+                  [
+                    name: "catalogues",
+                    text: gettext("Catalogues/Menus"),
+                    to:
+                      Routes.catalogue_index_path(
+                        ExCommerceWeb.Endpoint,
+                        :index,
+                        brand_id
+                      )
+                  ],
+                  navbar_opts
+                )
+              ]
+            ],
+            navbar_opts
           )
         ],
         logo: render_image_button(text: "Ex Commerce"),

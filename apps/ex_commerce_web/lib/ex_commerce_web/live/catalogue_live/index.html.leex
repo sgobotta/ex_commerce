@@ -1,0 +1,52 @@
+<%= if connected?(@socket) do %>
+
+  <%= if @live_action in [:new, :edit] do %>
+    <%= live_modal @socket, ExCommerceWeb.CatalogueLive.FormComponent,
+      id: @catalogue.id || :new,
+      title: @page_title,
+      action: @live_action,
+      catalogue: @catalogue,
+      return_to: Routes.catalogue_index_path(@socket, :index, @brand.id),
+      patch_to: Routes.catalogue_index_path(@socket, :index, @brand.id)
+    %>
+  <% end %>
+
+  <%= render_layout(
+        ExCommerceWeb.DashboardView,
+        "dashboard",
+        [current_page: "catalogues", user_email: @user.email, brand: @brand]
+      )
+  do %>
+
+    <h1>
+      <%= gettext("Listing Catalogues") %>
+    </h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th><%= gettext("Name") %></th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="catalogues">
+        <%= for %Catalogue{id: catalogue_id} = catalogue <- @catalogues do %>
+          <tr id="catalogue-<%= catalogue_id %>">
+            <td><%= catalogue.name %></td>
+
+            <td>
+              <span><%= live_redirect "Show", to: Routes.catalogue_show_path(@socket, :show, @brand.id, catalogue_id) %></span>
+              <span><%= live_patch "Edit", to: Routes.catalogue_index_path(@socket, :edit, @brand.id, catalogue_id) %></span>
+              <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: catalogue_id, data: [confirm: gettext("Are you sure?")] %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <span><%= live_patch "+", to: Routes.catalogue_index_path(@socket, :new, @brand.id), class: "button" %></span>
+
+  <% end %>
+
+<% end %>
