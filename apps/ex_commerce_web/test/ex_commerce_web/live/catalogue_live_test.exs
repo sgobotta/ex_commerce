@@ -30,7 +30,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
       {:ok, _index_live, html} =
         live(conn, Routes.catalogue_index_path(conn, :index, brand_id))
 
-      assert html =~ "Listing Catalogues"
+      assert html =~ "My Catalogues"
       assert html =~ catalogue_name
     end
 
