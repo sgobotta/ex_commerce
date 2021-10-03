@@ -1,0 +1,39 @@
+<h1>Listing Catalogue items</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal @socket, ExCommerceWeb.CatalogueItemLive.FormComponent,
+    id: @catalogue_item.id || :new,
+    title: @page_title,
+    action: @live_action,
+    catalogue_item: @catalogue_item,
+    return_to: Routes.catalogue_item_index_path(@socket, :index) %>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Description</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="catalogue_items">
+    <%= for catalogue_item <- @catalogue_items do %>
+      <tr id="catalogue_item-<%= catalogue_item.id %>">
+        <td><%= catalogue_item.code %></td>
+        <td><%= catalogue_item.name %></td>
+        <td><%= catalogue_item.description %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.catalogue_item_show_path(@socket, :show, catalogue_item) %></span>
+          <span><%= live_patch "Edit", to: Routes.catalogue_item_index_path(@socket, :edit, catalogue_item) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: catalogue_item.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Catalogue item", to: Routes.catalogue_item_index_path(@socket, :new) %></span>

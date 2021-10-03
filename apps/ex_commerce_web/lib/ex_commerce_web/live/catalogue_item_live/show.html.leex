@@ -1,0 +1,32 @@
+<h1>Show Catalogue item</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, ExCommerceWeb.CatalogueItemLive.FormComponent,
+    id: @catalogue_item.id,
+    title: @page_title,
+    action: @live_action,
+    catalogue_item: @catalogue_item,
+    return_to: Routes.catalogue_item_show_path(@socket, :show, @catalogue_item) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Code:</strong>
+    <%= @catalogue_item.code %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @catalogue_item.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @catalogue_item.description %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.catalogue_item_show_path(@socket, :edit, @catalogue_item), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.catalogue_item_index_path(@socket, :index) %></span>

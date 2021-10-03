@@ -252,4 +252,67 @@ defmodule ExCommerce.OfferingsTest do
                Offerings.change_catalogue_category(catalogue_category)
     end
   end
+
+  describe "catalogue_items" do
+    alias ExCommerce.Offerings.CatalogueItem
+
+    @valid_attrs %{code: "some code", description: "some description", name: "some name"}
+    @update_attrs %{code: "some updated code", description: "some updated description", name: "some updated name"}
+    @invalid_attrs %{code: nil, description: nil, name: nil}
+
+    def catalogue_item_fixture(attrs \\ %{}) do
+      {:ok, catalogue_item} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Offerings.create_catalogue_item()
+
+      catalogue_item
+    end
+
+    test "list_catalogue_items/0 returns all catalogue_items" do
+      catalogue_item = catalogue_item_fixture()
+      assert Offerings.list_catalogue_items() == [catalogue_item]
+    end
+
+    test "get_catalogue_item!/1 returns the catalogue_item with given id" do
+      catalogue_item = catalogue_item_fixture()
+      assert Offerings.get_catalogue_item!(catalogue_item.id) == catalogue_item
+    end
+
+    test "create_catalogue_item/1 with valid data creates a catalogue_item" do
+      assert {:ok, %CatalogueItem{} = catalogue_item} = Offerings.create_catalogue_item(@valid_attrs)
+      assert catalogue_item.code == "some code"
+      assert catalogue_item.description == "some description"
+      assert catalogue_item.name == "some name"
+    end
+
+    test "create_catalogue_item/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Offerings.create_catalogue_item(@invalid_attrs)
+    end
+
+    test "update_catalogue_item/2 with valid data updates the catalogue_item" do
+      catalogue_item = catalogue_item_fixture()
+      assert {:ok, %CatalogueItem{} = catalogue_item} = Offerings.update_catalogue_item(catalogue_item, @update_attrs)
+      assert catalogue_item.code == "some updated code"
+      assert catalogue_item.description == "some updated description"
+      assert catalogue_item.name == "some updated name"
+    end
+
+    test "update_catalogue_item/2 with invalid data returns error changeset" do
+      catalogue_item = catalogue_item_fixture()
+      assert {:error, %Ecto.Changeset{}} = Offerings.update_catalogue_item(catalogue_item, @invalid_attrs)
+      assert catalogue_item == Offerings.get_catalogue_item!(catalogue_item.id)
+    end
+
+    test "delete_catalogue_item/1 deletes the catalogue_item" do
+      catalogue_item = catalogue_item_fixture()
+      assert {:ok, %CatalogueItem{}} = Offerings.delete_catalogue_item(catalogue_item)
+      assert_raise Ecto.NoResultsError, fn -> Offerings.get_catalogue_item!(catalogue_item.id) end
+    end
+
+    test "change_catalogue_item/1 returns a catalogue_item changeset" do
+      catalogue_item = catalogue_item_fixture()
+      assert %Ecto.Changeset{} = Offerings.change_catalogue_item(catalogue_item)
+    end
+  end
 end
