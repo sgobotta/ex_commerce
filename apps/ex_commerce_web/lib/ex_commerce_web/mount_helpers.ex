@@ -8,6 +8,7 @@ defmodule ExCommerceWeb.MountHelpers do
   alias ExCommerce.Accounts
   alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces.{Brand, Shop}
+  alias ExCommerce.Offerings.Catalogue
   alias ExCommerce.Repo
   alias ExCommerceWeb.Router.Helpers, as: Routes
 
@@ -52,7 +53,7 @@ defmodule ExCommerceWeb.MountHelpers do
 
       %Brand{} = brand ->
         socket
-        |> assign(:brand, Repo.preload(brand, [:shops]))
+        |> assign(:brand, Repo.preload(brand, [:shops, :catalogues]))
     end
   end
 
@@ -96,6 +97,38 @@ defmodule ExCommerceWeb.MountHelpers do
   end
 
   # ----------------------------------------------------------------------------
+  # Catalogue helpers
+
+  def assign_catalogue_or_redirect(
+        socket,
+        %{"catalogue_id" => catalogue_id},
+        _session
+      ) do
+    %{assigns: %{brand: %Brand{catalogues: catalogues}}} = socket
+
+    case find_by(catalogues, :id, catalogue_id) do
+      nil ->
+        %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
+        catalogues_redirect(socket,
+          to: Routes.catalogue_index_path(socket, :index, brand_id)
+        )
+
+      %Catalogue{} = catalogue ->
+        socket
+        |> assign(:catalogue, catalogue)
+    end
+  end
+
+  def assign_catalogue_or_redirect(socket, _params, _session) do
+    %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
+    catalogues_redirect(socket,
+      to: Routes.catalogue_index_path(socket, :index, brand_id)
+    )
+  end
+
+  # ----------------------------------------------------------------------------
   # Private helpers
 
   defp assign_user(socket, session) do
@@ -134,6 +167,12 @@ defmodule ExCommerceWeb.MountHelpers do
   defp shops_redirect(socket, to: to) do
     socket
     |> put_flash(:error, gettext("The given shop could not be found"))
+    |> redirect(to: to)
+  end
+
+  defp catalogues_redirect(socket, to: to) do
+    socket
+    |> put_flash(:error, gettext("The given catalogue could not be found"))
     |> redirect(to: to)
   end
 

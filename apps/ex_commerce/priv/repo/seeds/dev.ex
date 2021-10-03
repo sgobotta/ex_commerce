@@ -7,6 +7,7 @@ defmodule ExCommerce.Seeds.Dev do
 
   alias ExCommerce.Seeds.Brands
   alias ExCommerce.Seeds.BrandsUsers
+  alias ExCommerce.Seeds.Catalogues
   alias ExCommerce.Seeds.Shops
   alias ExCommerce.Seeds.Users
 
@@ -17,6 +18,7 @@ defmodule ExCommerce.Seeds.Dev do
     :ok = Brands.populate()
     :ok = BrandsUsers.populate()
     :ok = Shops.populate()
+    :ok = Catalogues.populate()
 
     :ok = Logger.info("🌱 Succesfully created development seeds.")
 

@@ -5,7 +5,6 @@ defmodule ExCommerce.Marketplaces do
 
   import Ecto.Query, warn: false
 
-  alias __MODULE__
   alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces.Shop
   alias ExCommerce.Repo

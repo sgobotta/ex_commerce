@@ -12,9 +12,11 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
 
       alias ExCommerce.Accounts.User
       alias ExCommerce.BrandsFixtures
+      alias ExCommerce.CataloguesFixtures
       alias ExCommerce.Marketplaces
-      alias ExCommerce.Marketplaces.Brand
-      alias ExCommerce.Marketplaces.Shop
+      alias ExCommerce.Marketplaces.{Brand, Shop}
+      alias ExCommerce.Offerings
+      alias ExCommerce.Offerings.Catalogue
       alias ExCommerce.ShopsFixtures
 
       defp create_shop(_context) do
@@ -25,6 +27,10 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
       defp create_brand(_context) do
         brand = BrandsFixtures.create()
         %{brand: brand}
+      end
+
+      defp create_catalogue(_context) do
+        %{catalogue: CataloguesFixtures.create()}
       end
 
       defp assoc_user_brand(%{
@@ -47,6 +53,18 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
           })
 
         %{shop: shop}
+      end
+
+      defp assoc_brand_catalogue(%{
+             brand: %Brand{id: brand_id},
+             catalogue: %Catalogue{} = catalogue
+           }) do
+        {:ok, catalogue} =
+          Offerings.update_catalogue(catalogue, %{
+            brand_id: brand_id
+          })
+
+        %{catalogue: catalogue}
       end
 
       defp assert_redirects_with_error(conn, from: from, to: to) do

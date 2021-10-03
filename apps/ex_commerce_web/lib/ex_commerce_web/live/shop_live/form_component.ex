@@ -39,7 +39,7 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
 
   defp save_shop(socket, :edit, shop_params) do
     case Marketplaces.update_shop(socket.assigns.shop, shop_params) do
-      {:ok, _shop} ->
+      {:ok, %Shop{} = _shop} ->
         {:noreply,
          socket
          |> put_flash(:info, gettext("Shop updated successfully"))

@@ -20,6 +20,8 @@ defmodule ExCommerce.Marketplaces.Brand do
 
     has_many :shops, ExCommerce.Marketplaces.Shop
 
+    has_many :catalogues, ExCommerce.Offerings.Catalogue
+
     timestamps()
   end
 
