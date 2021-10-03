@@ -248,6 +248,20 @@ defmodule ExCommerce.Offerings do
   end
 
   @doc """
+  Given a brand id returns a list of catalogue items that belong to it.
+
+  ## Examples
+
+      iex> list_catalogue_items_by_brand("658e944a-e882-4318-8364-8abaffe7ce71")
+      [%CatalogueItem{}, ...]
+
+  """
+  def list_catalogue_items_by_brand(brand_id) do
+    from(s in CatalogueItem, where: s.brand_id == ^brand_id)
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single catalogue_item.
 
   Raises `Ecto.NoResultsError` if the Catalogue item does not exist.

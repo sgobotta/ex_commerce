@@ -1,6 +1,13 @@
 defmodule ExCommerce.Offerings.CatalogueItem do
+  @moduledoc """
+  The CatalogueCategory schema
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
+
+  @fields [:code, :name, :description]
+  @foreign_fields [:brand_id]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -16,7 +23,7 @@ defmodule ExCommerce.Offerings.CatalogueItem do
   @doc false
   def changeset(catalogue_item, attrs) do
     catalogue_item
-    |> cast(attrs, [:code, :name, :description])
-    |> validate_required([:code, :name, :description])
+    |> cast(attrs, @fields ++ @foreign_fields)
+    |> validate_required(@fields ++ @foreign_fields)
   end
 end

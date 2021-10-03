@@ -1,13 +1,13 @@
-defmodule ExCommerce.CatalogueCategoriesFixtures do
+defmodule ExCommerce.CatalogueItemsFixtures do
   @moduledoc """
   This module defines test helpers for creating entities via the
-  `ExCommerce.Offerings.CatalogueCategory` context.
+  `ExCommerce.Offerings.CatalogueItem` context.
   """
 
   alias ExCommerce.BrandsFixtures
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Offerings
-  alias ExCommerce.Offerings.CatalogueCategory
+  alias ExCommerce.Offerings.CatalogueItem
 
   @valid_attrs %{
     code: "some code",
@@ -24,12 +24,12 @@ defmodule ExCommerce.CatalogueCategoriesFixtures do
   def create(attrs \\ %{}) do
     attrs = assign_brand_maybe(attrs)
 
-    {:ok, %CatalogueCategory{} = catalogue_category} =
+    {:ok, %CatalogueItem{} = catalogue_item} =
       attrs
       |> Enum.into(@valid_attrs)
-      |> Offerings.create_catalogue_category()
+      |> Offerings.create_catalogue_item()
 
-    catalogue_category
+    catalogue_item
   end
 
   defp assign_brand_maybe(attrs) do

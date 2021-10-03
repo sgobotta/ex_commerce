@@ -5,6 +5,8 @@ defmodule ExCommerce.Marketplaces.Brand do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias ExCommerce.{Accounts, Marketplaces, Offerings}
+
   @fields [:name]
 
   # @foreign_fields [:user_id]
@@ -15,13 +17,14 @@ defmodule ExCommerce.Marketplaces.Brand do
     field :name, :string
 
     many_to_many :users,
-                 ExCommerce.Accounts.User,
-                 join_through: ExCommerce.Marketplaces.BrandUser
+                 Accounts.User,
+                 join_through: Marketplaces.BrandUser
 
-    has_many :shops, ExCommerce.Marketplaces.Shop
+    has_many :shops, Marketplaces.Shop
 
-    has_many :catalogues, ExCommerce.Offerings.Catalogue
-    has_many :catalogue_categories, ExCommerce.Offerings.CatalogueCategory
+    has_many :catalogues, Offerings.Catalogue
+    has_many :catalogue_categories, Offerings.CatalogueCategory
+    has_many :catalogue_items, Offerings.CatalogueItem
 
     timestamps()
   end

@@ -254,14 +254,28 @@ defmodule ExCommerce.OfferingsTest do
   end
 
   describe "catalogue_items" do
+    alias ExCommerce.BrandsFixtures
+    alias ExCommerce.Marketplaces.Brand
     alias ExCommerce.Offerings.CatalogueItem
 
-    @valid_attrs %{code: "some code", description: "some description", name: "some name"}
-    @update_attrs %{code: "some updated code", description: "some updated description", name: "some updated name"}
+    @valid_attrs %{
+      code: "some code",
+      description: "some description",
+      name: "some name"
+    }
+    @update_attrs %{
+      code: "some updated code",
+      description: "some updated description",
+      name: "some updated name"
+    }
     @invalid_attrs %{code: nil, description: nil, name: nil}
 
+    setup do
+      %{brand: BrandsFixtures.create()}
+    end
+
     def catalogue_item_fixture(attrs \\ %{}) do
-      {:ok, catalogue_item} =
+      {:ok, %CatalogueItem{} = catalogue_item} =
         attrs
         |> Enum.into(@valid_attrs)
         |> Offerings.create_catalogue_item()
@@ -269,49 +283,94 @@ defmodule ExCommerce.OfferingsTest do
       catalogue_item
     end
 
-    test "list_catalogue_items/0 returns all catalogue_items" do
-      catalogue_item = catalogue_item_fixture()
+    test "list_catalogue_items/0 returns all catalogue_items", %{
+      brand: %Brand{id: brand_id}
+    } do
+      catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
       assert Offerings.list_catalogue_items() == [catalogue_item]
     end
 
-    test "get_catalogue_item!/1 returns the catalogue_item with given id" do
-      catalogue_item = catalogue_item_fixture()
-      assert Offerings.get_catalogue_item!(catalogue_item.id) == catalogue_item
+    test "list_catalogue_items_by_brand/1 returns all catalogue_items for a given brand",
+         %{
+           brand: %Brand{id: brand_id}
+         } do
+      %CatalogueItem{} =
+        catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
+
+      assert Offerings.list_catalogue_items_by_brand(brand_id) == [
+               catalogue_item
+             ]
     end
 
-    test "create_catalogue_item/1 with valid data creates a catalogue_item" do
-      assert {:ok, %CatalogueItem{} = catalogue_item} = Offerings.create_catalogue_item(@valid_attrs)
-      assert catalogue_item.code == "some code"
-      assert catalogue_item.description == "some description"
-      assert catalogue_item.name == "some name"
+    test "get_catalogue_item!/1 returns the catalogue_item with given id", %{
+      brand: %Brand{id: brand_id}
+    } do
+      %CatalogueItem{id: catalogue_item_id} =
+        catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
+
+      assert Offerings.get_catalogue_item!(catalogue_item_id) == catalogue_item
+    end
+
+    test "create_catalogue_item/1 with valid data creates a catalogue_item", %{
+      brand: %Brand{id: brand_id}
+    } do
+      valid_attrs = Map.merge(@valid_attrs, %{brand_id: brand_id})
+
+      assert {:ok, %CatalogueItem{} = catalogue_item} =
+               Offerings.create_catalogue_item(valid_attrs)
+
+      assert catalogue_item.code == @valid_attrs.code
+      assert catalogue_item.description == @valid_attrs.description
+      assert catalogue_item.name == @valid_attrs.name
     end
 
     test "create_catalogue_item/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Offerings.create_catalogue_item(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.create_catalogue_item(@invalid_attrs)
     end
 
-    test "update_catalogue_item/2 with valid data updates the catalogue_item" do
-      catalogue_item = catalogue_item_fixture()
-      assert {:ok, %CatalogueItem{} = catalogue_item} = Offerings.update_catalogue_item(catalogue_item, @update_attrs)
-      assert catalogue_item.code == "some updated code"
-      assert catalogue_item.description == "some updated description"
-      assert catalogue_item.name == "some updated name"
+    test "update_catalogue_item/2 with valid data updates the catalogue_item",
+         %{brand: %Brand{id: brand_id}} do
+      catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
+
+      assert {:ok, %CatalogueItem{} = catalogue_item} =
+               Offerings.update_catalogue_item(catalogue_item, @update_attrs)
+
+      assert catalogue_item.code == @update_attrs.code
+      assert catalogue_item.description == @update_attrs.description
+      assert catalogue_item.name == @update_attrs.name
     end
 
-    test "update_catalogue_item/2 with invalid data returns error changeset" do
-      catalogue_item = catalogue_item_fixture()
-      assert {:error, %Ecto.Changeset{}} = Offerings.update_catalogue_item(catalogue_item, @invalid_attrs)
-      assert catalogue_item == Offerings.get_catalogue_item!(catalogue_item.id)
+    test "update_catalogue_item/2 with invalid data returns error changeset", %{
+      brand: %Brand{id: brand_id}
+    } do
+      %CatalogueItem{id: catalogue_item_id} =
+        catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
+
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.update_catalogue_item(catalogue_item, @invalid_attrs)
+
+      assert catalogue_item == Offerings.get_catalogue_item!(catalogue_item_id)
     end
 
-    test "delete_catalogue_item/1 deletes the catalogue_item" do
-      catalogue_item = catalogue_item_fixture()
-      assert {:ok, %CatalogueItem{}} = Offerings.delete_catalogue_item(catalogue_item)
-      assert_raise Ecto.NoResultsError, fn -> Offerings.get_catalogue_item!(catalogue_item.id) end
+    test "delete_catalogue_item/1 deletes the catalogue_item", %{
+      brand: %Brand{id: brand_id}
+    } do
+      %CatalogueItem{id: catalogue_item_id} =
+        catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
+
+      assert {:ok, %CatalogueItem{}} =
+               Offerings.delete_catalogue_item(catalogue_item)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Offerings.get_catalogue_item!(catalogue_item_id)
+      end
     end
 
-    test "change_catalogue_item/1 returns a catalogue_item changeset" do
-      catalogue_item = catalogue_item_fixture()
+    test "change_catalogue_item/1 returns a catalogue_item changeset", %{
+      brand: %Brand{id: brand_id}
+    } do
+      catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
       assert %Ecto.Changeset{} = Offerings.change_catalogue_item(catalogue_item)
     end
   end

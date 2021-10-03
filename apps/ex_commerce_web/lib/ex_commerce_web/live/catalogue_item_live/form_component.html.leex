@@ -6,17 +6,19 @@
   phx_change: "validate",
   phx_submit: "save" %>
 
-  <%= label f, :code %>
-  <%= text_input f, :code %>
+  <%= label f, :code, class: "my-2" %>
+  <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: BEER-000 / CONSULTING-000") %>
   <%= error_tag f, :code %>
 
-  <%= label f, :name %>
-  <%= text_input f, :name %>
+  <%= label f, :name, class: "my-2" %>
+  <%= text_input f, :name, class: "input", placeholder: gettext("Pale Ale") %>
   <%= error_tag f, :name %>
 
-  <%= label f, :description %>
-  <%= text_input f, :description %>
+  <%= label f, :description, class: "my-2" %>
+  <%= text_input f, :description, class: "input", placeholder: gettext("Characterized by floral, fruity, citrus-like, piney, resinous American hops") %>
   <%= error_tag f, :description %>
 
-  <%= submit "Save", phx_disable_with: "Saving..." %>
+  <div class="flex justify-end mt-6">
+    <%= submit "Save", phx_disable_with: "Saving...", class: "button"%>
+  </div>
 </form>

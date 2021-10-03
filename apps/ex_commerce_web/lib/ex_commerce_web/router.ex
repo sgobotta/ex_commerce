@@ -59,6 +59,9 @@ defmodule ExCommerceWeb.Router do
            CatalogueCategoryLive.Show,
            :show
 
+      live "/catalogue_items", CatalogueItemLive.Index, :index
+      live "/catalogue_items/:catalogue_item_id", CatalogueItemLive.Show, :show
+
       scope "/:brand_id" do
         live "/", HomeLive.Index, :index
 
@@ -101,6 +104,24 @@ defmodule ExCommerceWeb.Router do
 
         live "/catalogue_categories/:catalogue_category_id/show/edit",
              CatalogueCategoryLive.Show,
+             :edit
+
+        # ----------------------------------------------------------------------
+        # CatalogueItems routes
+
+        live "/catalogue_items", CatalogueItemLive.Index, :index
+        live "/catalogue_items/new", CatalogueItemLive.Index, :new
+
+        live "/catalogue_items/:catalogue_item_id/edit",
+             CatalogueItemLive.Index,
+             :edit
+
+        live "/catalogue_items/:catalogue_item_id",
+             CatalogueItemLive.Show,
+             :show
+
+        live "/catalogue_items/:catalogue_item_id/show/edit",
+             CatalogueItemLive.Show,
              :edit
       end
     end

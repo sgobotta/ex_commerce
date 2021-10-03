@@ -464,7 +464,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
       )
     end
 
-    test "[Failure] updates catalogue category within modal - redirects to catalogue  categories when invalid catalogue category id is provided",
+    test "[Failure] updates catalogue category within modal - redirects to catalogue categories when invalid catalogue category id is provided",
          %{
            brand: %Brand{id: brand_id},
            conn: conn

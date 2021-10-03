@@ -1,10 +1,17 @@
 defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
+  @moduledoc """
+  Form for catalogue categories create/edit actions
+  """
   use ExCommerceWeb, :live_component
 
   alias ExCommerce.Offerings
+  alias ExCommerce.Offerings.CatalogueItem
 
   @impl true
-  def update(%{catalogue_item: catalogue_item} = assigns, socket) do
+  def update(
+        %{catalogue_item: %CatalogueItem{} = catalogue_item} = assigns,
+        socket
+      ) do
     changeset = Offerings.change_catalogue_item(catalogue_item)
 
     {:ok,
@@ -14,7 +21,11 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   end
 
   @impl true
-  def handle_event("validate", %{"catalogue_item" => catalogue_item_params}, socket) do
+  def handle_event(
+        "validate",
+        %{"catalogue_item" => catalogue_item_params},
+        socket
+      ) do
     changeset =
       socket.assigns.catalogue_item
       |> Offerings.change_catalogue_item(catalogue_item_params)
@@ -28,11 +39,14 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   end
 
   defp save_catalogue_item(socket, :edit, catalogue_item_params) do
-    case Offerings.update_catalogue_item(socket.assigns.catalogue_item, catalogue_item_params) do
+    case Offerings.update_catalogue_item(
+           socket.assigns.catalogue_item,
+           catalogue_item_params
+         ) do
       {:ok, _catalogue_item} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Catalogue item updated successfully")
+         |> put_flash(:info, gettext("Catalogue item updated successfully"))
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -41,11 +55,16 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   end
 
   defp save_catalogue_item(socket, :new, catalogue_item_params) do
+    %{assigns: %{catalogue_item: %CatalogueItem{brand_id: brand_id}}} = socket
+
+    catalogue_item_params =
+      Map.merge(catalogue_item_params, %{"brand_id" => brand_id})
+
     case Offerings.create_catalogue_item(catalogue_item_params) do
       {:ok, _catalogue_item} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Catalogue item created successfully")
+         |> put_flash(:info, gettext("Catalogue item created successfully"))
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
