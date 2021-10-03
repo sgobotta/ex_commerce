@@ -1,0 +1,65 @@
+[
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "45a73e5f-4998-481c-8c4f-f0aa655fb788",
+    "code": "BREAKFAST-00",
+    "name": "Breakfast",
+    "description": "Our breakfast is available from 9 a.m. to 12 p.m.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "54b67b8e-569f-427a-bd36-8d22d0c31d1a",
+    "code": "LUNCH-DINNER-00",
+    "name": "Lunch/Dinner",
+    "description": "Pizza, vegetarian sandwiches and more",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "d29b0813-2425-49bb-8cce-9c1f241596f4",
+    "code": "DESSERTS-00",
+    "name": "Desserts",
+    "description": "Only available since 12 p.m.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "6a5919cc-881b-46ec-8a81-5330f60b075f",
+    "code": "DRINKS-00",
+    "name": "Drinks",
+    "description": "Sodas, refreshments and beer",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
+    "id": "f6ee160a-952d-4c34-85a2-bbdee640707c",
+    "code": "HAMB-00",
+    "name": "Hamburguers",
+    "description": "All our burgers come with homemade bread",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
+    "id": "50a7edc7-8023-4237-a2a6-f2274ce5b774",
+    "code": "DRINKS-00",
+    "name": "Drinks",
+    "description": "Beer and Sodas",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "97d4d4f1-ab03-40b4-aecb-005808795b7a",
+    "id": "7c09fcfe-6bc4-4811-be35-2883d8523334",
+    "code": "GEN-SERVICES-00",
+    "name": "General Services",
+    "description": "General housing repairs and consulting",
+    "inserted_at": "2020-11-17 14:15:57",
+    "updated_at": "2020-11-17 14:15:57"
+  }
+]

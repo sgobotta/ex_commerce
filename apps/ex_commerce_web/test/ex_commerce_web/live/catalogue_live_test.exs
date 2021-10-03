@@ -45,7 +45,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
       )
     end
 
-    test "[Failure] ists all catalogues for a brand - redirects to brands when user is not confirmed" do
+    test "[Failure] lists all catalogues for a brand - redirects to brands when user is not confirmed" do
       conn = build_conn()
 
       assert_redirects_with_error(
@@ -195,7 +195,6 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
       :assoc_brand_catalogue
     ]
 
-    @tag :wip
     test "[Success] displays catalogue", %{
       conn: conn,
       brand: %Brand{id: brand_id},

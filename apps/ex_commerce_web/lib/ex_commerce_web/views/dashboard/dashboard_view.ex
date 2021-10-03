@@ -121,9 +121,22 @@ defmodule ExCommerceWeb.DashboardView do
                 navbar_link(
                   [
                     name: "catalogues",
-                    text: gettext("Catalogues/Menus"),
+                    text: gettext("Catalogues / Menus"),
                     to:
                       Routes.catalogue_index_path(
+                        ExCommerceWeb.Endpoint,
+                        :index,
+                        brand_id
+                      )
+                  ],
+                  navbar_opts
+                ),
+                navbar_link(
+                  [
+                    name: "catalogue_categories",
+                    text: gettext("Categories"),
+                    to:
+                      Routes.catalogue_category_index_path(
                         ExCommerceWeb.Endpoint,
                         :index,
                         brand_id

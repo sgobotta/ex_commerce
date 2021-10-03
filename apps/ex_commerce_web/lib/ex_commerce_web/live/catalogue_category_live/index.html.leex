@@ -1,0 +1,58 @@
+<%= if connected?(@socket) do %>
+
+  <%= if @live_action in [:new, :edit] do %>
+    <%= live_modal @socket, ExCommerceWeb.CatalogueCategoryLive.FormComponent,
+      id: @catalogue_category.id || :new,
+      title: @page_title,
+      action: @live_action,
+      catalogue_category: @catalogue_category,
+      return_to: Routes.catalogue_category_index_path(@socket, :index, @brand.id),
+      patch_to: Routes.catalogue_category_index_path(@socket, :index, @brand.id) %>
+  <% end %>
+
+  <%= render_layout(
+        ExCommerceWeb.DashboardView,
+        "dashboard",
+        [current_page: "catalogue_categories", user_email: @user.email, brand: @brand]
+      )
+  do %>
+
+    <h1>
+      <%= gettext("My Catalogue categories") %>
+    </h1>
+
+    <p>
+      <%= gettext("Create catalogue/menu categories to group up products of similar nature. A category can be used in one or more catalogues.") %>
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th><%= gettext("Code") %></th>
+          <th><%= gettext("Name") %></th>
+          <th><%= gettext("Description") %></th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="catalogue_categories">
+        <%= for %CatalogueCategory{id: catalogue_category_id} = catalogue_category <- @catalogue_categories do %>
+          <tr id="catalogue_category-<%= catalogue_category_id %>">
+            <td><%= catalogue_category.code %></td>
+            <td><%= catalogue_category.name %></td>
+            <td><%= catalogue_category.description %></td>
+
+            <td>
+              <span><%= live_redirect "Show", to: Routes.catalogue_category_show_path(@socket, :show, @brand.id, catalogue_category.id) %></span>
+              <span><%= live_patch "Edit", to: Routes.catalogue_category_index_path(@socket, :edit, @brand.id, catalogue_category.id) %></span>
+              <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: catalogue_category_id, data: [confirm: gettext("Are you sure?")] %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <span><%= live_patch "+", to: Routes.catalogue_category_index_path(@socket, :new, @brand.id), class: "button" %></span>
+
+  <% end %>
+<% end %>

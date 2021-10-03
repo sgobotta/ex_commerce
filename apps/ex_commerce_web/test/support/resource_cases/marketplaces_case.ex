@@ -12,11 +12,12 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
 
       alias ExCommerce.Accounts.User
       alias ExCommerce.BrandsFixtures
+      alias ExCommerce.CatalogueCategoriesFixtures
       alias ExCommerce.CataloguesFixtures
       alias ExCommerce.Marketplaces
-      alias ExCommerce.Marketplaces.{Brand, Shop}
+      alias ExCommerce.Marketplaces.{Brand, BrandUser, Shop}
       alias ExCommerce.Offerings
-      alias ExCommerce.Offerings.Catalogue
+      alias ExCommerce.Offerings.{Catalogue, CatalogueCategory}
       alias ExCommerce.ShopsFixtures
 
       defp create_shop(_context) do
@@ -33,11 +34,15 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
         %{catalogue: CataloguesFixtures.create()}
       end
 
+      defp create_catalogue_category(_context) do
+        %{catalogue_category: CatalogueCategoriesFixtures.create()}
+      end
+
       defp assoc_user_brand(%{
              user: %User{id: user_id},
              brand: %Brand{id: brand_id}
            }) do
-        {:ok, _brand_user} =
+        {:ok, %BrandUser{} = _brand_user} =
           Marketplaces.create_brand_user(%{
             user_id: user_id,
             brand_id: brand_id
@@ -47,7 +52,7 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
       end
 
       defp assoc_brand_shop(%{brand: %Brand{id: brand_id}, shop: %Shop{} = shop}) do
-        {:ok, shop} =
+        {:ok, %Shop{} = shop} =
           Marketplaces.update_shop(shop, %{
             brand_id: brand_id
           })
@@ -59,12 +64,24 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
              brand: %Brand{id: brand_id},
              catalogue: %Catalogue{} = catalogue
            }) do
-        {:ok, catalogue} =
+        {:ok, %Catalogue{} = catalogue} =
           Offerings.update_catalogue(catalogue, %{
             brand_id: brand_id
           })
 
         %{catalogue: catalogue}
+      end
+
+      defp assoc_brand_catalogue_category(%{
+             brand: %Brand{id: brand_id},
+             catalogue_category: %CatalogueCategory{} = catalogue_category
+           }) do
+        {:ok, %CatalogueCategory{} = catalogue_category} =
+          Offerings.update_catalogue_category(catalogue_category, %{
+            brand_id: brand_id
+          })
+
+        %{catalogue_category: catalogue_category}
       end
 
       defp assert_redirects_with_error(conn, from: from, to: to) do

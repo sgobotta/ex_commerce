@@ -1,0 +1,24 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "catalogue_category-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <%= label f, :code, class: "my-2" %>
+  <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: Breakfast-Category-000 / Services-Category-000") %>
+  <%= error_tag f, :code %>
+
+  <%= label f, :name, class: "my-2" %>
+  <%= text_input f, :name, class: "input", placeholder: gettext("Breakfast / Repairing Services") %>
+  <%= error_tag f, :name %>
+
+  <%= label f, :description, class: "my-2" %>
+  <%= text_input f, :description, class: "input", placeholder: gettext("Only available from 8 a.m. to 12 p.m. / ") %>
+  <%= error_tag f, :description %>
+
+  <div class="flex justify-end mt-6">
+    <%= submit "Save", phx_disable_with: "Saving...", class: "button"%>
+  </div>
+</form>
