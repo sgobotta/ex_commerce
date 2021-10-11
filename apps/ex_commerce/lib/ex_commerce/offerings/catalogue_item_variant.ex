@@ -24,7 +24,7 @@ defmodule ExCommerce.Offerings.CatalogueItemVariant do
   @doc false
   def changeset(catalogue_item_variant, attrs) do
     catalogue_item_variant
-    |> cast(attrs, @fields)
-    |> validate_required(@fields)
+    |> cast(attrs, @fields ++ @foreign_fields)
+    |> validate_required(@fields ++ @foreign_fields)
   end
 end

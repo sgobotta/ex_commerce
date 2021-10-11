@@ -376,14 +376,20 @@ defmodule ExCommerce.OfferingsTest do
   end
 
   describe "catalogue_item_variants" do
+    alias ExCommerce.CatalogueItemsFixtures
+    alias ExCommerce.Offerings.CatalogueItem
     alias ExCommerce.Offerings.CatalogueItemVariant
 
     @valid_attrs %{price: "120.5", type: "some type"}
     @update_attrs %{price: "456.7", type: "some updated type"}
     @invalid_attrs %{price: nil, type: nil}
 
+    setup do
+      %{catalogue_item: CatalogueItemsFixtures.create()}
+    end
+
     def catalogue_item_variant_fixture(attrs \\ %{}) do
-      {:ok, catalogue_item_variant} =
+      {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
         attrs
         |> Enum.into(@valid_attrs)
         |> Offerings.create_catalogue_item_variant()
@@ -391,27 +397,39 @@ defmodule ExCommerce.OfferingsTest do
       catalogue_item_variant
     end
 
-    test "list_catalogue_item_variants/0 returns all catalogue_item_variants" do
-      catalogue_item_variant = catalogue_item_variant_fixture()
+    test "list_catalogue_item_variants/0 returns all catalogue_item_variants",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{
+          catalogue_item_id: catalogue_item_id
+        })
 
       assert Offerings.list_catalogue_item_variants() == [
                catalogue_item_variant
              ]
     end
 
-    test "get_catalogue_item_variant!/1 returns the catalogue_item_variant with given id" do
-      catalogue_item_variant = catalogue_item_variant_fixture()
+    test "get_catalogue_item_variant!/1 returns the catalogue_item_variant with given id",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{id: catalogue_item_variant_id} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
 
-      assert Offerings.get_catalogue_item_variant!(catalogue_item_variant.id) ==
+      assert Offerings.get_catalogue_item_variant!(catalogue_item_variant_id) ==
                catalogue_item_variant
     end
 
-    test "create_catalogue_item_variant/1 with valid data creates a catalogue_item_variant" do
-      assert {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
-               Offerings.create_catalogue_item_variant(@valid_attrs)
+    test "create_catalogue_item_variant/1 with valid data creates a catalogue_item_variant",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      valid_attrs =
+        Map.merge(@valid_attrs, %{catalogue_item_id: catalogue_item_id})
 
-      assert catalogue_item_variant.price == Decimal.new("120.5")
-      assert catalogue_item_variant.type == "some type"
+      assert {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
+               Offerings.create_catalogue_item_variant(valid_attrs)
+
+      assert catalogue_item_variant.price == Decimal.new(@valid_attrs.price)
+      assert catalogue_item_variant.type == @valid_attrs.type
     end
 
     test "create_catalogue_item_variant/1 with invalid data returns error changeset" do
@@ -419,8 +437,11 @@ defmodule ExCommerce.OfferingsTest do
                Offerings.create_catalogue_item_variant(@invalid_attrs)
     end
 
-    test "update_catalogue_item_variant/2 with valid data updates the catalogue_item_variant" do
-      catalogue_item_variant = catalogue_item_variant_fixture()
+    test "update_catalogue_item_variant/2 with valid data updates the catalogue_item_variant",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
 
       assert {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
                Offerings.update_catalogue_item_variant(
@@ -428,12 +449,15 @@ defmodule ExCommerce.OfferingsTest do
                  @update_attrs
                )
 
-      assert catalogue_item_variant.price == Decimal.new("456.7")
-      assert catalogue_item_variant.type == "some updated type"
+      assert catalogue_item_variant.price == Decimal.new(@update_attrs.price)
+      assert catalogue_item_variant.type == @update_attrs.type
     end
 
-    test "update_catalogue_item_variant/2 with invalid data returns error changeset" do
-      catalogue_item_variant = catalogue_item_variant_fixture()
+    test "update_catalogue_item_variant/2 with invalid data returns error changeset",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{id: catalogue_item_variant_id} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
 
       assert {:error, %Ecto.Changeset{}} =
                Offerings.update_catalogue_item_variant(
@@ -442,22 +466,28 @@ defmodule ExCommerce.OfferingsTest do
                )
 
       assert catalogue_item_variant ==
-               Offerings.get_catalogue_item_variant!(catalogue_item_variant.id)
+               Offerings.get_catalogue_item_variant!(catalogue_item_variant_id)
     end
 
-    test "delete_catalogue_item_variant/1 deletes the catalogue_item_variant" do
-      catalogue_item_variant = catalogue_item_variant_fixture()
+    test "delete_catalogue_item_variant/1 deletes the catalogue_item_variant",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{id: catalogue_item_variant_id} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
 
       assert {:ok, %CatalogueItemVariant{}} =
                Offerings.delete_catalogue_item_variant(catalogue_item_variant)
 
       assert_raise Ecto.NoResultsError, fn ->
-        Offerings.get_catalogue_item_variant!(catalogue_item_variant.id)
+        Offerings.get_catalogue_item_variant!(catalogue_item_variant_id)
       end
     end
 
-    test "change_catalogue_item_variant/1 returns a catalogue_item_variant changeset" do
-      catalogue_item_variant = catalogue_item_variant_fixture()
+    test "change_catalogue_item_variant/1 returns a catalogue_item_variant changeset",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
 
       assert %Ecto.Changeset{} =
                Offerings.change_catalogue_item_variant(catalogue_item_variant)
