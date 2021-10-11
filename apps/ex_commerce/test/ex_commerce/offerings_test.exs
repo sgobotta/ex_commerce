@@ -374,4 +374,93 @@ defmodule ExCommerce.OfferingsTest do
       assert %Ecto.Changeset{} = Offerings.change_catalogue_item(catalogue_item)
     end
   end
+
+  describe "catalogue_item_variants" do
+    alias ExCommerce.Offerings.CatalogueItemVariant
+
+    @valid_attrs %{price: "120.5", type: "some type"}
+    @update_attrs %{price: "456.7", type: "some updated type"}
+    @invalid_attrs %{price: nil, type: nil}
+
+    def catalogue_item_variant_fixture(attrs \\ %{}) do
+      {:ok, catalogue_item_variant} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Offerings.create_catalogue_item_variant()
+
+      catalogue_item_variant
+    end
+
+    test "list_catalogue_item_variants/0 returns all catalogue_item_variants" do
+      catalogue_item_variant = catalogue_item_variant_fixture()
+
+      assert Offerings.list_catalogue_item_variants() == [
+               catalogue_item_variant
+             ]
+    end
+
+    test "get_catalogue_item_variant!/1 returns the catalogue_item_variant with given id" do
+      catalogue_item_variant = catalogue_item_variant_fixture()
+
+      assert Offerings.get_catalogue_item_variant!(catalogue_item_variant.id) ==
+               catalogue_item_variant
+    end
+
+    test "create_catalogue_item_variant/1 with valid data creates a catalogue_item_variant" do
+      assert {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
+               Offerings.create_catalogue_item_variant(@valid_attrs)
+
+      assert catalogue_item_variant.price == Decimal.new("120.5")
+      assert catalogue_item_variant.type == "some type"
+    end
+
+    test "create_catalogue_item_variant/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.create_catalogue_item_variant(@invalid_attrs)
+    end
+
+    test "update_catalogue_item_variant/2 with valid data updates the catalogue_item_variant" do
+      catalogue_item_variant = catalogue_item_variant_fixture()
+
+      assert {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
+               Offerings.update_catalogue_item_variant(
+                 catalogue_item_variant,
+                 @update_attrs
+               )
+
+      assert catalogue_item_variant.price == Decimal.new("456.7")
+      assert catalogue_item_variant.type == "some updated type"
+    end
+
+    test "update_catalogue_item_variant/2 with invalid data returns error changeset" do
+      catalogue_item_variant = catalogue_item_variant_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.update_catalogue_item_variant(
+                 catalogue_item_variant,
+                 @invalid_attrs
+               )
+
+      assert catalogue_item_variant ==
+               Offerings.get_catalogue_item_variant!(catalogue_item_variant.id)
+    end
+
+    test "delete_catalogue_item_variant/1 deletes the catalogue_item_variant" do
+      catalogue_item_variant = catalogue_item_variant_fixture()
+
+      assert {:ok, %CatalogueItemVariant{}} =
+               Offerings.delete_catalogue_item_variant(catalogue_item_variant)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Offerings.get_catalogue_item_variant!(catalogue_item_variant.id)
+      end
+    end
+
+    test "change_catalogue_item_variant/1 returns a catalogue_item_variant changeset" do
+      catalogue_item_variant = catalogue_item_variant_fixture()
+
+      assert %Ecto.Changeset{} =
+               Offerings.change_catalogue_item_variant(catalogue_item_variant)
+    end
+  end
 end

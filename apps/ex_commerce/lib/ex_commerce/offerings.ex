@@ -341,4 +341,108 @@ defmodule ExCommerce.Offerings do
   def change_catalogue_item(%CatalogueItem{} = catalogue_item, attrs \\ %{}) do
     CatalogueItem.changeset(catalogue_item, attrs)
   end
+
+  alias ExCommerce.Offerings.CatalogueItemVariant
+
+  @doc """
+  Returns the list of catalogue_item_variants.
+
+  ## Examples
+
+      iex> list_catalogue_item_variants()
+      [%CatalogueItemVariant{}, ...]
+
+  """
+  def list_catalogue_item_variants do
+    Repo.all(CatalogueItemVariant)
+  end
+
+  @doc """
+  Gets a single catalogue_item_variant.
+
+  Raises `Ecto.NoResultsError` if the Catalogue item variant does not exist.
+
+  ## Examples
+
+      iex> get_catalogue_item_variant!(123)
+      %CatalogueItemVariant{}
+
+      iex> get_catalogue_item_variant!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_catalogue_item_variant!(id), do: Repo.get!(CatalogueItemVariant, id)
+
+  @doc """
+  Creates a catalogue_item_variant.
+
+  ## Examples
+
+      iex> create_catalogue_item_variant(%{field: value})
+      {:ok, %CatalogueItemVariant{}}
+
+      iex> create_catalogue_item_variant(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_catalogue_item_variant(attrs \\ %{}) do
+    %CatalogueItemVariant{}
+    |> CatalogueItemVariant.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a catalogue_item_variant.
+
+  ## Examples
+
+      iex> update_catalogue_item_variant(catalogue_item_variant, %{field: new_value})
+      {:ok, %CatalogueItemVariant{}}
+
+      iex> update_catalogue_item_variant(catalogue_item_variant, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_catalogue_item_variant(
+        %CatalogueItemVariant{} = catalogue_item_variant,
+        attrs
+      ) do
+    catalogue_item_variant
+    |> CatalogueItemVariant.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a catalogue_item_variant.
+
+  ## Examples
+
+      iex> delete_catalogue_item_variant(catalogue_item_variant)
+      {:ok, %CatalogueItemVariant{}}
+
+      iex> delete_catalogue_item_variant(catalogue_item_variant)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_catalogue_item_variant(
+        %CatalogueItemVariant{} = catalogue_item_variant
+      ) do
+    Repo.delete(catalogue_item_variant)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking catalogue_item_variant changes.
+
+  ## Examples
+
+      iex> change_catalogue_item_variant(catalogue_item_variant)
+      %Ecto.Changeset{data: %CatalogueItemVariant{}}
+
+  """
+  def change_catalogue_item_variant(
+        %CatalogueItemVariant{} = catalogue_item_variant,
+        attrs \\ %{}
+      ) do
+    CatalogueItemVariant.changeset(catalogue_item_variant, attrs)
+  end
 end
