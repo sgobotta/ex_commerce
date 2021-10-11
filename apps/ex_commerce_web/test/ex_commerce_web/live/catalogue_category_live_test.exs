@@ -1,8 +1,8 @@
 defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
   @moduledoc false
 
+  use ExCommerce.ContextCases.MarketplacesCase
   use ExCommerceWeb.ConnCase
-  use ExCommerceWeb.ResourceCases.MarketplacesCase
 
   import Phoenix.LiveViewTest
 

@@ -19,6 +19,8 @@ defmodule ExCommerceWeb.ConnCase do
 
   alias Ecto.Adapters.SQL.Sandbox
 
+  import Phoenix.LiveViewTest
+
   using do
     quote do
       # Import conveniences for testing with connections
@@ -30,6 +32,10 @@ defmodule ExCommerceWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint ExCommerceWeb.Endpoint
+
+      def assert_redirects_with_error(conn, from: from, to: to) do
+        assert {:error, {:redirect, %{to: ^to}}} = live(conn, from)
+      end
     end
   end
 

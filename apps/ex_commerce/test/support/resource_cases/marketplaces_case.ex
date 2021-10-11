@@ -1,15 +1,13 @@
-defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
+defmodule ExCommerce.ContextCases.MarketplacesCase do
   @moduledoc """
   This module defines the test case to be used by
-  tests that require brands helpers.
+  tests that require Marketplaces helpers.
   """
 
   use ExUnit.CaseTemplate
 
   using do
     quote do
-      import Phoenix.LiveViewTest
-
       alias ExCommerce.Accounts.User
 
       alias ExCommerce.{
@@ -103,10 +101,6 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
           })
 
         %{catalogue_item: catalogue_item}
-      end
-
-      defp assert_redirects_with_error(conn, from: from, to: to) do
-        assert {:error, {:redirect, %{to: ^to}}} = live(conn, from)
       end
     end
   end
