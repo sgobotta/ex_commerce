@@ -10,18 +10,10 @@ defmodule ExCommerce.ContextCases.MarketplacesCase do
     quote do
       alias ExCommerce.Accounts.User
 
-      alias ExCommerce.{
-        BrandsFixtures,
-        CatalogueCategoriesFixtures,
-        CatalogueItemsFixtures,
-        CataloguesFixtures,
-        ShopsFixtures
-      }
+      alias ExCommerce.{BrandsFixtures, ShopsFixtures}
 
       alias ExCommerce.Marketplaces
       alias ExCommerce.Marketplaces.{Brand, BrandUser, Shop}
-      alias ExCommerce.Offerings
-      alias ExCommerce.Offerings.{Catalogue, CatalogueCategory, CatalogueItem}
 
       defp create_shop(_context) do
         shop = ShopsFixtures.create()
@@ -31,18 +23,6 @@ defmodule ExCommerce.ContextCases.MarketplacesCase do
       defp create_brand(_context) do
         brand = BrandsFixtures.create()
         %{brand: brand}
-      end
-
-      defp create_catalogue(_context) do
-        %{catalogue: CataloguesFixtures.create()}
-      end
-
-      defp create_catalogue_category(_context) do
-        %{catalogue_category: CatalogueCategoriesFixtures.create()}
-      end
-
-      defp create_catalogue_item(_context) do
-        %{catalogue_item: CatalogueItemsFixtures.create()}
       end
 
       defp assoc_user_brand(%{
@@ -65,42 +45,6 @@ defmodule ExCommerce.ContextCases.MarketplacesCase do
           })
 
         %{shop: shop}
-      end
-
-      defp assoc_brand_catalogue(%{
-             brand: %Brand{id: brand_id},
-             catalogue: %Catalogue{} = catalogue
-           }) do
-        {:ok, %Catalogue{} = catalogue} =
-          Offerings.update_catalogue(catalogue, %{
-            brand_id: brand_id
-          })
-
-        %{catalogue: catalogue}
-      end
-
-      defp assoc_brand_catalogue_category(%{
-             brand: %Brand{id: brand_id},
-             catalogue_category: %CatalogueCategory{} = catalogue_category
-           }) do
-        {:ok, %CatalogueCategory{} = catalogue_category} =
-          Offerings.update_catalogue_category(catalogue_category, %{
-            brand_id: brand_id
-          })
-
-        %{catalogue_category: catalogue_category}
-      end
-
-      defp assoc_brand_catalogue_item(%{
-             brand: %Brand{id: brand_id},
-             catalogue_item: %CatalogueItem{} = catalogue_item
-           }) do
-        {:ok, %CatalogueItem{} = catalogue_item} =
-          Offerings.update_catalogue_item(catalogue_item, %{
-            brand_id: brand_id
-          })
-
-        %{catalogue_item: catalogue_item}
       end
     end
   end
