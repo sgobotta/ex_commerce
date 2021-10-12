@@ -327,9 +327,16 @@ defmodule ExCommerce.Marketplaces do
 
       iex> assoc_user_brand(
         %User{id: Ecto.UUID.generate()},
-        %{name: "some name"}}
+        %{name: nil}}
       )
-      {:ok, %{brand: %Brand{}, brand_user: %BrandUser{}}}
+      {:error, :brand,
+        #Ecto.Changeset<
+          action: :insert,
+          changes: %{},
+          errors: [name: {"can't be blank", [validation: :required]}],
+          data: #ExCommerce.Marketplaces.Brand<>,
+          valid?: false
+        >, %{}}
 
   """
   def assoc_user_brand(%User{id: user_id}, brand_attrs) do
