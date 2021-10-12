@@ -4,7 +4,10 @@ defmodule ExCommerce.Offerings.CatalogueItem do
   """
 
   use Ecto.Schema
+
   import Ecto.Changeset
+
+  alias ExCommerce.Offerings.CatalogueItemVariant
 
   @fields [:code, :name, :description]
   @foreign_fields [:brand_id]
@@ -16,6 +19,8 @@ defmodule ExCommerce.Offerings.CatalogueItem do
     field :description, :string
     field :name, :string
     field :brand_id, :binary_id
+
+    has_many :variants, CatalogueItemVariant
 
     timestamps()
   end
