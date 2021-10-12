@@ -445,4 +445,108 @@ defmodule ExCommerce.Offerings do
       ) do
     CatalogueItemVariant.changeset(catalogue_item_variant, attrs)
   end
+
+  # ----------------------------------------------------------------------------
+  # Associations
+
+  @doc """
+  Given a `catalogue_item_id` and `catalogue_item_variant_attrs`, attempts to
+  create a `%CatalogueItemVariant{}` and associate it with the given
+  `catalogue_item_id`. If there is an error, the whole operation should be
+  aborted and no records should be created.
+
+  ## Examples
+
+      iex> create_assoc_catalogue_item(
+      ...>  %{
+      ...>    brand_id: Ecto.UUID.generate(),
+      ...>    code: "some code",
+      ...>    description: "some description",
+      ...>    name: "some name"
+      ...>  },
+      ...>  [
+      ...>    %{
+      ...>      id: Ecto.UUID.generate(),
+      ...>      type: "some type",
+      ...>      price: Decimal.new("4.20")
+      ...>    }
+      ...>  ]
+      ...> )
+      {:ok,
+        %{
+          :catalogue_item => %CatalogueItem{},
+          {:catalogue_item_variant, item_variant_id} => %CatalogueItemVariant{}
+        }
+      }
+
+      iex> create_assoc_catalogue_item(
+      ...>  %{
+      ...>    brand_id: Ecto.UUID.generate(),
+      ...>    code: "some code",
+      ...>    description: "some description",
+      ...>    name: nil
+      ...>  },
+      ...>  []
+      ...> )
+      {:error, :catalogue_item,
+        #Ecto.Changeset<
+          action: :insert,
+          changes: %{brand_id: "f1bbfcdb-8035-4a45-bc25-1b313065d0d4"},
+          errors: [name: {"can't be blank", [validation: :required]}],
+          data: #ExCommerce.Offerings.CatalogueItem<>,
+          valid?: false
+        >, %{}}
+
+      iex> create_assoc_catalogue_item(
+      ...>  %{
+      ...>    brand_id: Ecto.UUID.generate(),
+      ...>    code: "some code",
+      ...>    description: "some description",
+      ...>    name: "some name"
+      ...>  },
+      ...>  [%{type: "some type"}]
+      ...> )
+      {:error, {:catalogue_item_variant, nil},
+        #Ecto.Changeset<
+          action: :insert,
+          changes: %{catalogue_item_id: "5bf1015c-a5cc-47a6-9d88-c33a46677566"},
+          errors: [price: {"can't be blank", [validation: :required]}],
+          data: #ExCommerce.Offerings.CatalogueItemVariant<>,
+          valid?: false
+        >, %{catalogue_item: %CatalogueItem{}}}
+
+  """
+  def create_assoc_catalogue_item(
+        catalogue_item_attrs,
+        catalogue_item_variants_attrs
+      ) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert_or_update(
+      :catalogue_item,
+      change_catalogue_item(%CatalogueItem{}, catalogue_item_attrs)
+    )
+    |> Ecto.Multi.merge(fn %{
+                             catalogue_item: %CatalogueItem{
+                               id: catalogue_item_id
+                             }
+                           } ->
+      Enum.reduce(
+        catalogue_item_variants_attrs,
+        Ecto.Multi.new(),
+        fn catalogue_item_variant_attrs, acc ->
+          Ecto.Multi.insert_or_update(
+            acc,
+            {:catalogue_item_variant, catalogue_item_variant_attrs.id},
+            change_catalogue_item_variant(
+              %CatalogueItemVariant{},
+              Map.merge(catalogue_item_variant_attrs, %{
+                catalogue_item_id: catalogue_item_id
+              })
+            )
+          )
+        end
+      )
+    end)
+    |> Repo.transaction()
+  end
 end
