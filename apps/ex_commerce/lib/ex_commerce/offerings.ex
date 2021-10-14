@@ -458,17 +458,23 @@ defmodule ExCommerce.Offerings do
   ## Examples
 
       iex> create_assoc_catalogue_item(
-      ...>  %{
-      ...>    brand_id: Ecto.UUID.generate(),
-      ...>    code: "some code",
-      ...>    description: "some description",
-      ...>    name: "some name"
+      ...>  {
+      ...>   %CatalogueItem{},
+      ...>   %{
+      ...>     brand_id: Ecto.UUID.generate(),
+      ...>     code: "some code",
+      ...>     description: "some description",
+      ...>     name: "some name"
+      ...>   }
       ...>  },
       ...>  [
-      ...>    %{
-      ...>      id: Ecto.UUID.generate(),
-      ...>      type: "some type",
-      ...>      price: Decimal.new("4.20")
+      ...>    {
+      ...>      %CatalogueItemVariant{},
+      ...>      %{
+      ...>         id: Ecto.UUID.generate(),
+      ...>         type: "some type",
+      ...>         price: Decimal.new("4.20")
+      ...>       }
       ...>    }
       ...>  ]
       ...> )
@@ -480,11 +486,14 @@ defmodule ExCommerce.Offerings do
       }
 
       iex> create_assoc_catalogue_item(
-      ...>  %{
-      ...>    brand_id: Ecto.UUID.generate(),
-      ...>    code: "some code",
-      ...>    description: "some description",
-      ...>    name: nil
+      ...>  {
+      ...>    %CatalogueItem{},
+      ...>    %{
+      ...>       brand_id: Ecto.UUID.generate(),
+      ...>       code: "some code",
+      ...>       description: "some description",
+      ...>       name: nil
+      ...>     }
       ...>  },
       ...>  []
       ...> )
@@ -498,13 +507,16 @@ defmodule ExCommerce.Offerings do
         >, %{}}
 
       iex> create_assoc_catalogue_item(
-      ...>  %{
-      ...>    brand_id: Ecto.UUID.generate(),
-      ...>    code: "some code",
-      ...>    description: "some description",
-      ...>    name: "some name"
-      ...>  },
-      ...>  [%{type: "some type"}]
+      ...>  {
+      ...>    %CatalogueItem{},
+      ...>    %{
+      ...>       brand_id: Ecto.UUID.generate(),
+      ...>       code: "some code",
+      ...>       description: "some description",
+      ...>       name: "some name"
+      ...>     }
+      ...>  }
+      ...>  [{%CatalogueItemVariant{}, %{type: "some type"}}]
       ...> )
       {:error, {:catalogue_item_variant, nil},
         #Ecto.Changeset<
@@ -517,13 +529,13 @@ defmodule ExCommerce.Offerings do
 
   """
   def create_assoc_catalogue_item(
-        catalogue_item_attrs,
+        {%CatalogueItem{} = catalogue_item_struct, catalogue_item_attrs},
         catalogue_item_variants_attrs
       ) do
     Ecto.Multi.new()
     |> Ecto.Multi.insert_or_update(
       :catalogue_item,
-      change_catalogue_item(%CatalogueItem{}, catalogue_item_attrs)
+      change_catalogue_item(catalogue_item_struct, catalogue_item_attrs)
     )
     |> Ecto.Multi.merge(fn %{
                              catalogue_item: %CatalogueItem{
@@ -531,17 +543,20 @@ defmodule ExCommerce.Offerings do
                              }
                            } ->
       Enum.reduce(
-        catalogue_item_variants_attrs,
+        Enum.with_index(catalogue_item_variants_attrs),
         Ecto.Multi.new(),
-        fn catalogue_item_variant_attrs, acc ->
+        fn {{catalogue_item_variant_struct, catalogue_item_variant_attrs},
+            index},
+           acc ->
           Ecto.Multi.insert_or_update(
             acc,
-            {:catalogue_item_variant, catalogue_item_variant_attrs.id},
+            {:catalogue_item_variant, index},
             change_catalogue_item_variant(
-              %CatalogueItemVariant{},
-              Map.merge(catalogue_item_variant_attrs, %{
-                catalogue_item_id: catalogue_item_id
-              })
+              catalogue_item_variant_struct,
+              Map.merge(
+                %{catalogue_item_id: catalogue_item_id},
+                catalogue_item_variant_attrs
+              )
             )
           )
         end

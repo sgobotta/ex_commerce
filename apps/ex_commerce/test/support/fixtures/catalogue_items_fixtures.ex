@@ -21,6 +21,10 @@ defmodule ExCommerce.CatalogueItemsFixtures do
   }
   @invalid_attrs %{code: nil, description: nil, name: nil}
 
+  def valid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@valid_attrs)
+  def update_attrs(attrs \\ %{}), do: attrs |> Enum.into(@update_attrs)
+  def invalid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@invalid_attrs)
+
   def create(attrs \\ %{}) do
     attrs = assign_brand_maybe(attrs)
 
