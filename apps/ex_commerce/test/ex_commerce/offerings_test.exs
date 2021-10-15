@@ -335,7 +335,31 @@ defmodule ExCommerce.OfferingsTest do
                Offerings.create_catalogue_item(@invalid_attrs)
     end
 
-    @tag :wip
+    test "create_assoc_catalogue_item/2 with valid data updates a catalogue item with catalogue item variants",
+         %{brand: %Brand{id: brand_id}} do
+      valid_catalogue_item_attrs =
+        Map.merge(@valid_attrs, %{brand_id: brand_id})
+
+      valid_catalogue_variants_attrs =
+        for n <- 1..3 do
+          {%CatalogueItemVariant{}, CatalogueItemVariantsFixtures.valid_attrs()}
+        end
+
+      %CatalogueItem{} =
+        catalogue_item =
+        CatalogueItemsFixtures.create_assoc(
+          valid_catalogue_item_attrs,
+          valid_catalogue_variants_attrs
+        )
+
+      %{variants: preloaded_variants} =
+        Repo.preload(catalogue_item, [:variants])
+
+      assert length(preloaded_variants) ==
+               length(valid_catalogue_variants_attrs)
+    end
+
+    # @tag :wip
     test "create_assoc_catalogue_item/2 with valid data creates and updates a catalogue item with catalogue item variants",
          %{brand: %Brand{id: brand_id}} do
       %{
@@ -524,7 +548,6 @@ defmodule ExCommerce.OfferingsTest do
              } = result
     end
 
-    @tag :skip
     test "create_assoc_catalogue_item/2 fails on invalid catalogue_item attributes",
          %{brand: %Brand{id: brand_id}} do
       invalid_catalogue_item_attrs =
@@ -537,13 +560,13 @@ defmodule ExCommerce.OfferingsTest do
         CatalogueItemVariantsFixtures.valid_attrs(%{id: Ecto.UUID.generate()})
 
       valid_catalogue_item_variants_attrs = [
-        some_item_variant,
-        some_other_item_variant
+        {%CatalogueItemVariant{}, some_item_variant},
+        {%CatalogueItemVariant{}, some_other_item_variant}
       ]
 
       assert {:error, :catalogue_item, changeset, %{}} =
                Offerings.create_assoc_catalogue_item(
-                 invalid_catalogue_item_attrs,
+                 {%CatalogueItem{}, invalid_catalogue_item_attrs},
                  valid_catalogue_item_variants_attrs
                )
 
@@ -559,7 +582,6 @@ defmodule ExCommerce.OfferingsTest do
                Keyword.get(changeset.errors, :description)
     end
 
-    @tag :skip
     test "create_assoc_catalogue_item/2 fails on invalid catalogue_item_variant attributes",
          %{brand: %Brand{id: brand_id}} do
       %{
@@ -574,9 +596,11 @@ defmodule ExCommerce.OfferingsTest do
       some_item_variant =
         CatalogueItemVariantsFixtures.invalid_attrs(%{id: nil})
 
-      valid_catalogue_item_variants_attrs = [some_item_variant]
+      valid_catalogue_item_variants_attrs = [
+        {%CatalogueItemVariant{}, some_item_variant}
+      ]
 
-      assert {:error, {:catalogue_item_variant, nil}, changeset,
+      assert {:error, {:catalogue_item_variant, 0}, changeset,
               %{
                 catalogue_item: %CatalogueItem{
                   id: catalogue_item_id,
@@ -587,7 +611,7 @@ defmodule ExCommerce.OfferingsTest do
                 }
               }} =
                Offerings.create_assoc_catalogue_item(
-                 valid_catalogue_item_attrs,
+                 {%CatalogueItem{}, valid_catalogue_item_attrs},
                  valid_catalogue_item_variants_attrs
                )
 

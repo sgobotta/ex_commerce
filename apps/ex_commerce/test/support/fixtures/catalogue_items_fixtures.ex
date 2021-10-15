@@ -36,6 +36,18 @@ defmodule ExCommerce.CatalogueItemsFixtures do
     catalogue_item
   end
 
+  def create_assoc(item_attrs \\ %{}, item_variants_attrs \\ []) do
+    item_attrs = assign_brand_maybe(item_attrs)
+
+    {:ok, %{:catalogue_item => catalogue_item}} =
+      Offerings.create_assoc_catalogue_item(
+        {%CatalogueItem{}, item_attrs},
+        item_variants_attrs
+      )
+
+    catalogue_item
+  end
+
   defp assign_brand_maybe(attrs) do
     case Map.has_key?(attrs, :brand_id) do
       false ->
