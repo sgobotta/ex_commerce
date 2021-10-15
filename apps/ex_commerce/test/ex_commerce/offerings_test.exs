@@ -341,7 +341,7 @@ defmodule ExCommerce.OfferingsTest do
         Map.merge(@valid_attrs, %{brand_id: brand_id})
 
       valid_catalogue_variants_attrs =
-        for n <- 1..3 do
+        for _n <- 1..3 do
           {%CatalogueItemVariant{}, CatalogueItemVariantsFixtures.valid_attrs()}
         end
 
@@ -359,7 +359,6 @@ defmodule ExCommerce.OfferingsTest do
                length(valid_catalogue_variants_attrs)
     end
 
-    # @tag :wip
     test "create_assoc_catalogue_item/2 with valid data creates and updates a catalogue item with catalogue item variants",
          %{brand: %Brand{id: brand_id}} do
       %{
