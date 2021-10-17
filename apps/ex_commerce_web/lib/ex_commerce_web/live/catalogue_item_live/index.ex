@@ -78,14 +78,12 @@ defmodule ExCommerceWeb.CatalogueItemLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => catalogue_item_id}, socket) do
-    %{assigns: %{brand: %Brand{id: brand_id}}} = socket
-
     %CatalogueItem{} =
       catalogue_item = Offerings.get_catalogue_item!(catalogue_item_id)
 
     {:ok, _} = Offerings.delete_catalogue_item(catalogue_item)
 
-    {:noreply, assign(socket, :catalogue_items, list_catalogue_items(brand_id))}
+    {:noreply, update_catalogue_items(socket)}
   end
 
   defp prepare_catalogue_item(%{brand: %Brand{id: brand_id}}) do
@@ -93,7 +91,12 @@ defmodule ExCommerceWeb.CatalogueItemLive.Index do
     |> Repo.preload([:variants])
   end
 
-  defp list_catalogue_items(brand_id) do
-    Offerings.list_catalogue_items_by_brand(brand_id)
+  defp update_catalogue_items(%{assigns: %{brand: %Brand{} = brand}} = socket) do
+    %{catalogue_items: catalogue_items} =
+      brand = Repo.preload(brand, [:catalogue_items], force: true)
+
+    socket
+    |> assign(:brand, brand)
+    |> assign(:catalogue_items, catalogue_items)
   end
 end
