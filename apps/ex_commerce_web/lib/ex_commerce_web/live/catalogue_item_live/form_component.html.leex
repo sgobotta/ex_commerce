@@ -18,7 +18,7 @@
   <%= text_input f, :description, class: "input", placeholder: gettext("Characterized by floral, fruity, citrus-like, piney, resinous American hops") %>
   <%= error_tag f, :description %>
 
-  <p class="mt-4 mb-2 font-bold">Variants</p>
+  <p class="mt-4 mb-2 font-bold"><%= gettext("Variants") %></p>
 
   <%= inputs_for f, :variants, fn v -> %>
     <div class="flex flex-wrap -mx-1 overflow-hidden">
@@ -52,7 +52,14 @@
     </div>
   <% end %>
 
-  <a href="#" phx-click="add_variant" phx-target="<%= @myself %>">Add a variant</a>
+  <a
+    href="#"
+    phx-click="add_variant"
+    phx-target="<%= @myself %>"
+    id="catalogue_item-add-variant-input"
+  >
+    <%= gettext("Add a variant") %>
+  </a>
 
   <div class="flex justify-end mt-6">
     <%= submit "Save", phx_disable_with: "Saving...", class: "button"%>
