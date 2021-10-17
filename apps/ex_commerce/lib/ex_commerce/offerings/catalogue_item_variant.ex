@@ -29,7 +29,7 @@ defmodule ExCommerce.Offerings.CatalogueItemVariant do
     catalogue_item_variant
     |> Map.put(:temp_id, catalogue_item_variant.temp_id || attrs["temp_id"])
     |> cast(attrs, @fields ++ @foreign_fields ++ [:delete])
-    |> validate_required(@fields)
+    |> validate_required([:price])
     |> maybe_mark_for_deletion()
   end
 
