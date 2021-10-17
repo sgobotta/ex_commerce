@@ -7,12 +7,16 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemVariant}
 
+  import ExCommerceWeb.Utils
+
   @impl true
   def update(
         %{catalogue_item: %CatalogueItem{} = catalogue_item} = assigns,
         socket
       ) do
-    changeset = Offerings.change_catalogue_item(catalogue_item)
+    changeset =
+      Offerings.change_catalogue_item(catalogue_item)
+      |> prepare_variants_maybe(assigns)
 
     {:ok,
      socket
@@ -77,8 +81,19 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  defp get_temp_id,
-    do: :crypto.strong_rand_bytes(5) |> Base.url_encode64() |> binary_part(0, 5)
+  defp prepare_variants_maybe(changeset, %{action: :new}) do
+    catalogue_item_variant =
+      Offerings.change_catalogue_item_variant(%CatalogueItemVariant{
+        temp_id: get_temp_id(),
+        type: nil,
+        price: 0
+      })
+
+    changeset
+    |> Ecto.Changeset.put_assoc(:variants, [catalogue_item_variant])
+  end
+
+  defp prepare_variants_maybe(changeset, %{action: _}), do: changeset
 
   defp save_catalogue_item(socket, :edit, catalogue_item_params) do
     case Offerings.update_catalogue_item(
