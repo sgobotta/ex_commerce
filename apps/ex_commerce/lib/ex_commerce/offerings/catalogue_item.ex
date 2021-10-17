@@ -20,7 +20,7 @@ defmodule ExCommerce.Offerings.CatalogueItem do
     field :name, :string
     field :brand_id, :binary_id
 
-    has_many :variants, CatalogueItemVariant
+    has_many :variants, CatalogueItemVariant, on_delete: :delete_all
 
     timestamps()
   end
@@ -29,6 +29,7 @@ defmodule ExCommerce.Offerings.CatalogueItem do
   def changeset(catalogue_item, attrs) do
     catalogue_item
     |> cast(attrs, @fields ++ @foreign_fields)
+    |> cast_assoc(:variants)
     |> validate_required(@fields ++ @foreign_fields)
   end
 end
