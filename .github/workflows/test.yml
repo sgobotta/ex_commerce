@@ -48,8 +48,8 @@ jobs:
       run: node --version
     - name: Install dependencies
       run: |
-        make setup
-        mix deps.get
+        mix install
+        mix setup
     - name: Run tests
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

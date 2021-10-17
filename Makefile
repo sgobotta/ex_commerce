@@ -61,9 +61,12 @@ reset.ecto:
 	@source ${ENV_FILE} && MIX_ENV=test mix reset.ecto
 
 #📦 setup: @ Installs dependencies and set up database
+setup: SHELL:=/bin/bash
 setup:
-	@mix install
-	@mix setup
+	@source ${ENV_FILE} && MIX_ENV=dev mix install
+	@source ${ENV_FILE} && MIX_ENV=dev mix setup
+	@source ${ENV_FILE} && MIX_ENV=test mix install
+	@source ${ENV_FILE} && MIX_ENV=test mix setup
 
 #📦 setup.deps: @ Installs dependencies only
 setup.deps:

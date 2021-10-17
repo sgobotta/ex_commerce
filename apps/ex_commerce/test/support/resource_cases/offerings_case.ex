@@ -1,39 +1,28 @@
-defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
+defmodule ExCommerce.ContextCases.OfferingsCase do
   @moduledoc """
   This module defines the test case to be used by
-  tests that require brands helpers.
+  tests that require Offerings helpers.
   """
 
   use ExUnit.CaseTemplate
 
   using do
     quote do
-      import Phoenix.LiveViewTest
-
-      alias ExCommerce.Accounts.User
-
       alias ExCommerce.{
-        BrandsFixtures,
         CatalogueCategoriesFixtures,
         CatalogueItemsFixtures,
-        CataloguesFixtures,
-        ShopsFixtures
+        CataloguesFixtures
       }
 
-      alias ExCommerce.Marketplaces
-      alias ExCommerce.Marketplaces.{Brand, BrandUser, Shop}
+      alias ExCommerce.Marketplaces.Brand
       alias ExCommerce.Offerings
-      alias ExCommerce.Offerings.{Catalogue, CatalogueCategory, CatalogueItem}
 
-      defp create_shop(_context) do
-        shop = ShopsFixtures.create()
-        %{shop: shop}
-      end
-
-      defp create_brand(_context) do
-        brand = BrandsFixtures.create()
-        %{brand: brand}
-      end
+      alias ExCommerce.Offerings.{
+        Catalogue,
+        CatalogueCategory,
+        CatalogueItem,
+        CatalogueItemVariant
+      }
 
       defp create_catalogue(_context) do
         %{catalogue: CataloguesFixtures.create()}
@@ -45,28 +34,6 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
 
       defp create_catalogue_item(_context) do
         %{catalogue_item: CatalogueItemsFixtures.create()}
-      end
-
-      defp assoc_user_brand(%{
-             user: %User{id: user_id},
-             brand: %Brand{id: brand_id}
-           }) do
-        {:ok, %BrandUser{} = _brand_user} =
-          Marketplaces.create_brand_user(%{
-            user_id: user_id,
-            brand_id: brand_id
-          })
-
-        %{}
-      end
-
-      defp assoc_brand_shop(%{brand: %Brand{id: brand_id}, shop: %Shop{} = shop}) do
-        {:ok, %Shop{} = shop} =
-          Marketplaces.update_shop(shop, %{
-            brand_id: brand_id
-          })
-
-        %{shop: shop}
       end
 
       defp assoc_brand_catalogue(%{
@@ -103,10 +70,6 @@ defmodule ExCommerceWeb.ResourceCases.MarketplacesCase do
           })
 
         %{catalogue_item: catalogue_item}
-      end
-
-      defp assert_redirects_with_error(conn, from: from, to: to) do
-        assert {:error, {:redirect, %{to: ^to}}} = live(conn, from)
       end
     end
   end

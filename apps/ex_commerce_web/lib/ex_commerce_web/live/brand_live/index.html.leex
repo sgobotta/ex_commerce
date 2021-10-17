@@ -38,9 +38,9 @@
               <td><%= brand.name %></td>
 
               <td>
-                <span><%= live_redirect "Manage", to: Routes.home_index_path(@socket, :index, brand.id) %></span>
-                <span><%= live_redirect "Show", to: Routes.brand_show_path(@socket, :show, brand.id) %></span>
-                <span><%= live_patch "Edit", to: Routes.brand_index_path(@socket, :edit, brand.id) %></span>
+                <span><%= live_redirect gettext("Manage"), to: Routes.home_index_path(@socket, :index, brand.id) %></span>
+                <span><%= live_redirect gettext("Show"), to: Routes.brand_show_path(@socket, :show, brand.id) %></span>
+                <span><%= live_patch gettext("Edit"), to: Routes.brand_index_path(@socket, :edit, brand.id) %></span>
                 <!-- <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: brand.id, data: [confirm: "Are you sure?"] %></span> -->
               </td>
             </tr>

@@ -5,14 +5,18 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   use ExCommerceWeb, :live_component
 
   alias ExCommerce.Offerings
-  alias ExCommerce.Offerings.CatalogueItem
+  alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemVariant}
+
+  import ExCommerceWeb.Utils
 
   @impl true
   def update(
         %{catalogue_item: %CatalogueItem{} = catalogue_item} = assigns,
         socket
       ) do
-    changeset = Offerings.change_catalogue_item(catalogue_item)
+    changeset =
+      Offerings.change_catalogue_item(catalogue_item)
+      |> prepare_variants_maybe(assigns)
 
     {:ok,
      socket
@@ -37,6 +41,59 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   def handle_event("save", %{"catalogue_item" => catalogue_item_params}, socket) do
     save_catalogue_item(socket, socket.assigns.action, catalogue_item_params)
   end
+
+  def handle_event("add_variant", _params, socket) do
+    existing_variants =
+      Map.get(
+        socket.assigns.changeset.changes,
+        :variants,
+        socket.assigns.catalogue_item.variants
+      )
+
+    variants =
+      existing_variants
+      |> Enum.concat([
+        Offerings.change_catalogue_item_variant(%CatalogueItemVariant{
+          temp_id: get_temp_id(),
+          type: nil,
+          price: 0
+        })
+      ])
+
+    changeset =
+      socket.assigns.changeset
+      |> Ecto.Changeset.put_assoc(:variants, variants)
+
+    {:noreply, assign(socket, changeset: changeset)}
+  end
+
+  def handle_event("remove_variant", %{"remove" => remove_id}, socket) do
+    variants =
+      socket.assigns.changeset.changes.variants
+      |> Enum.reject(fn %{data: variant} ->
+        variant.temp_id == remove_id
+      end)
+
+    changeset =
+      socket.assigns.changeset
+      |> Ecto.Changeset.put_assoc(:variants, variants)
+
+    {:noreply, assign(socket, changeset: changeset)}
+  end
+
+  defp prepare_variants_maybe(changeset, %{action: :new}) do
+    catalogue_item_variant =
+      Offerings.change_catalogue_item_variant(%CatalogueItemVariant{
+        temp_id: get_temp_id(),
+        type: nil,
+        price: 0
+      })
+
+    changeset
+    |> Ecto.Changeset.put_assoc(:variants, [catalogue_item_variant])
+  end
+
+  defp prepare_variants_maybe(changeset, %{action: _}), do: changeset
 
   defp save_catalogue_item(socket, :edit, catalogue_item_params) do
     case Offerings.update_catalogue_item(

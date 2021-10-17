@@ -4,6 +4,7 @@ defmodule ExCommerce.OfferingsTest do
   use ExCommerce.DataCase
 
   alias ExCommerce.Offerings
+  alias ExCommerce.Repo
 
   describe "catalogues" do
     alias ExCommerce.BrandsFixtures
@@ -254,9 +255,14 @@ defmodule ExCommerce.OfferingsTest do
   end
 
   describe "catalogue_items" do
-    alias ExCommerce.BrandsFixtures
+    alias ExCommerce.{
+      BrandsFixtures,
+      CatalogueItemsFixtures,
+      CatalogueItemVariantsFixtures
+    }
+
     alias ExCommerce.Marketplaces.Brand
-    alias ExCommerce.Offerings.CatalogueItem
+    alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemVariant}
 
     @valid_attrs %{
       code: "some code",
@@ -329,6 +335,295 @@ defmodule ExCommerce.OfferingsTest do
                Offerings.create_catalogue_item(@invalid_attrs)
     end
 
+    test "create_assoc_catalogue_item/2 with valid data updates a catalogue item with catalogue item variants",
+         %{brand: %Brand{id: brand_id}} do
+      valid_catalogue_item_attrs =
+        Map.merge(@valid_attrs, %{brand_id: brand_id})
+
+      valid_catalogue_variants_attrs =
+        for _n <- 1..3 do
+          {%CatalogueItemVariant{}, CatalogueItemVariantsFixtures.valid_attrs()}
+        end
+
+      %CatalogueItem{} =
+        catalogue_item =
+        CatalogueItemsFixtures.create_assoc(
+          valid_catalogue_item_attrs,
+          valid_catalogue_variants_attrs
+        )
+
+      %{variants: preloaded_variants} =
+        Repo.preload(catalogue_item, [:variants])
+
+      assert length(preloaded_variants) ==
+               length(valid_catalogue_variants_attrs)
+    end
+
+    test "create_assoc_catalogue_item/2 with valid data creates and updates a catalogue item with catalogue item variants",
+         %{brand: %Brand{id: brand_id}} do
+      %{
+        brand_id: catalogue_item_brand_id,
+        code: catalogue_item_code,
+        description: catalogue_item_description,
+        name: catalogue_item_name
+      } =
+        valid_catalogue_item_attrs =
+        Map.merge(@valid_attrs, %{brand_id: brand_id})
+
+      some_item_variant =
+        %{
+          type: some_item_variant_type,
+          price: some_item_variant_price
+        } = CatalogueItemVariantsFixtures.valid_attrs()
+
+      some_item_variant_ecto_multi_key = {:catalogue_item_variant, 0}
+
+      some_other_item_variant =
+        %{
+          type: some_other_item_variant_type,
+          price: some_other_item_variant_price
+        } = CatalogueItemVariantsFixtures.valid_attrs()
+
+      some_other_item_variant_ecto_multi_key = {:catalogue_item_variant, 1}
+
+      valid_catalogue_item_variants_attrs = [
+        {%CatalogueItemVariant{}, some_item_variant},
+        {%CatalogueItemVariant{}, some_other_item_variant}
+      ]
+
+      assert {:ok, result} =
+               Offerings.create_assoc_catalogue_item(
+                 {%CatalogueItem{}, valid_catalogue_item_attrs},
+                 valid_catalogue_item_variants_attrs
+               )
+
+      assert %{
+               :catalogue_item =>
+                 %CatalogueItem{
+                   id: catalogue_item_id,
+                   brand_id: ^catalogue_item_brand_id,
+                   code: ^catalogue_item_code,
+                   description: ^catalogue_item_description,
+                   name: ^catalogue_item_name
+                 } = catalogue_item,
+               ^some_item_variant_ecto_multi_key =>
+                 %CatalogueItemVariant{
+                   id: some_item_variant_id,
+                   type: ^some_item_variant_type,
+                   price: ^some_item_variant_price
+                 } = some_item_variant,
+               ^some_other_item_variant_ecto_multi_key =>
+                 %CatalogueItemVariant{
+                   id: some_other_item_variant_id,
+                   type: ^some_other_item_variant_type,
+                   price: ^some_other_item_variant_price
+                 } = some_other_item_variant
+             } = result
+
+      # Check catalogue_item and catalogue_item_variants were correctly saved.
+      assert Offerings.get_catalogue_item!(catalogue_item_id) == catalogue_item
+
+      assert Offerings.get_catalogue_item_variant!(some_item_variant_id) ==
+               some_item_variant
+
+      assert(
+        Offerings.get_catalogue_item_variant!(some_other_item_variant_id) ==
+          some_other_item_variant
+      )
+
+      # Check new variants are correctly preloaded in %CatalogueItem{} structs
+      catalogue_item_variants = [some_item_variant, some_other_item_variant]
+
+      %{variants: preloaded_variants} =
+        Repo.preload(catalogue_item, [:variants])
+
+      for catalogue_item_variant <- preloaded_variants do
+        assert Enum.member?(catalogue_item_variants, catalogue_item_variant)
+      end
+
+      # ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+      # Updates existent catalogue item and variants
+
+      %{
+        code: update_catalogue_item_code,
+        description: update_catalogue_item_description,
+        name: update_catalogue_item_name
+      } = @update_attrs
+
+      some_updated_item_variant =
+        %{
+          type: some_updated_item_variant_type,
+          price: some_updated_item_variant_price
+        } = CatalogueItemVariantsFixtures.update_attrs()
+
+      some_other_updated_item_variant =
+        %{
+          type: some_other_updated_item_variant_type,
+          price: some_other_updated_item_variant_price
+        } = CatalogueItemVariantsFixtures.update_attrs()
+
+      update_catalogue_item_variants_attrs = [
+        {some_item_variant, some_updated_item_variant},
+        {some_other_item_variant, some_other_updated_item_variant}
+      ]
+
+      assert {:ok, result} =
+               Offerings.create_assoc_catalogue_item(
+                 {catalogue_item, @update_attrs},
+                 update_catalogue_item_variants_attrs
+               )
+
+      assert %{
+               :catalogue_item =>
+                 %CatalogueItem{
+                   id: ^catalogue_item_id,
+                   brand_id: ^catalogue_item_brand_id,
+                   code: ^update_catalogue_item_code,
+                   description: ^update_catalogue_item_description,
+                   name: ^update_catalogue_item_name
+                 } = updated_catalogue_item,
+               ^some_item_variant_ecto_multi_key =>
+                 %CatalogueItemVariant{
+                   id: ^some_item_variant_id,
+                   type: ^some_updated_item_variant_type,
+                   price: ^some_updated_item_variant_price
+                 } = some_updated_item_variant,
+               ^some_other_item_variant_ecto_multi_key =>
+                 %CatalogueItemVariant{
+                   id: ^some_other_item_variant_id,
+                   type: ^some_other_updated_item_variant_type,
+                   price: ^some_other_updated_item_variant_price
+                 } = some_other_updated_item_variant
+             } = result
+
+      # Check catalogue_item and catalogue_item_variants were correctly updated.
+      assert Offerings.get_catalogue_item!(catalogue_item_id) ==
+               updated_catalogue_item
+
+      assert Offerings.get_catalogue_item_variant!(some_item_variant_id) ==
+               some_updated_item_variant
+
+      assert(
+        Offerings.get_catalogue_item_variant!(some_other_item_variant_id) ==
+          some_other_updated_item_variant
+      )
+
+      # Check new variants are correctly preloaded in %CatalogueItem{} structs
+      updated_catalogue_item_variants = [
+        some_updated_item_variant,
+        some_other_updated_item_variant
+      ]
+
+      %{variants: preloaded_variants} =
+        Repo.preload(catalogue_item, [:variants])
+
+      for catalogue_item_variant <- preloaded_variants do
+        assert Enum.member?(
+                 updated_catalogue_item_variants,
+                 catalogue_item_variant
+               )
+      end
+
+      # ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+      # Calls create_assoc_catalogue_item without changes
+
+      update_catalogue_item_variants_attrs = [
+        {some_updated_item_variant, %{}},
+        {some_other_updated_item_variant, %{}}
+      ]
+
+      assert {:ok, result} =
+               Offerings.create_assoc_catalogue_item(
+                 {updated_catalogue_item, %{}},
+                 update_catalogue_item_variants_attrs
+               )
+
+      assert %{
+               :catalogue_item => %CatalogueItem{} = ^updated_catalogue_item,
+               ^some_item_variant_ecto_multi_key =>
+                 %CatalogueItemVariant{} = ^some_updated_item_variant,
+               ^some_other_item_variant_ecto_multi_key =>
+                 %CatalogueItemVariant{} = ^some_other_updated_item_variant
+             } = result
+    end
+
+    test "create_assoc_catalogue_item/2 fails on invalid catalogue_item attributes",
+         %{brand: %Brand{id: brand_id}} do
+      invalid_catalogue_item_attrs =
+        Map.merge(@invalid_attrs, %{brand_id: brand_id})
+
+      some_item_variant =
+        CatalogueItemVariantsFixtures.valid_attrs(%{id: Ecto.UUID.generate()})
+
+      some_other_item_variant =
+        CatalogueItemVariantsFixtures.valid_attrs(%{id: Ecto.UUID.generate()})
+
+      valid_catalogue_item_variants_attrs = [
+        {%CatalogueItemVariant{}, some_item_variant},
+        {%CatalogueItemVariant{}, some_other_item_variant}
+      ]
+
+      assert {:error, :catalogue_item, changeset, %{}} =
+               Offerings.create_assoc_catalogue_item(
+                 {%CatalogueItem{}, invalid_catalogue_item_attrs},
+                 valid_catalogue_item_variants_attrs
+               )
+
+      refute changeset.valid?
+
+      assert {"can't be blank", [validation: :required]} =
+               Keyword.get(changeset.errors, :code)
+
+      assert {"can't be blank", [validation: :required]} =
+               Keyword.get(changeset.errors, :name)
+
+      assert {"can't be blank", [validation: :required]} =
+               Keyword.get(changeset.errors, :description)
+    end
+
+    test "create_assoc_catalogue_item/2 fails on invalid catalogue_item_variant attributes",
+         %{brand: %Brand{id: brand_id}} do
+      %{
+        brand_id: catalogue_item_brand_id,
+        code: catalogue_item_code,
+        description: catalogue_item_description,
+        name: catalogue_item_name
+      } =
+        valid_catalogue_item_attrs =
+        Map.merge(@valid_attrs, %{brand_id: brand_id})
+
+      some_item_variant =
+        CatalogueItemVariantsFixtures.invalid_attrs(%{id: nil})
+
+      valid_catalogue_item_variants_attrs = [
+        {%CatalogueItemVariant{}, some_item_variant}
+      ]
+
+      assert {:error, {:catalogue_item_variant, 0}, changeset,
+              %{
+                catalogue_item: %CatalogueItem{
+                  id: catalogue_item_id,
+                  brand_id: ^catalogue_item_brand_id,
+                  code: ^catalogue_item_code,
+                  description: ^catalogue_item_description,
+                  name: ^catalogue_item_name
+                }
+              }} =
+               Offerings.create_assoc_catalogue_item(
+                 {%CatalogueItem{}, valid_catalogue_item_attrs},
+                 valid_catalogue_item_variants_attrs
+               )
+
+      refute changeset.valid?
+
+      assert {"can't be blank", [validation: :required]} =
+               Keyword.get(changeset.errors, :price)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Offerings.get_catalogue_item!(catalogue_item_id)
+      end
+    end
+
     test "update_catalogue_item/2 with valid data updates the catalogue_item",
          %{brand: %Brand{id: brand_id}} do
       catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
@@ -372,6 +667,125 @@ defmodule ExCommerce.OfferingsTest do
     } do
       catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
       assert %Ecto.Changeset{} = Offerings.change_catalogue_item(catalogue_item)
+    end
+  end
+
+  describe "catalogue_item_variants" do
+    alias ExCommerce.CatalogueItemsFixtures
+    alias ExCommerce.Offerings.CatalogueItem
+    alias ExCommerce.Offerings.CatalogueItemVariant
+
+    @valid_attrs %{price: "120.5", type: "some type"}
+    @update_attrs %{price: "456.7", type: "some updated type"}
+    @invalid_attrs %{price: nil, type: nil}
+
+    setup do
+      %{catalogue_item: CatalogueItemsFixtures.create()}
+    end
+
+    def catalogue_item_variant_fixture(attrs \\ %{}) do
+      {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Offerings.create_catalogue_item_variant()
+
+      catalogue_item_variant
+    end
+
+    test "list_catalogue_item_variants/0 returns all catalogue_item_variants",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{
+          catalogue_item_id: catalogue_item_id
+        })
+
+      assert Offerings.list_catalogue_item_variants() == [
+               catalogue_item_variant
+             ]
+    end
+
+    test "get_catalogue_item_variant!/1 returns the catalogue_item_variant with given id",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{id: catalogue_item_variant_id} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
+
+      assert Offerings.get_catalogue_item_variant!(catalogue_item_variant_id) ==
+               catalogue_item_variant
+    end
+
+    test "create_catalogue_item_variant/1 with valid data creates a catalogue_item_variant",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      valid_attrs =
+        Map.merge(@valid_attrs, %{catalogue_item_id: catalogue_item_id})
+
+      assert {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
+               Offerings.create_catalogue_item_variant(valid_attrs)
+
+      assert catalogue_item_variant.price == Decimal.new(@valid_attrs.price)
+      assert catalogue_item_variant.type == @valid_attrs.type
+    end
+
+    test "create_catalogue_item_variant/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.create_catalogue_item_variant(@invalid_attrs)
+    end
+
+    test "update_catalogue_item_variant/2 with valid data updates the catalogue_item_variant",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
+
+      assert {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
+               Offerings.update_catalogue_item_variant(
+                 catalogue_item_variant,
+                 @update_attrs
+               )
+
+      assert catalogue_item_variant.price == Decimal.new(@update_attrs.price)
+      assert catalogue_item_variant.type == @update_attrs.type
+    end
+
+    test "update_catalogue_item_variant/2 with invalid data returns error changeset",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{id: catalogue_item_variant_id} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
+
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.update_catalogue_item_variant(
+                 catalogue_item_variant,
+                 @invalid_attrs
+               )
+
+      assert catalogue_item_variant ==
+               Offerings.get_catalogue_item_variant!(catalogue_item_variant_id)
+    end
+
+    test "delete_catalogue_item_variant/1 deletes the catalogue_item_variant",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{id: catalogue_item_variant_id} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
+
+      assert {:ok, %CatalogueItemVariant{}} =
+               Offerings.delete_catalogue_item_variant(catalogue_item_variant)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Offerings.get_catalogue_item_variant!(catalogue_item_variant_id)
+      end
+    end
+
+    test "change_catalogue_item_variant/1 returns a catalogue_item_variant changeset",
+         %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
+      %CatalogueItemVariant{} =
+        catalogue_item_variant =
+        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
+
+      assert %Ecto.Changeset{} =
+               Offerings.change_catalogue_item_variant(catalogue_item_variant)
     end
   end
 end

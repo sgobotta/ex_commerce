@@ -313,23 +313,30 @@ defmodule ExCommerce.Marketplaces do
   # Associations
 
   @doc """
-  Given a `user_id` and `brand_attrs`, attempts to create a brand and
-  associated it with the given `user_id`. If there is an error, the whole
+  Given a `user_id` and `brand_attrs`, attempts to create a `%Brand{}` and
+  associate it with the given `user_id`. If there is an error, the whole
   operation should be aborted and no records should be created.
 
   ## Examples
 
       iex> assoc_user_brand(
         %User{id: Ecto.UUID.generate()},
-        %{name: "some name}}
+        %{name: "some name"}}
       )
       {:ok, %{brand: %Brand{}, brand_user: %BrandUser{}}}
 
       iex> assoc_user_brand(
         %User{id: Ecto.UUID.generate()},
-        %{name: "some name}}
+        %{name: nil}}
       )
-      {:ok, %{brand: %Brand{}, brand_user: %BrandUser{}}}
+      {:error, :brand,
+        #Ecto.Changeset<
+          action: :insert,
+          changes: %{},
+          errors: [name: {"can't be blank", [validation: :required]}],
+          data: #ExCommerce.Marketplaces.Brand<>,
+          valid?: false
+        >, %{}}
 
   """
   def assoc_user_brand(%User{id: user_id}, brand_attrs) do

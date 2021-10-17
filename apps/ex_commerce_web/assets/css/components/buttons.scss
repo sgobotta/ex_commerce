@@ -1,5 +1,9 @@
 @layer components {
   .button {
-    @apply inline-flex items-center rounded-full border-gray-800 bg-gray-800 text-gray-100 text-2xl px-6 shadow-button transition duration-200 hover:border-gray-700 hover:bg-gray-700;
+    @apply inline-flex items-center rounded-full border-gray-800 bg-gray-800 text-gray-100 text-2xl font-normal px-6 shadow-button transition duration-200 hover:border-gray-700 hover:bg-gray-700 focus:bg-gray-400 focus:border-gray-400;
+  }
+
+  .close-modal-button {
+    @apply float-right w-10 h-10 rounded-full bg-gray-800 border-gray-800 hover:bg-gray-600 hover:border-gray-600 hover:shadow-button focus:bg-gray-400 focus:border-gray-400 text-4xl text-gray-100 text-center;
   }
 }

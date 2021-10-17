@@ -1,0 +1,154 @@
+[
+  {
+    "id": "6b2fc307-7d41-487a-a649-1adc12c77a72",
+    "catalogue_item_id": "c4df5917-9ba3-457f-b27e-3efd5e5c5edc",
+    "price": 4.00,
+    "type": "pint",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "970fcab7-21e8-46d7-8553-1c08b1d317f2",
+    "catalogue_item_id": "c4df5917-9ba3-457f-b27e-3efd5e5c5edc",
+    "price": 2.50,
+    "type": "1/2 pint",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "f0585e42-cad6-4b6f-bbbe-f896a338611b",
+    "catalogue_item_id": "0f8f8614-47bf-4710-871d-5c65bdb58a38",
+    "price": 4.50,
+    "type": "pint",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "9f2fb714-3202-4ac6-b064-123aad61c2e5",
+    "catalogue_item_id": "0f8f8614-47bf-4710-871d-5c65bdb58a38",
+    "price": 2.75,
+    "type": "1/2 pint",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "c216ef2d-e221-4130-9d67-89bce56b479d",
+    "catalogue_item_id": "fffa1a42-c59e-474c-b87f-6fb2402bf209",
+    "price": 5.00,
+    "type": "pint",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "35bedcfd-aef1-406c-b914-823210bd5c7d",
+    "catalogue_item_id": "fffa1a42-c59e-474c-b87f-6fb2402bf209",
+    "price": 3.50,
+    "type": "1/2 pint",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "3188cf08-89ba-458c-93ca-777589f465e6",
+    "catalogue_item_id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
+    "price": 5.50,
+    "type": "2 people portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "6cbc7cd5-1577-48bf-8a5b-81de961aec73",
+    "catalogue_item_id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
+    "price": 3,
+    "type": "Portion for one person",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "099ecff9-11a6-4efd-b00d-02a5e90d30aa",
+    "catalogue_item_id": "110ec880-b01c-4db7-b0f1-b156b43214d0",
+    "price": 5,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "beca7ee4-35b4-4e10-a4c8-5bf0467980f4",
+    "catalogue_item_id": "42cf48ab-4fb0-47cc-9e9e-fd04f4368179",
+    "price": 5.25,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "2bfcf653-dc6a-4b72-b085-5ba35d430057",
+    "catalogue_item_id": "b76e97a4-4187-4e48-b447-96fdd0f71e27",
+    "price": 4.25,
+    "type": "Small",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "bb7c5edf-78ed-449a-9ffe-204105fe5c6d",
+    "catalogue_item_id": "b76e97a4-4187-4e48-b447-96fdd0f71e27",
+    "price": 5.00,
+    "type": "Medium",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "bb344a55-d035-4980-bfdb-5182195c9125",
+    "catalogue_item_id": "b76e97a4-4187-4e48-b447-96fdd0f71e27",
+    "price": 6.00,
+    "type": "Large",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "62a8e765-6651-44a2-aa4d-3e418776a7b5",
+    "catalogue_item_id": "1a9e7783-918b-41ff-b12e-c1b1b8279134",
+    "price": 4.75,
+    "type": "Small",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "4c4cf318-1d40-4f6c-9ef2-028bd99a90fc",
+    "catalogue_item_id": "1a9e7783-918b-41ff-b12e-c1b1b8279134",
+    "price": 5.75,
+    "type": "Medium",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "99e574f0-d753-4a88-aa45-4031b4bace8f",
+    "catalogue_item_id": "1a9e7783-918b-41ff-b12e-c1b1b8279134",
+    "price": 7.00,
+    "type": "Large",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "c6cf543c-4987-41e4-93ff-9ae1b4769f38",
+    "catalogue_item_id": "4c1876d6-b2a4-40f3-9a52-3a1a6248d843",
+    "price": 2.50,
+    "type": "500 cm3 can",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "8d49a5c4-f7be-4bfd-a5cd-0eb81a739ec4",
+    "catalogue_item_id": "33fcb61e-8b4c-4a53-a385-26acb0d81ecc",
+    "price": 20.00,
+    "type": "Service",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "efcbdd80-c729-44d8-bbb0-174ec2b47641",
+    "catalogue_item_id": "0ffd3ee5-8610-4847-8cf8-5c7a7a591404",
+    "price": 10.00,
+    "type": "Service",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  }
+]
