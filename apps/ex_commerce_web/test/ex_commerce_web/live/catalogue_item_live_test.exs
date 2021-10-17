@@ -7,6 +7,8 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
 
   import Phoenix.LiveViewTest
 
+  alias ExCommerce.CatalogueItemVariantsFixtures
+
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.CatalogueItem
 
@@ -64,27 +66,29 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
       )
     end
 
-    test "[Success] saves new catalogue_item", %{
-      brand: %Brand{id: brand_id},
-      conn: conn
-    } do
-      {:ok, index_live, _html} =
-        live(conn, Routes.catalogue_item_index_path(conn, :index, brand_id))
-
-      assert index_live |> element("a", "+") |> render_click() =~
+    defp navigate_new_catalogue_item(conn, view, brand_id) do
+      assert view |> element("a", "+") |> render_click() =~
                "New Catalogue item"
 
       assert_patch(
-        index_live,
+        view,
         Routes.catalogue_item_index_path(conn, :new, brand_id)
       )
 
-      assert index_live
-             |> form("#catalogue_item-form", catalogue_item: @invalid_attrs)
+      :ok
+    end
+
+    defp change_new_catalogue_item(view, attrs) do
+      assert view
+             |> form("#catalogue_item-form", catalogue_item: attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
-        index_live
+      :ok
+    end
+
+    defp submit_new_catalogue_item(conn, view, brand_id) do
+      {:ok, _view, html} =
+        view
         |> form("#catalogue_item-form", catalogue_item: @create_attrs)
         |> render_submit()
         |> follow_redirect(
@@ -94,6 +98,47 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
 
       assert html =~ "Catalogue item created successfully"
       assert html =~ "some code"
+
+      :ok
+    end
+
+    defp add_new_variants(view, _attrs, variants_attrs) do
+      for {_variant_attrs, index} <- Enum.with_index(variants_attrs) do
+        view
+        |> element("#catalogue_item-add-variant-input", "Add a variant")
+        |> render_click()
+
+        assert view
+               |> element("#catalogue_item-form_variants_#{index}_price")
+               |> has_element?()
+      end
+
+      # TODO: a variant should be added here. For some reason the following code
+      # doesnot work.
+      #
+      # view
+      # |> form("#catalogue_item-form", catalogue_item: Map.merge(attrs, %{variants: variants_attrs}))
+      # |> render_submit()
+
+      :ok
+    end
+
+    test "[Success] saves new catalogue_item", %{
+      brand: %Brand{id: brand_id},
+      conn: conn
+    } do
+      {:ok, index_live, _html} =
+        live(conn, Routes.catalogue_item_index_path(conn, :index, brand_id))
+
+      :ok = navigate_new_catalogue_item(conn, index_live, brand_id)
+      :ok = change_new_catalogue_item(index_live, @invalid_attrs)
+
+      :ok =
+        add_new_variants(index_live, @create_attrs, [
+          CatalogueItemVariantsFixtures.valid_attrs()
+        ])
+
+      :ok = submit_new_catalogue_item(conn, index_live, brand_id)
     end
 
     test "[Success] updates catalogue_item in listing", %{

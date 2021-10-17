@@ -617,9 +617,6 @@ defmodule ExCommerce.OfferingsTest do
       refute changeset.valid?
 
       assert {"can't be blank", [validation: :required]} =
-               Keyword.get(changeset.errors, :type)
-
-      assert {"can't be blank", [validation: :required]} =
                Keyword.get(changeset.errors, :price)
 
       assert_raise Ecto.NoResultsError, fn ->
