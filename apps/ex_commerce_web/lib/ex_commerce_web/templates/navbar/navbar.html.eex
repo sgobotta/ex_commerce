@@ -72,14 +72,14 @@
           <% end %>
         </ul>
       </div>
-      <div class="block col-span-12 md:col-span-9 lg:col-span-10 bg-white overflow-y-scroll h-full px-4">
+      <div class="block col-span-12 md:col-span-9 lg:col-span-10 bg-white overflow-y-scroll h-full px-4 pb-4">
         <%= @inner_content %>
       </div>
     </div>
   <% end %>
 
   <%= if @mode == :topmenu do %>
-    <div class="overflow-y-scroll h-screen-19/20">
+    <div class="overflow-y-scroll h-screen-19/20 pb-4">
       <%= @inner_content %>
     </div>
   <% end %>
