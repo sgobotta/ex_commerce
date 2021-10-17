@@ -11,6 +11,6 @@
   <%= error_tag f, :name %>
 
   <div class="flex justify-end mt-6">
-    <%= submit "Save", phx_disable_with: "Saving...", class: "button" %>
+    <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button" %>
   </div>
 </form>
