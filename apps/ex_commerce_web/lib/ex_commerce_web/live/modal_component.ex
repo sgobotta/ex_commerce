@@ -14,7 +14,7 @@ defmodule ExCommerceWeb.ModalComponent do
       phx-page-loading>
 
       <div class="phx-modal-content card">
-        <%= live_patch raw("&times;"), to: @return_to, class: "phx-modal-close" %>
+        <%= live_patch raw("&times;"), to: @return_to, class: "close-modal-button" %>
         <%= live_component @socket, @component, @opts %>
       </div>
     </div>
