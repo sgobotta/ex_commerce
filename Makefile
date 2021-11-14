@@ -49,20 +49,16 @@ lint:
 
 #💣 reset: @ Cleans dependencies then re-installs and compiles them for all envs
 reset: SHELL:=/bin/bash
-reset: reset.dev
-reset:
-	@echo "🧹 Cleaning db and dependencies for all envs..."
-	@source ${ENV_FILE} && MIX_ENV=dev mix reset
-	@source ${ENV_FILE} && MIX_ENV=test mix reset
+reset: reset.dev reset.test
 
 #💣 reset.dev: @ Cleans dependencies then re-installs and compiles them1 for dev env
-reset.dev: SHELL:=/bin/bash1
+reset.dev: SHELL:=/bin/bash
 reset.dev:
 	@echo "🧹 Cleaning db and dependencies for dev..."
 	@source ${ENV_FILE} && MIX_ENV=dev mix reset
 
 #💣 reset.test: @ Cleans dependencies then re-installs and compiles them1 for test env
-reset.test: SHELL:=/bin/bash1
+reset.test: SHELL:=/bin/bash
 reset.test:
 	@echo "🧹 Cleaning db and dependencies for test..."
 	@source ${ENV_FILE} && MIX_ENV=test mix reset
