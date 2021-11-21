@@ -564,4 +564,108 @@ defmodule ExCommerce.Offerings do
     end)
     |> Repo.transaction()
   end
+
+  alias ExCommerce.Offerings.CatalogueItemOption
+
+  @doc """
+  Returns the list of catalogue_item_options.
+
+  ## Examples
+
+      iex> list_catalogue_item_options()
+      [%CatalogueItemOption{}, ...]
+
+  """
+  def list_catalogue_item_options do
+    Repo.all(CatalogueItemOption)
+  end
+
+  @doc """
+  Gets a single catalogue_item_option.
+
+  Raises `Ecto.NoResultsError` if the Catalogue item option does not exist.
+
+  ## Examples
+
+      iex> get_catalogue_item_option!(123)
+      %CatalogueItemOption{}
+
+      iex> get_catalogue_item_option!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_catalogue_item_option!(id), do: Repo.get!(CatalogueItemOption, id)
+
+  @doc """
+  Creates a catalogue_item_option.
+
+  ## Examples
+
+      iex> create_catalogue_item_option(%{field: value})
+      {:ok, %CatalogueItemOption{}}
+
+      iex> create_catalogue_item_option(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_catalogue_item_option(attrs \\ %{}) do
+    %CatalogueItemOption{}
+    |> CatalogueItemOption.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a catalogue_item_option.
+
+  ## Examples
+
+      iex> update_catalogue_item_option(catalogue_item_option, %{field: new_value})
+      {:ok, %CatalogueItemOption{}}
+
+      iex> update_catalogue_item_option(catalogue_item_option, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_catalogue_item_option(
+        %CatalogueItemOption{} = catalogue_item_option,
+        attrs
+      ) do
+    catalogue_item_option
+    |> CatalogueItemOption.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a catalogue_item_option.
+
+  ## Examples
+
+      iex> delete_catalogue_item_option(catalogue_item_option)
+      {:ok, %CatalogueItemOption{}}
+
+      iex> delete_catalogue_item_option(catalogue_item_option)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_catalogue_item_option(
+        %CatalogueItemOption{} = catalogue_item_option
+      ) do
+    Repo.delete(catalogue_item_option)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking catalogue_item_option changes.
+
+  ## Examples
+
+      iex> change_catalogue_item_option(catalogue_item_option)
+      %Ecto.Changeset{data: %CatalogueItemOption{}}
+
+  """
+  def change_catalogue_item_option(
+        %CatalogueItemOption{} = catalogue_item_option,
+        attrs \\ %{}
+      ) do
+    CatalogueItemOption.changeset(catalogue_item_option, attrs)
+  end
 end

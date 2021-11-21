@@ -788,4 +788,202 @@ defmodule ExCommerce.OfferingsTest do
                Offerings.change_catalogue_item_variant(catalogue_item_variant)
     end
   end
+
+  describe "catalogue_item_options" do
+    alias ExCommerce.{
+      BrandsFixtures,
+      CatalogueItemsFixtures,
+      CatalogueItemVariantsFixtures
+    }
+
+    alias ExCommerce.Marketplaces.Brand
+
+    alias ExCommerce.Offerings.{
+      CatalogueItem,
+      CatalogueItemOption,
+      CatalogueItemVariant
+    }
+
+    @valid_attrs %{is_visible: true, price_modifier: "120.5"}
+    @update_attrs %{is_visible: false, price_modifier: "456.7"}
+    @invalid_attrs %{is_visible: nil, price_modifier: nil}
+
+    setup do
+      %Brand{id: brand_id} = brand = BrandsFixtures.create()
+
+      %{
+        brand: brand,
+        catalogue_item:
+          CatalogueItemsFixtures.valid_attrs(%{brand_id: brand_id}),
+        catalogue_item_variant: CatalogueItemVariantsFixtures.valid_attrs()
+      }
+    end
+
+    def catalogue_item_option_fixture(attrs \\ %{}) do
+      {:ok, %CatalogueItemOption{} = catalogue_item_option} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Offerings.create_catalogue_item_option()
+
+      catalogue_item_option
+    end
+
+    test "list_catalogue_item_options/0 returns all catalogue_item_options", %{
+      brand: %Brand{id: brand_id},
+      catalogue_item: item,
+      catalogue_item_variant: variant
+    } do
+      %CatalogueItemOption{} =
+        catalogue_item_option =
+        catalogue_item_option_fixture(%{
+          brand_id: brand_id,
+          catalogue_item: item,
+          catalogue_item_variant: variant
+        })
+
+      assert Offerings.list_catalogue_item_options()
+             |> Repo.preload([:catalogue_item, :catalogue_item_variant]) == [
+               catalogue_item_option
+             ]
+    end
+
+    test "get_catalogue_item_option!/1 returns the catalogue_item_option with given id",
+         %{
+           brand: %Brand{id: brand_id},
+           catalogue_item: item,
+           catalogue_item_variant: variant
+         } do
+      %CatalogueItemOption{id: catalogue_item_option_id} =
+        catalogue_item_option =
+        catalogue_item_option_fixture(%{
+          brand_id: brand_id,
+          catalogue_item: item,
+          catalogue_item_variant: variant
+        })
+
+      assert Offerings.get_catalogue_item_option!(catalogue_item_option_id)
+             |> Repo.preload([:catalogue_item, :catalogue_item_variant]) ==
+               catalogue_item_option
+    end
+
+    test "create_catalogue_item_option/1 with valid data creates a catalogue_item_option",
+         %{
+           brand: %Brand{id: brand_id},
+           catalogue_item: item,
+           catalogue_item_variant: variant
+         } do
+      valid_attrs =
+        Map.merge(@valid_attrs, %{
+          brand_id: brand_id,
+          catalogue_item: item,
+          catalogue_item_variant: variant
+        })
+
+      assert {:ok,
+              %CatalogueItemOption{
+                is_visible: is_visible,
+                price_modifier: price_modifier
+              }} = Offerings.create_catalogue_item_option(valid_attrs)
+
+      assert is_visible == true
+      assert price_modifier == Decimal.new("120.5")
+    end
+
+    test "create_catalogue_item_option/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.create_catalogue_item_option(@invalid_attrs)
+    end
+
+    test "update_catalogue_item_option/2 with valid data updates the catalogue_item_option",
+         %{
+           brand: %Brand{id: brand_id},
+           catalogue_item: item,
+           catalogue_item_variant: variant
+         } do
+      %CatalogueItemOption{} =
+        catalogue_item_option =
+        catalogue_item_option_fixture(%{
+          brand_id: brand_id,
+          catalogue_item: item,
+          catalogue_item_variant: variant
+        })
+
+      assert {:ok,
+              %CatalogueItemOption{
+                is_visible: is_visible,
+                price_modifier: price_modifier
+              }} =
+               Offerings.update_catalogue_item_option(
+                 catalogue_item_option,
+                 @update_attrs
+               )
+
+      assert is_visible == false
+      assert price_modifier == Decimal.new("456.7")
+    end
+
+    test "update_catalogue_item_option/2 with invalid data returns error changeset",
+         %{
+           brand: %Brand{id: brand_id},
+           catalogue_item: item,
+           catalogue_item_variant: variant
+         } do
+      %CatalogueItemOption{id: catalogue_item_option_id} =
+        catalogue_item_option =
+        catalogue_item_option_fixture(%{
+          brand_id: brand_id,
+          catalogue_item: item,
+          catalogue_item_variant: variant
+        })
+
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.update_catalogue_item_option(
+                 catalogue_item_option,
+                 @invalid_attrs
+               )
+
+      assert catalogue_item_option ==
+               Offerings.get_catalogue_item_option!(catalogue_item_option_id)
+               |> Repo.preload([:catalogue_item, :catalogue_item_variant])
+    end
+
+    test "delete_catalogue_item_option/1 deletes the catalogue_item_option", %{
+      brand: %Brand{id: brand_id},
+      catalogue_item: item,
+      catalogue_item_variant: variant
+    } do
+      %CatalogueItemOption{id: catalogue_item_option_id} =
+        catalogue_item_option =
+        catalogue_item_option_fixture(%{
+          brand_id: brand_id,
+          catalogue_item: item,
+          catalogue_item_variant: variant
+        })
+
+      assert {:ok, %CatalogueItemOption{}} =
+               Offerings.delete_catalogue_item_option(catalogue_item_option)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Offerings.get_catalogue_item_option!(catalogue_item_option_id)
+      end
+    end
+
+    test "change_catalogue_item_option/1 returns a catalogue_item_option changeset",
+         %{
+           brand: %Brand{id: brand_id},
+           catalogue_item: item,
+           catalogue_item_variant: variant
+         } do
+      %CatalogueItemOption{} =
+        catalogue_item_option =
+        catalogue_item_option_fixture(%{
+          brand_id: brand_id,
+          catalogue_item: item,
+          catalogue_item_variant: variant
+        })
+
+      assert %Ecto.Changeset{} =
+               Offerings.change_catalogue_item_option(catalogue_item_option)
+    end
+  end
 end
