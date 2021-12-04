@@ -156,6 +156,19 @@ defmodule ExCommerceWeb.DashboardView do
                       )
                   ],
                   navbar_opts
+                ),
+                navbar_link(
+                  [
+                    name: "catalogue_item_option_groups",
+                    text: gettext("Option Groups"),
+                    to:
+                      Routes.catalogue_item_option_group_index_path(
+                        ExCommerceWeb.Endpoint,
+                        :index,
+                        brand_id
+                      )
+                  ],
+                  navbar_opts
                 )
               ]
             ],
