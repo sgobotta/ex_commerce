@@ -1,0 +1,24 @@
+<h2><%= @title %></h2>
+
+<%= f = form_for @changeset, "#",
+  id: "catalogue_item_option_group-form",
+  phx_target: @myself,
+  phx_change: "validate",
+  phx_submit: "save" %>
+
+  <%= label f, :mandatory, class: "my-2" %>
+  <%= checkbox f, :mandatory, class: "input" %>
+  <%= error_tag f, :mandatory %>
+
+  <%= label f, :multiple_selection, class: "my-2" %>
+  <%= checkbox f, :multiple_selection, class: "input" %>
+  <%= error_tag f, :multiple_selection %>
+
+  <%= label f, :max_selection, class: "my-2" %>
+  <%= number_input f, :max_selection, class: "input", placeholder: gettext("How many options can be selected.") %>
+  <%= error_tag f, :max_selection %>
+
+  <div class="flex justify-end mt-6">
+    <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button" %>
+  </div>
+</form>

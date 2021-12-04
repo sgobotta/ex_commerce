@@ -1,6 +1,6 @@
 defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   @moduledoc """
-  Form for catalogue categories create/edit actions
+  Form for catalogue items create/edit actions
   """
   use ExCommerceWeb, :live_component
 

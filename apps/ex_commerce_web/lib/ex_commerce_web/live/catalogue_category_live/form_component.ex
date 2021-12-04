@@ -71,7 +71,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.FormComponent do
       Map.merge(catalogue_category_params, %{"brand_id" => brand_id})
 
     case Offerings.create_catalogue_category(catalogue_category_params) do
-      {:ok, _catalogue_category} ->
+      {:ok, %CatalogueCategory{} = _catalogue_category} ->
         {:noreply,
          socket
          |> put_flash(:info, gettext("Catalogue category created successfully"))

@@ -8,7 +8,14 @@ defmodule ExCommerceWeb.MountHelpers do
   alias ExCommerce.Accounts
   alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces.{Brand, Shop}
-  alias ExCommerce.Offerings.{Catalogue, CatalogueCategory, CatalogueItem}
+
+  alias ExCommerce.Offerings.{
+    Catalogue,
+    CatalogueCategory,
+    CatalogueItem,
+    CatalogueItemOptionGroup
+  }
+
   alias ExCommerce.Repo
   alias ExCommerceWeb.Router.Helpers, as: Routes
 
@@ -34,7 +41,7 @@ defmodule ExCommerceWeb.MountHelpers do
   end
 
   # ----------------------------------------------------------------------------
-  # Brand helpers
+  # Brands helpers
 
   @spec assign_brand_or_redirect(Phoenix.LiveView.Socket.t(), map(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -59,7 +66,8 @@ defmodule ExCommerceWeb.MountHelpers do
             :shops,
             :catalogues,
             :catalogue_categories,
-            :catalogue_items
+            :catalogue_items,
+            :catalogue_item_option_groups
           ])
         )
     end
@@ -69,7 +77,7 @@ defmodule ExCommerceWeb.MountHelpers do
     do: brands_redirect(socket, to: Routes.brand_index_path(socket, :index))
 
   # ----------------------------------------------------------------------------
-  # Shop helpers
+  # Shops helpers
 
   @spec assign_shop_or_redirect(Phoenix.LiveView.Socket.t(), map(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -105,7 +113,7 @@ defmodule ExCommerceWeb.MountHelpers do
   end
 
   # ----------------------------------------------------------------------------
-  # Catalogue helpers
+  # Catalogues helpers
 
   def assign_catalogue_or_redirect(
         socket,
@@ -135,6 +143,9 @@ defmodule ExCommerceWeb.MountHelpers do
       to: Routes.catalogue_index_path(socket, :index, brand_id)
     )
   end
+
+  # ----------------------------------------------------------------------------
+  # Catalogue categories helpers
 
   def assign_catalogue_category_or_redirect(
         socket,
@@ -166,6 +177,9 @@ defmodule ExCommerceWeb.MountHelpers do
     )
   end
 
+  # ----------------------------------------------------------------------------
+  # Catalogue items helpers
+
   def assign_catalogue_item_or_redirect(
         socket,
         %{"catalogue_item_id" => catalogue_item_id},
@@ -192,6 +206,57 @@ defmodule ExCommerceWeb.MountHelpers do
 
     catalogue_items_redirect(socket,
       to: Routes.catalogue_index_path(socket, :index, brand_id)
+    )
+  end
+
+  # ----------------------------------------------------------------------------
+  # Catalogue item option groups helpers
+
+  def assign_catalogue_item_option_group_or_redirect(
+        socket,
+        %{"catalogue_item_option_group_id" => catalogue_item_option_group_id},
+        _session
+      ) do
+    %{
+      assigns: %{
+        brand: %Brand{
+          catalogue_item_option_groups: catalogue_item_option_groups
+        }
+      }
+    } = socket
+
+    case find_by(
+           catalogue_item_option_groups,
+           :id,
+           catalogue_item_option_group_id
+         ) do
+      nil ->
+        %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
+        catalogue_item_option_groups_redirect(socket,
+          to:
+            Routes.catalogue_item_option_group_index_path(
+              socket,
+              :index,
+              brand_id
+            )
+        )
+
+      %CatalogueItemOptionGroup{} = catalogue_item_option_group ->
+        socket
+        |> assign(
+          :catalogue_item_option_group,
+          Repo.preload(catalogue_item_option_group, [:options])
+        )
+    end
+  end
+
+  def assign_catalogue_item_option_group_or_redirect(socket, _params, _session) do
+    %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
+    catalogue_item_option_groups_redirect(socket,
+      to:
+        Routes.catalogue_item_option_group_index_path(socket, :index, brand_id)
     )
   end
 
@@ -257,6 +322,15 @@ defmodule ExCommerceWeb.MountHelpers do
     |> put_flash(
       :error,
       gettext("The given catalogue item could not be found")
+    )
+    |> redirect(to: to)
+  end
+
+  defp catalogue_item_option_groups_redirect(socket, to: to) do
+    socket
+    |> put_flash(
+      :error,
+      gettext("The given catalogue item option group could not be found")
     )
     |> redirect(to: to)
   end

@@ -986,4 +986,161 @@ defmodule ExCommerce.OfferingsTest do
                Offerings.change_catalogue_item_option(catalogue_item_option)
     end
   end
+
+  describe "catalogue_item_option_groups" do
+    alias ExCommerce.BrandsFixtures
+
+    alias ExCommerce.Marketplaces.Brand
+
+    alias ExCommerce.Offerings.CatalogueItemOptionGroup
+
+    @valid_attrs %{mandatory: true, max_selection: 42, multiple_selection: true}
+    @update_attrs %{
+      mandatory: false,
+      max_selection: 43,
+      multiple_selection: false
+    }
+    @invalid_attrs %{
+      mandatory: nil,
+      max_selection: nil,
+      multiple_selection: nil
+    }
+
+    setup do
+      %Brand{} = brand = BrandsFixtures.create()
+
+      %{brand: brand}
+    end
+
+    def catalogue_item_option_group_fixture(attrs \\ %{}) do
+      {:ok, %CatalogueItemOptionGroup{} = catalogue_item_option_group} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Offerings.create_catalogue_item_option_group()
+
+      catalogue_item_option_group
+    end
+
+    test "list_catalogue_item_option_groups/0 returns all catalogue_item_option_groups",
+         %{
+           brand: %Brand{id: brand_id}
+         } do
+      %CatalogueItemOptionGroup{} =
+        catalogue_item_option_group =
+        catalogue_item_option_group_fixture(%{
+          brand_id: brand_id
+        })
+
+      assert Offerings.list_catalogue_item_option_groups() == [
+               catalogue_item_option_group
+             ]
+    end
+
+    test "get_catalogue_item_option_group!/1 returns the catalogue_item_option_group with given id",
+         %{
+           brand: %Brand{id: brand_id}
+         } do
+      %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} =
+        catalogue_item_option_group =
+        catalogue_item_option_group_fixture(%{brand_id: brand_id})
+
+      assert Offerings.get_catalogue_item_option_group!(
+               catalogue_item_option_group_id
+             ) == catalogue_item_option_group
+    end
+
+    test "create_catalogue_item_option_group/1 with valid data creates a catalogue_item_option_group",
+         %{
+           brand: %Brand{id: brand_id}
+         } do
+      valid_attrs = Map.merge(@valid_attrs, %{brand_id: brand_id})
+
+      assert {:ok, %CatalogueItemOptionGroup{} = catalogue_item_option_group} =
+               Offerings.create_catalogue_item_option_group(valid_attrs)
+
+      assert catalogue_item_option_group.mandatory == true
+      assert catalogue_item_option_group.max_selection == 42
+      assert catalogue_item_option_group.multiple_selection == true
+    end
+
+    test "create_catalogue_item_option_group/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.create_catalogue_item_option_group(@invalid_attrs)
+    end
+
+    test "update_catalogue_item_option_group/2 with valid data updates the catalogue_item_option_group",
+         %{
+           brand: %Brand{id: brand_id}
+         } do
+      %CatalogueItemOptionGroup{} =
+        catalogue_item_option_group =
+        catalogue_item_option_group_fixture(%{brand_id: brand_id})
+
+      assert {:ok, %CatalogueItemOptionGroup{} = catalogue_item_option_group} =
+               Offerings.update_catalogue_item_option_group(
+                 catalogue_item_option_group,
+                 @update_attrs
+               )
+
+      assert catalogue_item_option_group.mandatory == false
+      assert catalogue_item_option_group.max_selection == 43
+      assert catalogue_item_option_group.multiple_selection == false
+    end
+
+    test "update_catalogue_item_option_group/2 with invalid data returns error changeset",
+         %{
+           brand: %Brand{id: brand_id}
+         } do
+      %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} =
+        catalogue_item_option_group =
+        catalogue_item_option_group_fixture(%{brand_id: brand_id})
+
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.update_catalogue_item_option_group(
+                 catalogue_item_option_group,
+                 @invalid_attrs
+               )
+
+      assert catalogue_item_option_group ==
+               Offerings.get_catalogue_item_option_group!(
+                 catalogue_item_option_group_id
+               )
+    end
+
+    test "delete_catalogue_item_option_group/1 deletes the catalogue_item_option_group",
+         %{
+           brand: %Brand{id: brand_id}
+         } do
+      %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} =
+        catalogue_item_option_group =
+        catalogue_item_option_group_fixture(%{brand_id: brand_id})
+
+      assert {:ok, %CatalogueItemOptionGroup{}} =
+               Offerings.delete_catalogue_item_option_group(
+                 catalogue_item_option_group
+               )
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Offerings.get_catalogue_item_option_group!(
+          catalogue_item_option_group_id
+        )
+      end
+    end
+
+    test "change_catalogue_item_option_group/1 returns a catalogue_item_option_group changeset",
+         %{
+           brand: %Brand{id: brand_id}
+         } do
+      %CatalogueItemOptionGroup{} =
+        catalogue_item_option_group =
+        catalogue_item_option_group_fixture(%{
+          brand_id: brand_id
+        })
+
+      assert %Ecto.Changeset{} =
+               Offerings.change_catalogue_item_option_group(
+                 catalogue_item_option_group
+               )
+    end
+  end
 end

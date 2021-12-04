@@ -10,6 +10,7 @@ defmodule ExCommerce.ContextCases.OfferingsCase do
     quote do
       alias ExCommerce.{
         CatalogueCategoriesFixtures,
+        CatalogueItemOptionGroupsFixtures,
         CatalogueItemsFixtures,
         CataloguesFixtures
       }
@@ -21,6 +22,7 @@ defmodule ExCommerce.ContextCases.OfferingsCase do
         Catalogue,
         CatalogueCategory,
         CatalogueItem,
+        CatalogueItemOptionGroup,
         CatalogueItemVariant
       }
 
@@ -34,6 +36,13 @@ defmodule ExCommerce.ContextCases.OfferingsCase do
 
       defp create_catalogue_item(_context) do
         %{catalogue_item: CatalogueItemsFixtures.create()}
+      end
+
+      defp create_catalogue_item_option_group(_context) do
+        %{
+          catalogue_item_option_group:
+            CatalogueItemOptionGroupsFixtures.create()
+        }
       end
 
       defp assoc_brand_catalogue(%{
@@ -70,6 +79,22 @@ defmodule ExCommerce.ContextCases.OfferingsCase do
           })
 
         %{catalogue_item: catalogue_item}
+      end
+
+      defp assoc_brand_catalogue_item_option_group(%{
+             brand: %Brand{id: brand_id},
+             catalogue_item_option_group:
+               %CatalogueItemOptionGroup{} = catalogue_item_option_group
+           }) do
+        {:ok, %CatalogueItemOptionGroup{} = catalogue_item_option_group} =
+          Offerings.update_catalogue_item_option_group(
+            catalogue_item_option_group,
+            %{
+              brand_id: brand_id
+            }
+          )
+
+        %{catalogue_item_option_group: catalogue_item_option_group}
       end
     end
   end

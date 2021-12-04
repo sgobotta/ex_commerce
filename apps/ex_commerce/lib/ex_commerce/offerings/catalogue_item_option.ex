@@ -5,7 +5,10 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemVariant}
+  alias ExCommerce.Offerings.{
+    CatalogueItem,
+    CatalogueItemVariant
+  }
 
   @fields [:price_modifier, :is_visible]
   @foreign_fields [:brand_id]
@@ -19,6 +22,10 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
 
     belongs_to :catalogue_item, CatalogueItem, type: :binary_id
     belongs_to :catalogue_item_variant, CatalogueItemVariant, type: :binary_id
+
+    belongs_to :catalogue_item_option_group,
+               ExCommerce.Offerings.CatalogueItemOptionGroup,
+               type: :binary_id
 
     timestamps()
   end

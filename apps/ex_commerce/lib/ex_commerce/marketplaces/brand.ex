@@ -25,6 +25,7 @@ defmodule ExCommerce.Marketplaces.Brand do
     has_many :catalogues, Offerings.Catalogue
     has_many :catalogue_categories, Offerings.CatalogueCategory
     has_many :catalogue_items, Offerings.CatalogueItem
+    has_many :catalogue_item_option_groups, Offerings.CatalogueItemOptionGroup
 
     timestamps()
   end

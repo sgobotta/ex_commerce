@@ -1,0 +1,46 @@
+<%= if connected?(@socket) do %>
+
+  <%= if @live_action in [:edit] do %>
+    <%= live_modal @socket, ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent,
+      id: @catalogue_item_option_group.id,
+      title: @page_title,
+      action: @live_action,
+      catalogue_item_option_group: @catalogue_item_option_group,
+      return_to: Routes.catalogue_item_option_group_show_path(@socket, :show, @brand.id, @catalogue_item_option_group.id),
+      patch_to: Routes.catalogue_item_option_group_show_path(@socket, :show, @brand.id, @catalogue_item_option_group.id) %>
+  <% end %>
+
+  <%= render_layout(
+      ExCommerceWeb.DashboardView,
+      "dashboard",
+      [current_page: "catalogue_item_option_groups", user_email: @user.email, brand: @brand]
+    )
+  do %>
+
+    <h1><%= gettext("Show Catalogue item option group") %></h1>
+
+    <ul>
+
+      <li>
+        <strong><%= gettext("Mandatory") %>:</strong>
+        <%= @catalogue_item_option_group.mandatory %>
+      </li>
+
+      <li>
+        <strong><%= gettext("Multiple selection") %>:</strong>
+        <%= @catalogue_item_option_group.multiple_selection %>
+      </li>
+
+      <li>
+        <strong><%= gettext("Max selection") %>:</strong>
+        <%= @catalogue_item_option_group.max_selection %>
+      </li>
+
+    </ul>
+
+    <span><%= live_patch gettext("Edit"), to: Routes.catalogue_item_option_group_show_path(@socket, :edit, @brand.id, @catalogue_item_option_group), class: "button" %></span>
+    <span><%= live_redirect gettext("Back"), to: Routes.catalogue_item_option_group_index_path(@socket, :index, @brand.id), class: "link" %></span>
+
+
+  <% end %>
+<% end %>
