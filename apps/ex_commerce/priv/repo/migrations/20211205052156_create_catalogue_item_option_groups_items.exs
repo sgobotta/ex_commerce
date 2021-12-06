@@ -16,13 +16,5 @@ defmodule ExCommerce.Repo.Migrations.CreateCatalogueItemOptionGroupsItems do
 
     create index(:catalogue_item_option_groups_items, [:catalogue_item_option_group_id])
     create index(:catalogue_item_option_groups_items, [:catalogue_item_id])
-
-    # alter table(:catalogue_items) do
-    #   add :option_groups, references(:catalogue_item_option_groups, on_delete: :nothing, type: :binary_id)
-    # end
-
-    # alter table(:catalogue_item_option_groups) do
-    #   add :items, references(:catalogue_items, on_delete: :nothing, type: :binary_id)
-    # end
   end
 end
