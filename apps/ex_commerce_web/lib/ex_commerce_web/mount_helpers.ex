@@ -197,7 +197,10 @@ defmodule ExCommerceWeb.MountHelpers do
 
       %CatalogueItem{} = catalogue_item ->
         socket
-        |> assign(:catalogue_item, Repo.preload(catalogue_item, [:variants]))
+        |> assign(
+          :catalogue_item,
+          Repo.preload(catalogue_item, [:variants, :option_groups])
+        )
     end
   end
 

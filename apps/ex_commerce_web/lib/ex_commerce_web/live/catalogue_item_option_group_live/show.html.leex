@@ -22,6 +22,16 @@
     <ul>
 
       <li>
+        <strong><%= gettext("Name") %>:</strong>
+        <%= @catalogue_item_option_group.name %>
+      </li>
+
+      <li>
+        <strong><%= gettext("Description") %>:</strong>
+        <%= @catalogue_item_option_group.description %>
+      </li>
+
+      <li>
         <strong><%= gettext("Mandatory") %>:</strong>
         <%= @catalogue_item_option_group.mandatory %>
       </li>

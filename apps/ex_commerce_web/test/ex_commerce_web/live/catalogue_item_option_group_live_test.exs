@@ -7,16 +7,32 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
   import Phoenix.LiveViewTest
 
+  alias ExCommerce.CatalogueItemOptionsFixtures
+
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.CatalogueItemOptionGroup
 
-  @create_attrs %{mandatory: true, max_selection: 42, multiple_selection: true}
+  @create_attrs %{
+    mandatory: true,
+    max_selection: 42,
+    multiple_selection: true,
+    name: "some name",
+    description: "some description"
+  }
   @update_attrs %{
     mandatory: false,
     max_selection: 43,
-    multiple_selection: false
+    multiple_selection: false,
+    name: "some updated name",
+    description: "some updated description"
   }
-  @invalid_attrs %{mandatory: nil, max_selection: nil, multiple_selection: nil}
+  @invalid_attrs %{
+    mandatory: nil,
+    max_selection: nil,
+    multiple_selection: nil,
+    name: nil,
+    description: nil
+  }
 
   describe "Index" do
     setup [
@@ -27,7 +43,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       :assoc_brand_catalogue_item_option_group
     ]
 
-    @tag :wip
     test "[Success] lists all catalogue_item_option_groups", %{
       brand: %Brand{id: brand_id},
       conn: conn
@@ -41,7 +56,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       assert html =~ "Listing Catalogue item option groups"
     end
 
-    @tag :wip
     test "[Failure] lists all catalogue_item_option_groups for a brand - redirects to brands when invalid brand id is provided",
          %{
            conn: conn
@@ -53,7 +67,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       )
     end
 
-    @tag :wip
     test "[Failure] lists all catalogue_item_option_groups for a brand - redirects to brands when user is not confirmed" do
       conn = build_conn()
 
@@ -64,34 +77,35 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       )
     end
 
-    @tag :wip
-    test "[Success] saves new catalogue_item_option_group", %{
-      brand: %Brand{id: brand_id},
-      conn: conn
-    } do
-      {:ok, index_live, _html} =
-        live(
-          conn,
-          Routes.catalogue_item_option_group_index_path(conn, :index, brand_id)
-        )
-
-      assert index_live
+    defp navigate_new_catalogue_item_option_group(conn, view, brand_id) do
+      assert view
              |> element("a", "+")
              |> render_click() =~
                "New Catalogue item option group"
 
       assert_patch(
-        index_live,
+        view,
         Routes.catalogue_item_option_group_index_path(conn, :new, brand_id)
       )
 
-      assert index_live
+      :ok
+    end
+
+    defp change_new_catalogue_item_option_group(view, attrs) do
+      assert view
              |> form("#catalogue_item_option_group-form",
-               catalogue_item_option_group: @invalid_attrs
+               catalogue_item_option_group: attrs
              )
 
+      # TODO: Fixme. breaks checking a checkbox
+      #  |> render_change() =~ "can&#39;t be blank"
+
+      :ok
+    end
+
+    defp submit_new_catalogue_item_option_group(conn, view, brand_id) do
       {:ok, _, html} =
-        index_live
+        view
         |> form("#catalogue_item_option_group-form",
           catalogue_item_option_group: @create_attrs
         )
@@ -102,9 +116,60 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
         )
 
       assert html =~ "Catalogue item option group created successfully"
+
+      :ok
     end
 
-    @tag :wip
+    defp add_new_options(view, _attrs, options_attrs) do
+      for {_option_attrs, index} <- Enum.with_index(options_attrs) do
+        view
+        |> element("#catalogue_item-add-option-input", "Add an option")
+        |> render_click()
+
+        assert view
+               |> element(
+                 "#catalogue_item_option_group-form_options_#{index}_is_visible"
+               )
+               |> has_element?()
+
+        assert view
+               |> element(
+                 "#catalogue_item_option_group-form_options_#{index}_price_modifier"
+               )
+               |> has_element?()
+      end
+
+      # TODO: an option should be added here. For some reason the following code
+      # does not work.
+      #
+      # view
+      # |> form("#catalogue_item_option_group-form", catalogue_item_option_group: Map.merge(attrs, %{options: options_attrs}))
+      # |> render_submit()
+
+      :ok
+    end
+
+    test "[Success] saves new catalogue_item_option_group", %{
+      brand: %Brand{id: brand_id},
+      conn: conn
+    } do
+      {:ok, index_live, _html} =
+        live(
+          conn,
+          Routes.catalogue_item_option_group_index_path(conn, :index, brand_id)
+        )
+
+      :ok = navigate_new_catalogue_item_option_group(conn, index_live, brand_id)
+      :ok = change_new_catalogue_item_option_group(index_live, @invalid_attrs)
+
+      :ok =
+        add_new_options(index_live, @create_attrs, [
+          CatalogueItemOptionsFixtures.valid_attrs()
+        ])
+
+      :ok = submit_new_catalogue_item_option_group(conn, index_live, brand_id)
+    end
+
     test "[Success] updates catalogue_item_option_group in listing", %{
       brand: %Brand{id: brand_id},
       conn: conn,
@@ -155,7 +220,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       assert html =~ "Catalogue item option group updated successfully"
     end
 
-    @tag :wip
     test "[Failure] updates catalogue_item_option_group in listing - redirects to catalogue item option groups when invalid catalogue item option group id is provided",
          %{
            brand: %Brand{id: brand_id},
@@ -175,7 +239,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       )
     end
 
-    @tag :wip
     test "deletes catalogue_item_option_group in listing", %{
       brand: %Brand{id: brand_id},
       conn: conn,
@@ -212,7 +275,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       :assoc_brand_catalogue_item_option_group
     ]
 
-    @tag :wip
     test "[Success] displays catalogue_item_option_group", %{
       brand: %Brand{id: brand_id},
       conn: conn,
@@ -322,7 +384,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       )
     end
 
-    @tag :wip
     test "[Failure] displays catalogue item option group - redirects to log in when user is not confirmed",
          %{
            brand: %Brand{id: brand_id}
@@ -348,7 +409,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       )
     end
 
-    @tag :wip
     test "[Success] updates catalogue_item_option_group within modal", %{
       brand: %Brand{id: brand_id},
       conn: conn,
@@ -407,7 +467,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       assert html =~ "Catalogue item option group updated successfully"
     end
 
-    @tag :wip
     test "[Failure] updates catalogue item option group within modal - redirects to brands when invalid brand id is provided",
          %{
            conn: conn,
@@ -487,7 +546,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       )
     end
 
-    @tag :wip
     test "[Failure] updates catalogue item option group within modal - redirects to catalogue item option groups when invalid catalogue item option group id is provided",
          %{
            brand: %Brand{id: brand_id},

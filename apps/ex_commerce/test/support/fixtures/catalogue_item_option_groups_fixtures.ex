@@ -12,14 +12,24 @@ defmodule ExCommerce.CatalogueItemOptionGroupsFixtures do
   @valid_attrs %{
     mandatory: true,
     max_selection: 42,
-    multiple_selection: true
+    multiple_selection: true,
+    name: "some name",
+    description: "some description"
   }
   @update_attrs %{
     mandatory: false,
     max_selection: 43,
-    multiple_selection: false
+    multiple_selection: false,
+    name: "some updated name",
+    description: "some updated description"
   }
-  @invalid_attrs %{mandatory: nil, max_selection: nil, multiple_selection: nil}
+  @invalid_attrs %{
+    mandatory: nil,
+    max_selection: nil,
+    multiple_selection: nil,
+    name: nil,
+    description: nil
+  }
 
   def valid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@valid_attrs)
   def update_attrs(attrs \\ %{}), do: attrs |> Enum.into(@update_attrs)

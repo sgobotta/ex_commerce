@@ -93,7 +93,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     |> Ecto.Changeset.put_assoc(:variants, [catalogue_item_variant])
   end
 
-  defp prepare_variants_maybe(changeset, %{action: _}), do: changeset
+  defp prepare_variants_maybe(changeset, %{action: _action}), do: changeset
 
   defp save_catalogue_item(socket, :edit, catalogue_item_params) do
     case Offerings.update_catalogue_item(

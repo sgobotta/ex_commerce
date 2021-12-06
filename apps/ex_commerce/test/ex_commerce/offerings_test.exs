@@ -994,16 +994,26 @@ defmodule ExCommerce.OfferingsTest do
 
     alias ExCommerce.Offerings.CatalogueItemOptionGroup
 
-    @valid_attrs %{mandatory: true, max_selection: 42, multiple_selection: true}
+    @valid_attrs %{
+      mandatory: true,
+      max_selection: 42,
+      multiple_selection: true,
+      name: "some name",
+      description: "some description"
+    }
     @update_attrs %{
       mandatory: false,
       max_selection: 43,
-      multiple_selection: false
+      multiple_selection: false,
+      name: "some updated name",
+      description: "some updated description"
     }
     @invalid_attrs %{
       mandatory: nil,
       max_selection: nil,
-      multiple_selection: nil
+      multiple_selection: nil,
+      name: nil,
+      description: nil
     }
 
     setup do
@@ -1140,6 +1150,134 @@ defmodule ExCommerce.OfferingsTest do
       assert %Ecto.Changeset{} =
                Offerings.change_catalogue_item_option_group(
                  catalogue_item_option_group
+               )
+    end
+  end
+
+  describe "catalogue_item_option_groups_items" do
+    alias ExCommerce.{CatalogueItemOptionGroupsFixtures, CatalogueItemsFixtures}
+
+    alias ExCommerce.Offerings.{
+      CatalogueItem,
+      CatalogueItemOptionGroup,
+      CatalogueItemOptionGroupItem
+    }
+
+    @valid_attrs %{visible: true}
+    @update_attrs %{visible: false}
+    @invalid_attrs %{visible: nil}
+
+    def catalogue_item_option_group_item_fixture(attrs \\ %{}) do
+      %CatalogueItem{id: item_id} = CatalogueItemsFixtures.create()
+
+      %CatalogueItemOptionGroup{id: option_group_id} =
+        CatalogueItemOptionGroupsFixtures.create()
+
+      {:ok, %CatalogueItemOptionGroupItem{} = item_option_group_item} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Enum.into(%{
+          catalogue_item_id: item_id,
+          catalogue_item_option_group_id: option_group_id
+        })
+        |> Offerings.create_catalogue_item_option_group_item()
+
+      item_option_group_item
+    end
+
+    test "list_catalogue_item_option_groups_items/0 returns all catalogue_item_option_groups_items" do
+      catalogue_item_option_group_item =
+        catalogue_item_option_group_item_fixture()
+
+      assert Offerings.list_catalogue_item_option_groups_items() == [
+               catalogue_item_option_group_item
+             ]
+    end
+
+    test "get_catalogue_item_option_group_item!/1 returns the catalogue_item_option_group_item with given id" do
+      catalogue_item_option_group_item =
+        catalogue_item_option_group_item_fixture()
+
+      assert Offerings.get_catalogue_item_option_group_item!(
+               catalogue_item_option_group_item.id
+             ) == catalogue_item_option_group_item
+    end
+
+    test "create_catalogue_item_option_group_item/1 with valid data creates a catalogue_item_option_group_item" do
+      %CatalogueItem{id: item_id} = CatalogueItemsFixtures.create()
+
+      %CatalogueItemOptionGroup{id: option_group_id} =
+        CatalogueItemOptionGroupsFixtures.create()
+
+      valid_attrs =
+        Map.merge(@valid_attrs, %{
+          catalogue_item_id: item_id,
+          catalogue_item_option_group_id: option_group_id
+        })
+
+      assert {:ok, %CatalogueItemOptionGroupItem{visible: visible}} =
+               Offerings.create_catalogue_item_option_group_item(valid_attrs)
+
+      assert visible
+    end
+
+    test "create_catalogue_item_option_group_item/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.create_catalogue_item_option_group_item(@invalid_attrs)
+    end
+
+    test "update_catalogue_item_option_group_item/2 with valid data updates the catalogue_item_option_group_item" do
+      catalogue_item_option_group_item =
+        catalogue_item_option_group_item_fixture()
+
+      assert {:ok, %CatalogueItemOptionGroupItem{visible: visible}} =
+               Offerings.update_catalogue_item_option_group_item(
+                 catalogue_item_option_group_item,
+                 @update_attrs
+               )
+
+      refute visible
+    end
+
+    test "update_catalogue_item_option_group_item/2 with invalid data returns error changeset" do
+      catalogue_item_option_group_item =
+        catalogue_item_option_group_item_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Offerings.update_catalogue_item_option_group_item(
+                 catalogue_item_option_group_item,
+                 @invalid_attrs
+               )
+
+      assert catalogue_item_option_group_item ==
+               Offerings.get_catalogue_item_option_group_item!(
+                 catalogue_item_option_group_item.id
+               )
+    end
+
+    test "delete_catalogue_item_option_group_item/1 deletes the catalogue_item_option_group_item" do
+      catalogue_item_option_group_item =
+        catalogue_item_option_group_item_fixture()
+
+      assert {:ok, %CatalogueItemOptionGroupItem{}} =
+               Offerings.delete_catalogue_item_option_group_item(
+                 catalogue_item_option_group_item
+               )
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Offerings.get_catalogue_item_option_group_item!(
+          catalogue_item_option_group_item.id
+        )
+      end
+    end
+
+    test "change_catalogue_item_option_group_item/1 returns a catalogue_item_option_group_item changeset" do
+      catalogue_item_option_group_item =
+        catalogue_item_option_group_item_fixture()
+
+      assert %Ecto.Changeset{} =
+               Offerings.change_catalogue_item_option_group_item(
+                 catalogue_item_option_group_item
                )
     end
   end

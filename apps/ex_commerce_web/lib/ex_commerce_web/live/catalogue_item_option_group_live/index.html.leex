@@ -20,12 +20,14 @@
     <h1><%= gettext("Listing Catalogue item option groups") %></h1>
 
     <p>
-      <%= gettext("Create item option groups for your items. These can be selected as additional to any item that has an option group.") %>
+      <%= gettext("Create item option groups for your items. These can be selected as additionals to any item that has an option group.") %>
     </p>
 
     <table>
       <thead>
         <tr>
+          <th><%= gettext("Name") %></th>
+          <th><%= gettext("Multiple selection") %></th>
           <th><%= gettext("Mandatory") %></th>
           <th><%= gettext("Multiple selection") %></th>
           <th><%= gettext("Max selection") %></th>
@@ -36,6 +38,7 @@
       <tbody id="catalogue_item_option_groups">
         <%= for %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} = catalogue_item_option_group <- @catalogue_item_option_groups do %>
           <tr id="catalogue_item_option_group-<%= catalogue_item_option_group_id %>">
+            <td><%= catalogue_item_option_group.name %></td>
             <td><%= catalogue_item_option_group.mandatory %></td>
             <td><%= catalogue_item_option_group.multiple_selection %></td>
             <td><%= catalogue_item_option_group.max_selection %></td>

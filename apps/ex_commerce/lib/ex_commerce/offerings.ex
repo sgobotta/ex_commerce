@@ -773,4 +773,112 @@ defmodule ExCommerce.Offerings do
       ) do
     CatalogueItemOptionGroup.changeset(catalogue_item_option_group, attrs)
   end
+
+  alias ExCommerce.Offerings.CatalogueItemOptionGroupItem
+
+  @doc """
+  Returns the list of catalogue_item_option_groups_items.
+
+  ## Examples
+
+      iex> list_catalogue_item_option_groups_items()
+      [%CatalogueItemOptionGroupItem{}, ...]
+
+  """
+  def list_catalogue_item_option_groups_items do
+    Repo.all(CatalogueItemOptionGroupItem)
+  end
+
+  @doc """
+  Gets a single catalogue_item_option_group_item.
+
+  Raises `Ecto.NoResultsError` if the Catalogue item option group item does not exist.
+
+  ## Examples
+
+      iex> get_catalogue_item_option_group_item!(123)
+      %CatalogueItemOptionGroupItem{}
+
+      iex> get_catalogue_item_option_group_item!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_catalogue_item_option_group_item!(id),
+    do: Repo.get!(CatalogueItemOptionGroupItem, id)
+
+  @doc """
+  Creates a catalogue_item_option_group_item.
+
+  ## Examples
+
+      iex> create_catalogue_item_option_group_item(%{field: value})
+      {:ok, %CatalogueItemOptionGroupItem{}}
+
+      iex> create_catalogue_item_option_group_item(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_catalogue_item_option_group_item(attrs \\ %{}) do
+    %CatalogueItemOptionGroupItem{}
+    |> CatalogueItemOptionGroupItem.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a catalogue_item_option_group_item.
+
+  ## Examples
+
+      iex> update_catalogue_item_option_group_item(catalogue_item_option_group_item, %{field: new_value})
+      {:ok, %CatalogueItemOptionGroupItem{}}
+
+      iex> update_catalogue_item_option_group_item(catalogue_item_option_group_item, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_catalogue_item_option_group_item(
+        %CatalogueItemOptionGroupItem{} = catalogue_item_option_group_item,
+        attrs
+      ) do
+    catalogue_item_option_group_item
+    |> CatalogueItemOptionGroupItem.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a catalogue_item_option_group_item.
+
+  ## Examples
+
+      iex> delete_catalogue_item_option_group_item(catalogue_item_option_group_item)
+      {:ok, %CatalogueItemOptionGroupItem{}}
+
+      iex> delete_catalogue_item_option_group_item(catalogue_item_option_group_item)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_catalogue_item_option_group_item(
+        %CatalogueItemOptionGroupItem{} = catalogue_item_option_group_item
+      ) do
+    Repo.delete(catalogue_item_option_group_item)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking catalogue_item_option_group_item changes.
+
+  ## Examples
+
+      iex> change_catalogue_item_option_group_item(catalogue_item_option_group_item)
+      %Ecto.Changeset{data: %CatalogueItemOptionGroupItem{}}
+
+  """
+  def change_catalogue_item_option_group_item(
+        %CatalogueItemOptionGroupItem{} = catalogue_item_option_group_item,
+        attrs \\ %{}
+      ) do
+    CatalogueItemOptionGroupItem.changeset(
+      catalogue_item_option_group_item,
+      attrs
+    )
+  end
 end
