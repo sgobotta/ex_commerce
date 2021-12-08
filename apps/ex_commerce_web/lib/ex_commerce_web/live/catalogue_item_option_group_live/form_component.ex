@@ -34,10 +34,17 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
         %{"catalogue_item_option_group" => catalogue_item_option_group_params},
         socket
       ) do
+    # IO.inspect(catalogue_item_option_group_params, label:
+    #   "\n\n\ncatalogue_item_option_group_params")
+    %CatalogueItemOptionGroup{brand_id: brand_id} =
+      socket.assigns.changeset.data
+
     changeset =
-      socket.assigns.catalogue_item_option_group
+      socket.assigns.changeset.data
       |> Offerings.change_catalogue_item_option_group(
         catalogue_item_option_group_params
+        |> assign_brand_id(brand_id)
+        # |> IO.inspect(label: "\n\n\nAfter assigned brand id")
       )
       |> Map.put(:action, :validate)
 
@@ -64,11 +71,14 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
         socket.assigns.catalogue_item_option_group.options
       )
 
+    %Ecto.Changeset{data: %CatalogueItemOptionGroup{brand_id: brand_id}} =
+      socket.assigns.changeset
+
     options =
       existing_options
       |> Enum.concat([
         Offerings.change_catalogue_item_option(%CatalogueItemOption{
-          brand_id: Ecto.UUID.generate(),
+          brand_id: brand_id,
           temp_id: get_temp_id(),
           is_visible: false,
           price_modifier: 0
@@ -120,9 +130,18 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
          :edit,
          catalogue_item_option_group_params
        ) do
+    %{
+      assigns: %{
+        catalogue_item_option_group: %CatalogueItemOptionGroup{
+          brand_id: brand_id
+        }
+      }
+    } = socket
+
     case Offerings.update_catalogue_item_option_group(
            socket.assigns.catalogue_item_option_group,
            catalogue_item_option_group_params
+           |> assign_brand_id(brand_id)
          ) do
       {:ok, %CatalogueItemOptionGroup{} = _catalogue_item_option_group} ->
         {:noreply,
@@ -152,7 +171,8 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
     } = socket
 
     catalogue_item_option_group_params =
-      Map.merge(catalogue_item_option_group_params, %{"brand_id" => brand_id})
+      catalogue_item_option_group_params
+      |> assign_brand_id(brand_id)
 
     case Offerings.create_catalogue_item_option_group(
            catalogue_item_option_group_params
@@ -169,5 +189,25 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
+  end
+
+  defp assign_brand_id(%{"options" => options} = params, brand_id) do
+    options =
+      options
+      |> Enum.reduce(%{}, fn {key, value}, acc ->
+        Map.put(acc, key, Map.merge(value, %{"brand_id" => brand_id}))
+      end)
+
+    Map.merge(params, %{"brand_id" => brand_id, "options" => options})
+  end
+
+  defp assign_brand_id(params, brand_id) do
+    Map.merge(params, %{"brand_id" => brand_id})
+  end
+
+  defp get_catalogue_item_variants(changeset, catalogue_items, o) do
+    # IO.inspect(changeset.changes.options, label: "\n\nCHANGESET")
+    # IO.inspect(o, label: "OOO")
+    [{gettext("Choose an item first"), nil}]
   end
 end

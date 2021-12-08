@@ -5,6 +5,7 @@
       id: @catalogue_item_option_group.id || :new,
       title: @page_title,
       action: @live_action,
+      catalogue_items: @brand.catalogue_items,
       catalogue_item_option_group: @catalogue_item_option_group,
       return_to: Routes.catalogue_item_option_group_index_path(@socket, :index, @brand.id),
       patch_to: Routes.catalogue_item_option_group_index_path(@socket, :index, @brand.id) %>

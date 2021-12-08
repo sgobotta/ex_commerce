@@ -43,8 +43,8 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
       catalogue_item_option_group.temp_id || attrs["temp_id"]
     )
     |> cast(attrs, @fields ++ @foreign_fields ++ [:delete])
-    # |> cast_assoc(:options)
-    # |> cast_assoc(:items)
+    |> cast_assoc(:options)
+    |> cast_assoc(:items)
     |> validate_required(@fields ++ @foreign_fields)
     |> maybe_mark_for_deletion()
   end

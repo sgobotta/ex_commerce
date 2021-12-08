@@ -41,11 +41,25 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
       :temp_id,
       catalogue_item_option.temp_id || attrs["temp_id"]
     )
-    |> cast(attrs, @fields ++ @foreign_fields)
-    |> cast_assoc(:catalogue_item)
-    |> cast_assoc(:catalogue_item_variant)
-    |> validate_required(@fields ++ @foreign_fields)
+    |> cast(attrs, @fields ++ @foreign_fields ++ [:delete])
+    # |> printt("\n\n\n BEFORE", attrs)
+    |> cast_assoc(:catalogue_item, with: &CatalogueItem.changeset/2)
+    # |> printt("\n\n\n AFTER", attrs)
+    |> cast_assoc(:catalogue_item_variant,
+      with: &CatalogueItemVariant.changeset/2
+    )
+    |> cast(attrs, [:catalogue_item_id, :catalogue_item_variant_id])
+    |> validate_required(
+      @fields ++
+        @foreign_fields
+    )
     |> maybe_mark_for_deletion()
+  end
+
+  defp printt(c, _s, _attrs) do
+    # IO.inspect(attrs, label: "ATTRS")
+    # IO.inspect(c, label: s)
+    c
   end
 
   defp maybe_mark_for_deletion(%{data: %{id: nil}} = changeset), do: changeset

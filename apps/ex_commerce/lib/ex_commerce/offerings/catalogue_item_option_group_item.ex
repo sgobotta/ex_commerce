@@ -25,8 +25,8 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroupItem do
   def changeset(catalogue_item_option_group_item, attrs) do
     catalogue_item_option_group_item
     |> cast(attrs, @fields ++ @foreign_fields)
-    # |> cast_assoc(:catalogue_item_option_group_id)
-    # |> cast_assoc(:catalogue_item_id)
+    |> cast_assoc(:catalogue_item_option_group)
+    |> cast_assoc(:catalogue_item)
     |> validate_required(@fields ++ @foreign_fields)
   end
 end

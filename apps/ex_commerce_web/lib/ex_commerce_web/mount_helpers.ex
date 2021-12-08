@@ -62,13 +62,13 @@ defmodule ExCommerceWeb.MountHelpers do
         socket
         |> assign(
           :brand,
-          Repo.preload(brand, [
-            :shops,
-            :catalogues,
-            :catalogue_categories,
-            :catalogue_items,
-            :catalogue_item_option_groups
-          ])
+          Repo.preload(brand,
+            shops: [],
+            catalogues: [],
+            catalogue_categories: [],
+            catalogue_items: [:variants],
+            catalogue_item_option_groups: []
+          )
         )
     end
   end

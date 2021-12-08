@@ -7,6 +7,7 @@ defmodule ExCommerce.CatalogueItemOptionsFixtures do
   alias ExCommerce.{
     BrandFixtures,
     CatalogueItemOptionGroup,
+    CatalogueItemOptionGroupsFixtures,
     CatalogueItemsFixtures,
     CatalogueItemVariantsFixtures
   }
