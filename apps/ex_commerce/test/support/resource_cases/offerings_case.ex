@@ -12,6 +12,7 @@ defmodule ExCommerce.ContextCases.OfferingsCase do
         CatalogueCategoriesFixtures,
         CatalogueItemOptionGroupsFixtures,
         CatalogueItemsFixtures,
+        CatalogueItemVariantsFixtures,
         CataloguesFixtures
       }
 
@@ -36,6 +37,21 @@ defmodule ExCommerce.ContextCases.OfferingsCase do
 
       defp create_catalogue_item(_context) do
         %{catalogue_item: CatalogueItemsFixtures.create()}
+      end
+
+      defp create_catalogue_item_variant(%{
+             catalogue_item: %CatalogueItem{id: catalogue_item_id}
+           }) do
+        %{
+          catalogue_item_variant:
+            CatalogueItemVariantsFixtures.create(%{
+              catalogue_item_id: catalogue_item_id
+            })
+        }
+      end
+
+      defp create_catalogue_item_variant(_context) do
+        %{catalogue_item_variant: CatalogueItemVariantsFixtures.create()}
       end
 
       defp create_catalogue_item_option_group(_context) do
