@@ -10,7 +10,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
   alias ExCommerce.CatalogueItemOptionsFixtures
 
   alias ExCommerce.Offerings
-  alias ExCommerce.Offerings.CatalogueItemOptionGroup
+  alias ExCommerce.Offerings.{CatalogueItemOptionGroup, CatalogueItemVariant}
 
   @create_attrs %{
     mandatory: true,
@@ -40,7 +40,10 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       :create_brand,
       :create_catalogue_item_option_group,
       :assoc_user_brand,
-      :assoc_brand_catalogue_item_option_group
+      :assoc_brand_catalogue_item_option_group,
+      :create_catalogue_item,
+      :assoc_brand_catalogue_item,
+      :create_catalogue_item_variant
     ]
 
     test "[Success] lists all catalogue_item_option_groups", %{
@@ -103,13 +106,11 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       :ok
     end
 
-    defp submit_new_catalogue_item_option_group(conn, view, brand_id) do
+    defp submit_new_catalogue_item_option_group(conn, view, brand_id, attrs) do
       {:ok, _, html} =
         view
-        |> form("#catalogue_item_option_group-form",
-          catalogue_item_option_group: @create_attrs
-        )
-        |> render_submit()
+        |> form("#catalogue_item_option_group-form")
+        |> render_submit(%{catalogue_item_option_group: attrs})
         |> follow_redirect(
           conn,
           Routes.catalogue_item_option_group_index_path(conn, :index, brand_id)
@@ -137,6 +138,24 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
                  "#catalogue_item_option_group-form_options_#{index}_price_modifier"
                )
                |> has_element?()
+
+        assert view
+               |> element(
+                 "#catalogue_item_option_group-form_options_#{index}_catalogue_item_id"
+               )
+               |> has_element?()
+
+        assert view
+               |> element(
+                 "#catalogue_item_option_group-form_options_#{index}_catalogue_item_variant_id"
+               )
+               |> has_element?()
+
+        assert view
+               |> element(
+                 "#catalogue_item_option_group-form_options_#{index}_catalogue_item_variant_id"
+               )
+               |> has_element?()
       end
 
       # TODO: an option should be added here. For some reason the following code
@@ -151,7 +170,11 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
     test "[Success] saves new catalogue_item_option_group", %{
       brand: %Brand{id: brand_id},
-      conn: conn
+      conn: conn,
+      catalogue_item_variant: %CatalogueItemVariant{
+        id: catalogue_item_variant_id,
+        catalogue_item_id: catalogue_item_id
+      }
     } do
       {:ok, index_live, _html} =
         live(
@@ -162,12 +185,32 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       :ok = navigate_new_catalogue_item_option_group(conn, index_live, brand_id)
       :ok = change_new_catalogue_item_option_group(index_live, @invalid_attrs)
 
+      create_attrs =
+        Map.merge(@create_attrs, %{
+          options: %{
+            "0" => %{
+              catalogue_item_id: catalogue_item_id,
+              catalogue_item_variant_id: catalogue_item_variant_id
+            },
+            "1" => %{
+              catalogue_item_id: catalogue_item_id,
+              catalogue_item_variant_id: catalogue_item_variant_id
+            }
+          }
+        })
+
       :ok =
-        add_new_options(index_live, @create_attrs, [
+        add_new_options(index_live, create_attrs, [
           CatalogueItemOptionsFixtures.valid_attrs()
         ])
 
-      :ok = submit_new_catalogue_item_option_group(conn, index_live, brand_id)
+      :ok =
+        submit_new_catalogue_item_option_group(
+          conn,
+          index_live,
+          brand_id,
+          create_attrs
+        )
     end
 
     test "[Success] updates catalogue_item_option_group in listing", %{
