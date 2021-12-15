@@ -11,7 +11,7 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
   }
 
   @fields [:price_modifier, :is_visible]
-  @foreign_fields [:brand_id]
+  @foreign_fields [:brand_id, :catalogue_item_id, :catalogue_item_variant_id]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -24,6 +24,7 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
     field :temp_id, :string, virtual: true
     field :delete, :boolean, virtual: true
 
+    # Associations
     belongs_to :catalogue_item, CatalogueItem, type: :binary_id
     belongs_to :catalogue_item_variant, CatalogueItemVariant, type: :binary_id
 
@@ -42,24 +43,11 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
       catalogue_item_option.temp_id || attrs["temp_id"]
     )
     |> cast(attrs, @fields ++ @foreign_fields ++ [:delete])
-    # |> printt("\n\n\n BEFORE", attrs)
-    |> cast_assoc(:catalogue_item, with: &CatalogueItem.changeset/2)
-    # |> printt("\n\n\n AFTER", attrs)
-    |> cast_assoc(:catalogue_item_variant,
-      with: &CatalogueItemVariant.changeset/2
-    )
-    |> cast(attrs, [:catalogue_item_id, :catalogue_item_variant_id])
-    |> validate_required(
-      @fields ++
-        @foreign_fields
-    )
+    |> cast_assoc(:catalogue_item)
+    |> cast_assoc(:catalogue_item_variant)
+    |> validate_required(@fields ++ @foreign_fields)
+    |> validate_number(:price_modifier, greater_than_or_equal_to: 0)
     |> maybe_mark_for_deletion()
-  end
-
-  defp printt(c, _s, _attrs) do
-    # IO.inspect(attrs, label: "ATTRS")
-    # IO.inspect(c, label: s)
-    c
   end
 
   defp maybe_mark_for_deletion(%{data: %{id: nil}} = changeset), do: changeset
