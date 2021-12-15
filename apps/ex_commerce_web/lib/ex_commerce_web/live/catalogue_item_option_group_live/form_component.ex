@@ -5,6 +5,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
   use ExCommerceWeb, :live_component
 
   alias ExCommerce.Offerings
+  alias ExCommerce.Offerings.CatalogueItem
   alias ExCommerce.Offerings.CatalogueItemOption
   alias ExCommerce.Offerings.CatalogueItemOptionGroup
 
@@ -34,8 +35,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
         %{"catalogue_item_option_group" => catalogue_item_option_group_params},
         socket
       ) do
-    # IO.inspect(catalogue_item_option_group_params, label:
-    #   "\n\n\ncatalogue_item_option_group_params")
     %CatalogueItemOptionGroup{brand_id: brand_id} =
       socket.assigns.changeset.data
 
@@ -44,7 +43,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
       |> Offerings.change_catalogue_item_option_group(
         catalogue_item_option_group_params
         |> assign_brand_id(brand_id)
-        # |> IO.inspect(label: "\n\n\nAfter assigned brand id")
       )
       |> Map.put(:action, :validate)
 
@@ -205,9 +203,160 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
     Map.merge(params, %{"brand_id" => brand_id})
   end
 
-  defp get_catalogue_item_variants(changeset, catalogue_items, o) do
-    # IO.inspect(changeset.changes.options, label: "\n\nCHANGESET")
-    # IO.inspect(o, label: "OOO")
-    [{gettext("Choose an item first"), nil}]
+  # ----------------------------------------------------------------------------
+  # Catalogue item selection helpers
+  #
+
+  defp get_catalogue_items_prompt([], %Phoenix.HTML.Form{} = _current_option),
+    do: gettext("Create some items first")
+
+  defp get_catalogue_items_prompt(
+         _catalogue_items,
+         %Phoenix.HTML.Form{
+           data: %ExCommerce.Offerings.CatalogueItemOption{
+             catalogue_item_id: catalogue_item_id
+           },
+           source: %Ecto.Changeset{changes: changes}
+         } = _current_option
+       )
+       when not is_nil(catalogue_item_id) or
+              is_map_key(changes, :catalogue_item_id),
+       do: nil
+
+  defp get_catalogue_items_prompt(
+         _catalogue_items,
+         %Phoenix.HTML.Form{} = _current_option
+       ),
+       do: gettext("Select an item")
+
+  defp is_catalogue_item_disabled([]), do: true
+
+  defp is_catalogue_item_disabled(_catalogue_items), do: false
+
+  defp get_selected_catalogue_items(_catalogue_items), do: nil
+
+  defp get_catalogue_items(catalogue_items) do
+    Enum.map(catalogue_items, &{&1.code, &1.id})
+  end
+
+  # ----------------------------------------------------------------------------
+  # Catalogue item variant selection helpers
+  #
+
+  # No variants are present in the form
+  defp get_catalogue_item_variant_prompt(
+         [],
+         %Phoenix.HTML.Form{} = _current_option
+       ),
+       do: gettext("Select an item first")
+
+  # Variants and a catalogue item are present
+  defp get_catalogue_item_variant_prompt(
+         _variants,
+         %Phoenix.HTML.Form{
+           data: %ExCommerce.Offerings.CatalogueItemOption{
+             catalogue_item_id: catalogue_item_id
+           },
+           source: %Ecto.Changeset{changes: changes}
+         } = _current_option
+       )
+       when not is_nil(catalogue_item_id) or
+              is_map_key(changes, :catalogue_item_id),
+       do: nil
+
+  # Variants are present but no catalogue item has been selected yet
+  defp get_catalogue_item_variant_prompt(
+         _variants,
+         %Phoenix.HTML.Form{} = _current_option
+       ),
+       do: gettext("Select a variant")
+
+  # No source data or a user input is present for catalogue item id
+  defp is_catalogue_item_variant_disabled(
+         %Phoenix.HTML.Form{
+           data: %ExCommerce.Offerings.CatalogueItemOption{
+             catalogue_item_id: catalogue_item_id
+           },
+           source: %Ecto.Changeset{changes: changes}
+         } = _current_option
+       )
+       when is_nil(catalogue_item_id) and
+              not is_map_key(changes, :catalogue_item_id),
+       do: true
+
+  defp is_catalogue_item_variant_disabled(
+         %Phoenix.HTML.Form{} = _current_option
+       ),
+       do: false
+
+  defp get_catalogue_item_variant_options(
+         _changeset,
+         catalogue_items,
+         %Phoenix.HTML.Form{
+           data: %ExCommerce.Offerings.CatalogueItemOption{
+             catalogue_item_id: nil
+           },
+           source: %Ecto.Changeset{changes: changes}
+         } = _current_option
+       )
+       when is_map_key(changes, :catalogue_item_id) do
+    %CatalogueItem{variants: variants} =
+      Enum.find(catalogue_items, fn %CatalogueItem{id: catalogue_item_id} ->
+        catalogue_item_id == Map.fetch!(changes, :catalogue_item_id)
+      end)
+
+    Enum.map(variants, &{"#{&1.type} - #{&1.price}", &1.id})
+  end
+
+  defp get_catalogue_item_variant_options(
+         _changeset,
+         _catalogue_items,
+         %Phoenix.HTML.Form{
+           data: %ExCommerce.Offerings.CatalogueItemOption{
+             catalogue_item_id: nil
+           },
+           source: %Ecto.Changeset{changes: changes}
+         } = _current_option
+       )
+       when not is_map_key(changes, :catalogue_item_id) do
+    []
+  end
+
+  defp get_catalogue_item_variant_options(
+         _changeset,
+         catalogue_items,
+         %Phoenix.HTML.Form{
+           data: %ExCommerce.Offerings.CatalogueItemOption{
+             catalogue_item_id: _current_catalogue_item_id
+           },
+           source: %Ecto.Changeset{changes: changes}
+         } = _current_option
+       )
+       when is_map_key(changes, :catalogue_item_id) do
+    %CatalogueItem{variants: variants} =
+      Enum.find(catalogue_items, fn %CatalogueItem{id: catalogue_item_id} ->
+        catalogue_item_id == Map.fetch!(changes, :catalogue_item_id)
+      end)
+
+    Enum.map(variants, &{"#{&1.type} - #{&1.price}", &1.id})
+  end
+
+  defp get_catalogue_item_variant_options(
+         _changeset,
+         catalogue_items,
+         %Phoenix.HTML.Form{
+           data: %ExCommerce.Offerings.CatalogueItemOption{
+             catalogue_item_id: current_catalogue_item_id
+           },
+           source: %Ecto.Changeset{changes: changes}
+         } = _current_option
+       )
+       when not is_map_key(changes, :catalogue_item_id) do
+    %CatalogueItem{variants: variants} =
+      Enum.find(catalogue_items, fn %CatalogueItem{id: catalogue_item_id} ->
+        catalogue_item_id == current_catalogue_item_id
+      end)
+
+    Enum.map(variants, &{"#{&1.type} - #{&1.price}", &1.id})
   end
 end
