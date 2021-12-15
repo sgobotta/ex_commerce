@@ -51,11 +51,11 @@
       <div class="px-3 w-2/6">
         <%= label o, :catalogue_item, class: "my-2" %>
         <%=
-          catalogue_items = get_catalogue_items(@catalogue_items)
-          select o, :catalogue_item_id, catalogue_items,
-            prompt: get_catalogue_items_prompt(catalogue_items, o),
-            selected: get_selected_catalogue_items(catalogue_items),
-            disabled: is_catalogue_item_disabled(catalogue_items),
+          options = build_catalogue_item_options(@catalogue_items)
+          select o, :catalogue_item_id, options,
+            prompt: get_catalogue_items_prompt(options, o),
+            selected: get_selected_catalogue_items(options),
+            disabled: is_catalogue_item_disabled(options),
             class: "w-full"
         %>
         <%= error_tag o, :catalogue_item_id %>
@@ -64,9 +64,9 @@
       <div class="px-3 w-2/6">
         <%= label o, :catalogue_item_variant, class: "my-2" %>
         <%=
-          variants = get_catalogue_item_variant_options(@changeset, @catalogue_items, o);
-          select o, :catalogue_item_variant_id, variants,
-            prompt: get_catalogue_item_variant_prompt(variants, o),
+          options = get_catalogue_item_variant_options(@changeset, @catalogue_items, o)
+          select o, :catalogue_item_variant_id, options,
+            prompt: get_catalogue_item_variant_prompt(options, o),
             selected: nil,
             disabled: is_catalogue_item_variant_disabled(o),
             class: "w-full"
