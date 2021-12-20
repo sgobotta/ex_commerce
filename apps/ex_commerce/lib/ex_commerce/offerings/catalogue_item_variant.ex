@@ -3,6 +3,9 @@ defmodule ExCommerce.Offerings.CatalogueItemVariant do
   The CatalogueItemVariant schema
   """
   use Ecto.Schema
+
+  alias ExCommerce.Offerings.CatalogueItem
+
   import Ecto.Changeset
 
   @fields [:type, :price]
@@ -17,9 +20,7 @@ defmodule ExCommerce.Offerings.CatalogueItemVariant do
     field :temp_id, :string, virtual: true
     field :delete, :boolean, virtual: true
 
-    belongs_to :catalogue_item,
-               ExCommerce.Offerings.CatalogueItem,
-               type: :binary_id
+    belongs_to :catalogue_item, CatalogueItem, type: :binary_id
 
     timestamps()
   end
