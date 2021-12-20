@@ -5,9 +5,13 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
   use ExCommerceWeb, :live_component
 
   alias ExCommerce.Offerings
-  alias ExCommerce.Offerings.CatalogueItem
-  alias ExCommerce.Offerings.CatalogueItemOption
-  alias ExCommerce.Offerings.CatalogueItemOptionGroup
+
+  alias ExCommerce.Offerings.{
+    CatalogueItem,
+    CatalogueItemOption,
+    CatalogueItemOptionGroup,
+    CatalogueItemVariant
+  }
 
   import ExCommerceWeb.Utils
 
@@ -43,6 +47,8 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
       |> Offerings.change_catalogue_item_option_group(
         catalogue_item_option_group_params
         |> assign_brand_id(brand_id)
+        |> maybe_assign_catalogue_item(socket.assigns.catalogue_items)
+        |> maybe_assign_catalogue_item_variant()
       )
       |> Map.put(:action, :validate)
 
@@ -189,6 +195,10 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
     end
   end
 
+  # ----------------------------------------------------------------------------
+  # Assigns helpers
+  #
+
   defp assign_brand_id(%{"options" => options} = params, brand_id) do
     options =
       options
@@ -201,6 +211,89 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
 
   defp assign_brand_id(params, brand_id),
     do: Map.merge(params, %{"brand_id" => brand_id})
+
+  defp maybe_assign_catalogue_item(
+         %{"options" => options} = params,
+         catalogue_items
+       ) do
+    options =
+      options
+      |> Enum.reduce(
+        options,
+        fn
+          {_key, %{"catalogue_item_id" => ""}}, acc ->
+            acc
+
+          {key, %{"catalogue_item_id" => catalogue_item_id} = value}, acc ->
+            find_catalogue_item_by_id(catalogue_items, catalogue_item_id)
+            |> case do
+              nil ->
+                acc
+
+              %CatalogueItem{} = catalogue_item ->
+                Map.put(
+                  acc,
+                  key,
+                  Map.put(value, "catalogue_item", catalogue_item)
+                )
+            end
+
+          _option, acc ->
+            acc
+        end
+      )
+
+    Map.put(params, "options", options)
+  end
+
+  defp maybe_assign_catalogue_item(params, _catalogue_items), do: params
+
+  defp maybe_assign_catalogue_item_variant(%{"options" => options} = params) do
+    options =
+      options
+      |> Enum.reduce(
+        options,
+        fn
+          {_key, %{"catalogue_item_id" => ""}}, acc ->
+            acc
+
+          {_key, %{"catalogue_item_variant_id" => ""}}, acc ->
+            acc
+
+          {key,
+           %{
+             "catalogue_item_variant_id" => catalogue_item_variant_id,
+             "catalogue_item" => %CatalogueItem{variants: variants}
+           } = value},
+          acc ->
+            case find_catalogue_item_variant_by_id(
+                   variants,
+                   catalogue_item_variant_id
+                 ) do
+              nil ->
+                acc
+
+              %CatalogueItemVariant{} = catalogue_item_variant ->
+                Map.put(
+                  acc,
+                  key,
+                  Map.put(
+                    value,
+                    "catalogue_item_variant",
+                    catalogue_item_variant
+                  )
+                )
+            end
+
+          _option, acc ->
+            acc
+        end
+      )
+
+    Map.put(params, "options", options)
+  end
+
+  defp maybe_assign_catalogue_item_variant(params), do: params
 
   # ----------------------------------------------------------------------------
   # Catalogue item selection helpers
@@ -238,9 +331,29 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
     Enum.map(catalogue_items, &{&1.code, &1.id})
   end
 
+  defp find_catalogue_item_by_id(catalogue_items, catalogue_item_id) do
+    Enum.find(catalogue_items, nil, fn %CatalogueItem{id: id} ->
+      id == catalogue_item_id
+    end)
+  end
+
   # ----------------------------------------------------------------------------
   # Catalogue item variant selection helpers
   #
+
+  # A catalogue item is present but no variants are available
+  defp get_catalogue_item_variant_prompt(
+         [],
+         %Phoenix.HTML.Form{
+           data: %ExCommerce.Offerings.CatalogueItemOption{
+             catalogue_item_id: catalogue_item_id
+           },
+           source: %Ecto.Changeset{changes: changes}
+         } = _current_option
+       )
+       when not is_nil(catalogue_item_id) or
+              is_map_key(changes, :catalogue_item_id),
+       do: gettext("Create a variant for this item first")
 
   # No variants are present in the form
   defp get_catalogue_item_variant_prompt(
@@ -254,13 +367,13 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
          _variants,
          %Phoenix.HTML.Form{
            data: %ExCommerce.Offerings.CatalogueItemOption{
-             catalogue_item_id: catalogue_item_id
+             catalogue_item_variant_id: catalogue_item_variant_id
            },
            source: %Ecto.Changeset{changes: changes}
          } = _current_option
        )
-       when not is_nil(catalogue_item_id) or
-              is_map_key(changes, :catalogue_item_id),
+       when not is_nil(catalogue_item_variant_id) or
+              is_map_key(changes, :catalogue_item_variant_id),
        do: nil
 
   # Variants are present but no catalogue item has been selected yet
@@ -270,8 +383,16 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
        ),
        do: gettext("Select a variant")
 
+  # No varianst available
+  defp is_catalogue_item_variant_disabled(
+         [],
+         %Phoenix.HTML.Form{} = _current_option
+       ),
+       do: true
+
   # No db data or user input is present for catalogue item id
   defp is_catalogue_item_variant_disabled(
+         _options,
          %Phoenix.HTML.Form{
            data: %ExCommerce.Offerings.CatalogueItemOption{
              catalogue_item_id: catalogue_item_id
@@ -284,13 +405,17 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
        do: true
 
   defp is_catalogue_item_variant_disabled(
+         _options,
          %Phoenix.HTML.Form{} = _current_option
        ),
        do: false
 
-  defp find_catalogue_item_by_id(catalogue_items, catalogue_item_id) do
-    Enum.find(catalogue_items, fn %CatalogueItem{id: id} ->
-      id == catalogue_item_id
+  defp find_catalogue_item_variant_by_id(
+         catalogue_item_variants,
+         catalogue_item_variant_id
+       ) do
+    Enum.find(catalogue_item_variants, nil, fn %CatalogueItemVariant{id: id} ->
+      id == catalogue_item_variant_id
     end)
   end
 
