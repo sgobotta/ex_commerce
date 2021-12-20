@@ -12,6 +12,8 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
     CatalogueItemVariant
   }
 
+  import ExCommerceNumeric
+
   @fields [:price_modifier, :is_visible]
   @foreign_fields [:brand_id, :catalogue_item_id, :catalogue_item_variant_id]
   @virtual_fields [:delete, :price_preview]
@@ -106,9 +108,8 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
   defp maybe_build_price_preview(changeset, _attrs), do: changeset
 
   defp apply_discount(price, price_modifier) do
-    Decimal.round(
-      Decimal.sub(price, Decimal.mult(price, Decimal.div(price_modifier, 100))),
-      2
+    format_price(
+      Decimal.sub(price, Decimal.mult(price, Decimal.div(price_modifier, 100)))
     )
   end
 end

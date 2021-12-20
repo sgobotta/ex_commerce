@@ -13,6 +13,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
     CatalogueItemVariant
   }
 
+  import ExCommerceNumeric
   import ExCommerceWeb.Utils
 
   @impl true
@@ -470,5 +471,5 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
   end
 
   defp build_catalogue_item_variant_options(variants),
-    do: Enum.map(variants, &{"#{&1.type} - #{&1.price}", &1.id})
+    do: Enum.map(variants, &{"#{&1.type} - #{format_price(&1.price)}", &1.id})
 end
