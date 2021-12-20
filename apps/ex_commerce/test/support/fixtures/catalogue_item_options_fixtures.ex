@@ -5,7 +5,7 @@ defmodule ExCommerce.CatalogueItemOptionsFixtures do
   """
 
   alias ExCommerce.{
-    BrandFixtures,
+    BrandsFixtures,
     CatalogueItemOptionGroup,
     CatalogueItemOptionGroupsFixtures,
     CatalogueItemsFixtures,
@@ -49,7 +49,7 @@ defmodule ExCommerce.CatalogueItemOptionsFixtures do
   defp assign_brand_maybe(attrs) do
     case Map.has_key?(attrs, :brand_id) do
       false ->
-        %Brand{id: brand_id} = BrandFixtures.create()
+        %Brand{id: brand_id} = BrandsFixtures.create()
         Map.merge(attrs, %{brand_id: brand_id})
 
       true ->
