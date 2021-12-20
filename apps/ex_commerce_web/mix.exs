@@ -53,6 +53,7 @@ defmodule ExCommerceWeb.MixProject do
       {:plug_cowboy, "~> 2.0"},
       # Umbrella deps
       {:ex_commerce, in_umbrella: true},
+      {:ex_commerce_numeric, in_umbrella: true},
       # Helpers
       {:phoenix_inline_svg, "~> 1.4"},
       # Authentication
