@@ -1,0 +1,24 @@
+[
+  {
+    "id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "mandatory": true,
+    "max_selection": 1,
+    "multiple_selection": false,
+    "name": "Beers",
+    "description": "Our beers selection for your hamburguer",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "4bf0d287-311d-48fb-8fa3-d081a898d935",
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "mandatory": true,
+    "max_selection": 2,
+    "multiple_selection": true,
+    "name": "Snacks",
+    "description": "Our fries and fingers selection for your hamburguer",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  }
+]
