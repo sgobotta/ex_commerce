@@ -1,6 +1,6 @@
 defmodule ExCommerce.Seeds.CatalogueItemVariants do
   @moduledoc """
-  Seeds for the CatalogueItem model
+  Seeds for the CatalogueItemVariant model
   """
 
   alias ExCommerce.Repo
