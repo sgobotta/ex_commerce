@@ -1,4 +1,6 @@
 defmodule ExCommerce.Repo.Migrations.CreateCatalogueItemOptionGroups do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do
@@ -8,7 +10,12 @@ defmodule ExCommerce.Repo.Migrations.CreateCatalogueItemOptionGroups do
       add :multiple_selection, :boolean, default: false, null: false
       add :max_selection, :integer
       add :brand_id, references(:brands, on_delete: :nothing, type: :binary_id)
-      add :options, references(:catalogue_item_options, on_delete: :nothing, type: :binary_id)
+
+      add :options,
+          references(:catalogue_item_options,
+            on_delete: :nothing,
+            type: :binary_id
+          )
 
       timestamps()
     end

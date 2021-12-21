@@ -1,4 +1,6 @@
 defmodule ExCommerce.Repo.Migrations.CreateCatalogueItemOptionGroupsItems do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do
@@ -7,14 +9,21 @@ defmodule ExCommerce.Repo.Migrations.CreateCatalogueItemOptionGroupsItems do
       add :visible, :boolean, default: false, null: false
 
       add :catalogue_item_option_group_id,
-          references(:catalogue_item_option_groups, on_delete: :nothing, type: :binary_id)
+          references(:catalogue_item_option_groups,
+            on_delete: :nothing,
+            type: :binary_id
+          )
 
-      add :catalogue_item_id, references(:catalogue_items, on_delete: :nothing, type: :binary_id)
+      add :catalogue_item_id,
+          references(:catalogue_items, on_delete: :nothing, type: :binary_id)
 
       timestamps()
     end
 
-    create index(:catalogue_item_option_groups_items, [:catalogue_item_option_group_id])
+    create index(:catalogue_item_option_groups_items, [
+             :catalogue_item_option_group_id
+           ])
+
     create index(:catalogue_item_option_groups_items, [:catalogue_item_id])
   end
 end

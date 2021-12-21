@@ -1,4 +1,6 @@
 defmodule ExCommerce.Repo.Migrations.CreateCatalogueItemOptions do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do
@@ -7,10 +9,15 @@ defmodule ExCommerce.Repo.Migrations.CreateCatalogueItemOptions do
       add :price_modifier, :decimal
       add :is_visible, :boolean, default: false, null: false
       add :brand_id, references(:brands, on_delete: :nothing, type: :binary_id)
-      add :catalogue_item_id, references(:catalogue_items, on_delete: :nothing, type: :binary_id)
+
+      add :catalogue_item_id,
+          references(:catalogue_items, on_delete: :nothing, type: :binary_id)
 
       add :catalogue_item_variant_id,
-          references(:catalogue_item_variants, on_delete: :nothing, type: :binary_id)
+          references(:catalogue_item_variants,
+            on_delete: :nothing,
+            type: :binary_id
+          )
 
       timestamps()
     end

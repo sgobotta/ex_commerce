@@ -1,4 +1,6 @@
 defmodule ExCommerce.Repo.Migrations.UpdateCatalogueItemOptionBelongsToGroup do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do
