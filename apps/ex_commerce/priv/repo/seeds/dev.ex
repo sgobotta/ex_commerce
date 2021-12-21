@@ -8,12 +8,12 @@ defmodule ExCommerce.Seeds.Dev do
   alias ExCommerce.Seeds.{
     Brands,
     BrandsUsers,
-    Catalogues,
     CatalogueCategories,
     CatalogueItemOptionGroups,
     CatalogueItemOptions,
     CatalogueItems,
     CatalogueItemVariants,
+    Catalogues,
     Shops,
     Users
   }
@@ -22,6 +22,8 @@ defmodule ExCommerce.Seeds.Dev do
   def populate do
     # Removes debug messages in this run
     :ok = Logger.configure(level: :info)
+
+    :ok = Logger.info("📌 Starting seeds population process...")
 
     # Run seeds here
     :ok = Users.populate()

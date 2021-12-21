@@ -8,7 +8,7 @@ defmodule ExCommerce.Seeds.Test do
   @spec populate :: :ok
   def populate do
     # Run seeds here
-    :ok = Logger.info("🌱 Succesfully created test seeds.")
+    :ok = Logger.info("🌱 No seeds available for test environment.")
 
     :ok
   end
