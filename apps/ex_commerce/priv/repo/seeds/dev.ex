@@ -20,6 +20,9 @@ defmodule ExCommerce.Seeds.Dev do
 
   @spec populate :: :ok
   def populate do
+    # Removes debug messages in this run
+    :ok = Logger.configure(level: :info)
+
     # Run seeds here
     :ok = Users.populate()
     :ok = Brands.populate()

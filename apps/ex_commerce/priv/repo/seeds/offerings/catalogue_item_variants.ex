@@ -14,14 +14,15 @@ defmodule ExCommerce.Seeds.CatalogueItemVariants do
   @plural_element "catalogue item variants"
   @element_module CatalogueItemVariant
 
+  @date_keys [:inserted_at, :updated_at]
+
   @spec populate :: :ok
   def populate do
     with {:ok, body} <- File.read(@json_file),
       {:ok, elements} <- Jason.decode(body, keys: :atoms) do
 
-      date_keys = [:inserted_at, :updated_at]
       elements = for element <- elements do
-        Map.merge(element, Utils.dates_to_naive_datetime(element, date_keys))
+        Map.merge(element, Utils.dates_to_naive_datetime(element, @date_keys))
       end
 
       {count, _} = Repo.insert_all(@element_module, elements)

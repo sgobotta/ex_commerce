@@ -11,19 +11,23 @@ defmodule ExCommerce.Seeds.BrandsUsers do
 
   @json_file "#{__DIR__}/brands_users.json"
 
+  @plural_element "brands users"
+  @element_module BrandUser
+
+  @date_keys [:inserted_at, :updated_at]
+
   @spec populate :: :ok
   def populate do
     with {:ok, body} <- File.read(@json_file),
-      {:ok, decoded_elements} <- Jason.decode(body, keys: :atoms) do
+      {:ok, elements} <- Jason.decode(body, keys: :atoms) do
 
-      date_keys = [:inserted_at, :updated_at]
-      elements = for element <- decoded_elements do
-        Map.merge(element, Utils.dates_to_naive_datetime(element, date_keys))
+      elements = for element <- elements do
+        Map.merge(element, Utils.dates_to_naive_datetime(element, @date_keys))
       end
 
-      {count, _} = Repo.insert_all(BrandUser, elements)
+      {count, _} = Repo.insert_all(@element_module, elements)
 
-      :ok = Logger.info("✅ Inserted #{count} brands users.")
+      :ok = Logger.info("✅ Inserted #{count} #{@plural_element}.")
 
       :ok
     end
