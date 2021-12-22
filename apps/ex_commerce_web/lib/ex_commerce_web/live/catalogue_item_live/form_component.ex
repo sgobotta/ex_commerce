@@ -5,7 +5,13 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   use ExCommerceWeb, :live_component
 
   alias ExCommerce.Offerings
-  alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemVariant}
+
+  alias ExCommerce.Offerings.{
+    CatalogueItem,
+    CatalogueItemOption,
+    CatalogueItemOptionGroup,
+    CatalogueItemVariant
+  }
 
   import ExCommerceWeb.Utils
 
@@ -32,8 +38,12 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
       ) do
     changeset =
       socket.assigns.catalogue_item
-      |> Offerings.change_catalogue_item(catalogue_item_params)
+      |> Offerings.change_catalogue_item(
+        catalogue_item_params
+        # |> maybe_assign_catalogue_item_option_groups(socket.assigns.catalogue_item_option_groups)
+      )
       |> Map.put(:action, :validate)
+      |> IO.inspect(label: "validate")
 
     {:noreply, assign(socket, :changeset, changeset)}
   end
@@ -77,6 +87,144 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     changeset =
       socket.assigns.changeset
       |> Ecto.Changeset.put_assoc(:variants, variants)
+
+    {:noreply, assign(socket, changeset: changeset)}
+  end
+
+  def handle_event("add_option_group", _params, socket) do
+    existing_option_groups =
+      Map.get(
+        socket.assigns.changeset.changes,
+        :option_groups,
+        socket.assigns.catalogue_item.option_groups
+      )
+
+    %Ecto.Changeset{data: %CatalogueItem{brand_id: brand_id}} =
+      socket.assigns.changeset
+
+    option_groups =
+      existing_option_groups
+      |> Enum.concat([
+        Offerings.change_catalogue_item_option_group(%CatalogueItemOptionGroup{
+          temp_id: get_temp_id(),
+          brand_id: brand_id,
+          mandatory: false,
+          max_selection: nil,
+          multiple_selection: false,
+          name: "",
+          description: "",
+          options: []
+        })
+      ])
+
+    changeset =
+      socket.assigns.changeset
+      |> Ecto.Changeset.put_assoc(:option_groups, option_groups)
+
+    {:noreply, assign(socket, changeset: changeset)}
+  end
+
+  def handle_event("remove_option_group", %{"remove" => remove_id}, socket) do
+    option_groups =
+      socket.assigns.changeset.changes.option_groups
+      |> Enum.reject(fn %{data: option_group} ->
+        option_group.temp_id == remove_id
+      end)
+
+    changeset =
+      socket.assigns.changeset
+      |> Ecto.Changeset.put_assoc(:option_groups, option_groups)
+
+    {:noreply, assign(socket, changeset: changeset)}
+  end
+
+  def handle_event(
+        "add_option_group_option",
+        %{"option_group" => option_group_temp_id},
+        socket
+      ) do
+    option_groups =
+      Enum.map(
+        socket.assigns.changeset.changes.option_groups,
+        fn %Ecto.Changeset{
+             data:
+               %CatalogueItemOptionGroup{temp_id: temp_id, options: options} =
+                 option_group
+           } = changeset ->
+          case temp_id do
+            ^option_group_temp_id ->
+              %CatalogueItemOptionGroup{brand_id: brand_id} = option_group
+
+              existing_options = Map.get(changeset.changes, :options, options)
+
+              option_group_options =
+                existing_options
+                |> Enum.concat([
+                  Offerings.change_catalogue_item_option(%CatalogueItemOption{
+                    brand_id: brand_id,
+                    temp_id: get_temp_id(),
+                    is_visible: false,
+                    price_modifier: 0
+                  })
+                ])
+
+              changeset
+              |> Ecto.Changeset.put_assoc(:options, option_group_options)
+
+            _temp_id ->
+              changeset
+          end
+        end
+      )
+
+    %Ecto.Changeset{} =
+      changeset =
+      socket.assigns.changeset
+      |> Ecto.Changeset.put_assoc(:option_groups, option_groups)
+
+    {:noreply, assign(socket, changeset: changeset)}
+  end
+
+  def handle_event(
+        "remove_option_group_option",
+        %{"option_group" => option_group_temp_id, "remove" => remove_id},
+        socket
+      ) do
+    %Ecto.Changeset{changes: %{option_groups: option_groups}} =
+      socket.assigns.changeset
+
+    option_groups =
+      Enum.map(option_groups, fn %Ecto.Changeset{
+                                   data: %CatalogueItemOptionGroup{
+                                     temp_id: og_temp_id,
+                                     options: options
+                                   }
+                                 } = changeset ->
+        case og_temp_id do
+          ^option_group_temp_id ->
+            existing_options = Map.get(changeset.changes, :options, options)
+
+            options =
+              Enum.reject(existing_options, fn %Ecto.Changeset{
+                                                 data: %CatalogueItemOption{
+                                                   temp_id: option_temp_id
+                                                 }
+                                               } ->
+                option_temp_id == remove_id
+              end)
+
+            changeset
+            |> Ecto.Changeset.put_assoc(:options, options)
+
+          _option_group_temp_id ->
+            changeset
+        end
+      end)
+
+    %Ecto.Changeset{} =
+      changeset =
+      socket.assigns.changeset
+      |> Ecto.Changeset.put_assoc(:option_groups, option_groups)
 
     {:noreply, assign(socket, changeset: changeset)}
   end
@@ -127,5 +275,73 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
+  end
+
+  # ----------------------------------------------------------------------------
+  # Assigns helpers
+  #
+
+  defp maybe_assign_catalogue_item_option_groups(
+         %{"option_groups" => option_group_ids} = params,
+         catalogue_item_option_groups
+       ) do
+    IO.inspect(params, label: "params!")
+
+    IO.inspect(catalogue_item_option_groups,
+      label: "catalogue_item_option_groups!"
+    )
+
+    option_groups =
+      Enum.map(
+        option_group_ids,
+        fn option_group_id ->
+          find_catalogue_item_option_group_by_id(
+            catalogue_item_option_groups,
+            option_group_id
+          )
+        end
+      )
+
+    Map.put(params, "option_groups", option_groups)
+    |> IO.inspect(label: "ASSIGNED OPTION GROUPS")
+  end
+
+  defp maybe_assign_catalogue_item_option_groups(
+         params,
+         _catalogue_item_option_groups
+       ),
+       do: params
+
+  # ----------------------------------------------------------------------------
+  # Catalogue item option groups selection helpers
+  #
+
+  def get_catalogue_item_option_groups_prompt(_options, _form) do
+    "Select Option Groups"
+  end
+
+  def is_catalogue_item_option_groups_disabled(_options) do
+    false
+  end
+
+  def get_selected_catalogue_item_option_groups(_options) do
+    []
+  end
+
+  def build_catalogue_item_option_group_options(catalogue_item_option_groups) do
+    # IO.inspect(catalogue_item_option_groups, label: "catalogue_item_option_groups")
+
+    Enum.map(catalogue_item_option_groups, &{&1.name, &1.id})
+  end
+
+  defp find_catalogue_item_option_group_by_id(
+         catalogue_item_option_groups,
+         catalogue_item_option_group_id
+       ) do
+    Enum.find(catalogue_item_option_groups, nil, fn %CatalogueItemOptionGroup{
+                                                      id: id
+                                                    } ->
+      id == catalogue_item_option_group_id
+    end)
   end
 end
