@@ -14,16 +14,37 @@ defmodule ExCommerceWeb.ModalComponent do
       phx-page-loading>
 
       <div class="phx-modal-content card">
-        <%= live_patch raw("&times;"), to: @return_to, class: "close-modal-button" %>
+        <%= live_close(@opts) %>
         <%= live_component @socket, @component, @opts %>
       </div>
     </div>
     """
   end
 
+  def live_close(opts) do
+    text = raw("&times;")
+    class = "close-modal-button"
+
+    case Keyword.get(opts, :redirect_to) do
+      nil ->
+        live_patch(text, to: Keyword.get(opts, :return_to), class: class)
+
+      redirect_to ->
+        live_redirect(text, to: redirect_to, class: class)
+    end
+  end
+
   @impl true
   def handle_event("close", _params, socket) do
-    {:noreply,
-     push_patch(socket, to: Keyword.get(socket.assigns.opts, :patch_to))}
+    socket =
+      case Keyword.get(socket.assigns.opts, :redirect_to) do
+        nil ->
+          push_patch(socket, to: Keyword.get(socket.assigns.opts, :patch_to))
+
+        redirect_to ->
+          push_redirect(socket, to: redirect_to)
+      end
+
+    {:noreply, socket}
   end
 end
