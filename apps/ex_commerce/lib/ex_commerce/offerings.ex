@@ -698,9 +698,9 @@ defmodule ExCommerce.Offerings do
   """
   def filter_catalogue_item_option_groups_by_id(option_group_ids) do
     Repo.all(
-        from ciop in CatalogueItemOptionGroup,
-          where: ciop.id in ^option_group_ids
-      )
+      from ciop in CatalogueItemOptionGroup,
+        where: ciop.id in ^option_group_ids
+    )
   end
 
   @doc """

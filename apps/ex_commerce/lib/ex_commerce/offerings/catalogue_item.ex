@@ -8,6 +8,7 @@ defmodule ExCommerce.Offerings.CatalogueItem do
   import Ecto.Changeset
 
   alias ExCommerce.Offerings
+
   alias ExCommerce.Offerings.{
     CatalogueItemOptionGroup,
     CatalogueItemOptionGroupItem,
@@ -47,9 +48,8 @@ defmodule ExCommerce.Offerings.CatalogueItem do
          changeset,
          %{"option_groups" => option_group_ids}
        ) do
-    option_groups = Offerings.filter_catalogue_item_option_groups_by_id(
-      option_group_ids
-    )
+    option_groups =
+      Offerings.filter_catalogue_item_option_groups_by_id(option_group_ids)
 
     put_assoc(changeset, :option_groups, option_groups)
   end
