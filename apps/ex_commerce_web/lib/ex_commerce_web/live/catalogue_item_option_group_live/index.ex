@@ -16,6 +16,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.Index do
       true ->
         {:ok,
          socket
+         |> assign(:redirect_to, params["redirect_to"])
          |> assign_defaults(params, session)
          |> assign_brand_or_redirect(params, session)}
 

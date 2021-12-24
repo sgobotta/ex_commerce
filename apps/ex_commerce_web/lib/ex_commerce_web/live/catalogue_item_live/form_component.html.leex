@@ -69,31 +69,32 @@
     <p class="mt-4 mb-2 font-bold"><%= gettext("Option Groups") %> (<%= gettext("Optional") %>)</p>
   </div>
 
-  <div class="flex flex-wrap -mx-1 overflow-hidden">
-    <%= label f, :option_groups, class: "my-2" %>
-    <%=
-      options = build_catalogue_item_option_group_options(
-        @catalogue_item_option_groups
-      )
-      multiple_select f, :option_groups, options,
-        disabled: false,
-        selected: get_selected_catalogue_item_option_groups(f),
-        class: "w-full h-full px-4"
-    %>
-    <%= error_tag f, :option_groups %>
-  </div>
-</div>
+  <div class="mx-8">
+    <div class="flex flex-wrap -mx-1 overflow-hidden">
+      <%= label f, "Select option groups", class: "my-2" %>
+      <%=
+        options = build_catalogue_item_option_group_options(
+          @catalogue_item_option_groups
+        )
+        multiple_select f, :option_groups, options,
+          disabled: false,
+          selected: get_selected_catalogue_item_option_groups(f),
+          class: "w-full h-full px-4"
+      %>
+      <%= error_tag f, :option_groups %>
+    </div>
 
-  <div class="flex justify-start my-6">
-    <a
-      href="#"
-      phx-click="add_option_group"
-      phx-target="<%= @myself %>"
-      class="button"
-      id="catalogue_item-add-option-group-input"
-    >
-      <%= gettext("Add an Options group") %>
-    </a>
+    <div class="flex justify-start my-6">
+      <a
+        href="#"
+        phx-click="create_option_group"
+        phx-target="<%= @myself %>"
+        class="button"
+        id="catalogue_item-add-option-group-input"
+      >
+        <%= gettext("Create an Options group") %>
+      </a>
+    </div>
   </div>
 
   <div class="flex justify-end mt-6">

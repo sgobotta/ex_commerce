@@ -95,37 +95,18 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  def handle_event("add_option_group", _params, socket) do
-    existing_option_groups =
-      Map.get(
-        socket.assigns.changeset.changes,
-        :option_groups,
-        socket.assigns.catalogue_item.option_groups
-      )
-
-    %Ecto.Changeset{data: %CatalogueItem{brand_id: brand_id}} =
-      socket.assigns.changeset
-
-    option_groups =
-      existing_option_groups
-      |> Enum.concat([
-        Offerings.change_catalogue_item_option_group(%CatalogueItemOptionGroup{
-          temp_id: get_temp_id(),
-          brand_id: brand_id,
-          mandatory: false,
-          max_selection: nil,
-          multiple_selection: false,
-          name: "",
-          description: "",
-          options: []
-        })
-      ])
-
-    changeset =
-      socket.assigns.changeset
-      |> Ecto.Changeset.put_assoc(:option_groups, option_groups)
-
-    {:noreply, assign(socket, changeset: changeset)}
+  def handle_event("create_option_group", _params, socket) do
+    {:noreply,
+     socket
+     |> push_redirect(
+       to:
+         Routes.catalogue_item_option_group_index_path(
+           socket,
+           :new,
+           socket.assigns.catalogue_item.brand_id,
+           redirect_to: socket.assigns.return_from_group_form
+         )
+     )}
   end
 
   defp prepare_variants_maybe(changeset, %{action: :new}) do

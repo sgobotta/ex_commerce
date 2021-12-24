@@ -159,7 +159,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
            :info,
            gettext("Catalogue item option group updated successfully")
          )
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> redirect_or_return()}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
@@ -193,10 +193,20 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
            :info,
            gettext("Catalogue item option group created successfully")
          )
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> redirect_or_return()}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
+    end
+  end
+
+  defp redirect_or_return(socket) do
+    case socket.assigns.redirect_to do
+      nil ->
+        push_redirect(socket, to: socket.assigns.return_to)
+
+      redirect_to ->
+        push_redirect(socket, to: redirect_to)
     end
   end
 
