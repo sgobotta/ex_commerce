@@ -14,7 +14,11 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
   }
 
   import ExCommerceNumeric
-  import ExCommerceWeb.Utils
+
+  import ExCommerceWeb.{
+    LiveFormHelpers,
+    Utils
+  }
 
   @impl true
   def update(
@@ -47,7 +51,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
       socket.assigns.changeset.data
       |> Offerings.change_catalogue_item_option_group(
         catalogue_item_option_group_params
-        |> assign_brand_id(brand_id)
+        |> assign_brand_id_param(brand_id)
         |> maybe_assign_catalogue_item(socket.assigns.catalogue_items)
         |> maybe_assign_catalogue_item_variant()
       )
@@ -146,7 +150,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
     case Offerings.update_catalogue_item_option_group(
            socket.assigns.catalogue_item_option_group,
            catalogue_item_option_group_params
-           |> assign_brand_id(brand_id)
+           |> assign_brand_id_param(brand_id)
          ) do
       {:ok, %CatalogueItemOptionGroup{} = _catalogue_item_option_group} ->
         {:noreply,
@@ -177,7 +181,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
 
     catalogue_item_option_group_params =
       catalogue_item_option_group_params
-      |> assign_brand_id(brand_id)
+      |> assign_brand_id_param(brand_id)
 
     case Offerings.create_catalogue_item_option_group(
            catalogue_item_option_group_params
@@ -199,19 +203,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
   # ----------------------------------------------------------------------------
   # Assigns helpers
   #
-
-  defp assign_brand_id(%{"options" => options} = params, brand_id) do
-    options =
-      options
-      |> Enum.reduce(%{}, fn {key, value}, acc ->
-        Map.put(acc, key, Map.merge(value, %{"brand_id" => brand_id}))
-      end)
-
-    Map.merge(params, %{"brand_id" => brand_id, "options" => options})
-  end
-
-  defp assign_brand_id(params, brand_id),
-    do: Map.merge(params, %{"brand_id" => brand_id})
 
   defp maybe_assign_catalogue_item(
          %{"options" => options} = params,
