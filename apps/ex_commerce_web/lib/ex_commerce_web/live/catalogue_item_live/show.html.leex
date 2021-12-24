@@ -6,6 +6,7 @@
       title: @page_title,
       action: @live_action,
       catalogue_item: @catalogue_item,
+      catalogue_item_option_groups: @brand.catalogue_item_option_groups,
       return_to: Routes.catalogue_item_show_path(@socket, :show, @brand.id, @catalogue_item.id),
       patch_to: Routes.catalogue_item_show_path(@socket, :show, @brand.id, @catalogue_item.id) %>
   <% end %>
