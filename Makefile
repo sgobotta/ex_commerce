@@ -95,8 +95,13 @@ setup.test:
 	@source ${ENV_FILE} && MIX_ENV=test mix install
 	@source ${ENV_FILE} && MIX_ENV=test mix setup
 
-#📦 setup.deps: @ Installs dependencies only for all envs
+#📦 setup.deps: @ Installs dependencies for development
 setup.deps: setup.deps.dev setup.deps.test
+
+#📦 setup.deps.ci: @ Installs dependencies for the CI environment
+setup.deps.ci:
+	@mix install
+	@mix setup
 
 #📦 setup.deps.dev: @ Installs dependencies only for dev env
 setup.deps.dev: SHELL:=/bin/bash
