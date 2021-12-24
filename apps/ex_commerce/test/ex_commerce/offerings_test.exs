@@ -293,7 +293,11 @@ defmodule ExCommerce.OfferingsTest do
       brand: %Brand{id: brand_id}
     } do
       catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
-      assert Offerings.list_catalogue_items() == [catalogue_item]
+
+      assert Enum.map(
+               Offerings.list_catalogue_items(),
+               &Repo.preload(&1, [:option_groups])
+             ) == [catalogue_item]
     end
 
     test "list_catalogue_items_by_brand/1 returns all catalogue_items for a given brand",
@@ -303,7 +307,10 @@ defmodule ExCommerce.OfferingsTest do
       %CatalogueItem{} =
         catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
 
-      assert Offerings.list_catalogue_items_by_brand(brand_id) == [
+      assert Enum.map(
+               Offerings.list_catalogue_items_by_brand(brand_id),
+               &Repo.preload(&1, [:option_groups])
+             ) == [
                catalogue_item
              ]
     end
@@ -314,7 +321,8 @@ defmodule ExCommerce.OfferingsTest do
       %CatalogueItem{id: catalogue_item_id} =
         catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
 
-      assert Offerings.get_catalogue_item!(catalogue_item_id) == catalogue_item
+      assert Offerings.get_catalogue_item!(catalogue_item_id)
+             |> Repo.preload(:option_groups) == catalogue_item
     end
 
     test "create_catalogue_item/1 with valid data creates a catalogue_item", %{
@@ -421,7 +429,8 @@ defmodule ExCommerce.OfferingsTest do
              } = result
 
       # Check catalogue_item and catalogue_item_variants were correctly saved.
-      assert Offerings.get_catalogue_item!(catalogue_item_id) == catalogue_item
+      assert Offerings.get_catalogue_item!(catalogue_item_id)
+             |> Repo.preload([:option_groups]) == catalogue_item
 
       assert Offerings.get_catalogue_item_variant!(some_item_variant_id) ==
                some_item_variant
@@ -497,8 +506,8 @@ defmodule ExCommerce.OfferingsTest do
              } = result
 
       # Check catalogue_item and catalogue_item_variants were correctly updated.
-      assert Offerings.get_catalogue_item!(catalogue_item_id) ==
-               updated_catalogue_item
+      assert Offerings.get_catalogue_item!(catalogue_item_id)
+             |> Repo.preload([:option_groups]) == updated_catalogue_item
 
       assert Offerings.get_catalogue_item_variant!(some_item_variant_id) ==
                some_updated_item_variant
@@ -636,6 +645,7 @@ defmodule ExCommerce.OfferingsTest do
       assert catalogue_item.name == @update_attrs.name
     end
 
+    @tag :wip
     test "update_catalogue_item/2 with invalid data returns error changeset", %{
       brand: %Brand{id: brand_id}
     } do
@@ -645,7 +655,9 @@ defmodule ExCommerce.OfferingsTest do
       assert {:error, %Ecto.Changeset{}} =
                Offerings.update_catalogue_item(catalogue_item, @invalid_attrs)
 
-      assert catalogue_item == Offerings.get_catalogue_item!(catalogue_item_id)
+      assert catalogue_item ==
+               Offerings.get_catalogue_item!(catalogue_item_id)
+               |> Repo.preload(:option_groups)
     end
 
     test "delete_catalogue_item/1 deletes the catalogue_item", %{
