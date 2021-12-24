@@ -685,6 +685,25 @@ defmodule ExCommerce.Offerings do
   end
 
   @doc """
+  Returns a filtetred list of catalogue_item_option_groups by id.
+
+  ## Examples
+
+      iex> filter_catalogue_item_option_groups_by_id([
+      ...>  "650ee975-1f24-4dd8-82ec-b3338af63e2f"
+      ...>  "a3148641-5af9-4eb5-95b0-cca2bf9650c7"
+      ...> ])
+      [%CatalogueItemOptionGroup{}, %CatalogueItemOptionGroup{}]
+
+  """
+  def filter_catalogue_item_option_groups_by_id(option_group_ids) do
+    Repo.all(
+        from ciop in CatalogueItemOptionGroup,
+          where: ciop.id in ^option_group_ids
+      )
+  end
+
+  @doc """
   Gets a single catalogue_item_option_group.
 
   Raises `Ecto.NoResultsError` if the Catalogue item option group does not exist.
