@@ -5,17 +5,17 @@ defmodule ExCommerceWeb.ModalComponent do
 
   @impl true
   def render(assigns) do
-    ~L"""
-    <div id="<%= @id %>" class="phx-modal"
+    ~H"""
+    <div id={@id} class="phx-modal"
       phx-capture-click="close"
       phx-window-keydown="close"
       phx-key="escape"
-      phx-target="#<%= @id %>"
+      phx-target={"##{@id}"}
       phx-page-loading>
 
       <div class="phx-modal-content card">
         <%= live_close(@opts) %>
-        <%= live_component @socket, @component, @opts %>
+        <%= live_component module: Keyword.get(@opts, :component), opts: @opts, id: @id %>
       </div>
     </div>
     """

@@ -5,13 +5,13 @@
   >
     <label
       @click="open = !open"
-      class="
+      class={"
         tag-input
         block p-3 leading-normal cursor-pointer border-l-4 border-gray-300
         rounded-tr-full
         rounded-br-full
-        <%= @class %>
-      "
+        #{@class}
+      "}
       :class="open ? 'open' : ''"
     >
       <%= @group_name %>

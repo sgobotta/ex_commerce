@@ -1,10 +1,12 @@
 <h2><%= @title %></h2>
 
-<%= f = form_for @changeset, "#",
-  id: "shop-form",
-  phx_target: @myself,
-  phx_change: "validate",
-  phx_submit: "save" %>
+<%= form_for @changeset, "#", [
+    id: "shop-form",
+    phx_target: @myself,
+    phx_change: "validate",
+    phx_submit: "save"
+  ],
+  fn f -> %>
 
   <%= label f, :name, class: "my-2" %>
   <%= text_input f, :name, class: "input", placeholder: gettext("My online shop") %>
@@ -34,4 +36,4 @@
   <div class="flex justify-end mt-6">
     <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button"%>
   </div>
-</form>
+<% end %>

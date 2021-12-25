@@ -1,10 +1,11 @@
 <h2><%= @title %></h2>
 
-<%= f = form_for @changeset, "#",
-  id: "catalogue_item-form",
-  phx_target: @myself,
-  phx_change: "validate",
-  phx_submit: "save" %>
+<%= form_for @changeset, "#", [
+    id: "catalogue_item-form",
+    phx_target: @myself,
+    phx_change: "validate",
+    phx_submit: "save"
+  ], fn f -> %>
 
   <%= label f, :code, class: "my-2" %>
   <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: BEER-000 / CONSULTING-000") %>
@@ -43,8 +44,8 @@
           <a
             href="#"
             phx-click="remove_variant"
-            phx-value-remove="<%= v.data.temp_id %>"
-            phx-target="<%= @myself %>"
+            phx-value-remove={v.data.temp_id}
+            phx-target={@myself}
           >
             &times
           </a>
@@ -57,7 +58,7 @@
     <a
       href="#"
       phx-click="add_variant"
-      phx-target="<%= @myself %>"
+      phx-target={@myself}
       class="button"
       id="catalogue_item-add-variant-input"
     >
@@ -88,7 +89,7 @@
       <a
         href="#"
         phx-click="create_option_group"
-        phx-target="<%= @myself %>"
+        phx-target={@myself}
         class="button"
         id="catalogue_item-add-option-group-input"
       >
@@ -100,4 +101,4 @@
   <div class="flex justify-end mt-6">
     <%= submit gettext("Save"), phx_disable_with: "Saving...", class: "button"%>
   </div>
-</form>
+<% end %>

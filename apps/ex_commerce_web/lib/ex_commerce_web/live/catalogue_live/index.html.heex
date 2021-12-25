@@ -36,7 +36,7 @@
       </thead>
       <tbody id="catalogues">
         <%= for %Catalogue{id: catalogue_id} = catalogue <- @catalogues do %>
-          <tr id="catalogue-<%= catalogue_id %>">
+          <tr id={"catalogue-#{catalogue_id}"}>
             <td><%= catalogue.name %></td>
 
             <td>
