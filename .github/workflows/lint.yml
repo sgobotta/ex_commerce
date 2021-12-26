@@ -35,8 +35,7 @@ jobs:
         run: |
           mix local.rebar --force
           mix local.hex --force
-          make setup.deps
-          mix deps.get
+          make setup.deps.ci
       - name: Run formatter
         run: |
           make check.lint

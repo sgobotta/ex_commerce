@@ -14,5 +14,5 @@ defmodule ExCommerce.Seeds do
     :ok = Seeds.Test.populate()
   end
 
-  def populate(_), do: :ok
+  def populate(_env), do: :ok
 end

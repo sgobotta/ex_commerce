@@ -62,6 +62,14 @@ defmodule ExCommerceWeb.Router do
       live "/catalogue_items", CatalogueItemLive.Index, :index
       live "/catalogue_items/:catalogue_item_id", CatalogueItemLive.Show, :show
 
+      live "/catalogue_item_option_groups",
+           CatalogueItemOptionGroupLive.Index,
+           :index
+
+      live "/catalogue_item_option_groups/:catalogue_item_option_group_id",
+           CatalogueItemOptionGroupLive.Show,
+           :show
+
       scope "/:brand_id" do
         live "/", HomeLive.Index, :index
 
@@ -122,6 +130,29 @@ defmodule ExCommerceWeb.Router do
 
         live "/catalogue_items/:catalogue_item_id/show/edit",
              CatalogueItemLive.Show,
+             :edit
+
+        # ----------------------------------------------------------------------
+        # CatalogueItemOptionGroup routes
+
+        live "/catalogue_item_option_groups",
+             CatalogueItemOptionGroupLive.Index,
+             :index
+
+        live "/catalogue_item_option_groups/new",
+             CatalogueItemOptionGroupLive.Index,
+             :new
+
+        live "/catalogue_item_option_groups/:catalogue_item_option_group_id/edit",
+             CatalogueItemOptionGroupLive.Index,
+             :edit
+
+        live "/catalogue_item_option_groups/:catalogue_item_option_group_id",
+             CatalogueItemOptionGroupLive.Show,
+             :show
+
+        live "/catalogue_item_option_groups/:catalogue_item_option_group_id/show/edit",
+             CatalogueItemOptionGroupLive.Show,
              :edit
       end
     end

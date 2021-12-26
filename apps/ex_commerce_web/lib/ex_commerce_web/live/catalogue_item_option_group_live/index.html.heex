@@ -1,0 +1,61 @@
+<%= if connected?(@socket) do %>
+
+  <%= if @live_action in [:new, :edit] do %>
+    <%= live_modal @socket, ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent,
+      id: @catalogue_item_option_group.id || :new,
+      title: @page_title,
+      action: @live_action,
+      catalogue_items: @brand.catalogue_items,
+      catalogue_item_option_group: @catalogue_item_option_group,
+      return_to: Routes.catalogue_item_option_group_index_path(@socket, :index, @brand.id),
+      patch_to: Routes.catalogue_item_option_group_index_path(@socket, :index, @brand.id),
+      redirect_to: @redirect_to %>
+  <% end %>
+
+  <%= render_layout(
+        ExCommerceWeb.DashboardView,
+        "dashboard",
+        [current_page: "catalogue_item_option_groups", user_email: @user.email, brand: @brand]
+      )
+  do %>
+
+    <h1><%= gettext("Listing Catalogue item option groups") %></h1>
+
+    <p>
+      <%= gettext("Create item option groups for your items. These can be selected as additionals to any item that has an option group.") %>
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th><%= gettext("Name") %></th>
+          <th><%= gettext("Multiple selection") %></th>
+          <th><%= gettext("Mandatory") %></th>
+          <th><%= gettext("Multiple selection") %></th>
+          <th><%= gettext("Max selection") %></th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="catalogue_item_option_groups">
+        <%= for %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} = catalogue_item_option_group <- @catalogue_item_option_groups do %>
+          <tr id={"catalogue_item_option_group-#{catalogue_item_option_group_id}"}>
+            <td><%= catalogue_item_option_group.name %></td>
+            <td><%= catalogue_item_option_group.mandatory %></td>
+            <td><%= catalogue_item_option_group.multiple_selection %></td>
+            <td><%= catalogue_item_option_group.max_selection %></td>
+
+            <td>
+              <span><%= live_redirect gettext("Show"), to: Routes.catalogue_item_option_group_show_path(@socket, :show, @brand.id, catalogue_item_option_group_id) %></span>
+              <span><%= live_patch gettext("Edit"), to: Routes.catalogue_item_option_group_index_path(@socket, :edit, @brand.id, catalogue_item_option_group_id) %></span>
+              <span><%= link gettext("Delete"), to: "#", phx_click: "delete", phx_value_id: catalogue_item_option_group.id, data: [confirm: gettext("Are you sure?")] %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <span><%= live_patch "+", to: Routes.catalogue_item_option_group_index_path(@socket, :new, @brand.id), class: "button" %></span>
+
+  <% end %>
+<% end %>

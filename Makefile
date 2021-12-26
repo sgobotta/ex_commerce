@@ -47,30 +47,70 @@ lint:
 	@mix format
 	@mix check.credo
 
-#💣 reset: @ Cleans dependencies then re-installs and compiles them
+#💣 reset: @ Cleans dependencies then re-installs and compiles them for all envs
 reset: SHELL:=/bin/bash
-reset:
-	@echo "🧹 Cleaning db and dependencies..."
+reset: reset.dev reset.test
+
+#💣 reset.dev: @ Cleans dependencies then re-installs and compiles them1 for dev env
+reset.dev: SHELL:=/bin/bash
+reset.dev:
+	@echo "🧹 Cleaning db and dependencies for dev..."
 	@source ${ENV_FILE} && MIX_ENV=dev mix reset
+
+#💣 reset.test: @ Cleans dependencies then re-installs and compiles them1 for test env
+reset.test: SHELL:=/bin/bash
+reset.test:
+	@echo "🧹 Cleaning db and dependencies for test..."
 	@source ${ENV_FILE} && MIX_ENV=test mix reset
 
-#💣 reset.ecto: @ Resets database
+#💣 reset.ecto: @ Resets database for all envs
 reset.ecto: SHELL:=/bin/bash
-reset.ecto:
+reset.ecto: reset.ecto.dev reset.ecto.test
+
+#💣 reset.ecto.dev: @ Resets database for dev env
+reset.ecto.dev: SHELL:=/bin/bash
+reset.ecto.dev:
+	@echo "🧹 Cleaning db for dev env..."
 	@source ${ENV_FILE} && MIX_ENV=dev mix reset.ecto
+
+#💣 reset.ecto.test: @ Resets database for test env
+reset.ecto.test: SHELL:=/bin/bash
+reset.ecto.test:
+	@echo "🧹 Cleaning db for test env..."
 	@source ${ENV_FILE} && MIX_ENV=test mix reset.ecto
 
 #📦 setup: @ Installs dependencies and set up database
 setup: SHELL:=/bin/bash
-setup:
+setup: setup.dev setup.test
+
+#📦 setup.dev: @ Installs dependencies and set up database for dev env
+setup.dev: SHELL:=/bin/bash
+setup.dev:
 	@source ${ENV_FILE} && MIX_ENV=dev mix install
 	@source ${ENV_FILE} && MIX_ENV=dev mix setup
+
+#📦 setup.test: @ Installs dependencies and set up database for test env
+setup.test: SHELL:=/bin/bash
+setup.test:
 	@source ${ENV_FILE} && MIX_ENV=test mix install
 	@source ${ENV_FILE} && MIX_ENV=test mix setup
 
-#📦 setup.deps: @ Installs dependencies only
-setup.deps:
+#📦 setup.deps: @ Installs dependencies for development
+setup.deps: setup.deps.dev setup.deps.test
+
+#📦 setup.deps.ci: @ Installs dependencies for the CI environment
+setup.deps.ci:
 	@mix install
+
+#📦 setup.deps.dev: @ Installs dependencies only for dev env
+setup.deps.dev: SHELL:=/bin/bash
+setup.deps.dev:
+	@source ${ENV_FILE} && MIX_ENV=dev mix install
+
+#📦 setup.deps.test: @ Installs dependencies only for test env
+setup.deps.test: SHELL:=/bin/bash
+setup.deps.test:
+	@source ${ENV_FILE} && MIX_ENV=test mix install
 
 #💻 server: @ Starts a server with an interactive elixir shell.
 server: SHELL:=/bin/bash

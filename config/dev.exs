@@ -33,7 +33,8 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
       "node_modules/webpack/bin/webpack.js",
       "--mode",
       "development",
-      "--watch-stdin",
+      "--watch",
+      "--watch-options-stdin",
       cd: Path.expand("../apps/ex_commerce_web/assets", __DIR__)
     ]
   ]
@@ -96,11 +97,11 @@ config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
 config :logger, :console, format: "[$level] $message\n"
 
 # Configures git pre-commit hook to run the formatter
-config :pre_push,
+config :git_hooks,
   auto_install: true,
   verbose: true,
   hooks: [
-    pre_commit: [
+    pre_push: [
       tasks: [
         {:mix_task, :check}
       ]

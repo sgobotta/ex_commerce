@@ -1,0 +1,79 @@
+[
+  {
+    "id": "3f96e2de-2563-4ede-914e-c3d631816f1b",
+    "catalogue_item_option_group_id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "is_visible": true,
+    "price_modifier": 50,
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "catalogue_item_id": "c4df5917-9ba3-457f-b27e-3efd5e5c5edc",
+    "catalogue_item_variant_id": "6b2fc307-7d41-487a-a649-1adc12c77a72",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "95f81294-2a7c-4ec4-b670-c2873917a11d",
+    "catalogue_item_option_group_id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "is_visible": true,
+    "price_modifier": 50,
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "catalogue_item_id": "c4df5917-9ba3-457f-b27e-3efd5e5c5edc",
+    "catalogue_item_variant_id": "970fcab7-21e8-46d7-8553-1c08b1d317f2",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "0c14566f-2537-46ff-8fb5-6bb7955350c4",
+    "catalogue_item_option_group_id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "is_visible": true,
+    "price_modifier": 50,
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "catalogue_item_id": "0f8f8614-47bf-4710-871d-5c65bdb58a38",
+    "catalogue_item_variant_id": "f0585e42-cad6-4b6f-bbbe-f896a338611b",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "bd6df7ed-c5ea-4c1c-96fc-02a8511cc97c",
+    "catalogue_item_option_group_id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "is_visible": false,
+    "price_modifier": 50,
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "catalogue_item_id": "0f8f8614-47bf-4710-871d-5c65bdb58a38",
+    "catalogue_item_variant_id": "9f2fb714-3202-4ac6-b064-123aad61c2e5",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "b01fceec-8024-42ad-b825-91d41eee9e88",
+    "catalogue_item_option_group_id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "is_visible": true,
+    "price_modifier": 25,
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "catalogue_item_id": "42cf48ab-4fb0-47cc-9e9e-fd04f4368179",
+    "catalogue_item_variant_id": "beca7ee4-35b4-4e10-a4c8-5bf0467980f4",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "92080698-f94a-469c-99bb-7f7fa7541f47",
+    "catalogue_item_option_group_id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "is_visible": true,
+    "price_modifier": 25,
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "catalogue_item_id": "110ec880-b01c-4db7-b0f1-b156b43214d0",
+    "catalogue_item_variant_id": "099ecff9-11a6-4efd-b00d-02a5e90d30aa",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "a2d9e4b5-4c17-4f71-b791-ec9d2d9e04a2",
+    "catalogue_item_option_group_id": "4bf0d287-311d-48fb-8fa3-d081a898d935",
+    "is_visible": true,
+    "price_modifier": 0,
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "catalogue_item_id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
+    "catalogue_item_variant_id": "6cbc7cd5-1577-48bf-8a5b-81de961aec73",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  }
+]

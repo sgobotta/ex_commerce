@@ -43,7 +43,9 @@ defmodule ExCommerce.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.0"},
       # Email configuration
-      {:bamboo, "~> 2.2.0"}
+      {:bamboo, "~> 2.2.0"},
+      # Umbrella deps
+      {:ex_commerce_numeric, in_umbrella: true}
     ]
   end
 

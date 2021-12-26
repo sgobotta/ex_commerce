@@ -1,4 +1,6 @@
 defmodule ExCommerce.Repo.Migrations.ShopBelongsToBrand do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do

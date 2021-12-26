@@ -1,4 +1,6 @@
 defmodule ExCommerce.Repo.Migrations.CreateCatalogueItems do
+  @moduledoc false
+
   use Ecto.Migration
 
   def change do

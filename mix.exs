@@ -50,9 +50,7 @@ defmodule ExCommerce.Umbrella.MixProject do
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       # i18n and l10n
       {:ex_cldr, "~> 2.23"},
-      {:ex_cldr_numbers, "~> 2.0"},
-      # Others
-      {:decimal, "~> 2.0"}
+      {:ex_cldr_numbers, "~> 2.0"}
     ]
   end
 
