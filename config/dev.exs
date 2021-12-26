@@ -33,7 +33,8 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
       "node_modules/webpack/bin/webpack.js",
       "--mode",
       "development",
-      "--watch-stdin",
+      "--watch",
+      "--watch-options-stdin",
       cd: Path.expand("../apps/ex_commerce_web/assets", __DIR__)
     ]
   ]

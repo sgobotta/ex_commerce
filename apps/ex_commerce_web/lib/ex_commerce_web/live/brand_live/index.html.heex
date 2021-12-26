@@ -34,7 +34,7 @@
         </thead>
         <tbody id="brands">
           <%= for brand <- @brands do %>
-            <tr id="brand-<%= brand.id %>">
+            <tr id={"brand-#{brand.id}"}>
               <td><%= brand.name %></td>
 
               <td>

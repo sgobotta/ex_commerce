@@ -33,7 +33,7 @@
       </thead>
       <tbody id="shops">
         <%= for %Shop{id: shop_id} = shop <- @shops do %>
-          <tr id="shop-<%= shop_id %>">
+          <tr id={"shop-#{shop_id}"}>
             <td><%= shop.name %></td>
             <td><%= shop.address %></td>
 
