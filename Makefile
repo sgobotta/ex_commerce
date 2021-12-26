@@ -101,7 +101,6 @@ setup.deps: setup.deps.dev setup.deps.test
 #📦 setup.deps.ci: @ Installs dependencies for the CI environment
 setup.deps.ci:
 	@mix install
-	@mix setup
 
 #📦 setup.deps.dev: @ Installs dependencies only for dev env
 setup.deps.dev: SHELL:=/bin/bash
