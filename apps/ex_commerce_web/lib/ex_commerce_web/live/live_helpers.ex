@@ -99,10 +99,19 @@ defmodule ExCommerceWeb.LiveHelpers do
         action: @live_action,
         shop: @shop,
         return_to: Routes.shop_index_path(@socket, :index) %>
+
   """
   def live_modal(socket, component, opts) do
-    path = Keyword.fetch!(opts, :return_to)
-    modal_opts = [id: :modal, return_to: path, component: component, opts: opts]
+    return_to_path = Keyword.fetch!(opts, :return_to)
+    patch_to_path = Keyword.fetch!(opts, :patch_to)
+
+    modal_opts = [
+      id: :modal,
+      return_to: return_to_path,
+      patch_to: patch_to_path,
+      component: component,
+      opts: opts
+    ]
 
     live_component(%{
       module: ExCommerceWeb.ModalComponent,

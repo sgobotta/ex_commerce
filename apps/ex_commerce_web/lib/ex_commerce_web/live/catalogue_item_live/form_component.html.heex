@@ -1,104 +1,106 @@
-<h2><%= @title %></h2>
+<div>
+  <h2><%= @title %></h2>
 
-<%= form_for @changeset, "#", [
-    id: "catalogue_item-form",
-    phx_target: @myself,
-    phx_change: "validate",
-    phx_submit: "save"
-  ], fn f -> %>
+  <%= form_for @changeset, "#", [
+      id: "catalogue_item-form",
+      phx_target: @myself,
+      phx_change: "validate",
+      phx_submit: "save"
+    ], fn f -> %>
 
-  <%= label f, :code, class: "my-2" %>
-  <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: BEER-000 / CONSULTING-000") %>
-  <%= error_tag f, :code %>
+    <%= label f, :code, class: "my-2" %>
+    <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: BEER-000 / CONSULTING-000") %>
+    <%= error_tag f, :code %>
 
-  <%= label f, :name, class: "my-2" %>
-  <%= text_input f, :name, class: "input", placeholder: gettext("Pale Ale") %>
-  <%= error_tag f, :name %>
+    <%= label f, :name, class: "my-2" %>
+    <%= text_input f, :name, class: "input", placeholder: gettext("Pale Ale") %>
+    <%= error_tag f, :name %>
 
-  <%= label f, :description, class: "my-2" %>
-  <%= text_input f, :description, class: "input", placeholder: gettext("Characterized by floral, fruity, citrus-like, piney, resinous American hops") %>
-  <%= error_tag f, :description %>
+    <%= label f, :description, class: "my-2" %>
+    <%= text_input f, :description, class: "input", placeholder: gettext("Characterized by floral, fruity, citrus-like, piney, resinous American hops") %>
+    <%= error_tag f, :description %>
 
-  <p class="mt-4 mb-2 font-bold"><%= gettext("Variants") %></p>
+    <p class="mt-4 mb-2 font-bold"><%= gettext("Variants") %></p>
 
-  <%= inputs_for f, :variants, fn v -> %>
-    <div class="flex flex-wrap -mx-1 overflow-hidden">
-      <div class="px-1 w-3/6">
-        <%= label v, :type, class: "my-2" %>
-        <%= text_input v, :type, class: "input", placeholder: gettext("Product size, weight or kind: 125gr") %>
-        <%= error_tag v, :type %>
+    <%= inputs_for f, :variants, fn v -> %>
+      <div class="flex flex-wrap -mx-1 overflow-hidden">
+        <div class="px-1 w-3/6">
+          <%= label v, :type, class: "my-2" %>
+          <%= text_input v, :type, class: "input", placeholder: gettext("Product size, weight or kind: 125gr") %>
+          <%= error_tag v, :type %>
+        </div>
+
+        <div class="px-1 w-2/6">
+          <%= label v, :price, class: "my-2" %>
+          <%= number_input v, :price, class: "input" %>
+          <%= error_tag v, :price %>
+        </div>
+
+        <div class="px-1 w-1/6 text-center">
+          <%= label v, :delete %><br>
+          <%= if is_nil(v.data.temp_id) do %>
+            <%= checkbox v, :delete, class: "align-top px-4" %>
+          <% else %>
+            <%= hidden_input v, :temp_id %>
+            <a
+              href="#"
+              phx-click="remove_variant"
+              phx-value-remove={v.data.temp_id}
+              phx-target={@myself}
+            >
+              &times
+            </a>
+          <% end %>
+        </div>
       </div>
+    <% end %>
 
-      <div class="px-1 w-2/6">
-        <%= label v, :price, class: "my-2" %>
-        <%= number_input v, :price, class: "input" %>
-        <%= error_tag v, :price %>
-      </div>
-
-      <div class="px-1 w-1/6 text-center">
-        <%= label v, :delete %><br>
-        <%= if is_nil(v.data.temp_id) do %>
-          <%= checkbox v, :delete, class: "align-top px-4" %>
-        <% else %>
-          <%= hidden_input v, :temp_id %>
-          <a
-            href="#"
-            phx-click="remove_variant"
-            phx-value-remove={v.data.temp_id}
-            phx-target={@myself}
-          >
-            &times
-          </a>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-
-  <div class="flex justify-start mt-6">
-    <a
-      href="#"
-      phx-click="add_variant"
-      phx-target={@myself}
-      class="button"
-      id="catalogue_item-add-variant-input"
-    >
-      <%= gettext("Add a variant") %>
-    </a>
-  </div>
-
-  <div class="border-b-1 border-gray-300 my-3">
-    <p class="mt-4 mb-2 font-bold"><%= gettext("Option Groups") %> (<%= gettext("Optional") %>)</p>
-  </div>
-
-  <div class="mx-8">
-    <div class="flex flex-wrap -mx-1 overflow-hidden">
-      <%= label f, "Select option groups", class: "my-2" %>
-      <%=
-        options = build_catalogue_item_option_group_options(
-          @catalogue_item_option_groups
-        )
-        multiple_select f, :option_groups, options,
-          disabled: false,
-          selected: get_selected_catalogue_item_option_groups(f),
-          class: "w-full h-full px-4"
-      %>
-      <%= error_tag f, :option_groups %>
-    </div>
-
-    <div class="flex justify-start my-6">
+    <div class="flex justify-start mt-6">
       <a
         href="#"
-        phx-click="create_option_group"
+        phx-click="add_variant"
         phx-target={@myself}
         class="button"
-        id="catalogue_item-add-option-group-input"
+        id="catalogue_item-add-variant-input"
       >
-        <%= gettext("Create an Options group") %>
+        <%= gettext("Add a variant") %>
       </a>
     </div>
-  </div>
 
-  <div class="flex justify-end mt-6">
-    <%= submit gettext("Save"), phx_disable_with: "Saving...", class: "button"%>
-  </div>
-<% end %>
+    <div class="border-b-1 border-gray-300 my-3">
+      <p class="mt-4 mb-2 font-bold"><%= gettext("Option Groups") %> (<%= gettext("Optional") %>)</p>
+    </div>
+
+    <div class="mx-8">
+      <div class="flex flex-wrap -mx-1 overflow-hidden">
+        <%= label f, "Select option groups", class: "my-2" %>
+        <%=
+          options = build_catalogue_item_option_group_options(
+            @catalogue_item_option_groups
+          )
+          multiple_select f, :option_groups, options,
+            disabled: false,
+            selected: get_selected_catalogue_item_option_groups(f),
+            class: "w-full h-full px-4"
+        %>
+        <%= error_tag f, :option_groups %>
+      </div>
+
+      <div class="flex justify-start my-6">
+        <a
+          href="#"
+          phx-click="create_option_group"
+          phx-target={@myself}
+          class="button"
+          id="catalogue_item-add-option-group-input"
+        >
+          <%= gettext("Create an Options group") %>
+        </a>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-6">
+      <%= submit gettext("Save"), phx_disable_with: "Saving...", class: "button"%>
+    </div>
+  <% end %>
+</div>
