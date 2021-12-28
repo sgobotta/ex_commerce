@@ -28,10 +28,11 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
     field :temp_id, :string, virtual: true
     field :delete, :boolean, virtual: true
 
-    has_many :options, CatalogueItemOption
+    has_many :options, CatalogueItemOption, on_delete: :delete_all
 
     many_to_many :items, CatalogueItem,
-      join_through: CatalogueItemOptionGroupItem
+      join_through: CatalogueItemOptionGroupItem,
+      on_delete: :delete_all
 
     timestamps()
   end

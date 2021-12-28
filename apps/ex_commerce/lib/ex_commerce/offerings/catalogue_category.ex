@@ -22,7 +22,8 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
 
     many_to_many :items, CatalogueItem,
       join_through: CatalogueCategoryItem,
-      on_replace: :delete
+      on_replace: :delete,
+      on_delete: :delete_all
 
     timestamps()
   end
