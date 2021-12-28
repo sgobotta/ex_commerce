@@ -6,6 +6,9 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias ExCommerce.Offerings.CatalogueItem
+  alias ExCommerce.Offerings.Relations.CatalogueCategoryItem
+
   @fields [:code, :name, :description]
   @foreign_fields [:brand_id]
 
@@ -16,6 +19,10 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
     field :description, :string
     field :name, :string
     field :brand_id, :binary_id
+
+    many_to_many :items, CatalogueItem,
+      join_through: CatalogueCategoryItem,
+      on_replace: :delete
 
     timestamps()
   end

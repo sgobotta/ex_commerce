@@ -645,7 +645,6 @@ defmodule ExCommerce.OfferingsTest do
       assert catalogue_item.name == @update_attrs.name
     end
 
-    @tag :wip
     test "update_catalogue_item/2 with invalid data returns error changeset", %{
       brand: %Brand{id: brand_id}
     } do
@@ -884,7 +883,6 @@ defmodule ExCommerce.OfferingsTest do
                preload_fields(catalogue_item_option)
     end
 
-    @tag :wip
     test "create_catalogue_item_option/1 with valid data creates a catalogue_item_option",
          %{
            brand: %Brand{id: brand_id},
@@ -988,7 +986,6 @@ defmodule ExCommerce.OfferingsTest do
       end
     end
 
-    @tag :wip
     test "change_catalogue_item_option/1 returns a catalogue_item_option changeset",
          %{
            brand: %Brand{id: brand_id},

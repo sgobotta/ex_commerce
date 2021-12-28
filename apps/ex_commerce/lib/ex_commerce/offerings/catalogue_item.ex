@@ -10,6 +10,7 @@ defmodule ExCommerce.Offerings.CatalogueItem do
   alias ExCommerce.Offerings
 
   alias ExCommerce.Offerings.{
+    CatalogueCategory,
     CatalogueItemOptionGroup,
     CatalogueItemVariant
   }
@@ -31,6 +32,10 @@ defmodule ExCommerce.Offerings.CatalogueItem do
 
     many_to_many :option_groups, CatalogueItemOptionGroup,
       join_through: CatalogueItemOptionGroupItem,
+      on_replace: :delete
+
+    many_to_many :categories, CatalogueCategory,
+      join_through: CatalogueCategoryItem,
       on_replace: :delete
 
     timestamps()
