@@ -96,7 +96,7 @@ config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
-# Configures git pre-commit hook to run the formatter
+# Configures git pre-push hook to run a general check
 config :git_hooks,
   auto_install: true,
   verbose: true,
