@@ -1180,9 +1180,10 @@ defmodule ExCommerce.OfferingsTest do
 
     alias ExCommerce.Offerings.{
       CatalogueItem,
-      CatalogueItemOptionGroup,
-      CatalogueItemOptionGroupItem
+      CatalogueItemOptionGroup
     }
+
+    alias ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem
 
     @valid_attrs %{visible: true}
     @update_attrs %{visible: false}

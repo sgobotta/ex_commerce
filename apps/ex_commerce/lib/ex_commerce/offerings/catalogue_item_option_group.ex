@@ -7,9 +7,9 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
 
   alias ExCommerce.Offerings.{
     CatalogueItem,
-    CatalogueItemOption,
-    CatalogueItemOptionGroupItem
+    CatalogueItemOption
   }
+  alias ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem
 
   @fields [:mandatory, :max_selection, :multiple_selection, :name, :description]
   @foreign_fields [:brand_id]

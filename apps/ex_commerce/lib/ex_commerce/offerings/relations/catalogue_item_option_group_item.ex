@@ -1,4 +1,4 @@
-defmodule ExCommerce.Offerings.CatalogueItemOptionGroupItem do
+defmodule ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem do
   @moduledoc """
   The Catalogue Item Option Group / Item relationship schema
   """

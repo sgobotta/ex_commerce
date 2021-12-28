@@ -793,7 +793,7 @@ defmodule ExCommerce.Offerings do
     CatalogueItemOptionGroup.changeset(catalogue_item_option_group, attrs)
   end
 
-  alias ExCommerce.Offerings.CatalogueItemOptionGroupItem
+  alias ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem
 
   @doc """
   Returns the list of catalogue_item_option_groups_items.
