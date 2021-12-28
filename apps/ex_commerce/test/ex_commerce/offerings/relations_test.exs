@@ -61,8 +61,8 @@ defmodule ExCommerce.Offerings.RelationsTest do
 
       valid_attrs =
         Map.merge(@valid_attrs, %{
-          item_id: item_id,
-          category_id: category_id
+          catalogue_item_id: item_id,
+          catalogue_category_id: category_id
         })
 
       assert {:ok, %CatalogueCategoryItem{} = catalogue_category_item} =

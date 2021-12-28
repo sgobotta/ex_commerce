@@ -38,8 +38,8 @@ defmodule ExCommerce.Offerings.RelationsFixtures do
       attrs
       |> Enum.into(@valid_attrs)
       |> Enum.into(%{
-        item_id: item_id,
-        category_id: category_id
+        catalogue_item_id: item_id,
+        catalogue_category_id: category_id
       })
       |> Relations.create_catalogue_category_item()
 

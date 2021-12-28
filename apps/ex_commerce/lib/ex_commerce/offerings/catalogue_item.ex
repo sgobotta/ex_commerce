@@ -15,7 +15,10 @@ defmodule ExCommerce.Offerings.CatalogueItem do
     CatalogueItemVariant
   }
 
-  alias ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem
+  alias ExCommerce.Offerings.Relations.{
+    CatalogueCategoryItem,
+    CatalogueItemOptionGroupItem
+  }
 
   @fields [:code, :name, :description]
   @foreign_fields [:brand_id]
