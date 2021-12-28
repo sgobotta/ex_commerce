@@ -92,7 +92,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.Index do
   end
 
   defp update_catalogue_items(%{assigns: %{brand: %Brand{} = brand}} = socket) do
-    %{catalogue_items: catalogue_items} =
+    %Brand{catalogue_items: catalogue_items} =
       brand = Repo.preload(brand, [:catalogue_items], force: true)
 
     socket

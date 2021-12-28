@@ -147,7 +147,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
            socket.assigns.catalogue_item,
            catalogue_item_params
          ) do
-      {:ok, _catalogue_item} ->
+      {:ok, %CatalogueItem{} = _catalogue_item} ->
         {:noreply,
          socket
          |> put_flash(:info, gettext("Catalogue item updated successfully"))
