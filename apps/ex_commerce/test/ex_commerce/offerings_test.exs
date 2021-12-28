@@ -148,7 +148,8 @@ defmodule ExCommerce.OfferingsTest do
       %CatalogueCategory{} =
         catalogue_category = catalogue_category_fixture(%{brand_id: brand_id})
 
-      assert Offerings.list_catalogue_categories() == [catalogue_category]
+      assert Offerings.list_catalogue_categories() |> Repo.preload([:items]) ==
+               [catalogue_category]
     end
 
     test "list_catalogue_categories_by_brand/1 returns all catalogue_categories for a given brand",
@@ -158,7 +159,8 @@ defmodule ExCommerce.OfferingsTest do
       %CatalogueCategory{} =
         catalogue_category = catalogue_category_fixture(%{brand_id: brand_id})
 
-      assert Offerings.list_catalogue_categories_by_brand(brand_id) == [
+      assert Offerings.list_catalogue_categories_by_brand(brand_id)
+             |> Repo.preload([:items]) == [
                catalogue_category
              ]
     end
@@ -170,7 +172,8 @@ defmodule ExCommerce.OfferingsTest do
       %CatalogueCategory{id: catalogue_category_id} =
         catalogue_category = catalogue_category_fixture(%{brand_id: brand_id})
 
-      assert Offerings.get_catalogue_category!(catalogue_category_id) ==
+      assert Offerings.get_catalogue_category!(catalogue_category_id)
+             |> Repo.preload([:items]) ==
                catalogue_category
     end
 
@@ -224,8 +227,9 @@ defmodule ExCommerce.OfferingsTest do
                  @invalid_attrs
                )
 
-      assert catalogue_category ==
+      assert catalogue_category |> Repo.preload([:items]) ==
                Offerings.get_catalogue_category!(catalogue_category_id)
+               |> Repo.preload([:items])
     end
 
     test "delete_catalogue_category/1 deletes the catalogue_category", %{
