@@ -5,7 +5,9 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.FormComponent do
   use ExCommerceWeb, :live_component
 
   alias ExCommerce.Offerings
-  alias ExCommerce.Offerings.CatalogueCategory
+  alias ExCommerce.Offerings.{CatalogueCategory, CatalogueItem}
+
+  import ExCommerceWeb.LiveFormHelpers
 
   @impl true
   def update(
@@ -27,9 +29,15 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.FormComponent do
         %{"catalogue_category" => catalogue_category_params},
         socket
       ) do
+    %Ecto.Changeset{data: %CatalogueCategory{brand_id: brand_id}} =
+      socket.assigns.changeset
+
     changeset =
       socket.assigns.catalogue_category
-      |> Offerings.change_catalogue_category(catalogue_category_params)
+      |> Offerings.change_catalogue_category(
+        catalogue_category_params
+        |> assign_brand_id_param(brand_id)
+      )
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
@@ -46,6 +54,24 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.FormComponent do
       catalogue_category_params
     )
   end
+
+  def handle_event("create_item", _params, socket) do
+    {:noreply,
+     socket
+     |> push_redirect(
+       to:
+         Routes.catalogue_item_index_path(
+           socket,
+           :new,
+           socket.assigns.catalogue_category.brand_id,
+           redirect_to: socket.assigns.current_route
+         )
+     )}
+  end
+
+  # ----------------------------------------------------------------------------
+  # Private helpers
+  #
 
   defp save_catalogue_category(socket, :edit, catalogue_category_params) do
     case Offerings.update_catalogue_category(
@@ -68,7 +94,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.FormComponent do
       socket
 
     catalogue_category_params =
-      Map.merge(catalogue_category_params, %{"brand_id" => brand_id})
+      assign_brand_id_param(catalogue_category_params, brand_id)
 
     case Offerings.create_catalogue_category(catalogue_category_params) do
       {:ok, %CatalogueCategory{} = _catalogue_category} ->
@@ -80,5 +106,34 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.FormComponent do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
+  end
+
+  # ----------------------------------------------------------------------------
+  # Catalogue item categories selection helpers
+  #
+
+  defp get_selected_catalogue_items(%Phoenix.HTML.Form{
+         source: %Ecto.Changeset{
+           changes: %{
+             items: items
+           }
+         }
+       }) do
+    Enum.map(items, fn %Ecto.Changeset{
+                         data: %CatalogueItem{id: id}
+                       } ->
+      id
+    end)
+  end
+
+  defp get_selected_catalogue_items(%Phoenix.HTML.Form{}), do: []
+
+  defp build_catalogue_item_options(catalogue_categories) do
+    Enum.map(catalogue_categories, fn %CatalogueItem{
+                                        id: id,
+                                        code: code
+                                      } ->
+      {code, id}
+    end)
   end
 end
