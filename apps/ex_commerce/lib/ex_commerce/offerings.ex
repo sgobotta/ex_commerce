@@ -283,6 +283,26 @@ defmodule ExCommerce.Offerings do
   end
 
   @doc """
+  Returns a filtetred list of catalogue_items by id.
+
+  ## Examples
+
+      iex> filter_catalogue_items_by_id([
+      ...>  "650ee975-1f24-4dd8-82ec-b3338af63e2f"
+      ...>  "a3148641-5af9-4eb5-95b0-cca2bf9650c7"
+      ...> ])
+      [%CatalogueItem{}, %CatalogueItem{}]
+
+  """
+  @spec filter_catalogue_items_by_id(list(binary())) :: list(CatalogueItem)
+  def filter_catalogue_items_by_id(item_ids) do
+    Repo.all(
+      from ci in CatalogueItem,
+        where: ci.id in ^item_ids
+    )
+  end
+
+  @doc """
   Gets a single catalogue_item.
 
   Raises `Ecto.NoResultsError` if the Catalogue item does not exist.
