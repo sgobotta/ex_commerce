@@ -35,11 +35,13 @@ defmodule ExCommerce.Offerings.CatalogueItem do
 
     many_to_many :option_groups, CatalogueItemOptionGroup,
       join_through: CatalogueItemOptionGroupItem,
-      on_replace: :delete
+      on_replace: :delete,
+      on_delete: :delete_all
 
     many_to_many :categories, CatalogueCategory,
       join_through: CatalogueCategoryItem,
-      on_replace: :delete
+      on_replace: :delete,
+      on_delete: :delete_all
 
     timestamps()
   end
