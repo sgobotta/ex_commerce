@@ -105,7 +105,21 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
            socket,
            :new,
            socket.assigns.catalogue_item.brand_id,
-           redirect_to: socket.assigns.return_from_group_form
+           redirect_to: socket.assigns.current_route
+         )
+     )}
+  end
+
+  def handle_event("create_category", _params, socket) do
+    {:noreply,
+     socket
+     |> push_redirect(
+       to:
+         Routes.catalogue_category_index_path(
+           socket,
+           :new,
+           socket.assigns.catalogue_item.brand_id,
+           redirect_to: socket.assigns.current_route
          )
      )}
   end

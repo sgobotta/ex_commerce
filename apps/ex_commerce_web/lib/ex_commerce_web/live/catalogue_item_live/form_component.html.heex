@@ -112,6 +112,18 @@
             class: ""
         %>
       </div>
+
+      <div class="flex justify-start my-6">
+        <a
+          href="#"
+          phx-click="create_category"
+          phx-target={@myself}
+          class="button"
+          id="catalogue_item-add-category-input"
+        >
+          <%= gettext("Create a Category") %>
+        </a>
+      </div>
     </div>
 
     <div class="flex justify-end mt-6">

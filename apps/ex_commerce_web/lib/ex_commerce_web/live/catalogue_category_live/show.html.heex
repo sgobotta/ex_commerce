@@ -6,8 +6,20 @@
       title: @page_title,
       action: @live_action,
       catalogue_category: @catalogue_category,
-      return_to: Routes.catalogue_category_show_path(@socket, :show, @brand.id, @catalogue_category.id),
-      patch_to: Routes.catalogue_category_show_path(@socket, :show, @brand.id, @catalogue_category.id) %>
+      return_to: Routes.catalogue_category_show_path(
+        @socket,
+        :show,
+        @brand.id,
+        @catalogue_category.id
+      ),
+      patch_to: Routes.catalogue_category_show_path(
+        @socket,
+        :show,
+        @brand.id,
+        @catalogue_category.id
+      ),
+      redirect_to: @redirect_to
+    %>
   <% end %>
 
   <%= render_layout(

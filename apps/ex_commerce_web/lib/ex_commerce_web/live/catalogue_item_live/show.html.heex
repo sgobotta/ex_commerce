@@ -10,7 +10,7 @@
       catalogue_item_option_groups: @brand.catalogue_item_option_groups,
       return_to: Routes.catalogue_item_show_path(@socket, :show, @brand.id, @catalogue_item.id),
       patch_to: Routes.catalogue_item_show_path(@socket, :show, @brand.id, @catalogue_item.id),
-      return_from_group_form: Routes.catalogue_item_index_path(
+      current_route: Routes.catalogue_item_index_path(
         @socket,
         @live_action,
         @brand.id,

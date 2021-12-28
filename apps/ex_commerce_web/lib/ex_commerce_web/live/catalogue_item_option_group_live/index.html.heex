@@ -9,7 +9,8 @@
       catalogue_item_option_group: @catalogue_item_option_group,
       return_to: Routes.catalogue_item_option_group_index_path(@socket, :index, @brand.id),
       patch_to: Routes.catalogue_item_option_group_index_path(@socket, :index, @brand.id),
-      redirect_to: @redirect_to %>
+      redirect_to: @redirect_to
+    %>
   <% end %>
 
   <%= render_layout(
