@@ -50,6 +50,7 @@ defmodule ExCommerce.Offerings.CatalogueItem do
     |> cast(attrs, @fields ++ @foreign_fields)
     |> cast_assoc(:variants)
     |> maybe_assoc_option_groups(attrs)
+    |> maybe_assoc_categories(attrs)
     |> validate_required(@fields ++ @foreign_fields)
   end
 
@@ -69,4 +70,20 @@ defmodule ExCommerce.Offerings.CatalogueItem do
   end
 
   defp maybe_assoc_option_groups(changeset, _params), do: changeset
+
+  defp maybe_assoc_categories(
+         changeset,
+         %{"categories" => category_ids}
+       ) do
+    categories = Offerings.filter_catalogue_categories_by_id(category_ids)
+
+    put_assoc(changeset, :categories, categories)
+  end
+
+  defp maybe_assoc_categories(changeset, params)
+       when not is_map_key(params, "categories") do
+    put_assoc(changeset, :categories, [])
+  end
+
+  defp maybe_assoc_categories(changeset, _params), do: changeset
 end
