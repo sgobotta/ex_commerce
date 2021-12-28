@@ -144,7 +144,7 @@ defmodule ExCommerce.Offerings do
 
   """
   @spec filter_catalogue_categories_by_id(list(binary())) ::
-          list(CatalogueCategory.t())
+          list(CatalogueCategory)
   def filter_catalogue_categories_by_id(category_ids) do
     Repo.all(
       from cc in CatalogueCategory,
