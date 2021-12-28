@@ -296,7 +296,7 @@ defmodule ExCommerce.OfferingsTest do
 
       assert Enum.map(
                Offerings.list_catalogue_items(),
-               &Repo.preload(&1, [:option_groups])
+               &Repo.preload(&1, [:categories, :option_groups])
              ) == [catalogue_item]
     end
 
@@ -309,7 +309,7 @@ defmodule ExCommerce.OfferingsTest do
 
       assert Enum.map(
                Offerings.list_catalogue_items_by_brand(brand_id),
-               &Repo.preload(&1, [:option_groups])
+               &Repo.preload(&1, [:categories, :option_groups])
              ) == [
                catalogue_item
              ]
@@ -322,7 +322,7 @@ defmodule ExCommerce.OfferingsTest do
         catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
 
       assert Offerings.get_catalogue_item!(catalogue_item_id)
-             |> Repo.preload(:option_groups) == catalogue_item
+             |> Repo.preload([:categories, :option_groups]) == catalogue_item
     end
 
     test "create_catalogue_item/1 with valid data creates a catalogue_item", %{
@@ -430,7 +430,7 @@ defmodule ExCommerce.OfferingsTest do
 
       # Check catalogue_item and catalogue_item_variants were correctly saved.
       assert Offerings.get_catalogue_item!(catalogue_item_id)
-             |> Repo.preload([:option_groups]) == catalogue_item
+             |> Repo.preload([:categories, :option_groups]) == catalogue_item
 
       assert Offerings.get_catalogue_item_variant!(some_item_variant_id) ==
                some_item_variant
@@ -507,7 +507,8 @@ defmodule ExCommerce.OfferingsTest do
 
       # Check catalogue_item and catalogue_item_variants were correctly updated.
       assert Offerings.get_catalogue_item!(catalogue_item_id)
-             |> Repo.preload([:option_groups]) == updated_catalogue_item
+             |> Repo.preload([:categories, :option_groups]) ==
+               updated_catalogue_item
 
       assert Offerings.get_catalogue_item_variant!(some_item_variant_id) ==
                some_updated_item_variant
@@ -656,7 +657,7 @@ defmodule ExCommerce.OfferingsTest do
 
       assert catalogue_item ==
                Offerings.get_catalogue_item!(catalogue_item_id)
-               |> Repo.preload(:option_groups)
+               |> Repo.preload([:categories, :option_groups])
     end
 
     test "delete_catalogue_item/1 deletes the catalogue_item", %{
