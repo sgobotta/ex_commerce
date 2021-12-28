@@ -26,16 +26,18 @@ defmodule ExCommerceWeb.Helpers.CheckboxHelper do
   def multiselect_checkboxes(form, field, options, opts \\ []) do
     {selected, _} = get_selected_values(form, field, opts)
     selected_as_strings = Enum.map(selected, &"#{&1}")
+    class = Keyword.get(opts, :class, "")
 
     for {value, key} <- options, into: [] do
-      content_tag(:label, class: "checkbox-inline") do
+      content_tag(:label, class: "checkbox-inline #{class}") do
         [
           tag(:input,
-            name: input_name(form, field) <> "[]",
+            checked: Enum.member?(selected_as_strings, "#{key}"),
+            class: "mx-2",
             id: input_id(form, field, key),
+            name: input_name(form, field) <> "[]",
             type: "checkbox",
-            value: key,
-            checked: Enum.member?(selected_as_strings, "#{key}")
+            value: key
           ),
           value
         ]

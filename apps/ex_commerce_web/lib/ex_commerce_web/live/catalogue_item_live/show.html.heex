@@ -5,6 +5,7 @@
       id: @catalogue_item.id,
       title: @page_title,
       action: @live_action,
+      catalogue_categories: @brand.catalogue_categories,
       catalogue_item: @catalogue_item,
       catalogue_item_option_groups: @brand.catalogue_item_option_groups,
       return_to: Routes.catalogue_item_show_path(@socket, :show, @brand.id, @catalogue_item.id),

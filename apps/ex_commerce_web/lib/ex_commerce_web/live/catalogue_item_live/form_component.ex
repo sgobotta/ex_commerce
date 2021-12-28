@@ -7,6 +7,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   alias ExCommerce.Offerings
 
   alias ExCommerce.Offerings.{
+    CatalogueCategory,
     CatalogueItem,
     CatalogueItemOptionGroup,
     CatalogueItemVariant
@@ -188,5 +189,24 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
                                               } ->
       {name, id}
     end)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Catalogue item categories selection helpers
+  #
+
+  defp build_catalogue_item_category_options(catalogue_categories) do
+    Enum.map(catalogue_categories, fn %CatalogueCategory{
+                                        id: id,
+                                        code: code
+                                      } ->
+      {code, id}
+    end)
+  end
+
+  defp get_selected_catalogue_item_categories(%Ecto.Changeset{
+         data: %{categories: categories}
+       }) do
+    Enum.map(categories, fn %CatalogueCategory{id: id} -> id end)
   end
 end
