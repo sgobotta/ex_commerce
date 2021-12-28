@@ -32,12 +32,21 @@ defmodule ExCommerceWeb.MountHelpers do
   Mount helper to assign defaults values to the socket. Includes: `%User{}` and
   browser locale, timezone and timezone offset.
   """
-  def assign_defaults(socket, _params, session) do
+  def assign_defaults(socket, params, session) do
     socket
     |> assign_user(session)
     |> assign_locale()
     |> assign_timezone()
     |> assign_timezone_offset()
+    |> assign_navigation_helpers(params)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Navigation helpers
+
+  defp assign_navigation_helpers(socket, params) do
+    socket
+    |> assign(:redirect_to, params["redirect_to"])
   end
 
   # ----------------------------------------------------------------------------
