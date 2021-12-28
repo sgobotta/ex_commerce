@@ -74,7 +74,7 @@ defmodule ExCommerceWeb.MountHelpers do
           Repo.preload(brand,
             shops: [],
             catalogues: [],
-            catalogue_categories: [],
+            catalogue_categories: [:items],
             catalogue_items: [:variants],
             catalogue_item_option_groups: []
           )
@@ -174,7 +174,10 @@ defmodule ExCommerceWeb.MountHelpers do
 
       %CatalogueCategory{} = catalogue_category ->
         socket
-        |> assign(:catalogue_category, catalogue_category)
+        |> assign(
+          :catalogue_category,
+          Repo.preload(catalogue_category, [:items])
+        )
     end
   end
 
