@@ -124,6 +124,10 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
      )}
   end
 
+  # ----------------------------------------------------------------------------
+  # Private helpers
+  #
+
   defp prepare_variants_maybe(changeset, %{action: :new}) do
     catalogue_item_variant =
       Offerings.change_catalogue_item_variant(%CatalogueItemVariant{
@@ -173,20 +177,16 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   end
 
   # ----------------------------------------------------------------------------
-  # Assigns helpers
-  #
-
-  # ----------------------------------------------------------------------------
   # Catalogue item option groups selection helpers
   #
 
-  def get_selected_catalogue_item_option_groups(%Phoenix.HTML.Form{
-        source: %Ecto.Changeset{
-          changes: %{
-            option_groups: option_groups
-          }
-        }
-      }) do
+  defp get_selected_catalogue_item_option_groups(%Phoenix.HTML.Form{
+         source: %Ecto.Changeset{
+           changes: %{
+             option_groups: option_groups
+           }
+         }
+       }) do
     Enum.map(option_groups, fn %Ecto.Changeset{
                                  data: %CatalogueItemOptionGroup{id: id}
                                } ->
@@ -194,9 +194,9 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     end)
   end
 
-  def get_selected_catalogue_item_option_groups(%Phoenix.HTML.Form{}), do: []
+  defp get_selected_catalogue_item_option_groups(%Phoenix.HTML.Form{}), do: []
 
-  def build_catalogue_item_option_group_options(catalogue_item_option_groups) do
+  defp build_catalogue_item_option_group_options(catalogue_item_option_groups) do
     Enum.map(catalogue_item_option_groups, fn %CatalogueItemOptionGroup{
                                                 id: id,
                                                 name: name
@@ -209,6 +209,22 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   # Catalogue item categories selection helpers
   #
 
+  defp get_selected_catalogue_item_categories(%Phoenix.HTML.Form{
+         source: %Ecto.Changeset{
+           changes: %{
+             categories: categories
+           }
+         }
+       }) do
+    Enum.map(categories, fn %Ecto.Changeset{
+                              data: %CatalogueCategory{id: id}
+                            } ->
+      id
+    end)
+  end
+
+  defp get_selected_catalogue_item_categories(%Phoenix.HTML.Form{}), do: []
+
   defp build_catalogue_item_category_options(catalogue_categories) do
     Enum.map(catalogue_categories, fn %CatalogueCategory{
                                         id: id,
@@ -216,11 +232,5 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
                                       } ->
       {code, id}
     end)
-  end
-
-  defp get_selected_catalogue_item_categories(%Ecto.Changeset{
-         data: %{categories: categories}
-       }) do
-    Enum.map(categories, fn %CatalogueCategory{id: id} -> id end)
   end
 end

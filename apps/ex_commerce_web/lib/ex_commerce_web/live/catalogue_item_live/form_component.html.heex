@@ -108,7 +108,7 @@
         <%=
           options = build_catalogue_item_category_options(@catalogue_categories)
           multiselect_checkboxes f, :categories, options,
-            selected: get_selected_catalogue_item_categories(@changeset),
+            selected: get_selected_catalogue_item_categories(f),
             class: ""
         %>
       </div>
