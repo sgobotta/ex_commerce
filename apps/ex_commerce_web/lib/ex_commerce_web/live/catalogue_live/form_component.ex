@@ -5,6 +5,8 @@ defmodule ExCommerceWeb.CatalogueLive.FormComponent do
 
   use ExCommerceWeb, :live_component
 
+  alias ExCommerce.Marketplaces.Shop
+
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.{Catalogue, CatalogueCategory}
 
@@ -117,6 +119,35 @@ defmodule ExCommerceWeb.CatalogueLive.FormComponent do
                                         code: code
                                       } ->
       {code, id}
+    end)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Shops selection helpers
+  #
+
+  defp get_selected_shops(%Phoenix.HTML.Form{
+         source: %Ecto.Changeset{
+           changes: %{
+             shops: shops
+           }
+         }
+       }) do
+    Enum.map(shops, fn %Ecto.Changeset{
+                         data: %Shop{id: id}
+                       } ->
+      id
+    end)
+  end
+
+  defp get_selected_shops(%Phoenix.HTML.Form{}), do: []
+
+  defp build_shop_options(shops) do
+    Enum.map(shops, fn %Shop{
+                         id: id,
+                         name: name
+                       } ->
+      {name, id}
     end)
   end
 end

@@ -18,7 +18,7 @@
     <%= error_tag f, :name %>
 
     <div class="border-b-1 border-gray-300 my-3">
-      <p class="mt-4 mb-2 font-bold"><%= gettext("Categories") %> (<%= gettext("Optional") %>)</p>
+      <p class="mt-4 mb-2 font-bold"><%= gettext("Assign Categories") %> (<%= gettext("Optional") %>)</p>
       <p class="pb-2">
         <%= gettext("Assign one or more categories to this catalogue.") %>
       </p>
@@ -48,6 +48,25 @@
         >
           <%= gettext("Create a Category") %>
         </a>
+      </div>
+    </div>
+
+    <div class="border-b-1 border-gray-300 my-3">
+      <p class="mt-4 mb-2 font-bold"><%= gettext("Assign Shops") %> (<%= gettext("Optional") %>)</p>
+      <p class="pb-2">
+        <%= gettext("Assign this catalogue to one or more shops.") %>
+      </p>
+    </div>
+
+    <div class="mx-8">
+      <div>
+        <%= label f, gettext("Select shops"), class: "my-2" %>
+        <%=
+          options = build_shop_options(@shops)
+          multiselect_checkboxes f, :shops, options,
+            selected: get_selected_shops(f),
+            class: ""
+        %>
       </div>
     </div>
 
