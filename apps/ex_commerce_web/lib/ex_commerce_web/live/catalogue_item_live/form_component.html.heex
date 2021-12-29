@@ -31,13 +31,19 @@
     <div class="mx-8">
       <%= inputs_for f, :variants, fn v -> %>
         <div class="flex flex-wrap -mx-1 overflow-hidden">
-          <div class="px-1 w-3/6">
+          <div class="px-1 w-2/6">
+            <%= label v, :code, class: "my-2" %>
+            <%= text_input v, :code, class: "input", placeholder: gettext("An internal code: BEER-000-PINT / CONSULTING-000-WITH-TAX") %>
+            <%= error_tag v, :code %>
+          </div>
+
+          <div class="px-1 w-2/6">
             <%= label v, :type, class: "my-2" %>
             <%= text_input v, :type, class: "input", placeholder: gettext("Product size, weight or kind: 125gr") %>
             <%= error_tag v, :type %>
           </div>
 
-          <div class="px-1 w-2/6">
+          <div class="px-1 w-1/6">
             <%= label v, :price, class: "my-2" %>
             <%= number_input v, :price, class: "input" %>
             <%= error_tag v, :price %>

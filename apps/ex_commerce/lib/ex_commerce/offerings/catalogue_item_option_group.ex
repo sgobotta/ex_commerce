@@ -12,12 +12,20 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
 
   alias ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem
 
-  @fields [:mandatory, :max_selection, :multiple_selection, :name, :description]
+  @fields [
+    :code,
+    :name,
+    :description,
+    :mandatory,
+    :max_selection,
+    :multiple_selection
+  ]
   @foreign_fields [:brand_id]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "catalogue_item_option_groups" do
+    field :code, :string
     field :brand_id, :binary_id
     field :mandatory, :boolean, default: false
     field :max_selection, :integer

@@ -10,12 +10,15 @@ defmodule ExCommerce.CataloguesFixtures do
   alias ExCommerce.Offerings.Catalogue
 
   @valid_attrs %{
+    code: "some code",
     name: "some name"
   }
   @update_attrs %{
+    code: "some updated code",
     name: "some updated name"
   }
   @invalid_attrs %{
+    code: nil,
     name: nil
   }
 

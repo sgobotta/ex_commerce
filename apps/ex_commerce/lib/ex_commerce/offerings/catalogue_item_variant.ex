@@ -8,12 +8,13 @@ defmodule ExCommerce.Offerings.CatalogueItemVariant do
 
   import Ecto.Changeset
 
-  @fields [:type, :price]
+  @fields [:code, :type, :price]
   @foreign_fields [:catalogue_item_id]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "catalogue_item_variants" do
+    field :code, :string
     field :price, :decimal
     field :type, :string
 

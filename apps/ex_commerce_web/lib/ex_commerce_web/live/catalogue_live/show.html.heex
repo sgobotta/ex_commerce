@@ -23,7 +23,12 @@
     <ul>
 
       <li>
-        <strong>Name:</strong>
+        <strong><%= gettext("Code") %>:</strong>
+        <%= @catalogue.code %>
+      </li>
+
+      <li>
+        <strong><%= gettext("Name") %>:</strong>
         <%= @catalogue.name %>
       </li>
 

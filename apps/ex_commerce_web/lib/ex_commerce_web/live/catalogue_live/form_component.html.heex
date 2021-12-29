@@ -8,6 +8,10 @@
       phx_submit: "save"
     ], fn f -> %>
 
+    <%= label f, :code, class: "my-2" %>
+    <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: SALOON-00-YORK / TAKE-00-YORK") %>
+    <%= error_tag f, :code %>
+
     <%= label f, :name, class: "my-2" %>
     <%= text_input f, :name, class: "input", placeholder: gettext("Saloon Menu / Delivery Menu / Take away Menu, ...") %>
     <%= error_tag f, :name %>

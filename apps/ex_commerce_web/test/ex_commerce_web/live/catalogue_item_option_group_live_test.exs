@@ -7,32 +7,14 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
   import Phoenix.LiveViewTest
 
-  alias ExCommerce.CatalogueItemOptionsFixtures
+  alias ExCommerce.CatalogueItemOptionGroupsFixtures
 
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.{CatalogueItemOptionGroup, CatalogueItemVariant}
 
-  @create_attrs %{
-    mandatory: true,
-    max_selection: 42,
-    multiple_selection: true,
-    name: "some name",
-    description: "some description"
-  }
-  @update_attrs %{
-    mandatory: false,
-    max_selection: 43,
-    multiple_selection: false,
-    name: "some updated name",
-    description: "some updated description"
-  }
-  @invalid_attrs %{
-    mandatory: nil,
-    max_selection: nil,
-    multiple_selection: nil,
-    name: nil,
-    description: nil
-  }
+  @create_attrs CatalogueItemOptionGroupsFixtures.valid_attrs()
+  @update_attrs CatalogueItemOptionGroupsFixtures.update_attrs()
+  @invalid_attrs CatalogueItemOptionGroupsFixtures.invalid_attrs()
 
   describe "Index" do
     setup [
@@ -199,10 +181,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
           }
         })
 
-      :ok =
-        add_new_options(index_live, create_attrs, [
-          CatalogueItemOptionsFixtures.valid_attrs()
-        ])
+      :ok = add_new_options(index_live, create_attrs, [@create_attrs])
 
       :ok =
         submit_new_catalogue_item_option_group(

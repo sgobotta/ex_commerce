@@ -9,6 +9,10 @@
     ],
     fn f -> %>
 
+    <%= label f, :code, class: "my-2" %>
+    <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: SNACKS-00 / DRINKS-00") %>
+    <%= error_tag f, :code %>
+
     <%= label f, :name, class: "my-2" %>
     <%= text_input f, :name, class: "input", placeholder: gettext("Accompanying sauces | Budget requirements") %>
     <%= error_tag f, :name %>

@@ -2,6 +2,7 @@
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
     "id": "c804fb53-fbdb-4e54-9cf2-32c3d648a351",
+    "code": "SALOON-00-PALERMO",
     "name": "Saloon Palermo",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
@@ -9,6 +10,7 @@
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
     "id": "fd5cbc17-2441-449f-ab83-58c79dbb5d37",
+    "code": "DELIVERY-00-PALERMO",
     "name": "Delivery Palermo",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
@@ -16,6 +18,7 @@
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
     "id": "86d8bb3c-d2c2-42aa-b49b-0f7751e35fab",
+    "code": "TAKE-00-PALERMO",
     "name": "Take-away Palermo",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
@@ -23,6 +26,7 @@
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
     "id": "2d259cd0-86fd-4bad-8413-8142504b22f4",
+    "code": "SALOON-01-COLEGIALES",
     "name": "Saloon Colegiales",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
@@ -30,6 +34,7 @@
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
     "id": "3e972c47-2c94-4fd4-81b1-edb73f99af5a",
+    "code": "DELIVERY-01-COLEGIALES",
     "name": "Delivery Colegiales",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
@@ -37,6 +42,7 @@
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
     "id": "90b8767e-5a56-4324-9963-229e9e3abf53",
+    "code": "SALOON-02-BELGRANO",
     "name": "Saloon Belgrano",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
@@ -44,6 +50,7 @@
   {
     "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
     "id": "2aaf6514-8006-46be-a4bc-85e8c6510cfe",
+    "code": "DELIVERY-02-CHACARITA",
     "name": "Delivery Chacarita",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
@@ -51,6 +58,7 @@
   {
     "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
     "id": "5f333625-d080-46a8-aaf6-b5e1001719aa",
+    "code": "TAKE-00-CHACARITA",
     "name": "Take-away Chacarita",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
@@ -58,6 +66,7 @@
   {
     "brand_id": "97d4d4f1-ab03-40b4-aecb-005808795b7a",
     "id": "f9e33d1c-daa2-4fd8-8090-a6942890af34",
+    "code": "TAKE-00-Machinery Repairs LLC",
     "name": "Take-away Machinery Repairs LLC",
     "inserted_at": "2020-11-17 14:15:57",
     "updated_at": "2020-11-17 14:15:57"

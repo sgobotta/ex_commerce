@@ -29,6 +29,7 @@
     <table>
       <thead>
         <tr>
+          <th><%= gettext("Code") %></th>
           <th><%= gettext("Name") %></th>
 
           <th></th>
@@ -37,6 +38,7 @@
       <tbody id="catalogues">
         <%= for %Catalogue{id: catalogue_id} = catalogue <- @catalogues do %>
           <tr id={"catalogue-#{catalogue_id}"}>
+            <td><%= catalogue.code %></td>
             <td><%= catalogue.name %></td>
 
             <td>
