@@ -11,6 +11,8 @@ defmodule ExCommerce.Offerings.Catalogue do
     Offerings
   }
 
+  alias ExCommerce.Marketplaces
+
   alias ExCommerce.Offerings.{
     CatalogueCategory,
     Relations
@@ -26,6 +28,11 @@ defmodule ExCommerce.Offerings.Catalogue do
     field :code, :string
     field :brand_id, :binary_id
 
+    many_to_many :shops, Marketplaces.Shop,
+      join_through: Relations.ShopCatalogue,
+      on_replace: :delete,
+      on_delete: :delete_all
+
     many_to_many :categories, CatalogueCategory,
       join_through: Relations.CatalogueCategory,
       on_replace: :delete,
@@ -38,6 +45,11 @@ defmodule ExCommerce.Offerings.Catalogue do
   def changeset(catalogue, attrs) do
     catalogue
     |> cast(attrs, @fields ++ @foreign_fields)
+    |> EctoHelpers.put_assoc(
+      attrs,
+      :shops,
+      &Marketplaces.list_shops_by_id/1
+    )
     |> EctoHelpers.put_assoc(
       attrs,
       :categories,
