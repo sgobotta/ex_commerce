@@ -6,10 +6,12 @@ defmodule ExCommerce.Offerings.RelationsFixtures do
 
   alias ExCommerce.{
     CatalogueCategoriesFixtures,
-    CatalogueItemsFixtures
+    CatalogueItemsFixtures,
+    CataloguesFixtures
   }
 
   alias ExCommerce.Offerings.{
+    Catalogue,
     CatalogueCategory,
     CatalogueItem,
     Relations
@@ -44,5 +46,26 @@ defmodule ExCommerce.Offerings.RelationsFixtures do
       |> Relations.create_catalogue_category_item()
 
     catalogue_category_item
+  end
+
+  @doc """
+  Generate a catalogue_category.
+  """
+  def catalogue_category_fixture(attrs \\ %{}) do
+    %Catalogue{id: catalogue_id} = CataloguesFixtures.create(attrs)
+
+    %CatalogueCategory{id: category_id} =
+      CatalogueCategoriesFixtures.create(attrs)
+
+    {:ok, %Relations.CatalogueCategory{} = catalogue_category} =
+      attrs
+      |> Enum.into(@valid_attrs)
+      |> Enum.into(%{
+        catalogue_id: catalogue_id,
+        catalogue_category_id: category_id
+      })
+      |> Relations.create_catalogue_category()
+
+    catalogue_category
   end
 end
