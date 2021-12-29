@@ -219,4 +219,100 @@ defmodule ExCommerce.Offerings.Relations do
       ) do
     CatalogueCategory.changeset(catalogue_category, attrs)
   end
+
+  alias ExCommerce.Offerings.Relations.ShopCatalogue
+
+  @doc """
+  Returns the list of shops_catalogues.
+
+  ## Examples
+
+      iex> list_shops_catalogues()
+      [%ShopCatalogue{}, ...]
+
+  """
+  def list_shops_catalogues do
+    Repo.all(ShopCatalogue)
+  end
+
+  @doc """
+  Gets a single shop_catalogue.
+
+  Raises `Ecto.NoResultsError` if the Shop catalogue does not exist.
+
+  ## Examples
+
+      iex> get_shop_catalogue!(123)
+      %ShopCatalogue{}
+
+      iex> get_shop_catalogue!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_shop_catalogue!(id), do: Repo.get!(ShopCatalogue, id)
+
+  @doc """
+  Creates a shop_catalogue.
+
+  ## Examples
+
+      iex> create_shop_catalogue(%{field: value})
+      {:ok, %ShopCatalogue{}}
+
+      iex> create_shop_catalogue(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_shop_catalogue(attrs \\ %{}) do
+    %ShopCatalogue{}
+    |> ShopCatalogue.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a shop_catalogue.
+
+  ## Examples
+
+      iex> update_shop_catalogue(shop_catalogue, %{field: new_value})
+      {:ok, %ShopCatalogue{}}
+
+      iex> update_shop_catalogue(shop_catalogue, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_shop_catalogue(%ShopCatalogue{} = shop_catalogue, attrs) do
+    shop_catalogue
+    |> ShopCatalogue.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a shop_catalogue.
+
+  ## Examples
+
+      iex> delete_shop_catalogue(shop_catalogue)
+      {:ok, %ShopCatalogue{}}
+
+      iex> delete_shop_catalogue(shop_catalogue)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_shop_catalogue(%ShopCatalogue{} = shop_catalogue) do
+    Repo.delete(shop_catalogue)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking shop_catalogue changes.
+
+  ## Examples
+
+      iex> change_shop_catalogue(shop_catalogue)
+      %Ecto.Changeset{data: %ShopCatalogue{}}
+
+  """
+  def change_shop_catalogue(%ShopCatalogue{} = shop_catalogue, attrs \\ %{}) do
+    ShopCatalogue.changeset(shop_catalogue, attrs)
+  end
 end

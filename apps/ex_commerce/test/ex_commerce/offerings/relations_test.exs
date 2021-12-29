@@ -20,10 +20,10 @@ defmodule ExCommerce.Offerings.RelationsTest do
     Relations
   }
 
-  import ExCommerce.Offerings.RelationsFixtures
-
   describe "catalogue_categories_items" do
     alias ExCommerce.Offerings.Relations.CatalogueCategoryItem
+
+    import ExCommerce.Offerings.RelationsFixtures
 
     @valid_attrs valid_attrs()
     @update_attrs update_attrs()
@@ -140,6 +140,8 @@ defmodule ExCommerce.Offerings.RelationsTest do
   describe "catalogues_categories" do
     alias ExCommerce.Offerings.Relations.CatalogueCategory
 
+    import ExCommerce.Offerings.RelationsFixtures
+
     @invalid_attrs %{visible: nil}
 
     setup do
@@ -225,6 +227,103 @@ defmodule ExCommerce.Offerings.RelationsTest do
 
       assert %Ecto.Changeset{} =
                Relations.change_catalogue_category(catalogue_category)
+    end
+  end
+
+  describe "shops_catalogues" do
+    alias ExCommerce.{
+      CataloguesFixtures,
+      ShopsFixtures
+    }
+
+    alias ExCommerce.Marketplaces
+    alias ExCommerce.Offerings.Relations.ShopCatalogue
+
+    alias ExCommerce.Offerings.Relations.ShopCatalogueFixtures
+
+    @invalid_attrs %{visible: nil}
+
+    setup do
+      %{brand: BrandsFixtures.create()}
+    end
+
+    @tag :wip
+    test "list_shops_catalogues/0 returns all shops_catalogues" do
+      %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
+      assert Relations.list_shops_catalogues() == [shop_catalogue]
+    end
+
+    @tag :wip
+    test "get_shop_catalogue!/1 returns the shop_catalogue with given id" do
+      %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
+      assert Relations.get_shop_catalogue!(shop_catalogue.id) == shop_catalogue
+    end
+
+    @tag :wip
+    test "create_shop_catalogue/1 with valid data creates a shop_catalogue", %{
+      brand: %Brand{id: brand_id}
+    } do
+      %Marketplaces.Shop{id: shop_id} =
+        ShopsFixtures.create(%{brand_id: brand_id})
+
+      %Offerings.Catalogue{id: catalogue_id} =
+        CataloguesFixtures.create(%{brand_id: brand_id})
+
+      valid_attrs =
+        Map.merge(@valid_attrs, %{
+          catalogue_id: catalogue_id,
+          shop_id: shop_id
+        })
+
+      assert {:ok, %ShopCatalogue{} = shop_catalogue} =
+               Relations.create_shop_catalogue(valid_attrs)
+
+      assert shop_catalogue.visible == true
+    end
+
+    @tag :wip
+    test "create_shop_catalogue/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} =
+               Relations.create_shop_catalogue(@invalid_attrs)
+    end
+
+    @tag :wip
+    test "update_shop_catalogue/2 with valid data updates the shop_catalogue" do
+      %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
+      update_attrs = %{visible: false}
+
+      assert {:ok, %ShopCatalogue{} = shop_catalogue} =
+               Relations.update_shop_catalogue(shop_catalogue, update_attrs)
+
+      assert shop_catalogue.visible == false
+    end
+
+    @tag :wip
+    test "update_shop_catalogue/2 with invalid data returns error changeset" do
+      %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Relations.update_shop_catalogue(shop_catalogue, @invalid_attrs)
+
+      assert shop_catalogue == Relations.get_shop_catalogue!(shop_catalogue.id)
+    end
+
+    @tag :wip
+    test "delete_shop_catalogue/1 deletes the shop_catalogue" do
+      %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
+
+      assert {:ok, %ShopCatalogue{}} =
+               Relations.delete_shop_catalogue(shop_catalogue)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Relations.get_shop_catalogue!(shop_catalogue.id)
+      end
+    end
+
+    @tag :wip
+    test "change_shop_catalogue/1 returns a shop_catalogue changeset" do
+      %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
+      assert %Ecto.Changeset{} = Relations.change_shop_catalogue(shop_catalogue)
     end
   end
 end
