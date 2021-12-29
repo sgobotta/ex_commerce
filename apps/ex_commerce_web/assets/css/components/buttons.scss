@@ -1,6 +1,6 @@
 @layer components {
   .button {
-    @apply inline-flex items-center rounded-full border-gray-800 bg-gray-800 text-gray-100 text-2xl font-normal px-6 shadow-button transition duration-200 hover:border-gray-700 hover:bg-gray-700 focus:bg-gray-400 focus:border-gray-400;
+    @apply inline-flex items-center rounded-full border-gray-800 bg-gray-800 text-gray-100 text-2xl font-normal px-6 shadow-button transition duration-75 hover:border-gray-800 hover:bg-gray-800 hover:shadow-button-sm focus:bg-gray-500 focus:border-gray-500 focus:shadow-lg;
   }
 
   .close-modal-button {
