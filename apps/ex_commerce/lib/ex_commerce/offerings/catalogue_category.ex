@@ -6,11 +6,16 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias ExCommerce.Offerings
+  alias ExCommerce.{
+    EctoHelpers,
+    Offerings
+  }
 
-  alias ExCommerce.Offerings.CatalogueItem
-
-  alias ExCommerce.Offerings.Relations.CatalogueCategoryItem
+  alias ExCommerce.Offerings.{
+    Catalogue,
+    CatalogueItem,
+    Relations
+  }
 
   @fields [:code, :name, :description]
   @foreign_fields [:brand_id]
@@ -23,8 +28,13 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
     field :name, :string
     field :brand_id, :binary_id
 
+    many_to_many :catalogues, Catalogue,
+      join_through: Relations.CatalogueCategory,
+      on_replace: :delete,
+      on_delete: :delete_all
+
     many_to_many :items, CatalogueItem,
-      join_through: CatalogueCategoryItem,
+      join_through: Relations.CatalogueCategoryItem,
       on_replace: :delete,
       on_delete: :delete_all
 
@@ -35,21 +45,11 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
   def changeset(catalogue_category, attrs) do
     catalogue_category
     |> cast(attrs, @fields ++ @foreign_fields)
-    |> maybe_assoc_items(attrs)
+    |> EctoHelpers.put_assoc(
+      attrs,
+      :items,
+      &Offerings.filter_catalogue_items_by_id/1
+    )
     |> validate_required(@fields ++ @foreign_fields)
-  end
-
-  defp maybe_assoc_items(
-         changeset,
-         %{"items" => item_ids}
-       ) do
-    items = Offerings.filter_catalogue_items_by_id(item_ids)
-
-    put_assoc(changeset, :items, items)
-  end
-
-  defp maybe_assoc_items(changeset, params)
-       when not is_map_key(params, "items") do
-    put_assoc(changeset, :items, [])
   end
 end
