@@ -1051,7 +1051,8 @@ defmodule ExCommerce.OfferingsTest do
           brand_id: brand_id
         })
 
-      assert Offerings.list_catalogue_item_option_groups() == [
+      assert Offerings.list_catalogue_item_option_groups()
+             |> Repo.preload([:items]) == [
                catalogue_item_option_group
              ]
     end
@@ -1066,7 +1067,8 @@ defmodule ExCommerce.OfferingsTest do
 
       assert Offerings.get_catalogue_item_option_group!(
                catalogue_item_option_group_id
-             ) == catalogue_item_option_group
+             )
+             |> Repo.preload([:items]) == catalogue_item_option_group
     end
 
     test "create_catalogue_item_option_group/1 with valid data creates a catalogue_item_option_group",
@@ -1125,6 +1127,7 @@ defmodule ExCommerce.OfferingsTest do
                Offerings.get_catalogue_item_option_group!(
                  catalogue_item_option_group_id
                )
+               |> Repo.preload([:items])
     end
 
     test "delete_catalogue_item_option_group/1 deletes the catalogue_item_option_group",

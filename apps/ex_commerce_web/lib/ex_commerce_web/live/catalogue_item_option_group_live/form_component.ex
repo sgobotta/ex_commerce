@@ -317,7 +317,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
 
   defp is_catalogue_item_disabled(_catalogue_items), do: false
 
-  defp get_selected_catalogue_items(_catalogue_items), do: nil
+  defp get_selected_catalogue_item(_catalogue_items), do: nil
 
   defp build_catalogue_item_options(catalogue_items) do
     Enum.map(catalogue_items, &{&1.code, &1.id})
@@ -463,4 +463,33 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
 
   defp build_catalogue_item_variant_options(variants),
     do: Enum.map(variants, &{"#{&1.type} - #{format_price(&1.price)}", &1.id})
+
+  # ----------------------------------------------------------------------------
+  # Catalogue item multiple selection helpers
+  #
+
+  defp get_selected_catalogue_items(%Phoenix.HTML.Form{
+         source: %Ecto.Changeset{
+           changes: %{
+             items: items
+           }
+         }
+       }) do
+    Enum.map(items, fn %Ecto.Changeset{
+                         data: %CatalogueItem{id: id}
+                       } ->
+      id
+    end)
+  end
+
+  defp get_selected_catalogue_items(%Phoenix.HTML.Form{}), do: []
+
+  defp build_catalogue_item_checkboxes_options(catalogue_items) do
+    Enum.map(catalogue_items, fn %CatalogueItem{
+                                   id: id,
+                                   code: code
+                                 } ->
+      {code, id}
+    end)
+  end
 end

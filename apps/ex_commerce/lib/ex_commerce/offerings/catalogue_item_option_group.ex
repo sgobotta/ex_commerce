@@ -5,6 +5,11 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias ExCommerce.{
+    EctoHelpers,
+    Offerings
+  }
+
   alias ExCommerce.Offerings.{
     CatalogueItem,
     CatalogueItemOption
@@ -40,6 +45,7 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
 
     many_to_many :items, CatalogueItem,
       join_through: CatalogueItemOptionGroupItem,
+      on_replace: :delete,
       on_delete: :delete_all
 
     timestamps()
@@ -54,7 +60,11 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
     )
     |> cast(attrs, @fields ++ @foreign_fields ++ [:delete])
     |> cast_assoc(:options)
-    |> cast_assoc(:items)
+    |> EctoHelpers.put_assoc(
+      attrs,
+      :items,
+      &Offerings.filter_catalogue_items_by_id/1
+    )
     |> validate_required(@fields ++ @foreign_fields)
     |> maybe_mark_for_deletion()
   end
