@@ -320,7 +320,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
   defp get_selected_catalogue_item(_catalogue_items), do: nil
 
   defp build_catalogue_item_options(catalogue_items) do
-    Enum.map(catalogue_items, &{&1.code, &1.id})
+    Enum.map(catalogue_items, &{"#{&1.code} (#{&1.name})", &1.id})
   end
 
   defp find_catalogue_item_by_id(catalogue_items, catalogue_item_id) do
@@ -461,8 +461,12 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
     build_catalogue_item_variant_options(variants)
   end
 
-  defp build_catalogue_item_variant_options(variants),
-    do: Enum.map(variants, &{"#{&1.type} - #{format_price(&1.price)}", &1.id})
+  defp build_catalogue_item_variant_options(variants) do
+    Enum.map(
+      variants,
+      &{"#{&1.code} (#{&1.type}) [$#{format_price(&1.price)}]", &1.id}
+    )
+  end
 
   # ----------------------------------------------------------------------------
   # Catalogue item multiple selection helpers
@@ -487,9 +491,10 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
   defp build_catalogue_item_checkboxes_options(catalogue_items) do
     Enum.map(catalogue_items, fn %CatalogueItem{
                                    id: id,
-                                   code: code
+                                   code: code,
+                                   name: name
                                  } ->
-      {code, id}
+      {"#{code} (#{name})", id}
     end)
   end
 end

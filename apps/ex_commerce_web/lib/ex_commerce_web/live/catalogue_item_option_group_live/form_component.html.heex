@@ -143,7 +143,7 @@
     </div>
 
     <div class="border-b-1 border-gray-300 my-3">
-      <p class="mt-4 mb-2 font-bold"><%= gettext("Items") %> (<%= gettext("Optional") %>)</p>
+      <p class="mt-4 mb-2 font-bold"><%= gettext("Assign to Items") %> (<%= gettext("Optional") %>)</p>
       <p class="pb-2 italic">
         <%= gettext("An Option Groups can be assigned to multiple items so that you don't have to recreate options for each of your offered Items.") %>
       </p>
@@ -158,18 +158,6 @@
             selected: get_selected_catalogue_items(f),
             class: ""
         %>
-      </div>
-
-      <div class="flex justify-start my-6">
-        <a
-          href="#"
-          phx-click="create_category"
-          phx-target={@myself}
-          class="button"
-          id="catalogue_item-add-category-input"
-        >
-          <%= gettext("Create a Category") %>
-        </a>
       </div>
     </div>
 
