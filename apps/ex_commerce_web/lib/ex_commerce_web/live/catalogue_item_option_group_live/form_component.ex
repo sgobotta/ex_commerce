@@ -200,16 +200,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
     end
   end
 
-  defp redirect_or_return(socket) do
-    case socket.assigns.redirect_to do
-      nil ->
-        push_redirect(socket, to: socket.assigns.return_to)
-
-      redirect_to ->
-        push_redirect(socket, to: redirect_to)
-    end
-  end
-
   # ----------------------------------------------------------------------------
   # Assigns helpers
   #

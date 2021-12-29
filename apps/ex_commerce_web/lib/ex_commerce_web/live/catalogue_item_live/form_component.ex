@@ -151,7 +151,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, gettext("Catalogue item updated successfully"))
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> redirect_or_return()}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
@@ -169,7 +169,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, gettext("Catalogue item created successfully"))
-         |> push_redirect(to: socket.assigns.return_to)}
+         |> redirect_or_return()}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

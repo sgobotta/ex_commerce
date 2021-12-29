@@ -15,7 +15,8 @@
         @live_action,
         @brand.id,
         if @live_action == :edit do @catalogue_item.id else [] end
-      )
+      ),
+      redirect_to: @redirect_to
       %>
   <% end %>
 
