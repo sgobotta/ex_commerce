@@ -105,8 +105,8 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
     defp add_new_options(view, attrs) do
       view
-        |> element("#catalogue_item-add-option-input", "Add an option")
-        |> render_click()
+      |> element("#catalogue_item-add-option-input", "Add an option")
+      |> render_click()
 
       for {_option_attrs, index} <- Enum.with_index(attrs.options) do
         assert view
@@ -141,7 +141,9 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       end
 
       view
-      |> form("#catalogue_item_option_group-form", catalogue_item_option_group: attrs)
+      |> form("#catalogue_item_option_group-form",
+        catalogue_item_option_group: attrs
+      )
       |> render_change()
 
       :ok
@@ -170,12 +172,12 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
             "0" => %{
               is_visible: true,
               price_modifier: 50,
-              catalogue_item_id: catalogue_item_id,
+              catalogue_item_id: catalogue_item_id
             },
             "1" => %{
               is_visible: false,
               price_modifier: 90,
-              catalogue_item_id: catalogue_item_id,
+              catalogue_item_id: catalogue_item_id
             }
           }
         })
