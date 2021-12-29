@@ -55,6 +55,40 @@
       </div>
     </div>
 
+    <div class="border-b-1 border-gray-300 my-3">
+      <p class="mt-4 mb-2 font-bold"><%= gettext("Catalogues") %> (<%= gettext("Optional") %>)</p>
+      <p class="pb-2">
+        <%= gettext("Assign one or more catalogues to this category.") %>
+      </p>
+      <p class="pb-2 italic">
+        <%= gettext("Categories can also be assigned when creating a Catalogue.") %>
+      </p>
+    </div>
+
+    <div class="mx-8">
+      <div>
+        <%= label f, gettext("Select catalogues"), class: "my-2" %>
+        <%=
+          options = build_catalogue_options(@catalogues)
+          multiselect_checkboxes f, :catalogues, options,
+            selected: get_selected_catalogues(f),
+            class: ""
+        %>
+      </div>
+
+      <div class="flex justify-start my-6">
+        <a
+          href="#"
+          phx-click="create_catalogue"
+          phx-target={@myself}
+          class="button"
+          id="catalogue_category-add-catalogue-input"
+        >
+          <%= gettext("Create a Category") %>
+        </a>
+      </div>
+    </div>
+
     <div class="submit-button-container">
       <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button" %>
     </div>

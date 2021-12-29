@@ -5,7 +5,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.FormComponent do
   use ExCommerceWeb, :live_component
 
   alias ExCommerce.Offerings
-  alias ExCommerce.Offerings.{CatalogueCategory, CatalogueItem}
+  alias ExCommerce.Offerings.{Catalogue, CatalogueCategory, CatalogueItem}
 
   import ExCommerceWeb.LiveFormHelpers
 
@@ -61,6 +61,20 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.FormComponent do
      |> push_redirect(
        to:
          Routes.catalogue_item_index_path(
+           socket,
+           :new,
+           socket.assigns.catalogue_category.brand_id,
+           redirect_to: socket.assigns.current_route
+         )
+     )}
+  end
+
+  def handle_event("create_catalogue", _params, socket) do
+    {:noreply,
+     socket
+     |> push_redirect(
+       to:
+         Routes.catalogue_index_path(
            socket,
            :new,
            socket.assigns.catalogue_category.brand_id,
@@ -133,6 +147,35 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.FormComponent do
                                    id: id,
                                    code: code
                                  } ->
+      {code, id}
+    end)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Catalogue selection helpers
+  #
+
+  defp get_selected_catalogues(%Phoenix.HTML.Form{
+         source: %Ecto.Changeset{
+           changes: %{
+             catalogues: catalogues
+           }
+         }
+       }) do
+    Enum.map(catalogues, fn %Ecto.Changeset{
+                              data: %Catalogue{id: id}
+                            } ->
+      id
+    end)
+  end
+
+  defp get_selected_catalogues(%Phoenix.HTML.Form{}), do: []
+
+  defp build_catalogue_options(catalogues) do
+    Enum.map(catalogues, fn %Catalogue{
+                              id: id,
+                              code: code
+                            } ->
       {code, id}
     end)
   end

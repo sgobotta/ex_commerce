@@ -104,7 +104,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.Index do
 
   defp prepare_new_catalogue_category(%{brand: %Brand{id: brand_id}}) do
     %CatalogueCategory{brand_id: brand_id}
-    |> Repo.preload([:items])
+    |> Repo.preload([:items, :catalogues])
   end
 
   defp list_catalogue_categories(brand_id) do
