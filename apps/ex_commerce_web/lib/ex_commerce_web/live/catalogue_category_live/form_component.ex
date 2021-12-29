@@ -128,11 +128,11 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.FormComponent do
 
   defp get_selected_catalogue_items(%Phoenix.HTML.Form{}), do: []
 
-  defp build_catalogue_item_options(catalogue_categories) do
-    Enum.map(catalogue_categories, fn %CatalogueItem{
-                                        id: id,
-                                        code: code
-                                      } ->
+  defp build_catalogue_item_options(catalogue_items) do
+    Enum.map(catalogue_items, fn %CatalogueItem{
+                                   id: id,
+                                   code: code
+                                 } ->
       {code, id}
     end)
   end
