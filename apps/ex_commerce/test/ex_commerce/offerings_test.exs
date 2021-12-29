@@ -27,7 +27,7 @@ defmodule ExCommerce.OfferingsTest do
         catalogue = CataloguesFixtures.create(%{brand_id: brand_id})
 
       assert Offerings.list_catalogues()
-             |> Repo.preload([:categories]) == [catalogue]
+             |> Repo.preload([:categories, :shops]) == [catalogue]
     end
 
     test "list_catalogues_by_brand/1 returns all catalogues for a given brand",
@@ -38,7 +38,7 @@ defmodule ExCommerce.OfferingsTest do
         catalogue = CataloguesFixtures.create(%{brand_id: brand_id})
 
       assert Offerings.list_catalogues_by_brand(brand_id)
-             |> Repo.preload([:categories]) == [catalogue]
+             |> Repo.preload([:categories, :shops]) == [catalogue]
     end
 
     test "get_catalogue!/1 returns the catalogue with given id", %{
@@ -48,7 +48,7 @@ defmodule ExCommerce.OfferingsTest do
         catalogue = CataloguesFixtures.create(%{brand_id: brand_id})
 
       assert Offerings.get_catalogue!(catalogue_id)
-             |> Repo.preload([:categories]) == catalogue
+             |> Repo.preload([:categories, :shops]) == catalogue
     end
 
     test "create_catalogue/1 with valid data creates a catalogue", %{
@@ -90,7 +90,7 @@ defmodule ExCommerce.OfferingsTest do
 
       assert catalogue ==
                Offerings.get_catalogue!(catalogue_id)
-               |> Repo.preload([:categories])
+               |> Repo.preload([:categories, :shops])
     end
 
     test "delete_catalogue/1 deletes the catalogue", %{
