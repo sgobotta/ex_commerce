@@ -50,6 +50,11 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
       :items,
       &Offerings.filter_catalogue_items_by_id/1
     )
+    |> EctoHelpers.put_assoc(
+      attrs,
+      :catalogues,
+      &Offerings.filter_catalogues_by_id/1
+    )
     |> validate_required(@fields ++ @foreign_fields)
   end
 end
