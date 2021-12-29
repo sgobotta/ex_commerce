@@ -35,6 +35,26 @@ defmodule ExCommerce.Offerings do
     |> Repo.all()
   end
 
+  @spec filter_catalogues_by_id(list(binary())) :: list(Catalogue)
+  @doc """
+  Returns a filtetred list of catalogue_categories by id.
+
+  ## Examples
+
+      iex> filter_catalogues_by_id([
+      ...>  "650ee975-1f24-4dd8-82ec-b3338af63e2f"
+      ...>  "a3148641-5af9-4eb5-95b0-cca2bf9650c7"
+      ...> ])
+      [%Catalogue{}, %Catalogue{}]
+
+  """
+  def filter_catalogues_by_id(catalogue_ids) do
+    Repo.all(
+      from c in Catalogue,
+        where: c.id in ^catalogue_ids
+    )
+  end
+
   @doc """
   Gets a single catalogue.
 
