@@ -5,7 +5,8 @@
       id: "catalogue_category-form",
       phx_target: @myself,
       phx_change: "validate",
-      phx_submit: "save"
+      phx_submit: "save",
+      class: "mb-0"
     ], fn f -> %>
 
     <%= label f, :code, class: "my-2" %>
@@ -20,7 +21,75 @@
     <%= text_input f, :description, class: "input", placeholder: gettext("Only available from 8 a.m. to 12 p.m. / ") %>
     <%= error_tag f, :description %>
 
-    <div class="flex justify-end mt-6">
+    <div class="border-b-1 border-gray-300 my-3">
+      <p class="mt-4 mb-2 font-bold"><%= gettext("Items") %> (<%= gettext("Optional") %>)</p>
+      <p class="pb-2">
+        <%= gettext("Assign one or more items to this category.") %>
+      </p>
+      <p class="pb-2 italic">
+        <%= gettext("Categories can also be assigned when creating an item.") %>
+      </p>
+    </div>
+
+    <div class="mx-8">
+      <div>
+        <%= label f, gettext("Select items"), class: "my-2" %>
+        <%=
+          options = build_catalogue_item_options(@catalogue_items)
+          multiselect_checkboxes f, :items, options,
+            selected: get_selected_catalogue_items(f),
+            class: ""
+        %>
+      </div>
+
+      <div class="flex justify-start my-6">
+        <a
+          href="#"
+          phx-click="create_item"
+          phx-target={@myself}
+          class="button"
+          id="catalogue_category-add-item-input"
+        >
+          <%= gettext("Create an Item") %>
+        </a>
+      </div>
+    </div>
+
+    <div class="border-b-1 border-gray-300 my-3">
+      <p class="mt-4 mb-2 font-bold"><%= gettext("Catalogues") %> (<%= gettext("Optional") %>)</p>
+      <p class="pb-2">
+        <%= gettext("Assign one or more catalogues to this category.") %>
+      </p>
+      <p class="pb-2 italic">
+        <%= gettext("Categories can also be assigned when creating a Catalogue.") %>
+      </p>
+    </div>
+
+    <div class="mx-8">
+      <div>
+        <%= label f, gettext("Select catalogues"), class: "my-2" %>
+        <%=
+          options = build_catalogue_options(@catalogues)
+          multiselect_checkboxes f, :catalogues, options,
+            selected: get_selected_catalogues(f),
+            class: ""
+        %>
+      </div>
+
+      <div class="flex justify-start my-6">
+        <a
+          href="#"
+          phx-click="create_catalogue"
+          phx-target={@myself}
+          class="button"
+          id="catalogue_category-add-catalogue-input"
+        >
+          <%= gettext("Create a Category") %>
+        </a>
+      </div>
+    </div>
+
+    <div class="submit-button-container">
       <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button" %>
     </div>
   <% end %>

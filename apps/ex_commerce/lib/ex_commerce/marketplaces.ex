@@ -37,6 +37,22 @@ defmodule ExCommerce.Marketplaces do
   end
 
   @doc """
+  Returns a list of Shop that matches the given id list.
+
+  ## Examples
+
+      iex> list_shops_by_ids(["658e944a-e882-4318-8364-8abaffe7ce71"])
+      [%Shop{}]
+
+  """
+  def list_shops_by_id(shop_ids) do
+    Repo.all(
+      from s in Shop,
+        where: s.id in ^shop_ids
+    )
+  end
+
+  @doc """
   Gets a single shop.
 
   Raises `Ecto.NoResultsError` if the Shop does not exist.

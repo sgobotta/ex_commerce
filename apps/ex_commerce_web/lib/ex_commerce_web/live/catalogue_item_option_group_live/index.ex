@@ -16,7 +16,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.Index do
       true ->
         {:ok,
          socket
-         |> assign(:redirect_to, params["redirect_to"])
          |> assign_defaults(params, session)
          |> assign_brand_or_redirect(params, session)}
 
@@ -102,7 +101,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.Index do
 
   defp prepare_catalogue_item_option_group(%{brand: %Brand{id: brand_id}}) do
     %CatalogueItemOptionGroup{brand_id: brand_id}
-    |> Repo.preload([:options])
+    |> Repo.preload([:options, :items])
   end
 
   defp update_catalogue_item_option_groups(

@@ -7,49 +7,48 @@ defmodule ExCommerce.OfferingsTest do
   alias ExCommerce.Repo
 
   describe "catalogues" do
-    alias ExCommerce.BrandsFixtures
+    alias ExCommerce.{BrandsFixtures, CataloguesFixtures}
+
     alias ExCommerce.Marketplaces.Brand
     alias ExCommerce.Offerings.Catalogue
 
-    @valid_attrs %{name: "some name"}
-    @update_attrs %{name: "some updated name"}
-    @invalid_attrs %{name: nil}
+    @valid_attrs CataloguesFixtures.valid_attrs()
+    @update_attrs CataloguesFixtures.update_attrs()
+    @invalid_attrs CataloguesFixtures.invalid_attrs()
 
     setup do
       %{brand: BrandsFixtures.create()}
     end
 
-    def catalogue_fixture(attrs \\ %{}) do
-      {:ok, %Catalogue{} = catalogue} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Offerings.create_catalogue()
-
-      catalogue
-    end
-
     test "list_catalogues/0 returns all catalogues", %{
       brand: %Brand{id: brand_id}
     } do
-      %Catalogue{} = catalogue = catalogue_fixture(%{brand_id: brand_id})
-      assert Offerings.list_catalogues() == [catalogue]
+      %Catalogue{} =
+        catalogue = CataloguesFixtures.create(%{brand_id: brand_id})
+
+      assert Offerings.list_catalogues()
+             |> Repo.preload([:categories, :shops]) == [catalogue]
     end
 
     test "list_catalogues_by_brand/1 returns all catalogues for a given brand",
          %{
            brand: %Brand{id: brand_id}
          } do
-      %Catalogue{} = catalogue = catalogue_fixture(%{brand_id: brand_id})
-      assert Offerings.list_catalogues_by_brand(brand_id) == [catalogue]
+      %Catalogue{} =
+        catalogue = CataloguesFixtures.create(%{brand_id: brand_id})
+
+      assert Offerings.list_catalogues_by_brand(brand_id)
+             |> Repo.preload([:categories, :shops]) == [catalogue]
     end
 
     test "get_catalogue!/1 returns the catalogue with given id", %{
       brand: %Brand{id: brand_id}
     } do
       %Catalogue{id: catalogue_id} =
-        catalogue = catalogue_fixture(%{brand_id: brand_id})
+        catalogue = CataloguesFixtures.create(%{brand_id: brand_id})
 
-      assert Offerings.get_catalogue!(catalogue_id) == catalogue
+      assert Offerings.get_catalogue!(catalogue_id)
+             |> Repo.preload([:categories, :shops]) == catalogue
     end
 
     test "create_catalogue/1 with valid data creates a catalogue", %{
@@ -71,7 +70,8 @@ defmodule ExCommerce.OfferingsTest do
     test "update_catalogue/2 with valid data updates the catalogue", %{
       brand: %Brand{id: brand_id}
     } do
-      %Catalogue{} = catalogue = catalogue_fixture(%{brand_id: brand_id})
+      %Catalogue{} =
+        catalogue = CataloguesFixtures.create(%{brand_id: brand_id})
 
       assert {:ok, %Catalogue{} = catalogue} =
                Offerings.update_catalogue(catalogue, @update_attrs)
@@ -83,19 +83,21 @@ defmodule ExCommerce.OfferingsTest do
       brand: %Brand{id: brand_id}
     } do
       %Catalogue{id: catalogue_id} =
-        catalogue = catalogue_fixture(%{brand_id: brand_id})
+        catalogue = CataloguesFixtures.create(%{brand_id: brand_id})
 
       assert {:error, %Ecto.Changeset{}} =
                Offerings.update_catalogue(catalogue, @invalid_attrs)
 
-      assert catalogue == Offerings.get_catalogue!(catalogue_id)
+      assert catalogue ==
+               Offerings.get_catalogue!(catalogue_id)
+               |> Repo.preload([:categories, :shops])
     end
 
     test "delete_catalogue/1 deletes the catalogue", %{
       brand: %Brand{id: brand_id}
     } do
       %Catalogue{id: catalogue_id} =
-        catalogue = catalogue_fixture(%{brand_id: brand_id})
+        catalogue = CataloguesFixtures.create(%{brand_id: brand_id})
 
       assert {:ok, %Catalogue{}} = Offerings.delete_catalogue(catalogue)
 
@@ -107,7 +109,9 @@ defmodule ExCommerce.OfferingsTest do
     test "change_catalogue/1 returns a catalogue changeset", %{
       brand: %Brand{id: brand_id}
     } do
-      %Catalogue{} = catalogue = catalogue_fixture(%{brand_id: brand_id})
+      %Catalogue{} =
+        catalogue = CataloguesFixtures.create(%{brand_id: brand_id})
+
       assert %Ecto.Changeset{} = Offerings.change_catalogue(catalogue)
     end
   end
@@ -148,7 +152,9 @@ defmodule ExCommerce.OfferingsTest do
       %CatalogueCategory{} =
         catalogue_category = catalogue_category_fixture(%{brand_id: brand_id})
 
-      assert Offerings.list_catalogue_categories() == [catalogue_category]
+      assert Offerings.list_catalogue_categories()
+             |> Repo.preload([:items, :catalogues]) ==
+               [catalogue_category]
     end
 
     test "list_catalogue_categories_by_brand/1 returns all catalogue_categories for a given brand",
@@ -158,7 +164,8 @@ defmodule ExCommerce.OfferingsTest do
       %CatalogueCategory{} =
         catalogue_category = catalogue_category_fixture(%{brand_id: brand_id})
 
-      assert Offerings.list_catalogue_categories_by_brand(brand_id) == [
+      assert Offerings.list_catalogue_categories_by_brand(brand_id)
+             |> Repo.preload([:items, :catalogues]) == [
                catalogue_category
              ]
     end
@@ -170,7 +177,8 @@ defmodule ExCommerce.OfferingsTest do
       %CatalogueCategory{id: catalogue_category_id} =
         catalogue_category = catalogue_category_fixture(%{brand_id: brand_id})
 
-      assert Offerings.get_catalogue_category!(catalogue_category_id) ==
+      assert Offerings.get_catalogue_category!(catalogue_category_id)
+             |> Repo.preload([:items, :catalogues]) ==
                catalogue_category
     end
 
@@ -224,8 +232,9 @@ defmodule ExCommerce.OfferingsTest do
                  @invalid_attrs
                )
 
-      assert catalogue_category ==
+      assert catalogue_category |> Repo.preload([:items]) ==
                Offerings.get_catalogue_category!(catalogue_category_id)
+               |> Repo.preload([:items, :catalogues])
     end
 
     test "delete_catalogue_category/1 deletes the catalogue_category", %{
@@ -296,7 +305,7 @@ defmodule ExCommerce.OfferingsTest do
 
       assert Enum.map(
                Offerings.list_catalogue_items(),
-               &Repo.preload(&1, [:option_groups])
+               &Repo.preload(&1, [:categories, :option_groups])
              ) == [catalogue_item]
     end
 
@@ -309,7 +318,7 @@ defmodule ExCommerce.OfferingsTest do
 
       assert Enum.map(
                Offerings.list_catalogue_items_by_brand(brand_id),
-               &Repo.preload(&1, [:option_groups])
+               &Repo.preload(&1, [:categories, :option_groups])
              ) == [
                catalogue_item
              ]
@@ -322,7 +331,7 @@ defmodule ExCommerce.OfferingsTest do
         catalogue_item = catalogue_item_fixture(%{brand_id: brand_id})
 
       assert Offerings.get_catalogue_item!(catalogue_item_id)
-             |> Repo.preload(:option_groups) == catalogue_item
+             |> Repo.preload([:categories, :option_groups]) == catalogue_item
     end
 
     test "create_catalogue_item/1 with valid data creates a catalogue_item", %{
@@ -430,7 +439,7 @@ defmodule ExCommerce.OfferingsTest do
 
       # Check catalogue_item and catalogue_item_variants were correctly saved.
       assert Offerings.get_catalogue_item!(catalogue_item_id)
-             |> Repo.preload([:option_groups]) == catalogue_item
+             |> Repo.preload([:categories, :option_groups]) == catalogue_item
 
       assert Offerings.get_catalogue_item_variant!(some_item_variant_id) ==
                some_item_variant
@@ -507,7 +516,8 @@ defmodule ExCommerce.OfferingsTest do
 
       # Check catalogue_item and catalogue_item_variants were correctly updated.
       assert Offerings.get_catalogue_item!(catalogue_item_id)
-             |> Repo.preload([:option_groups]) == updated_catalogue_item
+             |> Repo.preload([:categories, :option_groups]) ==
+               updated_catalogue_item
 
       assert Offerings.get_catalogue_item_variant!(some_item_variant_id) ==
                some_updated_item_variant
@@ -645,7 +655,6 @@ defmodule ExCommerce.OfferingsTest do
       assert catalogue_item.name == @update_attrs.name
     end
 
-    @tag :wip
     test "update_catalogue_item/2 with invalid data returns error changeset", %{
       brand: %Brand{id: brand_id}
     } do
@@ -657,7 +666,7 @@ defmodule ExCommerce.OfferingsTest do
 
       assert catalogue_item ==
                Offerings.get_catalogue_item!(catalogue_item_id)
-               |> Repo.preload(:option_groups)
+               |> Repo.preload([:categories, :option_groups])
     end
 
     test "delete_catalogue_item/1 deletes the catalogue_item", %{
@@ -683,32 +692,29 @@ defmodule ExCommerce.OfferingsTest do
   end
 
   describe "catalogue_item_variants" do
-    alias ExCommerce.CatalogueItemsFixtures
-    alias ExCommerce.Offerings.CatalogueItem
-    alias ExCommerce.Offerings.CatalogueItemVariant
+    alias ExCommerce.{
+      CatalogueItemsFixtures,
+      CatalogueItemVariantsFixtures
+    }
 
-    @valid_attrs %{price: "120.5", type: "some type"}
-    @update_attrs %{price: "456.7", type: "some updated type"}
-    @invalid_attrs %{price: nil, type: nil}
+    alias ExCommerce.Offerings.{
+      CatalogueItem,
+      CatalogueItemVariant
+    }
+
+    @valid_attrs CatalogueItemVariantsFixtures.valid_attrs()
+    @update_attrs CatalogueItemVariantsFixtures.update_attrs()
+    @invalid_attrs CatalogueItemVariantsFixtures.invalid_attrs()
 
     setup do
       %{catalogue_item: CatalogueItemsFixtures.create()}
-    end
-
-    def catalogue_item_variant_fixture(attrs \\ %{}) do
-      {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Offerings.create_catalogue_item_variant()
-
-      catalogue_item_variant
     end
 
     test "list_catalogue_item_variants/0 returns all catalogue_item_variants",
          %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
       %CatalogueItemVariant{} =
         catalogue_item_variant =
-        catalogue_item_variant_fixture(%{
+        CatalogueItemVariantsFixtures.create(%{
           catalogue_item_id: catalogue_item_id
         })
 
@@ -721,7 +727,9 @@ defmodule ExCommerce.OfferingsTest do
          %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
       %CatalogueItemVariant{id: catalogue_item_variant_id} =
         catalogue_item_variant =
-        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
+        CatalogueItemVariantsFixtures.create(%{
+          catalogue_item_id: catalogue_item_id
+        })
 
       assert Offerings.get_catalogue_item_variant!(catalogue_item_variant_id) ==
                catalogue_item_variant
@@ -748,7 +756,9 @@ defmodule ExCommerce.OfferingsTest do
          %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
       %CatalogueItemVariant{} =
         catalogue_item_variant =
-        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
+        CatalogueItemVariantsFixtures.create(%{
+          catalogue_item_id: catalogue_item_id
+        })
 
       assert {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
                Offerings.update_catalogue_item_variant(
@@ -764,7 +774,9 @@ defmodule ExCommerce.OfferingsTest do
          %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
       %CatalogueItemVariant{id: catalogue_item_variant_id} =
         catalogue_item_variant =
-        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
+        CatalogueItemVariantsFixtures.create(%{
+          catalogue_item_id: catalogue_item_id
+        })
 
       assert {:error, %Ecto.Changeset{}} =
                Offerings.update_catalogue_item_variant(
@@ -780,7 +792,9 @@ defmodule ExCommerce.OfferingsTest do
          %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
       %CatalogueItemVariant{id: catalogue_item_variant_id} =
         catalogue_item_variant =
-        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
+        CatalogueItemVariantsFixtures.create(%{
+          catalogue_item_id: catalogue_item_id
+        })
 
       assert {:ok, %CatalogueItemVariant{}} =
                Offerings.delete_catalogue_item_variant(catalogue_item_variant)
@@ -794,7 +808,9 @@ defmodule ExCommerce.OfferingsTest do
          %{catalogue_item: %CatalogueItem{id: catalogue_item_id}} do
       %CatalogueItemVariant{} =
         catalogue_item_variant =
-        catalogue_item_variant_fixture(%{catalogue_item_id: catalogue_item_id})
+        CatalogueItemVariantsFixtures.create(%{
+          catalogue_item_id: catalogue_item_id
+        })
 
       assert %Ecto.Changeset{} =
                Offerings.change_catalogue_item_variant(catalogue_item_variant)
@@ -884,7 +900,6 @@ defmodule ExCommerce.OfferingsTest do
                preload_fields(catalogue_item_option)
     end
 
-    @tag :wip
     test "create_catalogue_item_option/1 with valid data creates a catalogue_item_option",
          %{
            brand: %Brand{id: brand_id},
@@ -988,7 +1003,6 @@ defmodule ExCommerce.OfferingsTest do
       end
     end
 
-    @tag :wip
     test "change_catalogue_item_option/1 returns a catalogue_item_option changeset",
          %{
            brand: %Brand{id: brand_id},
@@ -1015,41 +1029,16 @@ defmodule ExCommerce.OfferingsTest do
 
     alias ExCommerce.Offerings.CatalogueItemOptionGroup
 
-    @valid_attrs %{
-      mandatory: true,
-      max_selection: 42,
-      multiple_selection: true,
-      name: "some name",
-      description: "some description"
-    }
-    @update_attrs %{
-      mandatory: false,
-      max_selection: 43,
-      multiple_selection: false,
-      name: "some updated name",
-      description: "some updated description"
-    }
-    @invalid_attrs %{
-      mandatory: nil,
-      max_selection: nil,
-      multiple_selection: nil,
-      name: nil,
-      description: nil
-    }
+    alias ExCommerce.CatalogueItemOptionGroupsFixtures
+
+    @valid_attrs CatalogueItemOptionGroupsFixtures.valid_attrs()
+    @update_attrs CatalogueItemOptionGroupsFixtures.update_attrs()
+    @invalid_attrs CatalogueItemOptionGroupsFixtures.invalid_attrs()
 
     setup do
       %Brand{} = brand = BrandsFixtures.create()
 
       %{brand: brand}
-    end
-
-    def catalogue_item_option_group_fixture(attrs \\ %{}) do
-      {:ok, %CatalogueItemOptionGroup{} = catalogue_item_option_group} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Offerings.create_catalogue_item_option_group()
-
-      catalogue_item_option_group
     end
 
     test "list_catalogue_item_option_groups/0 returns all catalogue_item_option_groups",
@@ -1058,11 +1047,12 @@ defmodule ExCommerce.OfferingsTest do
          } do
       %CatalogueItemOptionGroup{} =
         catalogue_item_option_group =
-        catalogue_item_option_group_fixture(%{
+        CatalogueItemOptionGroupsFixtures.create(%{
           brand_id: brand_id
         })
 
-      assert Offerings.list_catalogue_item_option_groups() == [
+      assert Offerings.list_catalogue_item_option_groups()
+             |> Repo.preload([:items]) == [
                catalogue_item_option_group
              ]
     end
@@ -1073,11 +1063,12 @@ defmodule ExCommerce.OfferingsTest do
          } do
       %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} =
         catalogue_item_option_group =
-        catalogue_item_option_group_fixture(%{brand_id: brand_id})
+        CatalogueItemOptionGroupsFixtures.create(%{brand_id: brand_id})
 
       assert Offerings.get_catalogue_item_option_group!(
                catalogue_item_option_group_id
-             ) == catalogue_item_option_group
+             )
+             |> Repo.preload([:items]) == catalogue_item_option_group
     end
 
     test "create_catalogue_item_option_group/1 with valid data creates a catalogue_item_option_group",
@@ -1105,7 +1096,7 @@ defmodule ExCommerce.OfferingsTest do
          } do
       %CatalogueItemOptionGroup{} =
         catalogue_item_option_group =
-        catalogue_item_option_group_fixture(%{brand_id: brand_id})
+        CatalogueItemOptionGroupsFixtures.create(%{brand_id: brand_id})
 
       assert {:ok, %CatalogueItemOptionGroup{} = catalogue_item_option_group} =
                Offerings.update_catalogue_item_option_group(
@@ -1124,7 +1115,7 @@ defmodule ExCommerce.OfferingsTest do
          } do
       %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} =
         catalogue_item_option_group =
-        catalogue_item_option_group_fixture(%{brand_id: brand_id})
+        CatalogueItemOptionGroupsFixtures.create(%{brand_id: brand_id})
 
       assert {:error, %Ecto.Changeset{}} =
                Offerings.update_catalogue_item_option_group(
@@ -1136,6 +1127,7 @@ defmodule ExCommerce.OfferingsTest do
                Offerings.get_catalogue_item_option_group!(
                  catalogue_item_option_group_id
                )
+               |> Repo.preload([:items])
     end
 
     test "delete_catalogue_item_option_group/1 deletes the catalogue_item_option_group",
@@ -1144,7 +1136,7 @@ defmodule ExCommerce.OfferingsTest do
          } do
       %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} =
         catalogue_item_option_group =
-        catalogue_item_option_group_fixture(%{brand_id: brand_id})
+        CatalogueItemOptionGroupsFixtures.create(%{brand_id: brand_id})
 
       assert {:ok, %CatalogueItemOptionGroup{}} =
                Offerings.delete_catalogue_item_option_group(
@@ -1164,7 +1156,7 @@ defmodule ExCommerce.OfferingsTest do
          } do
       %CatalogueItemOptionGroup{} =
         catalogue_item_option_group =
-        catalogue_item_option_group_fixture(%{
+        CatalogueItemOptionGroupsFixtures.create(%{
           brand_id: brand_id
         })
 
@@ -1180,9 +1172,10 @@ defmodule ExCommerce.OfferingsTest do
 
     alias ExCommerce.Offerings.{
       CatalogueItem,
-      CatalogueItemOptionGroup,
-      CatalogueItemOptionGroupItem
+      CatalogueItemOptionGroup
     }
+
+    alias ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem
 
     @valid_attrs %{visible: true}
     @update_attrs %{visible: false}

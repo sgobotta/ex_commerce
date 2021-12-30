@@ -5,18 +5,32 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias ExCommerce.Offerings.{
-    CatalogueItem,
-    CatalogueItemOption,
-    CatalogueItemOptionGroupItem
+  alias ExCommerce.{
+    EctoHelpers,
+    Offerings
   }
 
-  @fields [:mandatory, :max_selection, :multiple_selection, :name, :description]
+  alias ExCommerce.Offerings.{
+    CatalogueItem,
+    CatalogueItemOption
+  }
+
+  alias ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem
+
+  @fields [
+    :code,
+    :name,
+    :description,
+    :mandatory,
+    :max_selection,
+    :multiple_selection
+  ]
   @foreign_fields [:brand_id]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "catalogue_item_option_groups" do
+    field :code, :string
     field :brand_id, :binary_id
     field :mandatory, :boolean, default: false
     field :max_selection, :integer
@@ -27,10 +41,12 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
     field :temp_id, :string, virtual: true
     field :delete, :boolean, virtual: true
 
-    has_many :options, CatalogueItemOption
+    has_many :options, CatalogueItemOption, on_delete: :delete_all
 
     many_to_many :items, CatalogueItem,
-      join_through: CatalogueItemOptionGroupItem
+      join_through: CatalogueItemOptionGroupItem,
+      on_replace: :delete,
+      on_delete: :delete_all
 
     timestamps()
   end
@@ -44,7 +60,11 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
     )
     |> cast(attrs, @fields ++ @foreign_fields ++ [:delete])
     |> cast_assoc(:options)
-    |> cast_assoc(:items)
+    |> EctoHelpers.put_assoc(
+      attrs,
+      :items,
+      &Offerings.filter_catalogue_items_by_id/1
+    )
     |> validate_required(@fields ++ @foreign_fields)
     |> maybe_mark_for_deletion()
   end

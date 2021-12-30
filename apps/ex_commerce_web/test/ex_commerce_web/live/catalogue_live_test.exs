@@ -7,12 +7,14 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
 
   import Phoenix.LiveViewTest
 
+  alias ExCommerce.CataloguesFixtures
+
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.Catalogue
 
-  @create_attrs %{name: "some name"}
-  @update_attrs %{name: "some updated name"}
-  @invalid_attrs %{name: nil}
+  @create_attrs CataloguesFixtures.valid_attrs()
+  @update_attrs CataloguesFixtures.update_attrs()
+  @invalid_attrs CataloguesFixtures.invalid_attrs()
 
   describe "Index" do
     setup [

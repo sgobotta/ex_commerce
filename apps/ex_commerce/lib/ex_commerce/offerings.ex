@@ -35,6 +35,26 @@ defmodule ExCommerce.Offerings do
     |> Repo.all()
   end
 
+  @spec filter_catalogues_by_id(list(binary())) :: list(Catalogue)
+  @doc """
+  Returns a filtetred list of catalogue_categories by id.
+
+  ## Examples
+
+      iex> filter_catalogues_by_id([
+      ...>  "650ee975-1f24-4dd8-82ec-b3338af63e2f"
+      ...>  "a3148641-5af9-4eb5-95b0-cca2bf9650c7"
+      ...> ])
+      [%Catalogue{}, %Catalogue{}]
+
+  """
+  def filter_catalogues_by_id(catalogue_ids) do
+    Repo.all(
+      from c in Catalogue,
+        where: c.id in ^catalogue_ids
+    )
+  end
+
   @doc """
   Gets a single catalogue.
 
@@ -129,6 +149,27 @@ defmodule ExCommerce.Offerings do
   """
   def list_catalogue_categories do
     Repo.all(CatalogueCategory)
+  end
+
+  @doc """
+  Returns a filtetred list of catalogue_categories by id.
+
+  ## Examples
+
+      iex> filter_catalogue_categories_by_id([
+      ...>  "650ee975-1f24-4dd8-82ec-b3338af63e2f"
+      ...>  "a3148641-5af9-4eb5-95b0-cca2bf9650c7"
+      ...> ])
+      [%CatalogueCategory{}, %CatalogueCategory{}]
+
+  """
+  @spec filter_catalogue_categories_by_id(list(binary())) ::
+          list(CatalogueCategory)
+  def filter_catalogue_categories_by_id(category_ids) do
+    Repo.all(
+      from cc in CatalogueCategory,
+        where: cc.id in ^category_ids
+    )
   end
 
   @doc """
@@ -259,6 +300,26 @@ defmodule ExCommerce.Offerings do
   def list_catalogue_items_by_brand(brand_id) do
     from(s in CatalogueItem, where: s.brand_id == ^brand_id)
     |> Repo.all()
+  end
+
+  @doc """
+  Returns a filtetred list of catalogue_items by id.
+
+  ## Examples
+
+      iex> filter_catalogue_items_by_id([
+      ...>  "650ee975-1f24-4dd8-82ec-b3338af63e2f"
+      ...>  "a3148641-5af9-4eb5-95b0-cca2bf9650c7"
+      ...> ])
+      [%CatalogueItem{}, %CatalogueItem{}]
+
+  """
+  @spec filter_catalogue_items_by_id(list(binary())) :: list(CatalogueItem)
+  def filter_catalogue_items_by_id(item_ids) do
+    Repo.all(
+      from ci in CatalogueItem,
+        where: ci.id in ^item_ids
+    )
   end
 
   @doc """
@@ -793,7 +854,7 @@ defmodule ExCommerce.Offerings do
     CatalogueItemOptionGroup.changeset(catalogue_item_option_group, attrs)
   end
 
-  alias ExCommerce.Offerings.CatalogueItemOptionGroupItem
+  alias ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem
 
   @doc """
   Returns the list of catalogue_item_option_groups_items.

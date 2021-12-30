@@ -9,14 +9,16 @@ defmodule ExCommerce.CatalogueItemVariantsFixtures do
   alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemVariant}
 
   @valid_attrs %{
+    code: "some code",
     type: "some type",
     price: Decimal.new("120.5")
   }
   @update_attrs %{
+    code: "some updated code",
     type: "some updated type",
     price: Decimal.new("456.7")
   }
-  @invalid_attrs %{type: nil, price: nil}
+  @invalid_attrs %{code: nil, type: nil, price: nil}
 
   def valid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@valid_attrs)
   def update_attrs(attrs \\ %{}), do: attrs |> Enum.into(@update_attrs)

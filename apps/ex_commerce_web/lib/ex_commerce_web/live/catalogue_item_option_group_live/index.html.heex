@@ -9,7 +9,8 @@
       catalogue_item_option_group: @catalogue_item_option_group,
       return_to: Routes.catalogue_item_option_group_index_path(@socket, :index, @brand.id),
       patch_to: Routes.catalogue_item_option_group_index_path(@socket, :index, @brand.id),
-      redirect_to: @redirect_to %>
+      redirect_to: @redirect_to
+    %>
   <% end %>
 
   <%= render_layout(
@@ -28,6 +29,7 @@
     <table>
       <thead>
         <tr>
+          <th><%= gettext("Code") %></th>
           <th><%= gettext("Name") %></th>
           <th><%= gettext("Multiple selection") %></th>
           <th><%= gettext("Mandatory") %></th>
@@ -40,6 +42,7 @@
       <tbody id="catalogue_item_option_groups">
         <%= for %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} = catalogue_item_option_group <- @catalogue_item_option_groups do %>
           <tr id={"catalogue_item_option_group-#{catalogue_item_option_group_id}"}>
+            <td><%= catalogue_item_option_group.code %></td>
             <td><%= catalogue_item_option_group.name %></td>
             <td><%= catalogue_item_option_group.mandatory %></td>
             <td><%= catalogue_item_option_group.multiple_selection %></td>

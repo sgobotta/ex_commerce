@@ -7,32 +7,14 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
   import Phoenix.LiveViewTest
 
-  alias ExCommerce.CatalogueItemOptionsFixtures
+  alias ExCommerce.CatalogueItemOptionGroupsFixtures
 
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.{CatalogueItemOptionGroup, CatalogueItemVariant}
 
-  @create_attrs %{
-    mandatory: true,
-    max_selection: 42,
-    multiple_selection: true,
-    name: "some name",
-    description: "some description"
-  }
-  @update_attrs %{
-    mandatory: false,
-    max_selection: 43,
-    multiple_selection: false,
-    name: "some updated name",
-    description: "some updated description"
-  }
-  @invalid_attrs %{
-    mandatory: nil,
-    max_selection: nil,
-    multiple_selection: nil,
-    name: nil,
-    description: nil
-  }
+  @create_attrs CatalogueItemOptionGroupsFixtures.valid_attrs()
+  @update_attrs CatalogueItemOptionGroupsFixtures.update_attrs()
+  @invalid_attrs CatalogueItemOptionGroupsFixtures.invalid_attrs()
 
   describe "Index" do
     setup [
@@ -121,12 +103,12 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       :ok
     end
 
-    defp add_new_options(view, _attrs, options_attrs) do
-      for {_option_attrs, index} <- Enum.with_index(options_attrs) do
-        view
-        |> element("#catalogue_item-add-option-input", "Add an option")
-        |> render_click()
+    defp add_new_options(view, attrs) do
+      view
+      |> element("#catalogue_item-add-option-input", "Add an option")
+      |> render_click()
 
+      for {_option_attrs, index} <- Enum.with_index(attrs.options) do
         assert view
                |> element(
                  "#catalogue_item_option_group-form_options_#{index}_is_visible"
@@ -158,12 +140,11 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
                |> has_element?()
       end
 
-      # TODO: an option should be added here. For some reason the following code
-      # does not work.
-      #
-      # view
-      # |> form("#catalogue_item_option_group-form", catalogue_item_option_group: Map.merge(attrs, %{options: options_attrs}))
-      # |> render_submit()
+      view
+      |> form("#catalogue_item_option_group-form",
+        catalogue_item_option_group: attrs
+      )
+      |> render_change()
 
       :ok
     end
@@ -189,20 +170,37 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
         Map.merge(@create_attrs, %{
           options: %{
             "0" => %{
+              is_visible: true,
+              price_modifier: 50,
+              catalogue_item_id: catalogue_item_id
+            },
+            "1" => %{
+              is_visible: false,
+              price_modifier: 90,
+              catalogue_item_id: catalogue_item_id
+            }
+          }
+        })
+
+      :ok = add_new_options(index_live, create_attrs)
+
+      create_attrs =
+        Map.merge(@create_attrs, %{
+          options: %{
+            "0" => %{
+              is_visible: true,
+              price_modifier: 50,
               catalogue_item_id: catalogue_item_id,
               catalogue_item_variant_id: catalogue_item_variant_id
             },
             "1" => %{
+              is_visible: false,
+              price_modifier: 90,
               catalogue_item_id: catalogue_item_id,
               catalogue_item_variant_id: catalogue_item_variant_id
             }
           }
         })
-
-      :ok =
-        add_new_options(index_live, create_attrs, [
-          CatalogueItemOptionsFixtures.valid_attrs()
-        ])
 
       :ok =
         submit_new_catalogue_item_option_group(

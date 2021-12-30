@@ -10,14 +10,21 @@ defmodule ExCommerce.CataloguesFixtures do
   alias ExCommerce.Offerings.Catalogue
 
   @valid_attrs %{
+    code: "some code",
     name: "some name"
   }
   @update_attrs %{
+    code: "some updated code",
     name: "some updated name"
   }
   @invalid_attrs %{
+    code: nil,
     name: nil
   }
+
+  def valid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@valid_attrs)
+  def update_attrs(attrs \\ %{}), do: attrs |> Enum.into(@update_attrs)
+  def invalid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@invalid_attrs)
 
   def create(attrs \\ %{}) do
     attrs = assign_brand_maybe(attrs)

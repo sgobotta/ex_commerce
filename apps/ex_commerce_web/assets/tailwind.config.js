@@ -18,7 +18,9 @@ module.exports = {
         '1': '1px'
       },
       boxShadow: {
-        'button': '5px 5px 7px 0px rgba(0, 0, 0, 0.3)'
+        'button': '5px 5px 7px 0px rgba(0, 0, 0, 0.3)',
+        'button-sm': '4px 4px 2px 0px rgba(0, 0, 0, 0.3)',
+        'button-xs': '2px 2px 2px 0px rgba(0, 0, 0, 0.3)'
       },
       gridRow: {
         'span-10': 'span 10 / span 10',

@@ -4,7 +4,7 @@
     class="bg-transparent flex justify-center items-center"
   >
     <div
-      @click="open = !open"
+      @click={if @links != [] do "open = !open" else "" end}
       class="relative border-b-4 border-transparent py-3 mt-2"
       :class="{'border-indigo-700 transform transition duration-300': open}"
       x-transition:enter-end="transform opacity-100 scale-100"

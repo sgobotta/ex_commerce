@@ -59,6 +59,8 @@ defmodule ExCommerceWeb do
     quote do
       use Phoenix.LiveComponent
 
+      import ExCommerceWeb.Helpers.CheckboxHelper
+
       unquote(view_helpers())
     end
   end

@@ -10,9 +10,14 @@ defmodule ExCommerce.Offerings.CatalogueItem do
   alias ExCommerce.Offerings
 
   alias ExCommerce.Offerings.{
+    CatalogueCategory,
     CatalogueItemOptionGroup,
-    CatalogueItemOptionGroupItem,
     CatalogueItemVariant
+  }
+
+  alias ExCommerce.Offerings.Relations.{
+    CatalogueCategoryItem,
+    CatalogueItemOptionGroupItem
   }
 
   @fields [:code, :name, :description]
@@ -30,7 +35,13 @@ defmodule ExCommerce.Offerings.CatalogueItem do
 
     many_to_many :option_groups, CatalogueItemOptionGroup,
       join_through: CatalogueItemOptionGroupItem,
-      on_replace: :delete
+      on_replace: :delete,
+      on_delete: :delete_all
+
+    many_to_many :categories, CatalogueCategory,
+      join_through: CatalogueCategoryItem,
+      on_replace: :delete,
+      on_delete: :delete_all
 
     timestamps()
   end
@@ -41,6 +52,7 @@ defmodule ExCommerce.Offerings.CatalogueItem do
     |> cast(attrs, @fields ++ @foreign_fields)
     |> cast_assoc(:variants)
     |> maybe_assoc_option_groups(attrs)
+    |> maybe_assoc_categories(attrs)
     |> validate_required(@fields ++ @foreign_fields)
   end
 
@@ -60,4 +72,20 @@ defmodule ExCommerce.Offerings.CatalogueItem do
   end
 
   defp maybe_assoc_option_groups(changeset, _params), do: changeset
+
+  defp maybe_assoc_categories(
+         changeset,
+         %{"categories" => category_ids}
+       ) do
+    categories = Offerings.filter_catalogue_categories_by_id(category_ids)
+
+    put_assoc(changeset, :categories, categories)
+  end
+
+  defp maybe_assoc_categories(changeset, params)
+       when not is_map_key(params, "categories") do
+    put_assoc(changeset, :categories, [])
+  end
+
+  defp maybe_assoc_categories(changeset, _params), do: changeset
 end

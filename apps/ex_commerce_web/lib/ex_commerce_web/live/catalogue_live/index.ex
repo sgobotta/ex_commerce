@@ -8,6 +8,7 @@ defmodule ExCommerceWeb.CatalogueLive.Index do
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.Catalogue
+  alias ExCommerce.Repo
 
   @impl true
   def mount(params, session, socket) do
@@ -82,6 +83,7 @@ defmodule ExCommerceWeb.CatalogueLive.Index do
 
   defp prepare_new_catalogue(%{brand: %Brand{id: brand_id}}) do
     %Catalogue{brand_id: brand_id}
+    |> Repo.preload([:categories, :shops])
   end
 
   defp list_catalogues(brand_id) do

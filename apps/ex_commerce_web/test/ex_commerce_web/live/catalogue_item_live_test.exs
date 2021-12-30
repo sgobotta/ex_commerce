@@ -7,22 +7,17 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
 
   import Phoenix.LiveViewTest
 
-  alias ExCommerce.CatalogueItemVariantsFixtures
+  alias ExCommerce.{
+    CatalogueItemsFixtures,
+    CatalogueItemVariantsFixtures
+  }
 
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.CatalogueItem
 
-  @create_attrs %{
-    code: "some code",
-    description: "some description",
-    name: "some name"
-  }
-  @update_attrs %{
-    code: "some updated code",
-    description: "some updated description",
-    name: "some updated name"
-  }
-  @invalid_attrs %{code: nil, description: nil, name: nil}
+  @create_attrs CatalogueItemsFixtures.valid_attrs()
+  @update_attrs CatalogueItemsFixtures.update_attrs()
+  @invalid_attrs CatalogueItemsFixtures.invalid_attrs()
 
   describe "Index" do
     setup [
@@ -86,10 +81,10 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
       :ok
     end
 
-    defp submit_new_catalogue_item(conn, view, brand_id) do
+    defp submit_new_catalogue_item(conn, view, brand_id, create_attrs) do
       {:ok, _view, html} =
         view
-        |> form("#catalogue_item-form", catalogue_item: @create_attrs)
+        |> form("#catalogue_item-form", catalogue_item: create_attrs)
         |> render_submit()
         |> follow_redirect(
           conn,
@@ -133,12 +128,20 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
       :ok = navigate_new_catalogue_item(conn, index_live, brand_id)
       :ok = change_new_catalogue_item(index_live, @invalid_attrs)
 
+      create_attrs =
+        Map.merge(@create_attrs, %{
+          variants: %{
+            "0" => CatalogueItemVariantsFixtures.valid_attrs(),
+            "1" => CatalogueItemVariantsFixtures.valid_attrs()
+          }
+        })
+
       :ok =
         add_new_variants(index_live, @create_attrs, [
           CatalogueItemVariantsFixtures.valid_attrs()
         ])
 
-      :ok = submit_new_catalogue_item(conn, index_live, brand_id)
+      :ok = submit_new_catalogue_item(conn, index_live, brand_id, create_attrs)
     end
 
     test "[Success] updates catalogue_item in listing", %{

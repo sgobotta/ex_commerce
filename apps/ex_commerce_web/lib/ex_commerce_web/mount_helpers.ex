@@ -32,12 +32,21 @@ defmodule ExCommerceWeb.MountHelpers do
   Mount helper to assign defaults values to the socket. Includes: `%User{}` and
   browser locale, timezone and timezone offset.
   """
-  def assign_defaults(socket, _params, session) do
+  def assign_defaults(socket, params, session) do
     socket
     |> assign_user(session)
     |> assign_locale()
     |> assign_timezone()
     |> assign_timezone_offset()
+    |> assign_navigation_helpers(params)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Navigation helpers
+
+  defp assign_navigation_helpers(socket, params) do
+    socket
+    |> assign(:redirect_to, params["redirect_to"])
   end
 
   # ----------------------------------------------------------------------------
@@ -64,8 +73,8 @@ defmodule ExCommerceWeb.MountHelpers do
           :brand,
           Repo.preload(brand,
             shops: [],
-            catalogues: [],
-            catalogue_categories: [],
+            catalogues: [:categories],
+            catalogue_categories: [:items, :catalogues],
             catalogue_items: [:variants],
             catalogue_item_option_groups: []
           )
@@ -132,7 +141,10 @@ defmodule ExCommerceWeb.MountHelpers do
 
       %Catalogue{} = catalogue ->
         socket
-        |> assign(:catalogue, catalogue)
+        |> assign(
+          :catalogue,
+          Repo.preload(catalogue, [:categories, :shops])
+        )
     end
   end
 
@@ -165,7 +177,10 @@ defmodule ExCommerceWeb.MountHelpers do
 
       %CatalogueCategory{} = catalogue_category ->
         socket
-        |> assign(:catalogue_category, catalogue_category)
+        |> assign(
+          :catalogue_category,
+          Repo.preload(catalogue_category, [:items, :catalogues])
+        )
     end
   end
 
@@ -199,7 +214,7 @@ defmodule ExCommerceWeb.MountHelpers do
         socket
         |> assign(
           :catalogue_item,
-          Repo.preload(catalogue_item, [:variants, :option_groups])
+          Repo.preload(catalogue_item, [:variants, :option_groups, :categories])
         )
     end
   end
@@ -249,7 +264,7 @@ defmodule ExCommerceWeb.MountHelpers do
         socket
         |> assign(
           :catalogue_item_option_group,
-          Repo.preload(catalogue_item_option_group, [:options])
+          Repo.preload(catalogue_item_option_group, [:options, :items])
         )
     end
   end

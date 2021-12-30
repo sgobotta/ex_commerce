@@ -6,8 +6,18 @@
       title: @page_title,
       action: @live_action,
       catalogue_category: @catalogue_category,
+      catalogue_items: @brand.catalogue_items,
+      catalogues: @brand.catalogues,
       return_to: Routes.catalogue_category_index_path(@socket, :index, @brand.id),
-      patch_to: Routes.catalogue_category_index_path(@socket, :index, @brand.id) %>
+      patch_to: Routes.catalogue_category_index_path(@socket, :index, @brand.id),
+      redirect_to: @redirect_to,
+      current_route: Routes.catalogue_category_index_path(
+        @socket,
+        @live_action,
+        @brand.id,
+        if @live_action == :edit do @catalogue_category.id else [] end
+      )
+    %>
   <% end %>
 
   <%= render_layout(

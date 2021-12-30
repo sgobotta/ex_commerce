@@ -6,6 +6,17 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias ExCommerce.{
+    EctoHelpers,
+    Offerings
+  }
+
+  alias ExCommerce.Offerings.{
+    Catalogue,
+    CatalogueItem,
+    Relations
+  }
+
   @fields [:code, :name, :description]
   @foreign_fields [:brand_id]
 
@@ -17,6 +28,16 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
     field :name, :string
     field :brand_id, :binary_id
 
+    many_to_many :catalogues, Catalogue,
+      join_through: Relations.CatalogueCategory,
+      on_replace: :delete,
+      on_delete: :delete_all
+
+    many_to_many :items, CatalogueItem,
+      join_through: Relations.CatalogueCategoryItem,
+      on_replace: :delete,
+      on_delete: :delete_all
+
     timestamps()
   end
 
@@ -24,6 +45,16 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
   def changeset(catalogue_category, attrs) do
     catalogue_category
     |> cast(attrs, @fields ++ @foreign_fields)
+    |> EctoHelpers.put_assoc(
+      attrs,
+      :items,
+      &Offerings.filter_catalogue_items_by_id/1
+    )
+    |> EctoHelpers.put_assoc(
+      attrs,
+      :catalogues,
+      &Offerings.filter_catalogues_by_id/1
+    )
     |> validate_required(@fields ++ @foreign_fields)
   end
 end

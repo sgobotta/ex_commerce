@@ -88,11 +88,11 @@ defmodule ExCommerceWeb.CatalogueItemLive.Index do
 
   defp prepare_catalogue_item(%{brand: %Brand{id: brand_id}}) do
     %CatalogueItem{brand_id: brand_id}
-    |> Repo.preload([:variants, :option_groups])
+    |> Repo.preload([:variants, :option_groups, :categories])
   end
 
   defp update_catalogue_items(%{assigns: %{brand: %Brand{} = brand}} = socket) do
-    %{catalogue_items: catalogue_items} =
+    %Brand{catalogue_items: catalogue_items} =
       brand = Repo.preload(brand, [:catalogue_items], force: true)
 
     socket

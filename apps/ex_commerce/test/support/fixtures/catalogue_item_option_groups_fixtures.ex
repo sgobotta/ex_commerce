@@ -13,6 +13,7 @@ defmodule ExCommerce.CatalogueItemOptionGroupsFixtures do
     mandatory: true,
     max_selection: 42,
     multiple_selection: true,
+    code: "some code",
     name: "some name",
     description: "some description"
   }
@@ -20,6 +21,7 @@ defmodule ExCommerce.CatalogueItemOptionGroupsFixtures do
     mandatory: false,
     max_selection: 43,
     multiple_selection: false,
+    code: "some updated code",
     name: "some updated name",
     description: "some updated description"
   }
@@ -27,6 +29,7 @@ defmodule ExCommerce.CatalogueItemOptionGroupsFixtures do
     mandatory: nil,
     max_selection: nil,
     multiple_selection: nil,
+    code: nil,
     name: nil,
     description: nil
   }

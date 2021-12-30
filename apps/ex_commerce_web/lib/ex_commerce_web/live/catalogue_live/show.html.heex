@@ -6,8 +6,17 @@
       title: @page_title,
       action: @live_action,
       catalogue: @catalogue,
+      shops: @brand.shops,
+      catalogue_categories: @brand.catalogue_categories,
       return_to: Routes.catalogue_show_path(@socket, :show, @brand.id, @catalogue.id),
-      patch_to: Routes.catalogue_show_path(@socket, :show, @brand.id, @catalogue.id)
+      patch_to: Routes.catalogue_show_path(@socket, :show, @brand.id, @catalogue.id),
+      redirect_to: @redirect_to,
+      current_route: Routes.catalogue_show_path(
+        @socket,
+        @live_action,
+        @brand.id,
+        if @live_action == :edit do @catalogue.id else [] end
+      )
       %>
   <% end %>
 
@@ -23,7 +32,12 @@
     <ul>
 
       <li>
-        <strong>Name:</strong>
+        <strong><%= gettext("Code") %>:</strong>
+        <%= @catalogue.code %>
+      </li>
+
+      <li>
+        <strong><%= gettext("Name") %>:</strong>
         <%= @catalogue.name %>
       </li>
 

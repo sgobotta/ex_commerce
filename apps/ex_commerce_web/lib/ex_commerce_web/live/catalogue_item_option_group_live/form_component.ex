@@ -200,16 +200,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
     end
   end
 
-  defp redirect_or_return(socket) do
-    case socket.assigns.redirect_to do
-      nil ->
-        push_redirect(socket, to: socket.assigns.return_to)
-
-      redirect_to ->
-        push_redirect(socket, to: redirect_to)
-    end
-  end
-
   # ----------------------------------------------------------------------------
   # Assigns helpers
   #
@@ -327,10 +317,10 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
 
   defp is_catalogue_item_disabled(_catalogue_items), do: false
 
-  defp get_selected_catalogue_items(_catalogue_items), do: nil
+  defp get_selected_catalogue_item(_catalogue_items), do: nil
 
   defp build_catalogue_item_options(catalogue_items) do
-    Enum.map(catalogue_items, &{&1.code, &1.id})
+    Enum.map(catalogue_items, &{"#{&1.code} (#{&1.name})", &1.id})
   end
 
   defp find_catalogue_item_by_id(catalogue_items, catalogue_item_id) do
@@ -471,6 +461,40 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent do
     build_catalogue_item_variant_options(variants)
   end
 
-  defp build_catalogue_item_variant_options(variants),
-    do: Enum.map(variants, &{"#{&1.type} - #{format_price(&1.price)}", &1.id})
+  defp build_catalogue_item_variant_options(variants) do
+    Enum.map(
+      variants,
+      &{"#{&1.code} (#{&1.type}) [$#{format_price(&1.price)}]", &1.id}
+    )
+  end
+
+  # ----------------------------------------------------------------------------
+  # Catalogue item multiple selection helpers
+  #
+
+  defp get_selected_catalogue_items(%Phoenix.HTML.Form{
+         source: %Ecto.Changeset{
+           changes: %{
+             items: items
+           }
+         }
+       }) do
+    Enum.map(items, fn %Ecto.Changeset{
+                         data: %CatalogueItem{id: id}
+                       } ->
+      id
+    end)
+  end
+
+  defp get_selected_catalogue_items(%Phoenix.HTML.Form{}), do: []
+
+  defp build_catalogue_item_checkboxes_options(catalogue_items) do
+    Enum.map(catalogue_items, fn %CatalogueItem{
+                                   id: id,
+                                   code: code,
+                                   name: name
+                                 } ->
+      {"#{code} (#{name})", id}
+    end)
+  end
 end

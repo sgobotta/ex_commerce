@@ -6,6 +6,8 @@ defmodule ExCommerce.Marketplaces.Shop do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias ExCommerce.Offerings.{Catalogue, Relations}
+
   @fields [
     :name,
     :slug,
@@ -30,6 +32,11 @@ defmodule ExCommerce.Marketplaces.Shop do
     belongs_to :brand,
                ExCommerce.Marketplaces.Brand,
                type: :binary_id
+
+    many_to_many :catalogues, Catalogue,
+      join_through: Relations.ShopCatalogue,
+      on_replace: :delete,
+      on_delete: :delete_all
 
     timestamps()
   end
