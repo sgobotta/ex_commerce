@@ -23,6 +23,28 @@ defmodule ExCommerceWeb.LiveFormHelpers do
     do: Map.merge(params, %{"brand_id" => brand_id})
 
   @doc """
+  Given a socket, some parms, a function and some options, retrieves completed
+  upload entries and merges the entry function output into the given params to
+  return a new map.
+  """
+  @spec assign_uploads_param(Phoenix.LiveView.Socket.t(), map, any, keyword) ::
+          map
+  def assign_uploads_param(socket, params, entry_map_func, opts) do
+    attr = Keyword.fetch!(opts, :attr)
+    {completed, []} = LiveView.uploaded_entries(socket, attr)
+
+    uploads_params = for entry <- completed, do: entry_map_func.(socket, entry)
+
+    Map.merge(params, %{Atom.to_string(attr) => uploads_params})
+  end
+
+  @doc """
+  Given an entry returns a valid MIME extension.
+  """
+  @spec ext(%{:client_type => binary, optional(any) => any}) :: binary
+  def ext(%{client_type: client_type}), do: hd(MIME.extensions(client_type))
+
+  @doc """
   Given a socket, attempts to navigate to a `:redirect_to` assign, otherwise
   navigates to the `:return_to` assign.
   """
