@@ -29,7 +29,8 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
        :photos,
        accept: ~w(.jpg .jpeg .png),
        max_entries: 1,
-       max_file_size: 8_000_000
+       max_file_size: 2_000_000,
+       auto_upload: true
      )}
   end
 
