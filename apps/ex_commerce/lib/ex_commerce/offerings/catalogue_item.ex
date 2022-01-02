@@ -30,6 +30,7 @@ defmodule ExCommerce.Offerings.CatalogueItem do
     field :description, :string
     field :name, :string
     field :brand_id, :binary_id
+    field :photos, {:array, :map}, default: []
 
     has_many :variants, CatalogueItemVariant, on_delete: :delete_all
 
