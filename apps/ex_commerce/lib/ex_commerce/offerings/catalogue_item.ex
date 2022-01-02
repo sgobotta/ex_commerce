@@ -50,7 +50,7 @@ defmodule ExCommerce.Offerings.CatalogueItem do
   @doc false
   def changeset(catalogue_item, attrs) do
     catalogue_item
-    |> cast(attrs, @fields ++ @foreign_fields)
+    |> cast(attrs, @fields ++ @foreign_fields ++ [:photos])
     |> cast_assoc(:variants)
     |> maybe_assoc_option_groups(attrs)
     |> maybe_assoc_categories(attrs)
