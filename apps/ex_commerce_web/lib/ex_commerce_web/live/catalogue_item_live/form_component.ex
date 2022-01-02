@@ -18,6 +18,21 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     Utils
   }
 
+  @uploads_path get_uploads_path()
+
+  @impl true
+  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
+  def mount(socket) do
+    {:ok,
+     allow_upload(
+       socket,
+       :photos,
+       accept: ~w(.jpg .jpeg .png),
+       max_entries: 1,
+       max_file_size: 8_000_000
+     )}
+  end
+
   @impl true
   def update(
         %{catalogue_item: %CatalogueItem{} = catalogue_item} = assigns,
@@ -124,6 +139,10 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
      )}
   end
 
+  def handle_event("cancel_entry", %{"ref" => ref}, socket) do
+    {:noreply, cancel_upload(socket, :photos, ref)}
+  end
+
   # ----------------------------------------------------------------------------
   # Private helpers
   #
@@ -143,9 +162,18 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   defp prepare_variants_maybe(changeset, %{action: _action}), do: changeset
 
   defp save_catalogue_item(socket, :edit, catalogue_item_params) do
+    catalogue_item_params =
+      assign_uploads_param(
+        socket,
+        catalogue_item_params,
+        &uploads_entry_map_function/2,
+        attr: :photos
+      )
+
     case Offerings.update_catalogue_item(
            socket.assigns.catalogue_item,
-           catalogue_item_params
+           catalogue_item_params,
+           &consume_photos(socket, &1)
          ) do
       {:ok, %CatalogueItem{} = _catalogue_item} ->
         {:noreply,
@@ -162,9 +190,18 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     %{assigns: %{catalogue_item: %CatalogueItem{brand_id: brand_id}}} = socket
 
     catalogue_item_params =
-      assign_brand_id_param(catalogue_item_params, brand_id)
+      assign_uploads_param(
+        socket,
+        catalogue_item_params,
+        &uploads_entry_map_function/2,
+        attr: :photos
+      )
+      |> assign_brand_id_param(brand_id)
 
-    case Offerings.create_catalogue_item(catalogue_item_params) do
+    case Offerings.create_catalogue_item(
+           catalogue_item_params,
+           &consume_photos(socket, &1)
+         ) do
       {:ok, _catalogue_item} ->
         {:noreply,
          socket
@@ -174,6 +211,23 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
+  end
+
+  # ----------------------------------------------------------------------------
+  # File upload helpers
+  #
+
+  defp uploads_entry_map_function(socket, entry) do
+    %{path: Routes.static_path(socket, "/uploads/#{entry.uuid}.#{ext(entry)}")}
+  end
+
+  defp consume_photos(socket, %CatalogueItem{} = catalogue_item) do
+    consume_uploaded_entries(socket, :photos, fn meta, entry ->
+      dest = Path.join(@uploads_path, "#{entry.uuid}.#{ext(entry)}")
+      File.cp!(meta.path, dest)
+    end)
+
+    {:ok, catalogue_item}
   end
 
   # ----------------------------------------------------------------------------

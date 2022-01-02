@@ -9,6 +9,69 @@
       class: "mb-0"
     ], fn f -> %>
 
+    <%= label f, :photos, class: "my-2" %>
+    <p class="italic">
+      <%= gettext("Upload an image for your item. File size can be up to 2 MB.") %>
+    </p>
+
+    <div class="divide-y-1 divide-solid my-2">
+      <%= for entry <- @uploads.photos.entries do %>
+        <div class="
+          grid grid-cols-6
+          h-28
+          items-center
+        ">
+          <div class="col-span-1">
+            <%= live_img_preview entry,
+                  width: "80",
+                  height: "80",
+                  class: "rounded-lg w-20 h-20"
+            %>
+          </div>
+          <div class="col-span-2">
+            <p class="text-base font-mono"><%= entry.client_name %></p>
+          </div>
+          <div class="col-span-2">
+            <progress max="100" value={entry.progress} />
+          </div>
+          <div class="col-span-1 text-right pr-4">
+            <a
+              href="#"
+              phx-click="cancel_entry"
+              phx-value-ref={entry.ref}
+              phx-target={@myself}
+            >
+              &times
+            </a>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mb-2">
+      <%= for {_ref, msg} <- @uploads.photos.errors do %>
+        <%= error_tag Phoenix.Naming.humanize(msg) %>
+      <% end %>
+    </div>
+
+    <label class="button">
+      <%= live_file_input @uploads.photos, class: "hidden" %>
+      <%= gettext("Choose Files") %>
+    </label>
+
+    <div class="grid grid-flow-col my-8">
+      <%= for image <- @catalogue_item.photos do %> 
+        <div class="row-auto col-auto justify-self-center self-center">
+          <img
+            src={Routes.static_path(@socket, image["path"])}
+            width="150" height="150"
+            class="rounded-lg shadow-button-sm"
+          />
+        </div>  
+      <% end %>
+    </div>
+
+
     <%= label f, :code, class: "my-2" %>
     <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: BEER-000 / CONSULTING-000") %>
     <%= error_tag f, :code %>
