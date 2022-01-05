@@ -39,6 +39,15 @@ config :ex_commerce, from_email: "test@ex.commerce"
 config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
 
 # ------------------------------------------------------------------------------
+# Cloudex configuration
+#
+
+config :cloudex,
+  api_key: "some-api-key",
+  secret: "some-secret",
+  cloud_name: "some-cloud-name"
+
+# ------------------------------------------------------------------------------
 # Shared configuration
 #
 
