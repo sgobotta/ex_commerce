@@ -14,13 +14,15 @@ default: help
 check: check.lint check.dialyzer test
 
 #🔍 check.dialyzer: @ Runs a static code analysis
+check.dialyzer: SHELL:=/bin/bash
 check.dialyzer:
-	@mix check.dialyzer
+	@source ${ENV_FILE} && mix check.dialyzer
 
 #🔍 check.lint: @ Strictly runs a code formatter
+check.lint: SHELL:=/bin/bash
 check.lint:
-	@mix check.format
-	@mix check.credo
+	@source ${ENV_FILE} && mix check.format
+	@source ${ENV_FILE} && mix check.credo
 
 #📖 docs: @ Generates HTML documentation
 docs:
@@ -43,9 +45,10 @@ help:
 	@grep -E '[a-zA-Z\.\-]+:.*?@ .*$$' $(MAKEFILE_LIST)| tr -d '#'  | awk 'BEGIN {FS = ":.*?@ "}; {printf "${GREEN}%-30s${NOFORMAT} %s\n", $$1, $$2}'
 
 #💻 lint: @ Formats code
+lint: SHELL:=/bin/bash
 lint:
-	@mix format
-	@mix check.credo
+	@source ${ENV_FILE} && mix format
+	@source ${ENV_FILE} && mix check.credo
 
 #💣 reset: @ Cleans dependencies then re-installs and compiles them for all envs
 reset: SHELL:=/bin/bash
