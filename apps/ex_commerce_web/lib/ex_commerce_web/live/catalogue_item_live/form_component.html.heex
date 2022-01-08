@@ -18,51 +18,11 @@
     </p>
 
     <div class="divide-y-1 divide-solid my-2">
-      <%= for entry <- @uploads.photos.entries do %>
-        <div class="
-          grid grid-cols-12 sm:grid-rows-1 grid-rows-2
-          sm:h-32
-          sm:items-center
-        ">
-          <div class="
-            col-span-3 sm:col-span-2 sm:row-span-1 row-span-2
-          ">
-            <%= live_img_preview entry,
-                  width: "112",
-                  height: "112",
-                  class: "rounded-lg w-28 h-28"
-            %>
-          </div>
-          <div class="
-            col-span-8 sm:col-span-5 row-span-1
-            px-5 self-center
-          ">
-            <p class="text-base font-mono truncate">
-              <%= entry.client_name %>
-            </p>
-          </div>
-          <div class="
-            col-span-1 row-span-2 sm:row-span-1 sm:order-last
-            self-center text-right
-            pr-4
-          ">
-            <a
-              href="#"
-              phx-click="cancel_entry"
-              phx-value-ref={entry.ref}
-              phx-target={@myself}
-            >
-              &times
-            </a>
-          </div>
-          <div class="
-            col-span-8 sm:col-span-4 row-span-1
-            px-5 sm:px-0
-            sm:text-center
-          ">
-            <progress max="100" value={entry.progress} />
-          </div>
-        </div>
+      <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.photos.entries do %>
+        <%= render_upload_image_preview([
+          entry: entry,
+          target: @myself
+        ]) %>
       <% end %>
     </div>
 
@@ -79,21 +39,14 @@
     %>
 
     <div class="grid grid-flow-col my-4 py-4">
-      <%= for photo <- get_photos(@catalogue_item.photos) do %> 
-        <div class="
-          row-auto col-auto
-          justify-self-center self-center
-          w-40 h-40
-        ">
-          <img
-            src={get_photo_source(@socket, photo)}
-            width="160" height="160"
-            class="rounded-lg shadow-button-sm w-40 h-40"
-          />
-        </div>  
+      <%= for photo <- get_photos(@catalogue_item.photos) do %>
+
+        <%= render_thumbnail([
+          source: get_photo_source(@socket, photo),
+          size: "64"
+        ]) %>
       <% end %>
     </div>
-
 
     <%= label f, :code, class: "my-2" %>
     <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: BEER-000 / CONSULTING-000") %>

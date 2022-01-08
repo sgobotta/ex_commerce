@@ -1,0 +1,46 @@
+<div class="
+  grid grid-cols-12 sm:grid-rows-1 grid-rows-2
+  sm:h-32 sm:py-0 py-2
+  sm:items-center
+">
+  <div class="col-span-3 sm:col-span-2 sm:row-span-1 row-span-2">
+    <%= live_img_preview @entry, class: "rounded-lg w-28 h-28" %>
+  </div>
+  <div class="
+    col-span-6 sm:col-span-3 row-span-1
+    px-5 self-center
+  ">
+    <p class="text-base font-mono truncate">
+      <%= @entry.client_name %>
+    </p>
+  </div>
+  <div class="
+    col-span-2 row-span-1
+    px-5 self-center
+  ">
+    <p class="text-base font-mono">
+      <%= @client_size %>
+    </p>
+  </div>
+  <div class="
+    col-span-1 row-span-2 sm:row-span-1 sm:order-last
+    self-center text-right
+    pr-4
+  ">
+    <a
+      href="#"
+      phx-click="cancel_entry"
+      phx-value-ref={@entry.ref}
+      phx-target={@target}
+    >
+      &times
+    </a>
+  </div>
+  <div class="
+    col-span-8 sm:col-span-4 row-span-1
+    px-5 sm:px-0
+    sm:text-center
+  ">
+    <progress max="100" value={@entry.progress} />
+  </div>
+</div>

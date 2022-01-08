@@ -94,6 +94,10 @@ defmodule ExCommerceWeb.LiveHelpers do
     render(ExCommerceWeb.ImagesView, "thumbnail", opts)
   end
 
+  def render_upload_image_preview(opts \\ []) do
+    render(ExCommerceWeb.ImagesView, "upload_image_preview", opts)
+  end
+
   # ----------------------------------------------------------------------------
   # Modal helpers
   #
