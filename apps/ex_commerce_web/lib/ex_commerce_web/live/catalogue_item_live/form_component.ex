@@ -144,7 +144,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
      )}
   end
 
-  def handle_event("cancel_entry", %{"ref" => ref}, socket) do
+  def handle_event("cancel_photo_entry", %{"ref" => ref}, socket) do
     {:noreply, cancel_upload(socket, :photos, ref)}
   end
 

@@ -20,6 +20,7 @@ defmodule ExCommerceWeb.ImagesView do
   def render(
         "upload_image_preview",
         %{
+          cancel_event: _cancel_event,
           entry: %LiveView.UploadEntry{client_size: client_size} = _entry,
           target: %LiveComponent.CID{} = _target
         } = assigns

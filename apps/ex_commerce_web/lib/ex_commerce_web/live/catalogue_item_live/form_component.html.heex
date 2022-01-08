@@ -13,7 +13,7 @@
     <p>
       <%= gettext("Upload an image for your item.") %>
     </p>
-    <p class="italic">
+    <p class="italic my-1">
       <%= gettext("File size can be up to 2 MB. Preferably use squared images.") %>
     </p>
 
@@ -21,7 +21,8 @@
       <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.photos.entries do %>
         <%= render_upload_image_preview([
           entry: entry,
-          target: @myself
+          target: @myself,
+          cancel_event: "cancel_photo_entry"
         ]) %>
       <% end %>
     </div>
