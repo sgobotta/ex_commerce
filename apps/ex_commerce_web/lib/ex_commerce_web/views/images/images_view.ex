@@ -17,6 +17,16 @@ defmodule ExCommerceWeb.ImagesView do
     render("thumbnail.html", opts)
   end
 
+  def render("banner", assigns) do
+    opts =
+      assigns
+      |> Map.put_new(:container_classes, "")
+      |> Map.put_new(:source, "use-some-default-banner-image.png")
+      |> Map.put_new(:size_classes, assign_size_classes(assigns[:size]))
+
+    render("banner.html", opts)
+  end
+
   def render(
         "upload_image_preview",
         %{
