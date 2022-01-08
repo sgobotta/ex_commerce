@@ -16,8 +16,8 @@ defmodule ExCommerce.Marketplaces.Shop do
     :banner_message,
     :address
   ]
-
   @foreign_fields [:brand_id]
+  @media_fields [:avatars, :banners]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -28,6 +28,8 @@ defmodule ExCommerce.Marketplaces.Shop do
     field :telephone, :string
     field :banner_message, :string, size: 128
     field :address, :string
+    field :avatars, {:array, :map}, default: []
+    field :banners, {:array, :map}, default: []
 
     belongs_to :brand,
                ExCommerce.Marketplaces.Brand,
@@ -44,7 +46,7 @@ defmodule ExCommerce.Marketplaces.Shop do
   @doc false
   def changeset(shop, attrs) do
     shop
-    |> cast(attrs, @fields ++ @foreign_fields)
+    |> cast(attrs, @fields ++ @foreign_fields ++ @media_fields)
     |> validate_required(@fields ++ @foreign_fields)
     |> format_slug()
     |> unique_constraint(:slug)
