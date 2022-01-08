@@ -12,7 +12,7 @@ defmodule ExCommerceNumeric.Sizes do
       "1.67 MB."
 
       iex> Sizes.humanize_bytes(667776)
-      "652 KB.
+      "652 KB."
 
   """
   @spec humanize_bytes(integer()) :: binary()
