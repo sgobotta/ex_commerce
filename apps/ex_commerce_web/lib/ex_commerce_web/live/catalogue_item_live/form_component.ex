@@ -4,6 +4,8 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   """
   use ExCommerceWeb, :live_component
 
+  use ExCommerceWeb.LiveFormHelpers, routes: Routes
+
   alias ExCommerce.Marketplaces.Brand
 
   alias ExCommerce.{Offerings, Photos}
@@ -265,21 +267,8 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   end
 
   # ----------------------------------------------------------------------------
-  # Photo form helpers
+  # Photo form helpers: imported from LiveHelpers
   #
-
-  defp get_photos([]), do: []
-  defp get_photos([photo | _photos]), do: [photo]
-
-  defp get_photo_source(socket, photo) do
-    case Photos.is_remote(photo) do
-      true ->
-        Photos.get_remote_path(photo)
-
-      false ->
-        Routes.static_path(socket, Photos.get_local_path(photo))
-    end
-  end
 
   # ----------------------------------------------------------------------------
   # Catalogue item option groups selection helpers

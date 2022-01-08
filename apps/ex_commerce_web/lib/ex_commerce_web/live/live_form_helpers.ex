@@ -9,6 +9,28 @@ defmodule ExCommerceWeb.LiveFormHelpers do
 
   @type uuid :: Ecto.UUID.t()
 
+  # ----------------------------------------------------------------------------
+  # Defines form helpers to inject in form components
+  #
+
+  defmacro __using__(opts) do
+    quote do
+      defp get_photos([]), do: []
+      defp get_photos([photo | _photos]), do: [photo]
+
+      defp get_photo_source(socket, photo) do
+        case Photos.is_remote(photo) do
+          true ->
+            Photos.get_remote_path(photo)
+
+          false ->
+            routes = Keyword.get(unquote(opts), :routes)
+            routes.static_path(socket, Photos.get_local_path(photo))
+        end
+      end
+    end
+  end
+
   @doc """
   Given a map of params and a brand id, merges the brand id into the params.
   """
@@ -86,7 +108,7 @@ defmodule ExCommerceWeb.LiveFormHelpers do
 
     old_photos = Enum.map(old_photos, &Photos.mark_delete(&1))
 
-    {new_photos, old_photos}
+    {old_photos, new_photos}
   end
 
   @doc """
