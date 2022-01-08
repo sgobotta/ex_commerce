@@ -9,44 +9,46 @@
       class: "mb-0"
     ], fn f -> %>
 
-    <%= label f, :photos, class: "my-2" %>
-    <p>
-      <%= gettext("Upload an image for your item.") %>
-    </p>
-    <p class="italic my-1">
-      <%= gettext("File size can be up to 2 MB. Preferably use squared images.") %>
-    </p>
+    <div class="my-6">
+      <%= label f, :photos, class: "my-2" %>
+      <p>
+        <%= gettext("Upload an image for your item.") %>
+      </p>
+      <p class="italic my-1">
+        <%= gettext("File size can be up to 2 MB. Preferably use squared images.") %>
+      </p>
 
-    <div class="divide-y-1 divide-solid my-2">
-      <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.photos.entries do %>
-        <%= render_upload_image_preview([
-          entry: entry,
-          target: @myself,
-          cancel_event: "cancel_photo_entry"
-        ]) %>
-      <% end %>
-    </div>
+      <div class="divide-y-1 divide-solid my-2">
+        <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.photos.entries do %>
+          <%= render_upload_image_preview([
+            entry: entry,
+            target: @myself,
+            cancel_event: "cancel_photo_entry"
+          ]) %>
+        <% end %>
+      </div>
 
-    <div class="mb-2">
-      <%= for {_ref, msg} <- @uploads.photos.errors do %>
-        <%= error_tag Phoenix.Naming.humanize(msg) %>
-      <% end %>
-    </div>
+      <div class="mb-2">
+        <%= for {_ref, msg} <- @uploads.photos.errors do %>
+          <%= error_tag Phoenix.Naming.humanize(msg) %>
+        <% end %>
+      </div>
 
-    <%= render_file_input([
-        text: gettext("Choose an item picture"),
-        uploads: @uploads.photos
-      ])
-    %>
+      <div class="grid grid-flow-col my-4 py-4">
+        <%= for photo <- get_photos(@catalogue_item.photos) do %>
 
-    <div class="grid grid-flow-col my-4 py-4">
-      <%= for photo <- get_photos(@catalogue_item.photos) do %>
+          <%= render_thumbnail([
+            source: get_photo_source(@socket, photo),
+            size: "64"
+          ]) %>
+        <% end %>
+      </div>
 
-        <%= render_thumbnail([
-          source: get_photo_source(@socket, photo),
-          size: "64"
-        ]) %>
-      <% end %>
+      <%= render_file_input([
+          text: gettext("Choose an item picture"),
+          uploads: @uploads.photos
+        ])
+      %>
     </div>
 
     <%= label f, :code, class: "my-2" %>
