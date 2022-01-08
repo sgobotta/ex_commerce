@@ -87,6 +87,14 @@ defmodule ExCommerceWeb.LiveHelpers do
   end
 
   # ----------------------------------------------------------------------------
+  # Select helpers
+  #
+
+  def render_thumbnail(opts \\ []) do
+    render(ExCommerceWeb.ImagesView, "thumbnail", opts)
+  end
+
+  # ----------------------------------------------------------------------------
   # Modal helpers
   #
 
