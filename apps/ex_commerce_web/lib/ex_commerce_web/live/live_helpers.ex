@@ -37,6 +37,10 @@ defmodule ExCommerceWeb.LiveHelpers do
     render(ExCommerceWeb.ButtonsView, "image_button", opts)
   end
 
+  def render_file_input(opts \\ []) do
+    render(ExCommerceWeb.ButtonsView, "file_input", opts)
+  end
+
   # ----------------------------------------------------------------------------
   # Select helpers
   #
