@@ -37,9 +37,9 @@
     <table>
       <thead>
         <tr>
+          <th><%= gettext("Photo") %></th>
           <th><%= gettext("Code") %></th>
           <th><%= gettext("Name") %></th>
-          <th><%= gettext("Description") %></th>
 
           <th></th>
         </tr>
@@ -47,9 +47,16 @@
       <tbody id="catalogue_items">
         <%= for %CatalogueItem{id: catalogue_item_id} = catalogue_item <- @catalogue_items do %>
           <tr id={"catalogue_item-#{catalogue_item_id}"}>
+            <td class="px-4">
+              <%= for photo <- get_photos(catalogue_item.photos) do %>
+                <%= render_thumbnail([
+                  source: get_photo_source(@socket, photo),
+                  size: "28"
+                ]) %>
+              <% end %>
+            </td>
             <td><%= catalogue_item.code %></td>
             <td><%= catalogue_item.name %></td>
-            <td><%= catalogue_item.description %></td>
 
             <td>
               <span><%= live_redirect gettext("Show"), to: Routes.catalogue_item_show_path(@socket, :show, @brand.id, catalogue_item_id) %></span>
