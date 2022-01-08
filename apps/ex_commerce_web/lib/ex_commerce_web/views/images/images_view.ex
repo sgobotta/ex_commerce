@@ -36,7 +36,7 @@ defmodule ExCommerceWeb.ImagesView do
   # Private helpers
   #
 
-  defp assign_size_classes(nil), do: ""
+  defp assign_size_classes(nil), do: "w-40 h-40"
 
   defp assign_size_classes(size), do: "w-#{size} h-#{size}"
 end
