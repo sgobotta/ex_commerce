@@ -4,16 +4,27 @@ defmodule ExCommerceAssets do
   """
 
   @doc """
+  Given a list of file paths and some options, calls upload with some fixed
+  options for images format and transformation.
+  """
+  @spec upload_thumbnails(list(binary()), map()) :: list
+  def upload_thumbnails(file_paths, options) do
+    options =
+      Map.merge(options, %{
+        allowed_formats: "jpg, png",
+        transformation: "w_512,h_512,c_limit"
+      })
+
+    upload(file_paths, options)
+  end
+
+  @doc """
   Delegates to `Cloudex.upload/2`
   """
   @spec upload([binary], map) :: list
   def upload(files, options) do
     Cloudex.upload(files, options)
     |> parse_response()
-  end
-
-  def hello do
-    :world
   end
 
   defp parse_response(upload_response) when is_list(upload_response) do
