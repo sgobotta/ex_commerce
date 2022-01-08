@@ -72,10 +72,11 @@
       <% end %>
     </div>
 
-    <label class="button">
-      <%= live_file_input @uploads.photos, class: "hidden" %>
-      <%= gettext("Choose Files") %>
-    </label>
+    <%= render_file_input([
+        text: gettext("Choose an item picture"),
+        uploads: @uploads
+      ])
+    %>
 
     <div class="grid grid-flow-col my-4 py-4">
       <%= for photo <- get_photos(@catalogue_item.photos) do %> 
