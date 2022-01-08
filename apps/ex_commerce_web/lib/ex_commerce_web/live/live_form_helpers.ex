@@ -15,8 +15,18 @@ defmodule ExCommerceWeb.LiveFormHelpers do
 
   defmacro __using__(opts) do
     quote do
-      defp get_photos([]), do: []
-      defp get_photos([photo | _photos]), do: [photo]
+      defp get_photos(photos, opts \\ [use_placeholder: false])
+
+      defp get_photos([], use_placeholder: true, type: type),
+        do: [{:placeholder, type}]
+
+      defp get_photos([], _opts), do: []
+      defp get_photos([photo | _photos], _opts), do: [photo]
+
+      defp get_photo_source(socket, {:placeholder, type}) do
+        routes = Keyword.get(unquote(opts), :routes)
+        routes.static_path(socket, get_placeholder_image(type))
+      end
 
       defp get_photo_source(socket, photo) do
         case Photos.is_remote(photo) do
@@ -28,6 +38,18 @@ defmodule ExCommerceWeb.LiveFormHelpers do
             routes.static_path(socket, Photos.get_local_path(photo))
         end
       end
+
+      defp get_placeholder_image(:avatar),
+        do: "/images/placeholders/avatar-512x512.png"
+
+      defp get_placeholder_image(:avatar_with_size),
+        do: "/images/placeholders/avatar-512x512-with-size.png"
+
+      defp get_placeholder_image(:banner),
+        do: "/images/placeholders/banner-1024x480.png"
+
+      defp get_placeholder_image(:banner_with_size),
+        do: "/images/placeholders/banner-1024x480-with-size.png"
     end
   end
 

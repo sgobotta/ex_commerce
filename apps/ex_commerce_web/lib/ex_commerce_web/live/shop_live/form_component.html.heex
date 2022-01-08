@@ -37,8 +37,10 @@
       </div>
 
       <div class="grid grid-flow-col my-4 py-4">
-        <%= for photo <- get_photos(@shop.avatars) do %>
-
+        <%= for photo <- get_photos(@shop.avatars, [
+          use_placeholder: true,
+          type: :avatar_with_size
+        ]) do %>
           <%= render_thumbnail([
             source: get_photo_source(@socket, photo),
             size: "64"
@@ -78,12 +80,12 @@
         <% end %>
       </div>
 
-      <div class="grid grid-flow-row gap-4 my-4 py-4">
-        <%= for photo <- get_photos(@shop.banners) do %>
-
-          <%= render_banner([
-            source: get_photo_source(@socket, photo)
-          ]) %>
+      <div class="grid grid-flow-col gap-4 my-4 py-4">
+        <%= for photo <- get_photos(@shop.banners, [
+          use_placeholder: true,
+          type: :banner_with_size
+        ]) do %>
+          <%= render_banner([source: get_photo_source(@socket, photo)]) %>
         <% end %>
       </div>
 

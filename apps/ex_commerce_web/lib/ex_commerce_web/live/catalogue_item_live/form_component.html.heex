@@ -35,8 +35,10 @@
       </div>
 
       <div class="grid grid-flow-col my-4 py-4">
-        <%= for photo <- get_photos(@catalogue_item.photos) do %>
-
+        <%= for photo <- get_photos(@catalogue_item.photos, [
+          use_placeholder: true,
+          type: :avatar_with_size
+        ]) do %>
           <%= render_thumbnail([
             source: get_photo_source(@socket, photo),
             size: "64"

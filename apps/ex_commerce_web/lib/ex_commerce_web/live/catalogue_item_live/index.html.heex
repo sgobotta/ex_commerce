@@ -48,7 +48,10 @@
         <%= for %CatalogueItem{id: catalogue_item_id} = catalogue_item <- @catalogue_items do %>
           <tr id={"catalogue_item-#{catalogue_item_id}"}>
             <td>
-              <%= for photo <- get_photos(catalogue_item.photos) do %>
+              <%= for photo <- get_photos(catalogue_item.photos, [
+                use_placeholder: true,
+                type: :avatar
+              ]) do %>
                 <%= render_thumbnail([
                   source: get_photo_source(@socket, photo),
                   size: "28"
