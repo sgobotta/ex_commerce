@@ -10,6 +10,86 @@
     ],
     fn f -> %>
 
+    <%= label f, :avatars, gettext("Shop logo"), class: "my-2" %>
+    <p>
+      <%= gettext("Upload a logo for this shop.") %>
+    </p>
+    <p class="italic my-1">
+      <%= gettext("File size can be up to 2 MB. Preferably use squared images.") %>
+    </p>
+
+    <div class="divide-y-1 divide-solid my-2">
+      <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.avatars.entries do %>
+        <%= render_upload_image_preview([
+          entry: entry,
+          target: @myself,
+          cancel_event: "cancel_avatar_entry"
+        ]) %>
+      <% end %>
+    </div>
+
+    <div class="mb-2">
+      <%= for {_ref, msg} <- @uploads.avatars.errors do %>
+        <%= error_tag Phoenix.Naming.humanize(msg) %>
+      <% end %>
+    </div>
+
+    <%= render_file_input([
+        text: gettext("Choose a picture"),
+        uploads: @uploads.avatars
+      ])
+    %>
+
+    <div class="grid grid-flow-col my-4 py-4">
+      <%= for photo <- get_photos(@shop.avatars) do %>
+
+        <%= render_thumbnail([
+          source: get_photo_source(@socket, photo),
+          size: "64"
+        ]) %>
+      <% end %>
+    </div>
+
+    <%= label f, :banners, gettext("Shop banner"), class: "my-2" %>
+    <p>
+      <%= gettext("Upload a banner for the top of your catalogues/menus.") %>
+    </p>
+    <p class="italic my-1">
+      <%= gettext("File size can be up to 2 MB. Use wide images.") %>
+    </p>
+
+    <div class="divide-y-1 divide-solid my-2">
+      <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.banners.entries do %>
+        <%= render_upload_image_preview([
+          entry: entry,
+          target: @myself,
+          cancel_event: "cancel_banner_entry"
+        ]) %>
+      <% end %>
+    </div>
+
+    <div class="mb-2">
+      <%= for {_ref, msg} <- @uploads.banners.errors do %>
+        <%= error_tag Phoenix.Naming.humanize(msg) %>
+      <% end %>
+    </div>
+
+    <%= render_file_input([
+        text: gettext("Choose a banner picture"),
+        uploads: @uploads.banners
+      ])
+    %>
+
+    <div class="grid grid-flow-col my-4 py-4">
+      <%= for photo <- get_photos(@shop.banners) do %>
+
+        <%= render_thumbnail([
+          source: get_photo_source(@socket, photo),
+          size: "64"
+        ]) %>
+      <% end %>
+    </div>
+
     <%= label f, :name, class: "my-2" %>
     <%= text_input f, :name, class: "input", placeholder: gettext("My online shop") %>
     <%= error_tag f, :name %>

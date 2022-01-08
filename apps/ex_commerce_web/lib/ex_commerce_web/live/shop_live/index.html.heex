@@ -5,6 +5,7 @@
       id: @shop.id || :new,
       title: @page_title,
       action: @live_action,
+      brand: @brand,
       shop: @shop,
       return_to: Routes.shop_index_url(@socket, :index, @brand.id),
       patch_to: Routes.shop_index_path(@socket, :index, @brand.id)
