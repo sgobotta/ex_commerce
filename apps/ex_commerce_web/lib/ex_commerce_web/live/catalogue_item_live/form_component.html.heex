@@ -78,14 +78,14 @@
     </label>
 
     <div class="grid grid-flow-col my-4 py-4">
-      <%= for image <- @catalogue_item.photos do %> 
+      <%= for photo <- get_photos(@catalogue_item.photos) do %> 
         <div class="
           row-auto col-auto
           justify-self-center self-center
           w-40 h-40
         ">
           <img
-            src={Routes.static_path(@socket, image["path"])}
+            src={get_photo_source(@socket, photo)}
             width="160" height="160"
             class="rounded-lg shadow-button-sm w-40 h-40"
           />

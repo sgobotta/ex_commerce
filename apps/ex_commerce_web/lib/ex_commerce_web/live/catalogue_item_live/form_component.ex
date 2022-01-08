@@ -4,7 +4,9 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   """
   use ExCommerceWeb, :live_component
 
-  alias ExCommerce.Offerings
+  alias ExCommerce.Marketplaces.Brand
+
+  alias ExCommerce.{Offerings, Photos}
 
   alias ExCommerce.Offerings.{
     CatalogueCategory,
@@ -164,10 +166,11 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
 
   defp save_catalogue_item(socket, :edit, catalogue_item_params) do
     catalogue_item_params =
-      assign_uploads_param(
+      put_uploads(
         socket,
         catalogue_item_params,
-        &uploads_entry_map_function/2,
+        &build_photo_by_upload_entry/2,
+        &assign_photos_param/2,
         attr: :photos
       )
 
@@ -191,10 +194,11 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     %{assigns: %{catalogue_item: %CatalogueItem{brand_id: brand_id}}} = socket
 
     catalogue_item_params =
-      assign_uploads_param(
+      put_uploads(
         socket,
         catalogue_item_params,
-        &uploads_entry_map_function/2,
+        &build_photo_by_upload_entry/2,
+        &assign_photos_param/2,
         attr: :photos
       )
       |> assign_brand_id_param(brand_id)
@@ -218,17 +222,63 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   # File upload helpers
   #
 
-  defp uploads_entry_map_function(socket, entry) do
-    %{path: Routes.static_path(socket, "/uploads/#{entry.uuid}.#{ext(entry)}")}
+  defp build_photo_by_upload_entry(socket, entry) do
+    %{brand: %Brand{id: brand_id}} = socket.assigns
+    %{uuid: uuid} = entry
+    extension = ext(entry)
+
+    Photos.create_photo(%{
+      local_path: Routes.static_path(socket, "/uploads/#{uuid}.#{extension}"),
+      full_local_path: Path.join(@uploads_path, "#{uuid}.#{extension}"),
+      uuid: uuid,
+      brand_id: brand_id
+    })
   end
 
-  defp consume_photos(socket, %CatalogueItem{} = catalogue_item) do
-    consume_uploaded_entries(socket, :photos, fn meta, entry ->
-      dest = Path.join(@uploads_path, "#{entry.uuid}.#{ext(entry)}")
-      File.cp!(meta.path, dest)
-    end)
+  defp assign_photos_param(socket, new_photos) do
+    %{catalogue_item: %CatalogueItem{photos: photos}} = socket.assigns
+
+    new_photos ++ photos
+  end
+
+  defp consume_photos(socket, %CatalogueItem{photos: photos} = catalogue_item) do
+    %{brand: %Brand{id: brand_id}} = socket.assigns
+    upload_opts = [folder: brand_id, tags: brand_id]
+
+    # Consumes uploads via the live form helper
+    {old_photos, new_photos} =
+      consume_uploads(
+        socket,
+        :photos,
+        @uploads_path,
+        upload_opts,
+        photos
+      )
+
+    # Saves new photos
+    {:ok, %CatalogueItem{} = catalogue_item} =
+      Offerings.update_catalogue_item(catalogue_item, %{
+        photos: new_photos ++ old_photos
+      })
 
     {:ok, catalogue_item}
+  end
+
+  # ----------------------------------------------------------------------------
+  # Photo form helpers
+  #
+
+  defp get_photos([]), do: []
+  defp get_photos([photo | _photos]), do: [photo]
+
+  defp get_photo_source(socket, photo) do
+    case Photos.is_remote(photo) do
+      true ->
+        Photos.get_remote_path(photo)
+
+      false ->
+        Routes.static_path(socket, Photos.get_local_path(photo))
+    end
   end
 
   # ----------------------------------------------------------------------------
