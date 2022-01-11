@@ -40,7 +40,11 @@ jobs:
         run: |
           mix local.rebar --force
           mix local.hex --force
-          make setup.deps.ci
+          mix install
+      - name: Compile app & deps
+        run: |
+          mix deps.compile
+          mix compile
       - name: Run formatter
         run: |
           mix check.format

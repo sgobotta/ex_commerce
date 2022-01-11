@@ -45,7 +45,11 @@ jobs:
         run: |
           mix local.rebar --force
           mix local.hex --force
-          mix deps.get
+          mix install
+      - name: Compile app & deps
+        run: |
+          mix deps.compile
+          mix compile
       - name: Run code analysis
         run: |
           mix check.dialyzer

@@ -58,6 +58,10 @@ jobs:
       run: |
         mix install
         mix setup
+    - name: Compile app & deps
+      run: |
+        mix deps.compile
+        mix compile
     - name: Run tests
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
