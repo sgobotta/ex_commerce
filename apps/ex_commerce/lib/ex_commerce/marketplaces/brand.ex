@@ -5,11 +5,9 @@ defmodule ExCommerce.Marketplaces.Brand do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias ExCommerce.{Accounts, Marketplaces, Offerings}
+  alias ExCommerce.{Accounts, Marketplaces, Offerings, Uploads}
 
   @fields [:name]
-
-  # @foreign_fields [:user_id]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -26,6 +24,7 @@ defmodule ExCommerce.Marketplaces.Brand do
     has_many :catalogue_categories, Offerings.CatalogueCategory
     has_many :catalogue_items, Offerings.CatalogueItem
     has_many :catalogue_item_option_groups, Offerings.CatalogueItemOptionGroup
+    has_many :photos, Uploads.Photo
 
     timestamps()
   end
