@@ -48,4 +48,4 @@ jobs:
           mix deps.get
       - name: Run code analysis
         run: |
-          make check.dialyzer
+          mix check.dialyzer

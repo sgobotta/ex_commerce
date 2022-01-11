@@ -43,4 +43,5 @@ jobs:
           make setup.deps.ci
       - name: Run formatter
         run: |
-          make check.lint
+          mix check.format
+          mix check.credo
