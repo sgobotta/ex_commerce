@@ -13,8 +13,8 @@ config :bcrypt_elixir, :log_rounds, 1
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :ex_commerce, ExCommerce.Repo,
-  username: System.get_env("DB_USERNAME_TEST"),
-  password: System.get_env("DB_PASSWORD_TEST"),
+  username: System.get_env("DB_USERNAME", "postgres"),
+  password: System.get_env("DB_PASSWORD", "postgres"),
   database: "ex_commerce_test#{System.get_env("MIX_TEST_PARTITION")}",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox,
@@ -37,6 +37,15 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
 config :ex_commerce, from_email: "test@ex.commerce"
 
 config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
+
+# ------------------------------------------------------------------------------
+# Cloudex configuration
+#
+
+config :cloudex,
+  api_key: "some-api-key",
+  secret: "some-secret",
+  cloud_name: "some-cloud-name"
 
 # ------------------------------------------------------------------------------
 # Shared configuration

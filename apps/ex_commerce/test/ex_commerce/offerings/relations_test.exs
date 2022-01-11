@@ -247,19 +247,16 @@ defmodule ExCommerce.Offerings.RelationsTest do
       %{brand: BrandsFixtures.create()}
     end
 
-    @tag :wip
     test "list_shops_catalogues/0 returns all shops_catalogues" do
       %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
       assert Relations.list_shops_catalogues() == [shop_catalogue]
     end
 
-    @tag :wip
     test "get_shop_catalogue!/1 returns the shop_catalogue with given id" do
       %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
       assert Relations.get_shop_catalogue!(shop_catalogue.id) == shop_catalogue
     end
 
-    @tag :wip
     test "create_shop_catalogue/1 with valid data creates a shop_catalogue", %{
       brand: %Brand{id: brand_id}
     } do
@@ -281,13 +278,11 @@ defmodule ExCommerce.Offerings.RelationsTest do
       assert shop_catalogue.visible == true
     end
 
-    @tag :wip
     test "create_shop_catalogue/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} =
                Relations.create_shop_catalogue(@invalid_attrs)
     end
 
-    @tag :wip
     test "update_shop_catalogue/2 with valid data updates the shop_catalogue" do
       %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
       update_attrs = %{visible: false}
@@ -298,7 +293,6 @@ defmodule ExCommerce.Offerings.RelationsTest do
       assert shop_catalogue.visible == false
     end
 
-    @tag :wip
     test "update_shop_catalogue/2 with invalid data returns error changeset" do
       %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
 
@@ -308,7 +302,6 @@ defmodule ExCommerce.Offerings.RelationsTest do
       assert shop_catalogue == Relations.get_shop_catalogue!(shop_catalogue.id)
     end
 
-    @tag :wip
     test "delete_shop_catalogue/1 deletes the shop_catalogue" do
       %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
 
@@ -320,7 +313,6 @@ defmodule ExCommerce.Offerings.RelationsTest do
       end
     end
 
-    @tag :wip
     test "change_shop_catalogue/1 returns a shop_catalogue changeset" do
       %ShopCatalogue{} = shop_catalogue = ShopCatalogueFixtures.create()
       assert %Ecto.Changeset{} = Relations.change_shop_catalogue(shop_catalogue)

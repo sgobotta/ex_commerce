@@ -30,4 +30,15 @@ defmodule ExCommerceWeb.ButtonsView do
 
     render("icon_button.html", opts)
   end
+
+  def render("file_input", assigns) do
+    opts =
+      assigns
+      |> Map.put_new(:text, gettext("Choose Files"))
+      |> Map.put_new(:label_classes, "")
+      |> Map.put_new(:input_classes, "")
+      |> Map.put_new(:uploads, [])
+
+    render("file_input.html", opts)
+  end
 end

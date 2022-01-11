@@ -22,6 +22,9 @@ module.exports = {
         'button-sm': '4px 4px 2px 0px rgba(0, 0, 0, 0.3)',
         'button-xs': '2px 2px 2px 0px rgba(0, 0, 0, 0.3)'
       },
+      fontFamily: {
+        'sans': ['Helvetica', 'Arial', 'sans-serif']
+      },
       gridRow: {
         'span-10': 'span 10 / span 10',
         'span-11': 'span 11 / span 11',
@@ -69,9 +72,6 @@ module.exports = {
         '2500': '2500ms',
         '3000': '3000ms'
        }
-    },
-    fontFamily: {
-      'sans': ['Helvetica', 'Arial', 'sans-serif']
     }
   },
   variants: {

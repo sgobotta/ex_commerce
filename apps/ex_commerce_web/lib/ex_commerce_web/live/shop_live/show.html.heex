@@ -5,6 +5,7 @@
       id: @shop.id,
       title: @page_title,
       action: @live_action,
+      brand: @brand,
       shop: @shop,
       return_to: Routes.shop_show_path(@socket, :show, @brand.id, @shop.id),
       patch_to: Routes.shop_show_path(@socket, :show, @brand.id, @shop.id)

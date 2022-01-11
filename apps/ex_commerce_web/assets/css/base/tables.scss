@@ -1,0 +1,21 @@
+@layer base {
+  tbody tr {
+    @apply h-32;
+  }
+
+  tr td:first-child {
+    @apply pl-4;
+  }
+
+  tbody tr:nth-child(odd) {
+    @apply bg-transparent;
+  }
+  
+  tbody tr:nth-child(even) {
+    @apply bg-gray-50;
+  }
+
+  tbody tr:hover {
+    @apply bg-gray-200 transition-colors duration-300;
+  }
+}

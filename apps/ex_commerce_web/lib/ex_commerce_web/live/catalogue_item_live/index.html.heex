@@ -5,6 +5,7 @@
       id: @catalogue_item.id || :new,
       title: @page_title,
       action: @live_action,
+      brand: @brand,
       catalogue_categories: @brand.catalogue_categories,
       catalogue_item: @catalogue_item,
       catalogue_item_option_groups: @brand.catalogue_item_option_groups,
@@ -36,9 +37,9 @@
     <table>
       <thead>
         <tr>
+          <th><%= gettext("Photo") %></th>
           <th><%= gettext("Code") %></th>
           <th><%= gettext("Name") %></th>
-          <th><%= gettext("Description") %></th>
 
           <th></th>
         </tr>
@@ -46,9 +47,19 @@
       <tbody id="catalogue_items">
         <%= for %CatalogueItem{id: catalogue_item_id} = catalogue_item <- @catalogue_items do %>
           <tr id={"catalogue_item-#{catalogue_item_id}"}>
+            <td>
+              <%= for photo <- get_photos(catalogue_item.photos, [
+                use_placeholder: true,
+                type: :avatar
+              ]) do %>
+                <%= render_thumbnail([
+                  source: get_photo_source(@socket, photo),
+                  size: "28"
+                ]) %>
+              <% end %>
+            </td>
             <td><%= catalogue_item.code %></td>
             <td><%= catalogue_item.name %></td>
-            <td><%= catalogue_item.description %></td>
 
             <td>
               <span><%= live_redirect gettext("Show"), to: Routes.catalogue_item_show_path(@socket, :show, @brand.id, catalogue_item_id) %></span>

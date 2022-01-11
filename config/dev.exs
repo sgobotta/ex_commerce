@@ -67,7 +67,7 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
 config :ex_commerce_web, ExCommerceWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/[^uploads].*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/ex_commerce_web/(live|views)/.*(ex)$",
       ~r"lib/ex_commerce_web/templates/.*(eex)$"
@@ -88,6 +88,15 @@ config :phoenix, :stacktrace_depth, 20
 config :ex_commerce, from_email: "dev@ex.commerce"
 
 config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
+
+# ------------------------------------------------------------------------------
+# Cloudex configuration
+#
+
+config :cloudex,
+  api_key: System.fetch_env!("CLOUDEX_API_KEY"),
+  secret: System.fetch_env!("CLOUDEX_SECRET"),
+  cloud_name: System.fetch_env!("CLOUDEX_CLOUD_NAME")
 
 # ------------------------------------------------------------------------------
 # Shared configuration

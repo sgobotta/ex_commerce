@@ -54,6 +54,7 @@ defmodule ExCommerceWeb.MixProject do
       # Client bundling
       # Umbrella deps
       {:ex_commerce, in_umbrella: true},
+      {:ex_commerce_assets, in_umbrella: true},
       {:ex_commerce_numeric, in_umbrella: true},
       # Helpers
       {:phoenix_inline_svg, "~> 1.4"}

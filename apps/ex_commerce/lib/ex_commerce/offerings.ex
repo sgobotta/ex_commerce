@@ -350,10 +350,11 @@ defmodule ExCommerce.Offerings do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_catalogue_item(attrs \\ %{}) do
+  def create_catalogue_item(attrs \\ %{}, after_save \\ &{:ok, &1}) do
     %CatalogueItem{}
     |> CatalogueItem.changeset(attrs)
     |> Repo.insert()
+    |> after_save(after_save)
   end
 
   @doc """
@@ -368,10 +369,15 @@ defmodule ExCommerce.Offerings do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_catalogue_item(%CatalogueItem{} = catalogue_item, attrs) do
+  def update_catalogue_item(
+        %CatalogueItem{} = catalogue_item,
+        attrs,
+        after_save \\ &{:ok, &1}
+      ) do
     catalogue_item
     |> CatalogueItem.changeset(attrs)
     |> Repo.update()
+    |> after_save(after_save)
   end
 
   @doc """
@@ -402,6 +408,12 @@ defmodule ExCommerce.Offerings do
   def change_catalogue_item(%CatalogueItem{} = catalogue_item, attrs \\ %{}) do
     CatalogueItem.changeset(catalogue_item, attrs)
   end
+
+  defp after_save({:ok, catalogue_item}, func) do
+    {:ok, _catalogue_item} = func.(catalogue_item)
+  end
+
+  defp after_save(error, _func), do: error
 
   alias ExCommerce.Offerings.CatalogueItemVariant
 

@@ -1,9 +1,13 @@
 @layer components {
   .button {
-    @apply inline-flex items-center rounded-full border-gray-800 bg-gray-800 text-gray-100 text-2xl font-normal px-6 shadow-button transition duration-75 hover:border-gray-800 hover:bg-gray-800 hover:shadow-button-sm focus:bg-gray-500 focus:border-gray-500 focus:shadow-button-xs;
+    @apply inline-flex items-center rounded-full border-gray-800 bg-gray-800 text-gray-100 text-2xl font-normal px-6 shadow-button-sm transition duration-75 hover:border-gray-800 hover:bg-gray-800 hover:shadow-button focus:bg-gray-500 focus:border-gray-500 focus:shadow-button-xs;
   }
 
   .close-modal-button {
     @apply float-right w-10 h-10 rounded-full bg-gray-800 border-gray-800 hover:bg-gray-600 hover:border-gray-600 hover:shadow-button focus:bg-gray-400 focus:border-gray-400 text-4xl text-gray-100 text-center;
+  }
+
+  .mini-cancel-button {
+    @apply float-right w-8 h-8 rounded-full bg-gray-800 border-gray-800 hover:bg-gray-600 hover:border-gray-600 hover:shadow-button focus:bg-gray-400 focus:border-gray-400 text-2xl text-gray-100 text-center;
   }
 }

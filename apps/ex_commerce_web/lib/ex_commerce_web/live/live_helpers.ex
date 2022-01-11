@@ -37,6 +37,10 @@ defmodule ExCommerceWeb.LiveHelpers do
     render(ExCommerceWeb.ButtonsView, "image_button", opts)
   end
 
+  def render_file_input(opts \\ []) do
+    render(ExCommerceWeb.ButtonsView, "file_input", opts)
+  end
+
   # ----------------------------------------------------------------------------
   # Select helpers
   #
@@ -77,9 +81,62 @@ defmodule ExCommerceWeb.LiveHelpers do
   # Svg helpers
   #
 
+  @doc """
+  Just a wrapper for `PhoenixInlineSvg.Helpers.svg_image/4`
+  """
   @spec render_svg(String.t(), any()) :: {:safe, any}
   def render_svg(path, opts \\ []) do
     PhoenixInlineSvg.Helpers.svg_image(ExCommerceWeb.Endpoint, path, opts)
+  end
+
+  # ----------------------------------------------------------------------------
+  # Select helpers
+  #
+
+  @doc """
+  Renders a squared image.
+
+  ### Options
+
+  * `source`: path to the picture
+  * `size`: a valid tailwind height/width value without the h- or w-
+  * `container_classes` (Optional): style classes for the div container
+
+  """
+  @spec render_thumbnail(keyword) :: {:safe, any}
+  def render_thumbnail(opts \\ []) do
+    render(ExCommerceWeb.ImagesView, "thumbnail", opts)
+  end
+
+  @doc """
+  Renders a wide image with fixed dimensions.
+
+  ### Options
+
+  * `source`: path to the picture
+  * `container_classes` (Optional): style classes for the div container
+
+  """
+  @spec render_banner(keyword()) :: {:safe, any}
+  def render_banner(opts \\ []) do
+    render(ExCommerceWeb.ImagesView, "banner", opts)
+  end
+
+  @doc """
+  Renders a preview of an uploaded image with a thumbnail, the name of the file,
+  it's size in kb or mb, a progress bar and a delete button.
+
+  ### Options
+
+  * `entry`: a `Phoenix.LiveView.UploadEntry` struct from the
+  `@uploads.attr.entries` list.
+  * `target`: a `Phoenix.LiveComponent.CID` struct from the live component
+  * `cancel_event`: the name of the component's event that cancels the entry.
+
+  """
+  @spec render_upload_image_preview(keyword()) :: {:safe, any}
+  def render_upload_image_preview(opts \\ []) do
+    render(ExCommerceWeb.ImagesView, "upload_image_preview", opts)
   end
 
   # ----------------------------------------------------------------------------

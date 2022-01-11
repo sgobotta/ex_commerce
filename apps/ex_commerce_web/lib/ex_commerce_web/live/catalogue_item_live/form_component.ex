@@ -4,7 +4,11 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   """
   use ExCommerceWeb, :live_component
 
-  alias ExCommerce.Offerings
+  use ExCommerceWeb.LiveFormHelpers, routes: Routes
+
+  alias ExCommerce.Marketplaces.Brand
+
+  alias ExCommerce.{Offerings, Photos}
 
   alias ExCommerce.Offerings.{
     CatalogueCategory,
@@ -17,6 +21,22 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     LiveFormHelpers,
     Utils
   }
+
+  @uploads_path get_uploads_path()
+
+  @impl true
+  @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
+  def mount(socket) do
+    {:ok,
+     allow_upload(
+       socket,
+       :photos,
+       accept: ~w(.jpg .jpeg .png),
+       max_entries: 1,
+       max_file_size: 2_000_000,
+       auto_upload: true
+     )}
+  end
 
   @impl true
   def update(
@@ -124,6 +144,10 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
      )}
   end
 
+  def handle_event("cancel_photo_entry", %{"ref" => ref}, socket) do
+    {:noreply, cancel_upload(socket, :photos, ref)}
+  end
+
   # ----------------------------------------------------------------------------
   # Private helpers
   #
@@ -143,9 +167,19 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
   defp prepare_variants_maybe(changeset, %{action: _action}), do: changeset
 
   defp save_catalogue_item(socket, :edit, catalogue_item_params) do
+    catalogue_item_params =
+      put_uploads(
+        socket,
+        catalogue_item_params,
+        &build_photo_by_upload_entry/2,
+        &assign_photos_param/2,
+        attr: :photos
+      )
+
     case Offerings.update_catalogue_item(
            socket.assigns.catalogue_item,
-           catalogue_item_params
+           catalogue_item_params,
+           &consume_photos(socket, &1)
          ) do
       {:ok, %CatalogueItem{} = _catalogue_item} ->
         {:noreply,
@@ -162,9 +196,19 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     %{assigns: %{catalogue_item: %CatalogueItem{brand_id: brand_id}}} = socket
 
     catalogue_item_params =
-      assign_brand_id_param(catalogue_item_params, brand_id)
+      put_uploads(
+        socket,
+        catalogue_item_params,
+        &build_photo_by_upload_entry/2,
+        &assign_photos_param/2,
+        attr: :photos
+      )
+      |> assign_brand_id_param(brand_id)
 
-    case Offerings.create_catalogue_item(catalogue_item_params) do
+    case Offerings.create_catalogue_item(
+           catalogue_item_params,
+           &consume_photos(socket, &1)
+         ) do
       {:ok, _catalogue_item} ->
         {:noreply,
          socket
@@ -175,6 +219,56 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
         {:noreply, assign(socket, changeset: changeset)}
     end
   end
+
+  # ----------------------------------------------------------------------------
+  # File upload helpers
+  #
+
+  defp build_photo_by_upload_entry(socket, entry) do
+    %{brand: %Brand{id: brand_id}} = socket.assigns
+    %{uuid: uuid} = entry
+    extension = ext(entry)
+
+    Photos.create_photo(%{
+      local_path: Routes.static_path(socket, "/uploads/#{uuid}.#{extension}"),
+      full_local_path: Path.join(@uploads_path, "#{uuid}.#{extension}"),
+      uuid: uuid,
+      brand_id: brand_id
+    })
+  end
+
+  defp assign_photos_param(socket, new_photos) do
+    %{catalogue_item: %CatalogueItem{photos: photos}} = socket.assigns
+
+    new_photos ++ photos
+  end
+
+  defp consume_photos(socket, %CatalogueItem{photos: photos} = catalogue_item) do
+    %{brand: %Brand{id: brand_id}} = socket.assigns
+    upload_opts = [folder: brand_id, tags: brand_id]
+
+    # Consumes uploads via the live form helper
+    {old_photos, new_photos} =
+      consume_uploads(
+        socket,
+        :photos,
+        @uploads_path,
+        upload_opts,
+        photos
+      )
+
+    # Saves new photos
+    {:ok, %CatalogueItem{} = catalogue_item} =
+      Offerings.update_catalogue_item(catalogue_item, %{
+        photos: new_photos ++ old_photos
+      })
+
+    {:ok, catalogue_item}
+  end
+
+  # ----------------------------------------------------------------------------
+  # Photo form helpers: imported from LiveHelpers
+  #
 
   # ----------------------------------------------------------------------------
   # Catalogue item option groups selection helpers

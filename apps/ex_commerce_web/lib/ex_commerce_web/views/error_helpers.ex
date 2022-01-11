@@ -18,6 +18,15 @@ defmodule ExCommerceWeb.ErrorHelpers do
   end
 
   @doc """
+  Generates tag for inlined custom input errors.
+  """
+  def error_tag(message) do
+    content_tag(:span, translate_error({message, []}),
+      class: "invalid-feedback m-0 pl-10 text-xl"
+    )
+  end
+
+  @doc """
   Translates an error message using gettext.
   """
   def translate_error({msg, opts}) do

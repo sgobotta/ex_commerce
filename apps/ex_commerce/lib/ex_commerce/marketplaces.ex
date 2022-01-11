@@ -80,10 +80,11 @@ defmodule ExCommerce.Marketplaces do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_shop(attrs \\ %{}) do
+  def create_shop(attrs \\ %{}, after_save \\ &{:ok, &1}) do
     %Shop{}
     |> Shop.changeset(attrs)
     |> Repo.insert()
+    |> after_save(after_save)
   end
 
   @doc """
@@ -98,10 +99,11 @@ defmodule ExCommerce.Marketplaces do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_shop(%Shop{} = shop, attrs) do
+  def update_shop(%Shop{} = shop, attrs, after_save \\ &{:ok, &1}) do
     shop
     |> Shop.changeset(attrs)
     |> Repo.update()
+    |> after_save(after_save)
   end
 
   @doc """
@@ -132,6 +134,10 @@ defmodule ExCommerce.Marketplaces do
   def change_shop(%Shop{} = shop, attrs \\ %{}) do
     Shop.changeset(shop, attrs)
   end
+
+  defp after_save({:ok, struct}, func), do: {:ok, _struct} = func.(struct)
+
+  defp after_save(error, _func), do: error
 
   alias ExCommerce.Marketplaces.Brand
 

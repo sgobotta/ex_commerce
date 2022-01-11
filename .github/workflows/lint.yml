@@ -10,10 +10,15 @@ on:
 
 jobs:
   lint:
-
     name: Code linting
     runs-on: ubuntu-latest
-
+    env:
+      # General env
+      MIX_ENV: dev
+      # Cloudinary env
+      CLOUDEX_API_KEY: ${{ secrets.CLOUDEX_API_KEY }}
+      CLOUDEX_SECRET: ${{ secrets.CLOUDEX_SECRET }}
+      CLOUDEX_CLOUD_NAME: ${{ secrets.CLOUDEX_CLOUD_NAME }}
     steps:
       - uses: actions/checkout@v2
       - name: Restore dependencies cache
@@ -35,7 +40,12 @@ jobs:
         run: |
           mix local.rebar --force
           mix local.hex --force
-          make setup.deps.ci
+          mix install
+      - name: Compile app & deps
+        run: |
+          mix deps.compile
+          mix compile
       - name: Run formatter
         run: |
-          make check.lint
+          mix check.format
+          mix check.credo

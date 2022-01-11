@@ -5,6 +5,8 @@ defmodule ExCommerceWeb.CatalogueItemLive.Index do
 
   use ExCommerceWeb, :live_view
 
+  use ExCommerceWeb.LiveFormHelpers, routes: Routes
+
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.CatalogueItem

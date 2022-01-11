@@ -68,6 +68,15 @@ config :ex_commerce, ExCommerce.Mailer,
   ]
 
 # ------------------------------------------------------------------------------
+# Cloudex configuration
+#
+
+config :cloudex,
+  api_key: System.fetch_env!("CLOUDEX_API_KEY"),
+  secret: System.fetch_env!("CLOUDEX_SECRET"),
+  cloud_name: System.fetch_env!("CLOUDEX_CLOUD_NAME")
+
+# ------------------------------------------------------------------------------
 # Shared configuration
 #
 
