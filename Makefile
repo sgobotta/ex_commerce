@@ -24,6 +24,11 @@ check.lint:
 	@source ${ENV_FILE} && mix check.format
 	@source ${ENV_FILE} && mix check.credo
 
+#🧹 clean.uploads: @ Removes all files from the uploads dir
+clean.uploads: SHELL:=/bin/bash
+clean.uploads:
+	/bin/rm -f apps/ex_commerce_web/priv/static/uploads/*
+
 #📖 docs: @ Generates HTML documentation
 docs:
 	@mix docs
@@ -82,7 +87,7 @@ reset.ecto.test:
 	@echo "🧹 Cleaning db for test env..."
 	@source ${ENV_FILE} && MIX_ENV=test mix reset.ecto
 
-#📦 setup: @ Installs dependencies and set up database
+#📦 setup: @ Installs dependencies and set up database for dev and test envs
 setup: SHELL:=/bin/bash
 setup: setup.dev setup.test
 
