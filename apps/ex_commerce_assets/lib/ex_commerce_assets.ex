@@ -4,37 +4,46 @@ defmodule ExCommerceAssets do
   """
 
   @doc """
-  Given a list of file paths and some options, calls upload with some fixed
-  options for images format and transformation.
+  Given a list of maps with a url and cloudex option attributes, and some
+  default options, calls upload with some fixed options for images format and
+  transformation.
+
+  Item options take precedence over default options.
+
+  ## Examples
+
+      iex> ExCommerceAssets.upload_thumbnails_with_options(
+      ...>   [
+      ...>    %{url: "path/to/my/file", folder: "this item folder"},
+      ...>    %{url: "path/to/my/file", tags: ["summer", "2022"]}
+      ...>   ],
+      ...>   %{folder: "this-folder-name-is-overwritten-for-the-first-item"}
+      ...> )
+
   """
-  @spec upload_thumbnails(list(binary()), map()) :: list
-  def upload_thumbnails(file_paths, options) do
+  @spec upload_thumbnails_with_options(list(map()), map()) :: list
+  def upload_thumbnails_with_options(items, options) do
     options =
       Map.merge(options, %{
         allowed_formats: "jpg, png",
         transformation: "w_512,h_512,c_limit"
       })
 
-    upload(file_paths, options)
+    __MODULE__.upload_list_with_options(items, options)
   end
 
   @doc """
-  Delegates to `Cloudex.upload/2`
+  Delegates to `Cloudex.upload_list_with_options/2`
   """
-  @spec upload([binary], map) :: list
-  def upload(files, options) do
-    Cloudex.upload(files, options)
+  @spec upload_list_with_options([map], map) :: list
+  def upload_list_with_options(items, options) do
+    Cloudex.upload_list_with_options(items, options)
     |> parse_response()
   end
 
   defp parse_response(upload_response) when is_list(upload_response) do
-    Enum.map(upload_response, fn ok: %Cloudex.UploadedImage{} = ui ->
+    Enum.map(upload_response, fn {:ok, %Cloudex.UploadedImage{} = ui} ->
       ui
     end)
-  end
-
-  defp parse_response(upload_response) when is_tuple(upload_response) do
-    {:ok, %Cloudex.UploadedImage{} = ui} = upload_response
-    [ui]
   end
 end
