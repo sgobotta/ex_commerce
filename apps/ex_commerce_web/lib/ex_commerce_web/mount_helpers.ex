@@ -75,7 +75,7 @@ defmodule ExCommerceWeb.MountHelpers do
             shops: [],
             catalogues: [:categories],
             catalogue_categories: [:items, :catalogues],
-            catalogue_items: [:variants],
+            catalogue_items: [:variants, :photos],
             catalogue_item_option_groups: []
           )
         )
