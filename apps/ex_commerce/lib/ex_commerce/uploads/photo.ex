@@ -13,7 +13,7 @@ defmodule ExCommerce.Uploads.Photo do
     field :full_local_path, :string
     field :local_path, :string
     field :meta, :map, default: %{}
-    field :state, Ecto.Enum, values: [:local, :uploaded]
+    field :state, Ecto.Enum, values: [:local, :uploaded, :delete]
     field :type, Ecto.Enum, values: [:avatar, :banner]
     field :uuid, :binary
 
