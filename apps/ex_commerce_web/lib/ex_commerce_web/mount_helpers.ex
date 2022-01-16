@@ -72,7 +72,7 @@ defmodule ExCommerceWeb.MountHelpers do
         |> assign(
           :brand,
           Repo.preload(brand,
-            shops: [],
+            shops: [:avatars, :banners],
             catalogues: [:categories],
             catalogue_categories: [:items, :catalogues],
             catalogue_items: [:variants, :photos],
