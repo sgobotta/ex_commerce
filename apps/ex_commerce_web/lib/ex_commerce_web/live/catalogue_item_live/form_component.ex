@@ -8,7 +8,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
 
   alias ExCommerce.Marketplaces.Brand
 
-  alias ExCommerce.{Offerings, Photos}
+  alias ExCommerce.Offerings
 
   alias ExCommerce.Offerings.{
     CatalogueCategory,
@@ -16,6 +16,8 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     CatalogueItemOptionGroup,
     CatalogueItemVariant
   }
+
+  alias ExCommerce.Uploads.Photo
 
   import ExCommerceWeb.{
     LiveFormHelpers,
@@ -181,7 +183,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
            catalogue_item_params,
            &consume_photos(socket, &1)
          ) do
-      {:ok, %CatalogueItem{} = _catalogue_item} ->
+      {:ok, %CatalogueItem{}} ->
         {:noreply,
          socket
          |> put_flash(:info, gettext("Catalogue item updated successfully"))
@@ -209,7 +211,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
            catalogue_item_params,
            &consume_photos(socket, &1)
          ) do
-      {:ok, _catalogue_item} ->
+      {:ok, %CatalogueItem{}} ->
         {:noreply,
          socket
          |> put_flash(:info, gettext("Catalogue item created successfully"))
@@ -229,12 +231,13 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     %{uuid: uuid} = entry
     extension = ext(entry)
 
-    Photos.create_photo(%{
+    %Photo{
       local_path: Routes.static_path(socket, "/uploads/#{uuid}.#{extension}"),
       full_local_path: Path.join(@uploads_path, "#{uuid}.#{extension}"),
       uuid: uuid,
-      brand_id: brand_id
-    })
+      brand_id: brand_id,
+      type: :avatar
+    }
   end
 
   defp assign_photos_param(socket, new_photos) do
@@ -243,12 +246,15 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     new_photos ++ photos
   end
 
-  defp consume_photos(socket, %CatalogueItem{photos: photos} = catalogue_item) do
+  defp consume_photos(
+         socket,
+         %CatalogueItem{photos: photos} = catalogue_item
+       ) do
     %{brand: %Brand{id: brand_id}} = socket.assigns
     upload_opts = [folder: brand_id, tags: brand_id]
 
     # Consumes uploads via the live form helper
-    {old_photos, new_photos} =
+    :ok =
       consume_uploads(
         socket,
         :photos,
@@ -256,12 +262,6 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
         upload_opts,
         photos
       )
-
-    # Saves new photos
-    {:ok, %CatalogueItem{} = catalogue_item} =
-      Offerings.update_catalogue_item(catalogue_item, %{
-        photos: new_photos ++ old_photos
-      })
 
     {:ok, catalogue_item}
   end
