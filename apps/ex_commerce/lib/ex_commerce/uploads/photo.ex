@@ -3,6 +3,9 @@ defmodule ExCommerce.Uploads.Photo do
   The Brand schema
   """
   use Ecto.Schema
+
+  alias ExCommerce.Uploads.Photo
+
   import Ecto.Changeset
 
   @fields [:local_path, :full_local_path, :state, :uuid, :meta, :type]
@@ -27,5 +30,12 @@ defmodule ExCommerce.Uploads.Photo do
     photo
     |> cast(attrs, @fields)
     |> validate_required(@fields)
+  end
+
+  @doc """
+  Returns the remote path.
+  """
+  def get_remote_path(%Photo{meta: meta, local_path: local_path}) do
+    Map.get(meta, "secure_url", local_path)
   end
 end

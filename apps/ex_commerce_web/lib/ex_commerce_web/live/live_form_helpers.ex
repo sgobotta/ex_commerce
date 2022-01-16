@@ -5,7 +5,8 @@ defmodule ExCommerceWeb.LiveFormHelpers do
 
   alias Phoenix.LiveView
 
-  alias ExCommerce.Photos
+  alias ExCommerce.Uploads
+  alias ExCommerce.Uploads.Photo
 
   @type uuid :: Ecto.UUID.t()
 
@@ -15,6 +16,8 @@ defmodule ExCommerceWeb.LiveFormHelpers do
 
   defmacro __using__(opts) do
     quote do
+      require Logger
+
       defp get_photos(photos, opts \\ [use_placeholder: false])
 
       defp get_photos([], use_placeholder: true, type: type),
@@ -28,15 +31,26 @@ defmodule ExCommerceWeb.LiveFormHelpers do
         routes.static_path(socket, get_placeholder_image(type))
       end
 
-      defp get_photo_source(socket, photo) do
-        case Photos.is_remote(photo) do
-          true ->
-            Photos.get_remote_path(photo)
+      defp get_photo_source(
+             socket,
+             %Photo{state: :local, local_path: local_path} = photo
+           ) do
+        routes = Keyword.get(unquote(opts), :routes)
+        routes.static_path(socket, local_path)
+      end
 
-          false ->
-            routes = Keyword.get(unquote(opts), :routes)
-            routes.static_path(socket, Photos.get_local_path(photo))
-        end
+      defp get_photo_source(socket, %Photo{state: :uploaded} = photo),
+        do: Photo.get_remote_path(photo)
+
+      defp get_photo_source(socket, %Photo{state: :delete} = photo) do
+        :ok =
+          Logger.warn(
+            "#{__MODULE__} (get_photo_source/2) :: Rendering a :delete marked photo, photo=#{
+              inspect(photo)
+            }"
+          )
+
+        Photo.get_remote_path(photo)
       end
 
       defp get_placeholder_image(:avatar),
@@ -113,24 +127,34 @@ defmodule ExCommerceWeb.LiveFormHelpers do
           binary(),
           keyword(),
           list(map)
-        ) :: {[map], [map]}
+        ) :: :ok
   def consume_uploads(socket, attr, uploads_path, upload_opts, photos) do
-    destination_paths = consume_entries(socket, attr, uploads_path)
+    consumed_entries = consume_entries(socket, attr, uploads_path)
+    uploaded_images = upload_thumbnails(consumed_entries, upload_opts)
 
-    uploaded_images = upload_thumbnails(destination_paths, upload_opts)
+    :ok =
+      Enum.each(photos, fn %Photo{} = photo ->
+        attrs = maybe_mark_uploaded(photo, uploaded_images)
 
-    {old_photos, new_photos} = Photos.split_old_new_photos(photos)
-
-    new_photos =
-      new_photos
-      |> Enum.zip(uploaded_images)
-      |> Enum.map(fn {photo, %Cloudex.UploadedImage{} = meta} ->
-        Photos.mark_uplaod(photo, Map.from_struct(meta))
+        {:ok, %Photo{}} = Uploads.update_photo(photo, attrs)
       end)
+  end
 
-    old_photos = Enum.map(old_photos, &Photos.mark_delete(&1))
+  defp maybe_mark_uploaded(%Photo{}, []), do: %{}
 
-    {old_photos, new_photos}
+  defp maybe_mark_uploaded(%Photo{uuid: uuid}, uploaded_images) do
+    case Enum.find(uploaded_images, nil, fn %Cloudex.UploadedImage{
+                                              original_filename:
+                                                original_filename
+                                            } ->
+           original_filename == uuid
+         end) do
+      nil ->
+        %{state: :delete}
+
+      %Cloudex.UploadedImage{} = meta ->
+        %{state: :uploaded, meta: Map.from_struct(meta)}
+    end
   end
 
   @doc """
@@ -159,20 +183,28 @@ defmodule ExCommerceWeb.LiveFormHelpers do
   #
 
   defp consume_entries(socket, attr, uploads_path) do
-    LiveView.consume_uploaded_entries(socket, attr, fn meta, entry ->
-      destination_path = Path.join(uploads_path, "#{entry.uuid}.#{ext(entry)}")
+    LiveView.consume_uploaded_entries(socket, attr, fn meta,
+                                                       %LiveView.UploadEntry{
+                                                         uuid: uuid
+                                                       } = entry ->
+      destination_path = Path.join(uploads_path, "#{uuid}.#{ext(entry)}")
 
       :ok = File.cp!(meta.path, destination_path)
 
-      destination_path
+      {destination_path, entry}
     end)
   end
 
-  defp upload_thumbnails(destination_paths, upload_opts) do
+  defp upload_thumbnails(entries, upload_opts) do
+    items =
+      Enum.map(entries, fn {file_path, %LiveView.UploadEntry{}} ->
+        %{url: file_path}
+      end)
+
     folder = Keyword.get(upload_opts, :folder)
     tags = Keyword.get(upload_opts, :tags)
 
-    ExCommerceAssets.upload_thumbnails(destination_paths, %{
+    ExCommerceAssets.upload_list_with_options(items, %{
       folder: folder,
       tags: tags
     })
