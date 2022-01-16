@@ -55,6 +55,12 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
 # Check `Plug.SSL` for all available options in `force_ssl`.
 
 # ------------------------------------------------------------------------------
+# Ex Commerce Assets configuration
+#
+config :ex_commerce_assets,
+  driver: :cloudex
+
+# ------------------------------------------------------------------------------
 # Email configuration
 #
 

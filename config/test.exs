@@ -31,6 +31,12 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
   server: false
 
 # ------------------------------------------------------------------------------
+# Ex Commerce Assets configuration
+#
+config :ex_commerce_assets,
+  driver: :test
+
+# ------------------------------------------------------------------------------
 # Email configuration
 #
 
