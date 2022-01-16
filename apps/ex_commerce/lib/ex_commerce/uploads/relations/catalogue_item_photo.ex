@@ -11,7 +11,7 @@ defmodule ExCommerce.Uploads.Relations.CatalogueItemPhoto do
   @foreign_key_type :binary_id
   schema "catalogue_items_photos" do
     belongs_to :catalogue_item, ExCommerce.Offerings.CatalogueItem
-    belongs_to :photo, ExCommerce.Uploads.Photo, on_replace: :update
+    belongs_to :photo, ExCommerce.Uploads.Photo
 
     timestamps()
   end
