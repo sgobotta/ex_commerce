@@ -3,6 +3,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
 
   use ExCommerce.ContextCases.MarketplacesCase
   use ExCommerceWeb.ConnCase
+  use ExCommerceWeb.UploadsCase
 
   import Phoenix.LiveViewTest
 
@@ -45,6 +46,36 @@ defmodule ExCommerceWeb.ShopLiveTest do
       :assoc_brand_shop
     ]
 
+    defp navigate_new_shop(conn, view, brand_id) do
+      assert view |> element("a", "+") |> render_click() =~
+               "New Shop"
+
+      assert_patch(view, Routes.shop_index_path(conn, :new, brand_id))
+
+      :ok
+    end
+
+    defp change_new_shop(view, attrs) do
+      assert view
+             |> form("#shop-form", shop: attrs)
+             |> render_change() =~ "can&#39;t be blank"
+
+      :ok
+    end
+
+    defp submit_new_shop(conn, view, brand_id, create_attrs) do
+      {:ok, _, html} =
+        view
+        |> form("#shop-form", shop: create_attrs)
+        |> render_submit()
+        |> follow_redirect(conn, Routes.shop_index_path(conn, :index, brand_id))
+
+      assert html =~ "Shop created successfully"
+      assert html =~ "some name"
+
+      :ok
+    end
+
     test "[Success] lists all shops for a brand", %{
       brand: %Brand{id: brand_id},
       conn: conn,
@@ -82,23 +113,28 @@ defmodule ExCommerceWeb.ShopLiveTest do
       {:ok, index_live, _html} =
         live(conn, Routes.shop_index_path(conn, :index, brand_id))
 
-      assert index_live |> element("a", "+") |> render_click() =~
-               "New Shop"
+      :ok = navigate_new_shop(conn, index_live, brand_id)
+      :ok = change_new_shop(index_live, @invalid_attrs)
 
-      assert_patch(index_live, Routes.shop_index_path(conn, :new, brand_id))
+      :ok =
+        upload_photos(
+          index_live,
+          "#shop-form",
+          :avatars,
+          valid_uploads_metadata(),
+          "cancel_avatar_entry"
+        )
 
-      assert index_live
-             |> form("#shop-form", shop: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+      :ok =
+        upload_photos(
+          index_live,
+          "#shop-form",
+          :banners,
+          valid_uploads_metadata(),
+          "cancel_banner_entry"
+        )
 
-      {:ok, _, html} =
-        index_live
-        |> form("#shop-form", shop: @create_attrs)
-        |> render_submit()
-        |> follow_redirect(conn, Routes.shop_index_path(conn, :index, brand_id))
-
-      assert html =~ "Shop created successfully"
-      assert html =~ "some name"
+      :ok = submit_new_shop(conn, index_live, brand_id, @create_attrs)
     end
 
     test "[Success] updates shop in listing", %{
