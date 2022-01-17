@@ -7,12 +7,13 @@ defmodule ExCommerce.Marketplaces.Brand do
 
   alias ExCommerce.{Accounts, Marketplaces, Offerings, Uploads}
 
-  @fields [:name]
+  @fields [:name, :slug]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "brands" do
     field :name, :string
+    field :slug, :string
 
     many_to_many :users,
                  Accounts.User,
@@ -34,5 +35,18 @@ defmodule ExCommerce.Marketplaces.Brand do
     brand
     |> cast(attrs, @fields)
     |> validate_required(@fields)
+    |> format_slug()
+    |> unique_constraint(:slug)
   end
+
+  defp format_slug(%Ecto.Changeset{changes: %{slug: _}} = changeset) do
+    changeset
+    |> update_change(:slug, fn slug ->
+      slug
+      |> String.downcase()
+      |> String.replace(" ", "-")
+    end)
+  end
+
+  defp format_slug(changeset), do: changeset
 end

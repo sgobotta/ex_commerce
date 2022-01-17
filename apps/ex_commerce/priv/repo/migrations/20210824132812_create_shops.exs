@@ -11,5 +11,7 @@ defmodule ExCommerce.Repo.Migrations.CreateShops do
 
       timestamps()
     end
+
+    create unique_index(:shops, [:slug])
   end
 end

@@ -14,6 +14,11 @@
     <%= text_input f, :name, class: "input", placeholder: gettext("My brand name")  %>
     <%= error_tag f, :name %>
 
+    <%= label f, :slug, class: "my-2" %>
+    <%= text_input f, :slug, class: "input", placeholder: gettext("my-brand-name")  %>
+    <%= label f, "slug-placeholder/something", class: "m-0 pl-10 text-xl font-normal text-gray-500" %>
+    <%= error_tag f, :slug %>
+
     <div class="flex justify-end mt-6">
       <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button" %>
     </div>
