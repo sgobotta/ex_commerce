@@ -24,7 +24,35 @@ defmodule ExCommerceWeb.LiveFormHelpers do
         do: [{:placeholder, type}]
 
       defp get_photos([], _opts), do: []
-      defp get_photos([photo | _photos], _opts), do: [photo]
+
+      defp get_photos([photo | _photos] = photos, opts) do
+        case Enum.find(photos, nil, fn %Photo{state: state} ->
+               state != :delete
+             end) do
+          nil ->
+            :ok =
+              Logger.warn(
+                "#{__MODULE__} (get_photos/2) :: No non :delete photos found. Returning a placeholder. photos=#{
+                  inspect(photos)
+                }"
+              )
+
+            get_photos([], opts)
+
+          %Photo{state: :local} = photo ->
+            :ok =
+              Logger.warn(
+                "#{__MODULE__} (get_photos/2) :: No :uploaded photo found. Returning a local photo. photo=#{
+                  inspect(photo)
+                }"
+              )
+
+            [photo]
+
+          %Photo{state: :uploaded} = photo ->
+            [photo]
+        end
+      end
 
       defp get_photo_source(socket, {:placeholder, type}) do
         routes = Keyword.get(unquote(opts), :routes)
