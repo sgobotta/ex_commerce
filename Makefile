@@ -4,6 +4,7 @@ export MIX_ENV ?= dev
 
 ENV_FILE = .env
 APP_NAME = `grep 'APP_NAME=' .env | sed -e 's/\[//g' -e 's/ //g' -e 's/APP_NAME=//'`
+UPLOADS_DIR = apps/ex_commerce_web/priv/static/uploads
 
 export GREEN=\033[0;32m
 export NOFORMAT=\033[0m
@@ -27,7 +28,8 @@ check.lint:
 #🧹 clean.uploads: @ Removes all files from the uploads dir
 clean.uploads: SHELL:=/bin/bash
 clean.uploads:
-	/bin/rm -f apps/ex_commerce_web/priv/static/uploads/*
+	find ${UPLOADS_DIR} -path ${UPLOADS_DIR}/.gitkeep -prune -o -name "*.*" -exec /bin/rm -f {} \;
+
 
 #📖 docs: @ Generates HTML documentation
 docs:
