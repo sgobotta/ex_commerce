@@ -2,7 +2,6 @@ defmodule ExCommerceAssetsTest do
   @moduledoc false
 
   use ExUnit.Case
-  doctest ExCommerceAssets
 
   @tag :skip
   test "greets the world" do

@@ -74,6 +74,12 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
     ]
   ]
 
+# ------------------------------------------------------------------------------
+# Ex Commerce Assets configuration
+#
+config :ex_commerce_assets,
+  driver: :cloudex
+
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
 

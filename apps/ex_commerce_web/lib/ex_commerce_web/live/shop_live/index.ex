@@ -8,6 +8,7 @@ defmodule ExCommerceWeb.ShopLive.Index do
   alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Marketplaces.Shop
+  alias ExCommerce.Repo
 
   @impl true
   def mount(params, session, socket) do
@@ -82,6 +83,7 @@ defmodule ExCommerceWeb.ShopLive.Index do
 
   defp prepare_new_shop(%{brand: %Brand{id: brand_id}}) do
     %Shop{brand_id: brand_id}
+    |> Repo.preload([:avatars, :banners])
   end
 
   defp list_shops(brand_id) do

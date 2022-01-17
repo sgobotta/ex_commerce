@@ -30,7 +30,7 @@ defmodule ExCommerce.MixProject do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "priv/repo/seeds", "test/support"]
-  defp elixirc_paths(_), do: ["lib", "priv/repo/seeds"]
+  defp elixirc_paths(_env), do: ["lib", "priv/repo/seeds"]
 
   # Specifies your project dependencies.
   #

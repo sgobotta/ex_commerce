@@ -20,6 +20,8 @@ defmodule ExCommerce.Offerings.CatalogueItem do
     CatalogueItemOptionGroupItem
   }
 
+  alias ExCommerce.Uploads
+
   @fields [:code, :name, :description]
   @foreign_fields [:brand_id]
 
@@ -30,7 +32,6 @@ defmodule ExCommerce.Offerings.CatalogueItem do
     field :description, :string
     field :name, :string
     field :brand_id, :binary_id
-    field :photos, {:array, :map}, default: []
 
     has_many :variants, CatalogueItemVariant, on_delete: :delete_all
 
@@ -44,18 +45,29 @@ defmodule ExCommerce.Offerings.CatalogueItem do
       on_replace: :delete,
       on_delete: :delete_all
 
+    many_to_many :photos, Uploads.Photo,
+      join_through: Uploads.Relations.CatalogueItemPhoto,
+      on_replace: :delete,
+      on_delete: :delete_all
+
     timestamps()
   end
 
   @doc false
   def changeset(catalogue_item, attrs) do
     catalogue_item
-    |> cast(attrs, @fields ++ @foreign_fields ++ [:photos])
+    |> cast(attrs, @fields ++ @foreign_fields)
     |> cast_assoc(:variants)
     |> maybe_assoc_option_groups(attrs)
     |> maybe_assoc_categories(attrs)
+    |> maybe_assoc_photos(attrs)
     |> validate_required(@fields ++ @foreign_fields)
   end
+
+  defp maybe_assoc_photos(changeset, %{"photos" => photos}),
+    do: put_assoc(changeset, :photos, photos)
+
+  defp maybe_assoc_photos(changeset, _attrs), do: changeset
 
   defp maybe_assoc_option_groups(
          changeset,

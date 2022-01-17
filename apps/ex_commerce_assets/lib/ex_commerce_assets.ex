@@ -4,37 +4,26 @@ defmodule ExCommerceAssets do
   """
 
   @doc """
-  Given a list of file paths and some options, calls upload with some fixed
-  options for images format and transformation.
+  Takes a list of items, a map with options and delegates the call to the
+  configured driver and finally upload thumbnails.
   """
-  @spec upload_thumbnails(list(binary()), map()) :: list
-  def upload_thumbnails(file_paths, options) do
-    options =
-      Map.merge(options, %{
-        allowed_formats: "jpg, png",
-        transformation: "w_512,h_512,c_limit"
-      })
-
-    upload(file_paths, options)
+  @spec upload_thumbnails_with_options(list(map), map) :: list()
+  def upload_thumbnails_with_options(items, options) do
+    driver(get_driver()).upload_thumbnails_with_options(items, options)
   end
 
   @doc """
-  Delegates to `Cloudex.upload/2`
+  Takes a list of items, a map with options and delegates the call to the
+  configured driver and finally upload images.
   """
-  @spec upload([binary], map) :: list
-  def upload(files, options) do
-    Cloudex.upload(files, options)
-    |> parse_response()
+  @spec upload_list_with_options(list(map), map) :: list()
+  def upload_list_with_options(items, options) do
+    driver(get_driver()).upload_list_with_options(items, options)
   end
 
-  defp parse_response(upload_response) when is_list(upload_response) do
-    Enum.map(upload_response, fn ok: %Cloudex.UploadedImage{} = ui ->
-      ui
-    end)
-  end
+  defp get_driver,
+    do: Application.get_env(:ex_commerce_assets, :driver, :cloudex)
 
-  defp parse_response(upload_response) when is_tuple(upload_response) do
-    {:ok, %Cloudex.UploadedImage{} = ui} = upload_response
-    [ui]
-  end
+  defp driver(:cloudex), do: ExCommerceAssets.Drivers.CloudexDriver
+  defp driver(:test), do: ExCommerceAssets.Drivers.TestDriver
 end

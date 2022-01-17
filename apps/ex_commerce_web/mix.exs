@@ -30,8 +30,8 @@ defmodule ExCommerceWeb.MixProject do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
-  defp elixirc_paths(_), do: ["lib"]
+  defp elixirc_paths(:test), do: ["lib", "priv", "test/support"]
+  defp elixirc_paths(_), do: ["lib", "priv"]
 
   # Specifies your project dependencies.
   #
@@ -72,7 +72,11 @@ defmodule ExCommerceWeb.MixProject do
       eslint: ["cmd npm run eslint --prefix assets"],
       "eslint.fix": ["cmd npm run eslint-fix --prefix assets"],
       # Setup deps
-      install: ["deps.get", "cmd npm install --prefix assets"],
+      install: [
+        "deps.get",
+        "cmd npm install --prefix assets",
+        "cmd npm run deploy --prefix assets"
+      ],
       # Setup deps and database
       setup: ["install"],
       # Reset deps

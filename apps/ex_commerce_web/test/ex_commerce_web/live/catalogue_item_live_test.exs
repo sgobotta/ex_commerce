@@ -4,6 +4,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
   use ExCommerce.ContextCases.MarketplacesCase
   use ExCommerce.ContextCases.OfferingsCase
   use ExCommerceWeb.ConnCase
+  use ExCommerceWeb.UploadsCase
 
   import Phoenix.LiveViewTest
 
@@ -14,6 +15,8 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
 
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.CatalogueItem
+
+  alias ExCommerceWeb.Router.Helpers, as: Routes
 
   @create_attrs CatalogueItemsFixtures.valid_attrs()
   @update_attrs CatalogueItemsFixtures.update_attrs()
@@ -140,6 +143,15 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
         add_new_variants(index_live, @create_attrs, [
           CatalogueItemVariantsFixtures.valid_attrs()
         ])
+
+      :ok =
+        upload_photos(
+          index_live,
+          "#catalogue_item-form",
+          :photos,
+          valid_uploads_metadata(),
+          "cancel_photo_entry"
+        )
 
       :ok = submit_new_catalogue_item(conn, index_live, brand_id, create_attrs)
     end

@@ -7,7 +7,7 @@
   "castore": {:hex, :castore, "0.1.14", "3f6d7c7c1574c402fef29559d3f1a7389ba3524bc6a090a5e9e6abc3af65dcca", [:mix], [], "hexpm", "b34af542eadb727e6c8b37fdf73e18b2e02eb483a4ea0b52fd500bc23f052b7b"},
   "certifi": {:hex, :certifi, "2.6.1", "dbab8e5e155a0763eea978c913ca280a6b544bfa115633fa20249c3d396d9493", [:rebar3], [], "hexpm", "524c97b4991b3849dd5c17a631223896272c6b0af446778ba4675a1dff53bb7e"},
   "cldr_utils": {:hex, :cldr_utils, "2.16.0", "5abd1835151e264f6f9a285ab8c7419954a45eec5ca5a356dea592faa23e80b9", [:mix], [{:castore, "~> 0.1", [hex: :castore, repo: "hexpm", optional: true]}, {:certifi, "~> 2.5", [hex: :certifi, repo: "hexpm", optional: true]}, {:decimal, "~> 1.9 or ~> 2.0", [hex: :decimal, repo: "hexpm", optional: false]}], "hexpm", "3ef5dc0fdfe566a5a4b8bda726cf760ebada69c0600affc4cb02b5e8ae7f7b47"},
-  "cloudex": {:git, "https://github.com/sgobotta/cloudex.git", "b92a36aae93d28faab2a30f3ae1f35d3f2181329", [branch: "master"]},
+  "cloudex": {:git, "https://github.com/sgobotta/cloudex.git", "706067e2a7ce92862a7e18b571246fc30ae3032b", [branch: "main"]},
   "combine": {:hex, :combine, "0.10.0", "eff8224eeb56498a2af13011d142c5e7997a80c8f5b97c499f84c841032e429f", [:mix], [], "hexpm", "1b1dbc1790073076580d0d1d64e42eae2366583e7aecd455d1215b0d16f2451b"},
   "comeonin": {:hex, :comeonin, "5.3.2", "5c2f893d05c56ae3f5e24c1b983c2d5dfb88c6d979c9287a76a7feb1e1d8d646", [:mix], [], "hexpm", "d0993402844c49539aeadb3fe46a3c9bd190f1ecf86b6f9ebd71957534c95f04"},
   "connection": {:hex, :connection, "1.1.0", "ff2a49c4b75b6fb3e674bfc5536451607270aac754ffd1bdfe175abe4a6d7a68", [:mix], [], "hexpm", "722c1eb0a418fbe91ba7bd59a47e28008a189d47e37e0e7bb85585a016b2869c"},

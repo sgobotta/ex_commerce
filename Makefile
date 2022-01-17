@@ -4,6 +4,7 @@ export MIX_ENV ?= dev
 
 ENV_FILE = .env
 APP_NAME = `grep 'APP_NAME=' .env | sed -e 's/\[//g' -e 's/ //g' -e 's/APP_NAME=//'`
+UPLOADS_DIR = apps/ex_commerce_web/priv/static/uploads
 
 export GREEN=\033[0;32m
 export NOFORMAT=\033[0m
@@ -23,6 +24,12 @@ check.lint: SHELL:=/bin/bash
 check.lint:
 	@source ${ENV_FILE} && mix check.format
 	@source ${ENV_FILE} && mix check.credo
+
+#🧹 clean.uploads: @ Removes all files from the uploads dir
+clean.uploads: SHELL:=/bin/bash
+clean.uploads:
+	find ${UPLOADS_DIR} -path ${UPLOADS_DIR}/.gitkeep -prune -o -name "*.*" -exec /bin/rm -f {} \;
+
 
 #📖 docs: @ Generates HTML documentation
 docs:
@@ -82,7 +89,7 @@ reset.ecto.test:
 	@echo "🧹 Cleaning db for test env..."
 	@source ${ENV_FILE} && MIX_ENV=test mix reset.ecto
 
-#📦 setup: @ Installs dependencies and set up database
+#📦 setup: @ Installs dependencies and set up database for dev and test envs
 setup: SHELL:=/bin/bash
 setup: setup.dev setup.test
 

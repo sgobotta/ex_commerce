@@ -410,7 +410,7 @@ defmodule ExCommerce.Offerings do
   end
 
   defp after_save({:ok, catalogue_item}, func) do
-    {:ok, _catalogue_item} = func.(catalogue_item)
+    {:ok, %CatalogueItem{}} = func.(catalogue_item)
   end
 
   defp after_save(error, _func), do: error

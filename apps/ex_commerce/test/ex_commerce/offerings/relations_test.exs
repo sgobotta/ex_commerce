@@ -144,10 +144,6 @@ defmodule ExCommerce.Offerings.RelationsTest do
 
     @invalid_attrs %{visible: nil}
 
-    setup do
-      %{brand: BrandsFixtures.create()}
-    end
-
     test "list_catalogues_categories/0 returns all catalogues_categories" do
       catalogue_category = catalogue_category_fixture()
       assert Relations.list_catalogues_categories() == [catalogue_category]
@@ -160,8 +156,9 @@ defmodule ExCommerce.Offerings.RelationsTest do
                catalogue_category
     end
 
-    test "create_catalogue_category/1 with valid data creates a catalogue_category",
-         %{brand: %Brand{id: brand_id}} do
+    test "create_catalogue_category/1 with valid data creates a catalogue_category" do
+      %Brand{id: brand_id} = BrandsFixtures.create()
+
       %Catalogue{id: catalogue_id} =
         CataloguesFixtures.create(%{brand_id: brand_id})
 

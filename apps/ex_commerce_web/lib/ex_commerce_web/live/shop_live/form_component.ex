@@ -7,8 +7,10 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
-  alias ExCommerce.{Marketplaces, Photos}
+  alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.{Brand, Shop}
+
+  alias ExCommerce.Uploads.Photo
 
   import ExCommerceWeb.{
     LiveFormHelpers,
@@ -125,6 +127,15 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
         &assign_avatars_param/2,
         attr: :avatars
       )
+
+    shop_params =
+      put_uploads(
+        socket,
+        shop_params,
+        &build_banner_by_upload_entry/2,
+        &assign_banners_param/2,
+        attr: :banners
+      )
       |> assign_brand_id_param(brand_id)
 
     case Marketplaces.create_shop(
@@ -171,12 +182,13 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
     %{uuid: uuid} = entry
     extension = ext(entry)
 
-    Photos.create_photo(%{
+    %Photo{
       local_path: Routes.static_path(socket, "/uploads/#{uuid}.#{extension}"),
       full_local_path: Path.join(@uploads_path, "#{uuid}.#{extension}"),
       uuid: uuid,
-      brand_id: brand_id
-    })
+      brand_id: brand_id,
+      type: :avatar
+    }
   end
 
   defp assign_avatars_param(socket, new_avatars) do
@@ -190,12 +202,13 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
     %{uuid: uuid} = entry
     extension = ext(entry)
 
-    Photos.create_photo(%{
+    %Photo{
       local_path: Routes.static_path(socket, "/uploads/#{uuid}.#{extension}"),
       full_local_path: Path.join(@uploads_path, "#{uuid}.#{extension}"),
       uuid: uuid,
-      brand_id: brand_id
-    })
+      brand_id: brand_id,
+      type: :banner
+    }
   end
 
   defp assign_banners_param(socket, new_banners) do
@@ -211,8 +224,7 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
     %{brand: %Brand{id: brand_id}} = socket.assigns
     upload_opts = [folder: brand_id, tags: brand_id]
 
-    # Consumes uploads via the live form helper
-    {old_avatars, new_avatars} =
+    :ok =
       consume_uploads(
         socket,
         :avatars,
@@ -221,7 +233,7 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
         avatars
       )
 
-    {old_banners, new_banners} =
+    :ok =
       consume_uploads(
         socket,
         :banners,
@@ -229,13 +241,6 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
         upload_opts,
         banners
       )
-
-    # Saves new avatars and banners
-    {:ok, %Shop{} = shop} =
-      Marketplaces.update_shop(shop, %{
-        avatars: new_avatars ++ old_avatars,
-        banners: new_banners ++ old_banners
-      })
 
     {:ok, shop}
   end

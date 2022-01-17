@@ -56,8 +56,11 @@ jobs:
       run: node --version
     - name: Install dependencies
       run: |
-        mix install
-        mix setup
+        echo $(pwd)
+        ls
+        MIX_ENV=test mix install
+        MIX_ENV=test mix setup
+        ls -R _build/test/lib/ex_commerce_web/priv
     - name: Compile app & deps
       run: |
         mix deps.compile
