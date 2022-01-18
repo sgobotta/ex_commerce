@@ -9,9 +9,9 @@ defmodule ExCommerceWeb.BrandLiveTest do
   alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.Brand
 
-  @create_attrs %{name: "some name"}
-  @update_attrs %{name: "some updated name"}
-  @invalid_attrs %{name: nil}
+  @create_attrs %{name: "some name", slug: "some-slug"}
+  @update_attrs %{name: "some updated name", slug: "some-updated-slug"}
+  @invalid_attrs %{name: nil, slug: nil}
 
   describe "Index" do
     setup [

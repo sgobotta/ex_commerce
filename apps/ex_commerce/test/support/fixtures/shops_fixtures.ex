@@ -6,6 +6,7 @@ defmodule ExCommerce.ShopsFixtures do
 
   alias ExCommerce.BrandsFixtures
   alias ExCommerce.Marketplaces
+  alias ExCommerce.Marketplaces.{Brand, Shop}
 
   @valid_attrs %{
     name: "some name",
@@ -32,16 +33,35 @@ defmodule ExCommerce.ShopsFixtures do
     address: nil
   }
 
-  def valid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@valid_attrs)
+  def valid_attrs(attrs \\ %{}) do
+    unique_name = unique_shop_name()
+
+    unique_slug =
+      unique_name
+      |> String.downcase()
+      |> String.replace(" ", "-")
+
+    Enum.into(
+      attrs,
+      Map.merge(
+        @valid_attrs,
+        %{
+          name: unique_name,
+          slug: unique_name
+        }
+      )
+    )
+  end
+
   def update_attrs(attrs \\ %{}), do: attrs |> Enum.into(@update_attrs)
   def invalid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@invalid_attrs)
 
   def create(attrs \\ %{}) do
     attrs = assign_brand_maybe(attrs)
 
-    {:ok, shop} =
+    {:ok, %Shop{} = shop} =
       attrs
-      |> Enum.into(@valid_attrs)
+      |> Enum.into(valid_attrs())
       |> Marketplaces.create_shop()
 
     shop
@@ -50,11 +70,13 @@ defmodule ExCommerce.ShopsFixtures do
   defp assign_brand_maybe(attrs) do
     case Map.has_key?(attrs, :brand_id) do
       false ->
-        %{id: brand_id} = BrandsFixtures.create()
+        %Brand{id: brand_id} = BrandsFixtures.create()
         Map.merge(attrs, %{brand_id: brand_id})
 
       true ->
         attrs
     end
   end
+
+  defp unique_shop_name, do: "shop#{System.unique_integer()}"
 end
