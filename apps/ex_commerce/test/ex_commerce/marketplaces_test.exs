@@ -152,9 +152,9 @@ defmodule ExCommerce.MarketplacesTest do
       assert Marketplaces.get_brand!(brand_id) == brand
     end
 
-    test "get_brand_by!/2 returns the brand with the given slug" do
+    test "get_brand_by/2 returns the brand with the given slug" do
       %Brand{slug: slug} = brand = brand_fixture()
-      assert Marketplaces.get_brand_by!(:slug, slug) == brand
+      assert Marketplaces.get_brand_by(:slug, slug) == brand
     end
 
     test "create_brand/1 with valid data creates a brand" do

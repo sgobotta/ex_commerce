@@ -173,20 +173,18 @@ defmodule ExCommerce.Marketplaces do
   @doc """
   Takes a valid brand field as a key and a value to return a Brand.
 
-  Raises `Ecto.NoResultsError` if the Brand does not exist.
-
   ## Examples
 
       iex> get_brand_by!(:slug, "some-name")
       %Brand{}
 
       iex> get_brand_by!(:slug, "some-invalid-slug")
-      ** (Ecto.NoResultsError)
+      nil
 
   """
-  @spec get_brand_by!(atom(), any()) :: Brand
-  def get_brand_by!(key, value) do
-    Repo.get_by!(Brand, [{key, value}])
+  @spec get_brand_by(atom(), any()) :: %Brand{} | nil
+  def get_brand_by(key, value) do
+    Repo.get_by(Brand, [{key, value}])
   end
 
   @doc """
