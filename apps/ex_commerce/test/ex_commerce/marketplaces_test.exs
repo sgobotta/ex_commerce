@@ -129,9 +129,9 @@ defmodule ExCommerce.MarketplacesTest do
     alias ExCommerce.AccountsFixtures
     alias ExCommerce.Marketplaces.{Brand, BrandUser}
 
-    @valid_attrs %{name: "some name"}
-    @update_attrs %{name: "some updated name"}
-    @invalid_attrs %{name: nil}
+    @valid_attrs %{name: "some name", slug: "some-name"}
+    @update_attrs %{name: "some updated name", slug: "some-updated-name"}
+    @invalid_attrs %{name: nil, slug: nil}
 
     def brand_fixture(attrs \\ %{}) do
       {:ok, %Brand{} = brand} =
@@ -150,6 +150,11 @@ defmodule ExCommerce.MarketplacesTest do
     test "get_brand!/1 returns the brand with given id" do
       %Brand{id: brand_id} = brand = brand_fixture()
       assert Marketplaces.get_brand!(brand_id) == brand
+    end
+
+    test "get_brand_by!/2 returns the brand with the given slug" do
+      %Brand{slug: slug} = brand = brand_fixture()
+      assert Marketplaces.get_brand_by!(:slug, slug) == brand
     end
 
     test "create_brand/1 with valid data creates a brand" do
