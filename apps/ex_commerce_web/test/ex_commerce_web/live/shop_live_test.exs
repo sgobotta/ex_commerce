@@ -406,4 +406,54 @@ defmodule ExCommerceWeb.ShopLiveTest do
       )
     end
   end
+
+  describe "PublicIndex" do
+    setup [
+      :create_brand,
+      :create_shop,
+      :assoc_brand_shop
+    ]
+
+    @tag :wip
+    test "[Success] lists all shops", %{
+      conn: conn,
+      shop: %Shop{}
+    } do
+      {:ok, _index_live, html} =
+        live(conn, Routes.shop_public_index_path(conn, :index))
+
+      assert html =~ "Choose a shop!"
+    end
+  end
+
+  describe "PublicShow" do
+    setup [
+      :create_brand,
+      :create_shop,
+      :assoc_brand_shop
+    ]
+
+    @tag :skip
+    test "[Success] displays shop", %{
+      conn: conn,
+      brand: %Brand{slug: brand_slug, name: _brand_name},
+      shop: %Shop{slug: shop_slug}
+    } do
+      {:ok, _show_live, html} =
+        live(conn, Routes.shop_public_show_path(conn, :show, shop_slug))
+
+      assert html =~ "Shop!"
+    end
+
+    @tag :skip
+    test "[Failure] displays shop - redirects on invalid shop id", %{
+      conn: conn
+    } do
+      assert_redirects_with_error(
+        conn,
+        from: Routes.shop_public_show_path(conn, :show, "some-invalid-slug"),
+        to: Routes.shop_public_index_path(conn, :index)
+      )
+    end
+  end
 end

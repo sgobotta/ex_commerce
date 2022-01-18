@@ -189,4 +189,45 @@ defmodule ExCommerceWeb.BrandLiveTest do
       )
     end
   end
+
+  describe "PublicIndex" do
+    setup [:create_brand]
+
+    @tag :wip
+    test "[Success] lists all brands", %{
+      conn: conn,
+      brand: %Brand{name: brand_name}
+    } do
+      {:ok, _index_live, html} =
+        live(conn, Routes.brand_public_index_path(conn, :index))
+
+      assert html =~ "Find a place!"
+    end
+  end
+
+  describe "PublicShow" do
+    setup [:create_brand]
+
+    @tag :wip
+    test "[Success] displays brand", %{
+      conn: conn,
+      brand: %Brand{slug: brand_slug, name: brand_name}
+    } do
+      {:ok, _show_live, html} =
+        live(conn, Routes.brand_public_show_path(conn, :show, brand_slug))
+
+      assert html =~ "Brand!"
+    end
+
+    @tag :wip
+    test "[Failure] displays brand - redirects on invalid brand id", %{
+      conn: conn
+    } do
+      assert_redirects_with_error(
+        conn,
+        from: Routes.brand_public_show_path(conn, :show, "some-invalid-slug"),
+        to: Routes.brand_public_index_path(conn, :index)
+      )
+    end
+  end
 end
