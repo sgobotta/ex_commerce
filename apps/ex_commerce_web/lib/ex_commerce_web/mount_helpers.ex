@@ -7,6 +7,7 @@ defmodule ExCommerceWeb.MountHelpers do
 
   alias ExCommerce.Accounts
   alias ExCommerce.Accounts.User
+  alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.{Brand, Shop}
 
   alias ExCommerce.Offerings.{
@@ -41,6 +42,10 @@ defmodule ExCommerceWeb.MountHelpers do
     |> assign_navigation_helpers(params)
   end
 
+  # ============================================================================
+  # Helpers belong can be used in Public pages
+  #
+
   # ----------------------------------------------------------------------------
   # Navigation helpers
 
@@ -48,6 +53,34 @@ defmodule ExCommerceWeb.MountHelpers do
     socket
     |> assign(:redirect_to, params["redirect_to"])
   end
+
+  # ----------------------------------------------------------------------------
+  # Brand helpers
+
+  def assign_brands(socket) do
+    socket
+    |> assign(:brands, Marketplaces.list_brands())
+  end
+
+  def assign_brand_by_slug_or_redirect(socket, %{"slug" => slug}) do
+    case Marketplaces.get_brand_by(:slug, slug) do
+      nil ->
+        redirect_with_flash(
+          socket,
+          to: Routes.brand_public_index_path(socket, :index),
+          kind: :info,
+          message: gettext("Choose a brand")
+        )
+
+      %Brand{} = brand ->
+        socket
+        |> assign(:brand, Repo.preload(brand, shops: [:avatars, :banners]))
+    end
+  end
+
+  # ============================================================================
+  # Helpers below belong and should be used for Admin pages only
+  #
 
   # ----------------------------------------------------------------------------
   # Brands helpers
@@ -281,11 +314,18 @@ defmodule ExCommerceWeb.MountHelpers do
   # ----------------------------------------------------------------------------
   # Private helpers
 
-  defp assign_user(socket, session) do
+  defp assign_user(socket, %{"user_token" => user_token} = _session) do
     %User{} =
       user =
-      Accounts.get_user_by_session_token(session["user_token"])
+      Accounts.get_user_by_session_token(user_token)
       |> Repo.preload([:brands])
+
+    socket
+    |> assign_new(:user, fn -> user end)
+  end
+
+  defp assign_user(socket, _session) do
+    %User{} = user = %User{} |> Repo.preload([:brands])
 
     socket
     |> assign_new(:user, fn -> user end)
@@ -306,6 +346,12 @@ defmodule ExCommerceWeb.MountHelpers do
       get_connect_params(socket)["timezone_offset"] || @default_timezone_offset
 
     assign(socket, timezone_offset: timezone_offset)
+  end
+
+  defp redirect_with_flash(socket, to: to, kind: kind, message: message) do
+    socket
+    |> put_flash(kind, message)
+    |> redirect(to: to)
   end
 
   defp brands_redirect(socket, to: to) do
