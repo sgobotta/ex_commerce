@@ -1,6 +1,6 @@
 defmodule ExCommerceWeb.PlaceLive.Show do
   @moduledoc """
-  Shows a single place
+  Shows a single places
   """
 
   use ExCommerceWeb, :live_view
@@ -12,7 +12,7 @@ defmodule ExCommerceWeb.PlaceLive.Show do
         {:ok,
          socket
          |> assign_defaults(params, session)
-         |> assign_brand_by_slug_or_redirect(params)}
+         |> assign_place_by_slug_or_redirect(params)}
 
       false ->
         {:ok, socket}

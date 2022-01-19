@@ -24,7 +24,7 @@ defmodule ExCommerceWeb.PlaceLiveTest do
     @tag :wip
     test "[Success] lists all places", %{
       conn: conn,
-      brand: %Brand{name: brand_name, slug: slug}
+      brand: %Brand{slug: slug}
     } do
       {:ok, _index_live, html} =
         live(conn, Routes.place_index_path(conn, :index, slug))
@@ -43,7 +43,7 @@ defmodule ExCommerceWeb.PlaceLiveTest do
     @tag :wip
     test "[Success] displays brand", %{
       conn: conn,
-      brand: %Brand{slug: brand_slug, name: brand_name},
+      brand: %Brand{slug: brand_slug},
       shop: %Shop{slug: shop_slug}
     } do
       {:ok, _show_live, html} =

@@ -43,7 +43,7 @@ defmodule ExCommerceWeb.MountHelpers do
   end
 
   # ============================================================================
-  # Helpers belong can be used in Public pages
+  # Helpers belong can be used in Places pages
   #
 
   # ----------------------------------------------------------------------------
@@ -75,6 +75,41 @@ defmodule ExCommerceWeb.MountHelpers do
       %Brand{} = brand ->
         socket
         |> assign(:brand, Repo.preload(brand, shops: [:avatars, :banners]))
+    end
+  end
+
+  def assign_place_by_slug_or_redirect(socket, %{
+        "brand" => brand_slug,
+        "shop" => shop_slug
+      }) do
+    case Marketplaces.get_shop_by_brand_slug(brand_slug, shop_slug) do
+      nil ->
+        redirect_with_flash(
+          socket,
+          to: Routes.place_search_path(socket, :search),
+          kind: :info,
+          message: gettext("Choose a shop")
+        )
+
+      %Shop{} = shop ->
+        socket
+        |> assign(
+          :shop,
+          Repo.preload(
+            shop,
+            avatars: [],
+            banners: [],
+            catalogues: [
+              categories: [
+                items: [
+                  option_groups: [],
+                  photos: [],
+                  variants: []
+                ]
+              ]
+            ]
+          )
+        )
     end
   end
 

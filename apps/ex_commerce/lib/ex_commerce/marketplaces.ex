@@ -6,7 +6,7 @@ defmodule ExCommerce.Marketplaces do
   import Ecto.Query, warn: false
 
   alias ExCommerce.Accounts.User
-  alias ExCommerce.Marketplaces.Shop
+  alias ExCommerce.Marketplaces.{Brand, Shop}
   alias ExCommerce.Repo
 
   @doc """
@@ -67,6 +67,32 @@ defmodule ExCommerce.Marketplaces do
 
   """
   def get_shop!(id), do: Repo.get!(Shop, id)
+
+  @doc """
+  Takes a brand slug and a shop slug to return a Shop
+
+  ## Examples
+
+      iex> get_shop_by_brand_slug("some-brand-slug", "some-shop-slug")
+      %Shop{}
+
+      iex> get_shop_by_brand_slug(
+      ...>  "some-invalid-brand-slug",
+      ...>  "some-invalid-shop-slug"
+      ...> )
+      nil
+
+  """
+  @spec get_shop_by_brand_slug(binary(), binary()) :: %Shop{} | nil
+  def get_shop_by_brand_slug(brand_slug, shop_slug) do
+    query =
+      from shop in Shop,
+        join: brand in Brand,
+        on: brand.slug == ^brand_slug,
+        where: shop.slug == ^shop_slug
+
+    Repo.one(query)
+  end
 
   @doc """
   Creates a shop.
@@ -139,8 +165,6 @@ defmodule ExCommerce.Marketplaces do
 
   defp after_save(error, _func), do: error
 
-  alias ExCommerce.Marketplaces.Brand
-
   @doc """
   Returns the list of brands.
 
@@ -175,10 +199,10 @@ defmodule ExCommerce.Marketplaces do
 
   ## Examples
 
-      iex> get_brand_by!(:slug, "some-name")
+      iex> get_brand_by(:slug, "some-name")
       %Brand{}
 
-      iex> get_brand_by!(:slug, "some-invalid-slug")
+      iex> get_brand_by(:slug, "some-invalid-slug")
       nil
 
   """

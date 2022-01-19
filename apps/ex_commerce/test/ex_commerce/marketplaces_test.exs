@@ -61,6 +61,14 @@ defmodule ExCommerce.MarketplacesTest do
       assert Marketplaces.get_shop!(shop_id) == shop
     end
 
+    test "get_shop_by_brand_slug/1 returns the shop with given brand and shop slug",
+         %{
+           brand: %Brand{id: brand_id, slug: brand_slug}
+         } do
+      %Shop{slug: shop_slug} = shop = shop_fixture(%{brand_id: brand_id})
+      assert Marketplaces.get_shop_by_brand_slug(brand_slug, shop_slug) == shop
+    end
+
     test "create_shop/1 with valid data creates a shop", %{
       brand: %Brand{id: brand_id}
     } do
