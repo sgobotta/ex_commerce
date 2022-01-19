@@ -1,6 +1,6 @@
-defmodule ExCommerceWeb.ShopLive.PublicShow do
+defmodule ExCommerceWeb.PlaceLive.Index do
   @moduledoc """
-  Shows a single public shop
+  Lists places
   """
 
   use ExCommerceWeb, :live_view
@@ -12,7 +12,7 @@ defmodule ExCommerceWeb.ShopLive.PublicShow do
         {:ok,
          socket
          |> assign_defaults(params, session)
-         |> assign_brand_by_slug_or_redirect(params)}
+         |> assign_brands()}
 
       false ->
         {:ok, socket}

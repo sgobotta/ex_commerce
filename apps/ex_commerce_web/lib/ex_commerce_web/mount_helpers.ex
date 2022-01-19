@@ -62,12 +62,12 @@ defmodule ExCommerceWeb.MountHelpers do
     |> assign(:brands, Marketplaces.list_brands())
   end
 
-  def assign_brand_by_slug_or_redirect(socket, %{"slug" => slug}) do
+  def assign_brand_by_slug_or_redirect(socket, %{"brand" => slug}) do
     case Marketplaces.get_brand_by(:slug, slug) do
       nil ->
         redirect_with_flash(
           socket,
-          to: Routes.brand_public_index_path(socket, :index),
+          to: Routes.place_search_path(socket, :search),
           kind: :info,
           message: gettext("Choose a brand")
         )

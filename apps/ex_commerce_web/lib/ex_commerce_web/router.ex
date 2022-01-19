@@ -27,11 +27,9 @@ defmodule ExCommerceWeb.Router do
   scope "/", ExCommerceWeb do
     pipe_through :browser
 
-    live "/brands", BrandLive.PublicIndex, :index
-    live "/brands/:slug", BrandLive.PublicShow, :show
-
-    live "/shops", ShopLive.PublicIndex, :index
-    live "/shops/:slug", ShopLive.PublicShow, :show
+    live "/places", PlaceLive.Search, :search
+    live "/places/:brand", PlaceLive.Index, :index
+    live "/places/:brand/:shop", PlaceLive.Show, :show
 
     scope "/admin" do
       pipe_through [

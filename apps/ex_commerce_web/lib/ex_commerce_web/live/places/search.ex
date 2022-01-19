@@ -1,6 +1,6 @@
-defmodule ExCommerceWeb.BrandLive.PublicIndex do
+defmodule ExCommerceWeb.PlaceLive.Search do
   @moduledoc """
-  Lists available brands
+  Searchs for places
   """
 
   use ExCommerceWeb, :live_view
@@ -11,8 +11,7 @@ defmodule ExCommerceWeb.BrandLive.PublicIndex do
       true ->
         {:ok,
          socket
-         |> assign_defaults(params, session)
-         |> assign_brands()}
+         |> assign_defaults(params, session)}
 
       false ->
         {:ok, socket}
