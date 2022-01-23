@@ -46,9 +46,7 @@ defmodule ExCommerceWeb.UploadsCase do
                    "<p class=\"text-base font-mono truncate\">\n#{name}\n    </p>"
 
           assert view =~
-                   "<a class=\"mini-cancel-button\" href=\"#\" phx-click=\"#{
-                     cancel_event_name
-                   }\""
+                   "<a class=\"mini-cancel-button\" href=\"#\" phx-click=\"#{cancel_event_name}\""
 
           assert view =~
                    "\n      &amp;times\n    </a></div><div class=\"\n    col-span-8 sm:col-span-4 row-span-1\n    px-5 sm:px-0\n    sm:text-center\n  \"><progress max=\"100\" value=\"100\"></progress>"

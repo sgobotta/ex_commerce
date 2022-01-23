@@ -32,9 +32,7 @@ defmodule ExCommerceWeb.LiveFormHelpers do
           nil ->
             :ok =
               Logger.warn(
-                "#{__MODULE__} (get_photos/2) :: No non :delete photos found. Returning a placeholder. photos=#{
-                  inspect(photos)
-                }"
+                "#{__MODULE__} (get_photos/2) :: No non :delete photos found. Returning a placeholder. photos=#{inspect(photos)}"
               )
 
             get_photos([], opts)
@@ -42,9 +40,7 @@ defmodule ExCommerceWeb.LiveFormHelpers do
           %Photo{state: :local} = photo ->
             :ok =
               Logger.warn(
-                "#{__MODULE__} (get_photos/2) :: No :uploaded photo found. Returning a local photo. photo=#{
-                  inspect(photo)
-                }"
+                "#{__MODULE__} (get_photos/2) :: No :uploaded photo found. Returning a local photo. photo=#{inspect(photo)}"
               )
 
             [photo]
@@ -73,9 +69,7 @@ defmodule ExCommerceWeb.LiveFormHelpers do
       defp get_photo_source(socket, %Photo{state: :delete} = photo) do
         :ok =
           Logger.warn(
-            "#{__MODULE__} (get_photo_source/2) :: Rendering a :delete marked photo, photo=#{
-              inspect(photo)
-            }"
+            "#{__MODULE__} (get_photo_source/2) :: Rendering a :delete marked photo, photo=#{inspect(photo)}"
           )
 
         Photo.get_remote_path(photo)
