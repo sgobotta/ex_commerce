@@ -10,4 +10,8 @@
   .mini-cancel-button {
     @apply float-right w-8 h-8 rounded-full bg-gray-800 border-gray-800 hover:bg-gray-600 hover:border-gray-600 hover:shadow-button focus:bg-gray-400 focus:border-gray-400 text-2xl text-gray-100 text-center;
   }
+
+  .pill-button {
+    @apply rounded-full text-2xl font-bold
+  }
 }
