@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # ------------------------------------------------------------------------------
 # Ex Commerce Web configuration
@@ -63,24 +63,15 @@ config :ex_commerce_assets,
 # ------------------------------------------------------------------------------
 # Email configuration
 #
-
-config :ex_commerce, from_email: System.fetch_env!("EX_COMMERCE_FROM_EMAIL")
-
 config :ex_commerce, ExCommerce.Mailer,
   adapter: Bamboo.SendGridAdapter,
-  api_key: System.get_env("SENDGRID_API_KEY"),
   hackney_opts: [
     recv_timeout: :timer.minutes(1)
   ]
 
 # ------------------------------------------------------------------------------
-# Cloudex configuration
+# Cloudex configuration (runtime.exs)
 #
-
-config :cloudex,
-  api_key: System.fetch_env!("CLOUDEX_API_KEY"),
-  secret: System.fetch_env!("CLOUDEX_SECRET"),
-  cloud_name: System.fetch_env!("CLOUDEX_CLOUD_NAME")
 
 # ------------------------------------------------------------------------------
 # Shared configuration
@@ -88,7 +79,3 @@ config :cloudex,
 
 # Do not print debug messages in production
 config :logger, level: :info
-
-# Finally import the config/prod.secret.exs which loads secrets
-# and configuration from environment variables.
-import_config "prod.secret.exs"

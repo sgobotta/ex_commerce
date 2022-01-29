@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # ------------------------------------------------------------------------------
 # Ex Commerce configuration
@@ -25,9 +25,11 @@ config :ex_commerce, ExCommerce.Repo,
 # with webpack to recompile .js and .css sources.
 config :ex_commerce_web, ExCommerceWeb.Endpoint,
   http: [port: 4000],
-  debug_errors: true,
-  code_reloader: true,
   check_origin: false,
+  code_reloader: true,
+  debug_errors: true,
+  secret_key_base:
+    "d4VqBGN5Pol0OR4hijP7BM9lcCsmsZiXov9vaDpLe14cTcJTZ53onXAgzQMpYYmW",
   watchers: [
     node: [
       "node_modules/webpack/bin/webpack.js",

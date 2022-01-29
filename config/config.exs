@@ -1,13 +1,13 @@
 # This file is responsible for configuring your umbrella
 # and **all applications** and their dependencies with the
-# help of Mix.Config.
+# help of the Config module.
 #
 # Note that all applications in your umbrella share the
 # same configuration and dependencies, which is why they
 # all use the same configuration file. If you want different
 # configurations or dependencies per app, it is best to
 # move said applications out of the umbrella.
-use Mix.Config
+import Config
 
 # ------------------------------------------------------------------------------
 # Ex Commerce configuration
@@ -28,8 +28,6 @@ config :ex_commerce_web,
 # Configures the endpoint
 config :ex_commerce_web, ExCommerceWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base:
-    "DflQfo+1YHhFStwkli7dL1zFqxXeuo+yY0XJB5thNL/+jOpOKbTscWxhRpJUgq6n",
   render_errors: [
     view: ExCommerceWeb.ErrorView,
     accepts: ~w(html json),
