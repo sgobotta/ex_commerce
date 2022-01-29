@@ -22,6 +22,16 @@ defmodule ExCommerce.Umbrella.MixProject do
       docs: [
         main: "ExCommerce",
         extras: ["README.md"]
+      ],
+      releases: [
+        ex_commerce: [
+          applications: [
+            ex_commerce: :permanent,
+            ex_commerce_assets: :permanent,
+            ex_commerce_numeric: :permanent,
+            ex_commerce_web: :permanent
+          ]
+        ]
       ]
     ]
   end
@@ -49,8 +59,8 @@ defmodule ExCommerce.Umbrella.MixProject do
       # Documentation
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       # i18n and l10n
-      {:ex_cldr, "~> 2.23"},
-      {:ex_cldr_numbers, "~> 2.0"}
+      {:ex_cldr, "~> 2.25"},
+      {:ex_cldr_numbers, "~> 2.24"}
     ]
   end
 
@@ -66,9 +76,10 @@ defmodule ExCommerce.Umbrella.MixProject do
   defp aliases do
     [
       # Rin `mix install in all child apps
+      "assets.deploy": ["cmd mix assets.deploy"],
       install: ["deps.get", "cmd mix install"],
       # Run `mix setup` in all child apps
-      setup: ["cmd mix setup", "deps.compile", "compile"],
+      setup: ["install", "deps.compile", "compile", "cmd mix setup"],
       # Run code checks
       check: [
         # Run `mix lint` in all child apps

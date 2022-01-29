@@ -48,7 +48,8 @@ defmodule ExCommerceAssets.MixProject do
       lint: ["format.check"],
       "format.check": ["format --check-formatted"],
       # Deps install
-      install: ["deps.get"],
+      "assets.deploy": [],
+      install: [],
       # Setup deps and database
       setup: ["install"],
       # Reset deps and database
