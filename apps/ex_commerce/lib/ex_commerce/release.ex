@@ -3,6 +3,8 @@ defmodule ExCommerce.Release do
   Used for executing DB release tasks when run in production without Mix
   installed.
   """
+  require Logger
+
   @app :ex_commerce
 
   def create_db do
@@ -13,15 +15,14 @@ defmodule ExCommerce.Release do
       |> repo.__adapter__().storage_up()
       |> case do
         :ok ->
-          :ok = IO.puts("Database has been created")
+          :ok = Logger.info("Database has been created")
 
         {:error, :already_up} ->
-          :ok = IO.puts("Database is already up")
+          :ok = Logger.info("Database is already up")
 
         {:error, error} ->
           :ok =
-            IO.puts(
-              :stderr,
+            Logger.error(
               "Error while trying to create database: #{inspect(error)}"
             )
       end
