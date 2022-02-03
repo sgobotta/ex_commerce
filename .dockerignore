@@ -16,3 +16,4 @@ erl_crash.dump
 
 # Static artifacts
 node_modules
+apps/ex_commerce_web/priv/static
