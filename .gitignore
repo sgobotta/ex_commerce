@@ -28,3 +28,6 @@ rel
 
 # Coverage
 /coverage/report/
+
+# Elixir ls
+.elixir_ls/
