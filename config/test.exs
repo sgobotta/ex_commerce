@@ -26,7 +26,7 @@ config :ex_commerce, ExCommerce.Repo,
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :ex_commerce_web, ExCommerceWeb.Endpoint,
+config :ex_commerce, ExCommerceWeb.Endpoint,
   http: [port: 4002],
   secret_key_base:
     "UAyhsOd/C6Y60lyqogtZGXY28MsXoa/YvI7lo5surD3a4yKsJkTbjxqZWnuXEOb6",
@@ -35,8 +35,7 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
 # ------------------------------------------------------------------------------
 # Ex Commerce Assets configuration
 #
-config :ex_commerce_assets,
-  driver: :test
+config :ex_commerce, ex_commerce_assets_driver: :cloudex
 
 # ------------------------------------------------------------------------------
 # Email configuration
@@ -56,7 +55,7 @@ config :cloudex,
   cloud_name: "some-cloud-name"
 
 # ------------------------------------------------------------------------------
-# Shared configuration
+# Misc configuration
 #
 
 # Print only warnings and errors during test

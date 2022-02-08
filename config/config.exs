@@ -9,24 +9,13 @@
 # move said applications out of the umbrella.
 import Config
 
-# ------------------------------------------------------------------------------
-# Ex Commerce configuration
-#
-
 # Configure Mix tasks and generators
 config :ex_commerce,
-  ecto_repos: [ExCommerce.Repo]
-
-# ------------------------------------------------------------------------------
-# Ex Commerce Web configuration
-#
-
-config :ex_commerce_web,
   ecto_repos: [ExCommerce.Repo],
-  generators: [context_app: :ex_commerce, binary_id: true]
+  generators: [binary_id: true]
 
 # Configures the endpoint
-config :ex_commerce_web, ExCommerceWeb.Endpoint,
+config :ex_commerce, ExCommerceWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [
     view: ExCommerceWeb.ErrorView,
@@ -36,6 +25,17 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
   pubsub_server: ExCommerce.PubSub,
   live_view: [signing_salt: "M+Dyy4Zh"]
 
+# Configures esbuild (the version is required)
+config :esbuild,
+  version: "0.14.0",
+  default: [
+    args:
+      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
+# Configures Phoenix Inline Svg
 config :phoenix_inline_svg, default_collection: ""
 
 # Use Jason for JSON parsing in Phoenix
@@ -50,7 +50,7 @@ config :ex_cldr,
   json_library: Jason
 
 # ------------------------------------------------------------------------------
-# Shared configuration
+# Misc configuration
 #
 
 # Configures Elixir's Logger

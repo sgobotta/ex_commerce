@@ -47,12 +47,12 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  config :ex_commerce_web, ExCommerceWeb.Endpoint,
+  config :ex_commerce, ExCommerceWeb.Endpoint,
     ip: {0, 0, 0, 0, 0, 0, 0, 0},
-    port: String.to_integer(System.get_env("PORT") || "4000"),
+    port: String.to_integer(System.get_env("PORT") || "5000"),
     server: true,
     http: [
-      port: String.to_integer(System.get_env("PORT") || "4000"),
+      port: String.to_integer(System.get_env("PORT") || "5000"),
       transport_options: [socket_opts: [:inet6]]
     ],
     secret_key_base: secret_key_base
