@@ -18,9 +18,25 @@ ARG SECRET_KEY_BASE
 
 FROM ${BUILDER_IMAGE} as builder
 
+ENV ASDF_VERSION v0.9.0
+ENV NODE_VERSION 16.13.1
+
 # install build dependencies
-RUN apt-get update -y && apt-get install -y build-essential git npm nodejs \
-    && apt-get clean && rm -f /var/lib/apt/lists/*_*
+RUN apt-get update -y && apt-get install -y build-essential git curl && \
+    apt-get clean && rm -f /var/lib/apt/lists/*_* && \
+    bash && \
+    PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH" && \
+    echo "PATH=$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH" >> ~/.bashrc && \
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch ${ASDF_VERSION} && \
+    asdf plugin-add nodejs && \
+    asdf install nodejs ${NODE_VERSION} && \
+    asdf global nodejs ${NODE_VERSION}
+
+SHELL ["/bin/bash", "--login", "-c"]
+
+RUN asdf --version
+RUN npm --version
+RUN node --version
 
 # prepare build dir
 WORKDIR "/app"
@@ -49,15 +65,23 @@ RUN mkdir config
 COPY config/config.exs config/${MIX_ENV}.exs config/
 RUN mix deps.compile
 
+WORKDIR "/app"
+
+# Compile the release
+COPY apps apps
+
+RUN MIX_ENV=prod mix compile
+
+# Prepare web application assets
 COPY apps/ex_commerce_web/priv ./apps/ex_commerce_web/priv
 
-# note: if your project uses a tool like https://purgecss.com/,
+# Note: if your project uses a tool like https://purgecss.com/,
 # which customizes asset compilation based on what it finds in
 # your Elixir templates, you will need to move the asset compilation
 # step down so that `lib` is available.
 COPY apps/ex_commerce_web/assets ./apps/ex_commerce_web/assets
 
-# compile assets
+# Compile assets
 WORKDIR "/app/apps/ex_commerce_web"
 RUN MIX_ENV=prod mix compile
 RUN npm install --prefix ./assets
@@ -65,11 +89,6 @@ RUN npm run deploy --prefix ./assets
 RUN MIX_ENV=prod mix phx.digest
 
 WORKDIR "/app"
-
-# Compile the release
-COPY apps apps
-
-RUN MIX_ENV=prod mix compile
 
 # Changes to config/runtime.exs don't require recompiling the code
 COPY config/runtime.exs config/
