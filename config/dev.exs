@@ -38,7 +38,7 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
       "development",
       "--watch",
       "--watch-options-stdin",
-      cd: Path.expand("../apps/ex_commerce_web/assets", __DIR__)
+      cd: Path.expand("../assets", __DIR__)
     ]
   ]
 
