@@ -69,7 +69,10 @@ COPY priv priv
 COPY assets assets
 
 # Compile assets
-RUN mix assets.deploy
+# RUN mix assets.deploy
+RUN npm install --prefix assets
+RUN npm run deploy --prefix assets
+RUN mix phx.digest
 
 # Compile the release
 COPY lib lib
@@ -79,7 +82,6 @@ RUN mix compile
 # Changes to config/runtime.exs don't require recompiling the code
 COPY config/runtime.exs config/
 
-COPY rel rel
 RUN mix release
 
 # start a new build stage so that the final image will only contain
