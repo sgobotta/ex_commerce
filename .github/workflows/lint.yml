@@ -45,6 +45,9 @@ jobs:
         run: |
           mix deps.compile
           mix compile
+      - name: Setup web client
+        run: |
+          mix setup.web
       - name: Run formatter
         run: |
           mix check.format
