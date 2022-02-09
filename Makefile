@@ -97,9 +97,10 @@ reset.ecto.test:
 #🐳 run: @ Runs a docker image
 run:
 	@docker run \
-		-p 4000:4000 \
+		-p 5000:5000 \
 		--env-file ${PROD_ENV_FILE} \
-		--net ex_commerce_default \
+		--name ${APP_NAME}_app \
+		--net ${APP_NAME}_default \
 		ex_commerce
 
 #📦 setup: @ Installs dependencies and set up database for dev and test envs
