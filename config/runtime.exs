@@ -47,14 +47,21 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
+  host = System.fetch_env!("APP_HOST")
+  port = String.to_integer(System.fetch_env!("PORT"))
+
   config :ex_commerce, ExCommerceWeb.Endpoint,
-    ip: {0, 0, 0, 0, 0, 0, 0, 0},
-    port: String.to_integer(System.get_env("PORT") || "5000"),
-    server: true,
+    url: [host: host, port: port],
     http: [
-      port: String.to_integer(System.get_env("PORT") || "5000"),
+      # Enable IPv6 and bind on all interfaces.
+      # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
+      # See the documentation on https://hexdocs.pm/plug_cowboy/Plug.Cowboy.html
+      # for details about using IPv6 vs IPv4 and loopback vs public addresses.
+      # ip: {0, 0, 0, 0, 0, 0, 0, 0},
+      port: port,
       transport_options: [socket_opts: [:inet6]]
     ],
+    server: true,
     secret_key_base: secret_key_base
 
   # ----------------------------------------------------------------------------
