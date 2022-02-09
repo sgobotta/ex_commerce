@@ -122,7 +122,9 @@ defmodule ExCommerce.MixProject do
       reset: ["ecto.drop", "deps.clean --all"],
       "reset.ecto": ["ecto.drop", "ecto.setup"],
       # Run tests
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      # Build the web client
+      "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
 end
