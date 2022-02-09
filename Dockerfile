@@ -51,11 +51,6 @@ ENV SECRET_KEY_BASE=$SECRET_KEY_BASE
 
 # install mix dependencies
 COPY mix.exs mix.lock ./
-COPY apps/ex_commerce/mix.exs ./apps/ex_commerce/mix.exs
-COPY apps/ex_commerce_assets/mix.exs ./apps/ex_commerce_assets/mix.exs
-COPY apps/ex_commerce_numeric/mix.exs ./apps/ex_commerce_numeric/mix.exs
-COPY apps/ex_commerce_web/mix.exs ./apps/ex_commerce_web/mix.exs
-
 RUN mix deps.get --only $MIX_ENV
 RUN mkdir config
 
@@ -65,34 +60,26 @@ RUN mkdir config
 COPY config/config.exs config/${MIX_ENV}.exs config/
 RUN mix deps.compile
 
-WORKDIR "/app"
-
-# Compile the release
-COPY apps apps
-
-RUN MIX_ENV=prod mix compile
-
-# Prepare web application assets
-COPY apps/ex_commerce_web/priv ./apps/ex_commerce_web/priv
+COPY priv priv
 
 # Note: if your project uses a tool like https://purgecss.com/,
 # which customizes asset compilation based on what it finds in
 # your Elixir templates, you will need to move the asset compilation
 # step down so that `lib` is available.
-COPY apps/ex_commerce_web/assets ./apps/ex_commerce_web/assets
+COPY assets assets
 
 # Compile assets
-WORKDIR "/app/apps/ex_commerce_web"
-RUN MIX_ENV=prod mix compile
-RUN npm install --prefix ./assets
-RUN npm run deploy --prefix ./assets
-RUN MIX_ENV=prod mix phx.digest
+RUN mix assets.deploy
 
-WORKDIR "/app"
+# Compile the release
+COPY lib lib
+
+RUN mix compile
 
 # Changes to config/runtime.exs don't require recompiling the code
 COPY config/runtime.exs config/
 
+COPY rel rel
 RUN mix release
 
 # start a new build stage so that the final image will only contain
