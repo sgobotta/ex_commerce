@@ -81,7 +81,8 @@ defmodule ExCommerce.MixProject do
       # Web Helpers
       {:phoenix_inline_svg, "~> 1.4"},
       # Assets handling deps
-      {:cloudex, git: "https://github.com/sgobotta/cloudex.git", branch: "main"},
+      {:cloudex,
+       git: "https://github.com/sgobotta/cloudex.git", branch: "main"},
       # Others
       {:decimal, "~> 2.0"}
     ]
