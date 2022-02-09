@@ -98,6 +98,7 @@ defmodule ExCommerce.MixProject do
       # Setup the whole application
       setup: ["deps.get", "deps.compile", "compile", "setup.ecto", "setup.web"],
       "setup.ecto": [
+        "ecto.drop",
         "ecto.create",
         "ecto.migrate",
         "run priv/repo/seeds.exs"
@@ -120,7 +121,12 @@ defmodule ExCommerce.MixProject do
       "eslint.fix": ["cmd npm run eslint-fix --prefix assets"],
       # Reset database and deps
       reset: ["ecto.drop", "deps.clean --all"],
-      "reset.ecto": ["ecto.drop", "ecto.setup"],
+      "reset.ecto": [
+        "ecto.drop",
+        "ecto.create",
+        "ecto.migrate",
+        "run priv/repo/seeds.exs"
+      ],
       # Run tests
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       # Build the web client

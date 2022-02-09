@@ -16,6 +16,14 @@
     "Logger."
   ],
 
+  "skip_files": [
+    "priv/",
+    "test/",
+    "lib/ex_commerce_web/views/",
+    "lib/ex_commerce_web/telemetry.ex",
+    "lib/ex_commerce_web/live/live_helpers.ex"
+  ],
+
   "coverage_options": {
     "minimum_coverage": 90,
     "output_dir": "coverage/report",

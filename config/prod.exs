@@ -25,7 +25,7 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
 # To get SSL working, you will need to add the `https` key
 # to the previous section and set your `:url` port to 443:
 #
-#     config :ex_commerce_web, ExCommerceWeb.Endpoint,
+#     config :ex_commerce, ExCommerceWeb.Endpoint,
 #       ...
 #       url: [host: "example.com", port: 443],
 #       https: [
@@ -49,7 +49,7 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
 # We also recommend setting `force_ssl` in your endpoint, ensuring
 # no data is ever sent via http, always redirecting to https:
 #
-#     config :ex_commerce_web, ExCommerceWeb.Endpoint,
+#     config :ex_commerce, ExCommerceWeb.Endpoint,
 #       force_ssl: [hsts: true]
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.

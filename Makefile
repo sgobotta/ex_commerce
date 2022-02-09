@@ -109,13 +109,11 @@ setup: setup.dev setup.test
 #📦 setup.dev: @ Installs dependencies and set up database for dev env
 setup.dev: SHELL:=/bin/bash
 setup.dev:
-	@source ${LOCAL_ENV_FILE} && MIX_ENV=dev mix install
 	@source ${LOCAL_ENV_FILE} && MIX_ENV=dev mix setup
 
 #📦 setup.test: @ Installs dependencies and set up database for test env
 setup.test: SHELL:=/bin/bash
 setup.test:
-	@source ${LOCAL_ENV_FILE} && MIX_ENV=test mix install
 	@source ${LOCAL_ENV_FILE} && MIX_ENV=test mix setup
 
 #📦 setup.deps: @ Installs dependencies for development

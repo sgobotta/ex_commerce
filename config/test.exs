@@ -35,7 +35,7 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
 # ------------------------------------------------------------------------------
 # Ex Commerce Assets configuration
 #
-config :ex_commerce, ex_commerce_assets_driver: :cloudex
+config :ex_commerce, ex_commerce_assets_driver: :test
 
 # ------------------------------------------------------------------------------
 # Email configuration
