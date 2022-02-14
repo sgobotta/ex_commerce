@@ -65,7 +65,6 @@ defmodule ExCommerce.MixProject do
       {:phoenix_live_dashboard, "~> 0.6.2"},
       {:phoenix_live_view, "~> 0.17.5"},
       {:floki, ">= 0.30.0"},
-      {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6.1"},
       {:telemetry_poller, "~> 0.5"},
       {:gettext, "~> 0.18"},
