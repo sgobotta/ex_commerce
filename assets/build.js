@@ -48,7 +48,7 @@ const plugins = [
 
 let opts = {
   bundle: true,
-  entryPoints: ['js/app.js'],
+  entryPoints: ['js/app.js', 'css/app.scss'],
   external: [
     './static/images/*',
     './static/svg/*'
