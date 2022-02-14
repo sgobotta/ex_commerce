@@ -1,17 +1,12 @@
 module.exports = {
   content: [
-    './js/**/*.js',
-    '../lib/*_web/**/*.*ex'
+    '../lib/**/*.ex',
+    '../lib/**/*.heex',
+    './js/**/*.js'
   ],
   darkMode: false, // or 'media' or 'class'
   important: true,
   plugins: [],
-  purge: [
-    '../lib/**/*.ex',
-    '../lib/**/*.leex',
-    '../lib/**/*.eex',
-    './js/**/*.js'
-  ],
   theme: {
     extend: {
       borderWidth: {

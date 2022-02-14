@@ -104,11 +104,7 @@ defmodule ExCommerce.MixProject do
         "ecto.migrate",
         "run priv/repo/seeds.exs"
       ],
-      "setup.web": [
-        "cmd npm install --prefix assets",
-        "cmd npm run deploy --prefix assets",
-        "phx.digest"
-      ],
+      "setup.web": ["assets.deploy"],
       # Run code checks
       check: [
         "check.format",
@@ -131,7 +127,11 @@ defmodule ExCommerce.MixProject do
       # Run tests
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       # Build the web client
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": [
+        "cmd npm install --prefix assets",
+        "cmd npm run deploy --prefix assets",
+        "phx.digest"
+      ]
     ]
   end
 end
