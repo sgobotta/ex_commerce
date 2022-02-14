@@ -6,6 +6,7 @@ LOCAL_ENV_FILE = .env
 PROD_ENV_FILE = .env.prod
 APP_NAME = `grep 'APP_NAME=' .env | sed -e 's/\[//g' -e 's/ //g' -e 's/APP_NAME=//'`
 UPLOADS_DIR = apps/ex_commerce_web/priv/static/uploads
+DOCKER_BUILD_NAME = ${APP_NAME}_app
 
 export GREEN=\033[0;32m
 export NOFORMAT=\033[0m
@@ -94,12 +95,12 @@ reset.ecto.test:
 	@echo "🧹 Cleaning db for test env..."
 	@source ${LOCAL_ENV_FILE} && MIX_ENV=test mix reset.ecto
 
-#🐳 run: @ Runs a docker image
+#🐳 run: @ Runs a docker build
 run:
 	@docker run \
 		-p 5000:5000 \
 		--env-file ${PROD_ENV_FILE} \
-		--name ${APP_NAME}_app \
+		--name ${DOCKER_BUILD_NAME} \
 		--net ${APP_NAME}_default \
 		ex_commerce
 
