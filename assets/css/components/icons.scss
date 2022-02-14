@@ -4,7 +4,7 @@ $size: 16;
 
 .nav-icon {
   position: relative;
-  width: #{$size + ($size / 2)}px;
+  width: #{$size + (calc($size / 2))}px;
   height: $size;
   position: relative;
   -webkit-transform: rotate(0deg);
@@ -43,7 +43,7 @@ $size: 16;
 }
 
 .nav-icon span:nth-child(2) {
-  top: #{$size / 2}px;
+  top: #{calc($size / 2)}px;
   -webkit-transform-origin: left center;
   -moz-transform-origin: left center;
   -o-transform-origin: left center;
@@ -51,7 +51,7 @@ $size: 16;
 }
 
 .nav-icon span:nth-child(3) {
-  top: #{$size / 1}px;
+  top: #{calc($size / 1)}px;
   -webkit-transform-origin: left center;
   -moz-transform-origin: left center;
   -o-transform-origin: left center;
