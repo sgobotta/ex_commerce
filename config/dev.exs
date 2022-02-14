@@ -31,15 +31,7 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
   secret_key_base:
     "d4VqBGN5Pol0OR4hijP7BM9lcCsmsZiXov9vaDpLe14cTcJTZ53onXAgzQMpYYmW",
   watchers: [
-    # esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
-    node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch",
-      "--watch-options-stdin",
-      cd: Path.expand("../assets", __DIR__)
-    ]
+    node: ["build.js", "--watch", cd: Path.expand("../assets", __DIR__)]
   ]
 
 # ## SSL Support
