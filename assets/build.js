@@ -1,5 +1,6 @@
 const { sassPlugin } = require('esbuild-sass-plugin')
 const autoprefixer = require('autoprefixer')
+const copyStaticFiles = require('esbuild-copy-static-files')
 const esbuild = require('esbuild')
 const path = require('path')
 const postcss = require('postcss')
@@ -10,10 +11,10 @@ const args = process.argv.slice(2)
 const watch = args.includes('--watch')
 const deploy = args.includes('--deploy')
 
+const copyDest = '../priv/static'
+
 const loader = {
   // Add loaders for images/fonts/etc, e.g. { '.svg': 'file' }
-  '.png': 'file',
-  '.svg': 'file'
 }
 
 const plugins = [
@@ -29,30 +30,13 @@ const plugins = [
       ).process(source)
       return css
     }
-  })
-  // {
-  //   name: 'copy-files',
-  //   setup(build) {
-  //     // Redirect all paths starting with "images/" to "./public/images/"
-  //     build.onResolve({ filter: /^images\// }, args => {
-  //       return { path: path.join(args.resolveDir, 'public', args.path) }
-  //     })
-
-  //     // Redirect all paths starting with "svg/" to "./public/svg/"
-  //     build.onResolve({ filter: /^svg\// }, args => {
-  //       return { path: path.join(args.resolveDir, 'public', args.path) }
-  //     })
-  //   }
-  // }
+  }),
+  copyStaticFiles({dest: copyDest})
 ]
 
 let opts = {
   bundle: true,
   entryPoints: ['js/app.js', 'css/app.scss'],
-  external: [
-    './static/images/*',
-    './static/svg/*'
-  ],
   loader,
   logLevel: 'info',
   outdir: '../priv/static/',

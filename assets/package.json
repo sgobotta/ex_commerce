@@ -23,6 +23,7 @@
     "autoprefixer": "^10.4.2",
     "css-loader": "^5.x",
     "esbuild": "^0.14.21",
+    "esbuild-copy-static-files": "^0.1.0",
     "esbuild-sass-plugin": "^2.2.3",
     "eslint": "^7.31.0",
     "eslint-plugin-react": "^7.24.0",
