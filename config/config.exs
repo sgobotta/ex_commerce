@@ -25,16 +25,6 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
   pubsub_server: ExCommerce.PubSub,
   live_view: [signing_salt: "M+Dyy4Zh"]
 
-# Configures esbuild (the version is required)
-config :esbuild,
-  version: "0.14.0",
-  default: [
-    args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
-    cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
-  ]
-
 # Configures Phoenix Inline Svg
 config :phoenix_inline_svg, default_collection: ""
 
