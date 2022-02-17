@@ -14,8 +14,11 @@ if config_env() == :prod do
     socket_options: maybe_ipv6,
     show_sensitive_data_on_connection_error: false
 
-  case System.get_env("DATABASE_URL") do
-    nil ->
+  host = System.fetch_env!("APP_HOST")
+  port = String.to_integer(System.get_env("PORT", "443"))
+
+  case System.get_env("STAGE") do
+    "local" ->
       :ok =
         Logger.warn(
           "Ignoring variable DATABASE_URL as Postgrex connection protocol, proceding with default tcp connection."
@@ -28,12 +31,30 @@ if config_env() == :prod do
         hostname: System.fetch_env!("DB_HOSTNAME")
       )
 
-    database_url ->
+      config :ex_commerce, ExCommerceWeb.Endpoint,
+        http: [
+          port: port,
+          transport_options: [socket_opts: [:inet6]]
+        ],
+        url: [host: host, port: port]
+
+    _stage ->
       :ok = Logger.info("Using DATABASE_URL as Postgrex connection protocol.")
 
       config :ex_commerce, ExCommerce.Repo,
         ssl: true,
-        url: database_url
+        url: System.fetch_env!("DATABASE_URL")
+
+      config :ex_commerce, ExCommerceWeb.Endpoint,
+        http: [
+          # Enable IPv6 and bind on all interfaces.
+          # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
+          # See the documentation on https://hexdocs.pm/plug_cowboy/Plug.Cowboy.html
+          # for details about using IPv6 vs IPv4 and loopback vs public addresses.
+          # ip: {0, 0, 0, 0, 0, 0, 0, 0},
+          port: {:system, "PORT"}
+        ],
+        url: [scheme: "https", host: host, port: 443]
   end
 
   # ----------------------------------------------------------------------------
@@ -47,20 +68,7 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.fetch_env!("APP_HOST")
-  port = String.to_integer(System.fetch_env!("PORT"))
-
   config :ex_commerce, ExCommerceWeb.Endpoint,
-    url: [host: host, port: port],
-    http: [
-      # Enable IPv6 and bind on all interfaces.
-      # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
-      # See the documentation on https://hexdocs.pm/plug_cowboy/Plug.Cowboy.html
-      # for details about using IPv6 vs IPv4 and loopback vs public addresses.
-      # ip: {0, 0, 0, 0, 0, 0, 0, 0},
-      port: port,
-      transport_options: [socket_opts: [:inet6]]
-    ],
     server: true,
     secret_key_base: secret_key_base
 
