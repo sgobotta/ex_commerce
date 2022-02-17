@@ -1,35 +1,22 @@
 # This file is responsible for configuring your umbrella
 # and **all applications** and their dependencies with the
-# help of Mix.Config.
+# help of the Config module.
 #
 # Note that all applications in your umbrella share the
 # same configuration and dependencies, which is why they
 # all use the same configuration file. If you want different
 # configurations or dependencies per app, it is best to
 # move said applications out of the umbrella.
-use Mix.Config
-
-# ------------------------------------------------------------------------------
-# Ex Commerce configuration
-#
+import Config
 
 # Configure Mix tasks and generators
 config :ex_commerce,
-  ecto_repos: [ExCommerce.Repo]
-
-# ------------------------------------------------------------------------------
-# Ex Commerce Web configuration
-#
-
-config :ex_commerce_web,
   ecto_repos: [ExCommerce.Repo],
-  generators: [context_app: :ex_commerce, binary_id: true]
+  generators: [binary_id: true]
 
 # Configures the endpoint
-config :ex_commerce_web, ExCommerceWeb.Endpoint,
+config :ex_commerce, ExCommerceWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base:
-    "DflQfo+1YHhFStwkli7dL1zFqxXeuo+yY0XJB5thNL/+jOpOKbTscWxhRpJUgq6n",
   render_errors: [
     view: ExCommerceWeb.ErrorView,
     accepts: ~w(html json),
@@ -38,6 +25,7 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
   pubsub_server: ExCommerce.PubSub,
   live_view: [signing_salt: "M+Dyy4Zh"]
 
+# Configures Phoenix Inline Svg
 config :phoenix_inline_svg, default_collection: ""
 
 # Use Jason for JSON parsing in Phoenix
@@ -52,7 +40,7 @@ config :ex_cldr,
   json_library: Jason
 
 # ------------------------------------------------------------------------------
-# Shared configuration
+# Misc configuration
 #
 
 # Configures Elixir's Logger

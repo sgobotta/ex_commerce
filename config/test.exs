@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Only in tests, remove the complexity from the password hashing algorithm
 config :bcrypt_elixir, :log_rounds, 1
@@ -26,15 +26,16 @@ config :ex_commerce, ExCommerce.Repo,
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :ex_commerce_web, ExCommerceWeb.Endpoint,
+config :ex_commerce, ExCommerceWeb.Endpoint,
   http: [port: 4002],
+  secret_key_base:
+    "UAyhsOd/C6Y60lyqogtZGXY28MsXoa/YvI7lo5surD3a4yKsJkTbjxqZWnuXEOb6",
   server: false
 
 # ------------------------------------------------------------------------------
 # Ex Commerce Assets configuration
 #
-config :ex_commerce_assets,
-  driver: :test
+config :ex_commerce, ex_commerce_assets_driver: :test
 
 # ------------------------------------------------------------------------------
 # Email configuration
@@ -54,8 +55,11 @@ config :cloudex,
   cloud_name: "some-cloud-name"
 
 # ------------------------------------------------------------------------------
-# Shared configuration
+# Misc configuration
 #
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Initialize plugs at runtime for faster test compilation
+config :phoenix, :plug_init_mode, :runtime

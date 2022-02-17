@@ -24,7 +24,7 @@ services:
     volumes:
       - 'redis_data:/data'
     networks:
-      close:
+      default:
         aliases:
           - redis
 
@@ -44,7 +44,7 @@ services:
     volumes:
       - 'pg_data:/var/lib/postgresql/data'
     networks:
-      close:
+      default:
         aliases:
           - postgres
 
@@ -62,11 +62,11 @@ services:
     volumes:
       - 'pgadmin_data:/var/lib/pgadmin'
     networks:
-      close:
+      default:
         aliases:
           - pgadmin
 networks:
-  close:
+  default:
     driver: bridge
 volumes:
   redis_data:

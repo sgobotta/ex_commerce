@@ -1,0 +1,37 @@
+{
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sgobotta/ex_commerce.git"
+  },
+  "description": "Web client application",
+  "license": "MIT",
+  "scripts": {
+    "deploy": "node build.js --deploy",
+    "eslint": "node_modules/.bin/eslint --config .eslintrc.json js/",
+    "eslint-fix": "node_modules/.bin/eslint --fix --config .eslintrc.json js/",
+    "watch": "node build.js --watch"
+  },
+  "dependencies": {
+    "alpinejs": "^3.3.5",
+    "phoenix": "file:../deps/phoenix",
+    "phoenix_html": "file:../deps/phoenix_html",
+    "phoenix_live_view": "file:../deps/phoenix_live_view",
+    "postcss-loader": "^6.2.1",
+    "topbar": "^0.1.4"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.2",
+    "css-loader": "^5.x",
+    "esbuild": "^0.14.21",
+    "esbuild-copy-static-files": "^0.1.0",
+    "esbuild-sass-plugin": "^2.2.3",
+    "eslint": "^7.31.0",
+    "eslint-plugin-react": "^7.24.0",
+    "postcss": "^8.4.6",
+    "postcss-import": "^14.0.2",
+    "postcss-preset-env": "^7.3.1",
+    "sass": "^1.45.1",
+    "sass-loader": "^12.4.0",
+    "tailwindcss": "^3.0.18"
+  }
+}

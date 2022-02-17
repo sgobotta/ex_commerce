@@ -1,13 +1,16 @@
-defmodule ExCommerce.Umbrella.MixProject do
+defmodule ExCommerce.MixProject do
   use Mix.Project
 
   def project do
     [
-      apps_path: "apps",
+      app: :ex_commerce,
       version: "0.1.0",
+      elixir: "~> 1.12",
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
       aliases: aliases(),
+      deps: deps(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
@@ -15,7 +18,6 @@ defmodule ExCommerce.Umbrella.MixProject do
         "coveralls.post": :test,
         "coveralls.html": :test
       ],
-
       # Docs
       name: "Ex Commerce",
       source_url: "https://github.com/sgobotta/ex_commerce",
@@ -26,18 +28,23 @@ defmodule ExCommerce.Umbrella.MixProject do
     ]
   end
 
-  # Dependencies can be Hex packages:
+  # Configuration for the OTP application.
   #
-  #   {:mydep, "~> 0.3.0"}
+  # Type `mix help compile.app` for more information.
+  def application do
+    [
+      mod: {ExCommerce.Application, []},
+      extra_applications: [:logger, :runtime_tools]
+    ]
+  end
+
+  # Specifies which paths to compile per environment.
+  defp elixirc_paths(:test), do: ["lib", "priv/repo/seeds", "test/support"]
+  defp elixirc_paths(_env), do: ["lib", "priv/repo/seeds"]
+
+  # Specifies your project dependencies.
   #
-  # Or git/path repositories:
-  #
-  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options.
-  #
-  # Dependencies listed here are available only for this project
-  # and cannot be accessed from applications inside the apps/ folder.
+  # Type `mix help deps` for examples and options.
   defp deps do
     [
       # Code quality and Testing
@@ -48,9 +55,35 @@ defmodule ExCommerce.Umbrella.MixProject do
       {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false},
       # Documentation
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
+      # Phoenix default apps
+      {:phoenix, "~> 1.6.6"},
+      {:phoenix_ecto, "~> 4.4"},
+      {:ecto_sql, "~> 3.4"},
+      {:postgrex, ">= 0.0.0"},
+      {:phoenix_html, "~> 3.1.0"},
+      {:phoenix_live_reload, "~> 1.3.3", only: :dev},
+      {:phoenix_live_dashboard, "~> 0.6.2"},
+      {:phoenix_live_view, "~> 0.17.5"},
+      {:floki, ">= 0.30.0"},
+      {:telemetry_metrics, "~> 0.6.1"},
+      {:telemetry_poller, "~> 0.5"},
+      {:gettext, "~> 0.18"},
+      {:bcrypt_elixir, "~> 2.0"},
+      {:phoenix_pubsub, "~> 2.0"},
+      {:jason, "~> 1.2"},
+      {:plug_cowboy, "~> 2.5"},
+      # Email apps
+      {:bamboo, "~> 2.2.0"},
       # i18n and l10n
-      {:ex_cldr, "~> 2.23"},
-      {:ex_cldr_numbers, "~> 2.0"}
+      {:ex_cldr, "~> 2.25"},
+      {:ex_cldr_numbers, "~> 2.24"},
+      # Web Helpers
+      {:phoenix_inline_svg, "~> 1.4"},
+      # Assets handling deps
+      {:cloudex,
+       git: "https://github.com/sgobotta/cloudex.git", branch: "main"},
+      # Others
+      {:decimal, "~> 2.0"}
     ]
   end
 
@@ -60,28 +93,44 @@ defmodule ExCommerce.Umbrella.MixProject do
   #     $ mix setup
   #
   # See the documentation for `Mix` for more info on aliases.
-  #
-  # Aliases listed here are available only for this project
-  # and cannot be accessed from applications inside the apps/ folder.
   defp aliases do
     [
-      # Rin `mix install in all child apps
-      install: ["deps.get", "cmd mix install"],
-      # Run `mix setup` in all child apps
-      setup: ["cmd mix setup", "deps.compile", "compile"],
+      # Setup the whole application
+      setup: ["deps.get", "deps.compile", "compile", "setup.ecto", "setup.web"],
+      "setup.ecto": [
+        "ecto.drop",
+        "ecto.create",
+        "ecto.migrate",
+        "run priv/repo/seeds.exs"
+      ],
+      "setup.web": ["assets.deploy"],
       # Run code checks
       check: [
-        # Run `mix lint` in all child apps
         "check.format",
         "check.credo",
         "check.dialyzer"
       ],
-      "check.format": ["cmd mix lint"],
+      "check.format": ["format --check-formatted", "eslint"],
       "check.credo": ["credo --strict"],
       "check.dialyzer": ["dialyzer --format dialyxir"],
-      # Reset applications
-      reset: ["cmd mix reset", "setup"],
-      "reset.ecto": ["cmd mix reset.ecto"]
+      eslint: ["cmd npm run eslint --prefix assets"],
+      "eslint.fix": ["cmd npm run eslint-fix --prefix assets"],
+      # Reset database and deps
+      reset: ["ecto.drop", "deps.clean --all"],
+      "reset.ecto": [
+        "ecto.drop",
+        "ecto.create",
+        "ecto.migrate",
+        "run priv/repo/seeds.exs"
+      ],
+      # Run tests
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      # Build the web client
+      "assets.deploy": [
+        "cmd npm install --prefix assets",
+        "cmd npm run deploy --prefix assets",
+        "phx.digest"
+      ]
     ]
   end
 end

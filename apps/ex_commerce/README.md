@@ -1,3 +1,0 @@
-# ExCommerce
-
-**TODO: Add description**

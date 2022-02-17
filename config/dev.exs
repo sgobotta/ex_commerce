@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # ------------------------------------------------------------------------------
 # Ex Commerce configuration
@@ -23,20 +23,15 @@ config :ex_commerce, ExCommerce.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :ex_commerce_web, ExCommerceWeb.Endpoint,
+config :ex_commerce, ExCommerceWeb.Endpoint,
   http: [port: 4000],
-  debug_errors: true,
-  code_reloader: true,
   check_origin: false,
+  code_reloader: true,
+  debug_errors: true,
+  secret_key_base:
+    "d4VqBGN5Pol0OR4hijP7BM9lcCsmsZiXov9vaDpLe14cTcJTZ53onXAgzQMpYYmW",
   watchers: [
-    node: [
-      "node_modules/webpack/bin/webpack.js",
-      "--mode",
-      "development",
-      "--watch",
-      "--watch-options-stdin",
-      cd: Path.expand("../apps/ex_commerce_web/assets", __DIR__)
-    ]
+    node: ["build.js", "--watch", cd: Path.expand("../assets", __DIR__)]
   ]
 
 # ## SSL Support
@@ -64,7 +59,7 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :ex_commerce_web, ExCommerceWeb.Endpoint,
+config :ex_commerce, ExCommerceWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/[^uploads].*(js|css|png|jpeg|jpg|gif|svg)$",
@@ -77,8 +72,12 @@ config :ex_commerce_web, ExCommerceWeb.Endpoint,
 # ------------------------------------------------------------------------------
 # Ex Commerce Assets configuration
 #
-config :ex_commerce_assets,
-  driver: :cloudex
+config :ex_commerce,
+  ex_commerce_assets_driver: :cloudex
+
+# ------------------------------------------------------------------------------
+# Misc Phoenix configuration
+#
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
@@ -105,7 +104,7 @@ config :cloudex,
   cloud_name: System.fetch_env!("CLOUDEX_CLOUD_NAME")
 
 # ------------------------------------------------------------------------------
-# Shared configuration
+# Misc configuration
 #
 
 # Do not include metadata nor timestamps in development logs

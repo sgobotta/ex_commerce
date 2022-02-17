@@ -40,7 +40,7 @@ jobs:
     - name: Set up Elixir
       uses: erlef/setup-elixir@v1
       with:
-        elixir-version: '1.11.4'
+        elixir-version: '1.12.3'
         otp-version: '23.3'
     - name: Restore dependencies cache
       uses: actions/cache@v2
@@ -56,15 +56,19 @@ jobs:
       run: node --version
     - name: Install dependencies
       run: |
-        echo $(pwd)
-        ls
-        MIX_ENV=test mix install
-        MIX_ENV=test mix setup
-        ls -R _build/test/lib/ex_commerce_web/priv
+        mix local.rebar --force
+        mix local.hex --force
+        mix deps.get
     - name: Compile app & deps
       run: |
         mix deps.compile
         mix compile
+    - name: Setup Database
+      run: |
+        mix reset.ecto
+    - name: Setup web client
+      run: |
+        mix setup.web
     - name: Run tests
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
