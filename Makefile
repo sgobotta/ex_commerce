@@ -36,6 +36,9 @@ clean.uploads: SHELL:=/bin/bash
 clean.uploads:
 	find ${UPLOADS_DIR} -path ${UPLOADS_DIR}/.gitkeep -prune -o -name "*.*" -exec /bin/rm -f {} \;
 
+#🚀 deploy.heroku: @ Deploys the current branch to heroku main
+deploy.heroku:
+	@git push heroku $(shell git rev-parse --abbrev-ref HEAD):main
 
 #📖 docs: @ Generates HTML documentation
 docs:
