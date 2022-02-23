@@ -3,8 +3,8 @@
 bin="/app/bin/ex_commerce"
 
 # Create db if not exists
-echo "Attempting to create db..."
-eval "$bin eval \"ExCommerce.Release.create_db\""
+# echo "Attempting to create db..."
+# eval "$bin eval \"ExCommerce.Release.create_db\""
 
 # Migrate the database
 echo "Starting Migrations..."
