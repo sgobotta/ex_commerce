@@ -5,7 +5,7 @@ export MIX_ENV ?= dev
 LOCAL_ENV_FILE = .env
 PROD_ENV_FILE = .env.prod
 APP_NAME = `grep 'APP_NAME=' .env | sed -e 's/\[//g' -e 's/ //g' -e 's/APP_NAME=//'`
-UPLOADS_DIR = apps/ex_commerce_web/priv/static/uploads
+UPLOADS_DIR = priv/static/uploads
 DOCKER_BUILD_NAME = ${APP_NAME}_app
 
 export GREEN=\033[0;32m
