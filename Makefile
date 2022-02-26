@@ -37,8 +37,8 @@ check.lint:
 #🧹 clean.uploads: @ Removes all files from the uploads dir
 clean.uploads: SHELL:=/bin/bash
 clean.uploads:
-	@source ${LOCAL_ENV_FILE} &&  \
-		find ${DEV_UPLOADS_PATH} -path ${DEV_UPLOADS_PATH}/.gitkeep -prune -o -name "*.*" -exec /bin/rm -f {} \;
+	@source ${LOCAL_ENV_FILE} && \
+		find ${UPLOADS_PATH} -path ${UPLOADS_PATH}/.gitkeep -prune -o -name "*.*" -exec /bin/rm -f {} \;
 
 #🚀 deploy.heroku: @ Deploys the current branch to heroku main
 deploy.heroku:
