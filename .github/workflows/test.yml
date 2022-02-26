@@ -22,6 +22,8 @@ jobs:
       # Postgres env
       POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      # Misc env
+      UPLOADS_PATH: "priv/static/uploads/"
     services:
       db:
         image: postgres

@@ -5,7 +5,6 @@ export MIX_ENV ?= dev
 LOCAL_ENV_FILE = .env
 PROD_ENV_FILE = .env.prod
 APP_NAME = `grep 'APP_NAME=' .env | sed -e 's/\[//g' -e 's/ //g' -e 's/APP_NAME=//'`
-UPLOADS_DIR = apps/ex_commerce_web/priv/static/uploads
 DOCKER_BUILD_NAME = ${APP_NAME}_app
 
 export GREEN=\033[0;32m
@@ -14,8 +13,12 @@ export NOFORMAT=\033[0m
 default: help
 
 #🐳 build: @ Builds a docker image
+build: SHELL:=/bin/bash
 build:
-	@docker build -t ${APP_NAME} .
+	@source ${LOCAL_ENV_FILE} && \
+	docker build \
+		--build-arg UPLOADS_PATH=${UPLOADS_PATH} \
+		-t ${APP_NAME} .
 
 #🔍 check: @ Runs all code verifications
 check: check.lint check.dialyzer test
@@ -34,7 +37,8 @@ check.lint:
 #🧹 clean.uploads: @ Removes all files from the uploads dir
 clean.uploads: SHELL:=/bin/bash
 clean.uploads:
-	find ${UPLOADS_DIR} -path ${UPLOADS_DIR}/.gitkeep -prune -o -name "*.*" -exec /bin/rm -f {} \;
+	@source ${LOCAL_ENV_FILE} && \
+		find ${UPLOADS_PATH} -path ${UPLOADS_PATH}/.gitkeep -prune -o -name "*.*" -exec /bin/rm -f {} \;
 
 #🚀 deploy.heroku: @ Deploys the current branch to heroku main
 deploy.heroku:

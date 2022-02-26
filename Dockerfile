@@ -15,6 +15,7 @@
 ARG BUILDER_IMAGE="hexpm/elixir:1.12.3-erlang-23.3.4-debian-bullseye-20210902-slim"
 ARG RUNNER_IMAGE="debian:bullseye-20210902-slim"
 ARG SECRET_KEY_BASE
+ARG UPLOADS_PATH
 
 FROM ${BUILDER_IMAGE} as builder
 
@@ -47,7 +48,8 @@ RUN mix local.hex --force && \
 
 # set build ENV
 ENV MIX_ENV="prod"
-ENV SECRET_KEY_BASE=$SECRET_KEY_BASE
+ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
+ENV UPLOADS_PATH=${UPLOADS_PATH}
 
 # install mix dependencies
 COPY mix.exs mix.lock ./
@@ -60,9 +62,9 @@ RUN mkdir config
 COPY config/config.exs config/${MIX_ENV}.exs config/
 RUN mix deps.compile
 
-COPY priv priv
 
 # Compile the release
+COPY priv priv
 COPY lib lib
 
 RUN mix compile
