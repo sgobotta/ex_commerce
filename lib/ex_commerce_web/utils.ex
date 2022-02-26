@@ -15,5 +15,5 @@ defmodule ExCommerceWeb.Utils do
   """
   @spec get_uploads_path :: binary
   def get_uploads_path,
-    do: Application.app_dir(:ex_commerce, "priv/static/uploads")
+    do: System.fetch_env!("UPLOADS_PATH")
 end
