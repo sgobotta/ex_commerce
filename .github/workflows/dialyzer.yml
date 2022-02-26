@@ -19,6 +19,8 @@ jobs:
       CLOUDEX_API_KEY: ${{ secrets.CLOUDEX_API_KEY }}
       CLOUDEX_SECRET: ${{ secrets.CLOUDEX_SECRET }}
       CLOUDEX_CLOUD_NAME: ${{ secrets.CLOUDEX_CLOUD_NAME }}
+      # Misc env
+      UPLOADS_PATH: "priv/static/uploads/"
     steps:
       - uses: actions/checkout@v2
       - name: Set mix file hash
