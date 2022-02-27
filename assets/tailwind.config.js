@@ -2,6 +2,7 @@ module.exports = {
   content: [
     '../lib/**/*.ex',
     '../lib/**/*.heex',
+    '../lib/**/*.html.heex',
     './js/**/*.js'
   ],
   darkMode: false, // or 'media' or 'class'
@@ -66,7 +67,7 @@ module.exports = {
         '2000': '2000ms',
         '2500': '2500ms',
         '3000': '3000ms'
-       }
+      }
     }
   },
   variants: {
