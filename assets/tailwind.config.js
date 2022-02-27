@@ -5,7 +5,6 @@ module.exports = {
     '../lib/**/*.html.heex',
     './js/**/*.js'
   ],
-  darkMode: false, // or 'media' or 'class'
   important: true,
   plugins: [],
   theme: {
