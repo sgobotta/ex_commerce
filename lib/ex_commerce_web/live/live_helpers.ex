@@ -97,13 +97,25 @@ defmodule ExCommerceWeb.LiveHelpers do
   #
 
   @doc """
-  Renders a squared image.
+  Renders an image.
 
   ### Options
 
   * `source`: path to the picture
-  * `size`: a valid tailwind height/width value without the h- or w-
-  * `container_classes` (Optional): style classes for the div container
+  * `layout`: one of landscape, portrait or squared
+
+  """
+  @spec render_image(keyword) :: {:safe, any}
+  def render_image(opts \\ []) do
+    render(ExCommerceWeb.ImagesView, "image", opts)
+  end
+
+  @doc """
+  Renders a small squared image.
+
+  ### Options
+
+  * `source`: path to the picture
 
   """
   @spec render_thumbnail(keyword) :: {:safe, any}

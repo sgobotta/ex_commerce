@@ -41,9 +41,9 @@
           use_placeholder: true,
           type: :avatar_with_size
         ]) do %>
-          <%= render_thumbnail([
+          <%= render_image([
             source: get_photo_source(@socket, photo),
-            size: "64"
+            size_classes: "h-64 w-64"
           ]) %>
         <% end %>
       </div>
