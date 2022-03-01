@@ -8,6 +8,7 @@ defmodule ExCommerceWeb.UserAuth do
 
   alias ExCommerce.Accounts
   alias ExCommerceWeb.Router.Helpers, as: Routes
+  alias Phoenix.LiveView
 
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change
@@ -15,6 +16,42 @@ defmodule ExCommerceWeb.UserAuth do
   @max_age 60 * 60 * 24 * 60
   @remember_me_cookie "_ex_commerce_web_user_remember_me"
   @remember_me_options [sign: true, max_age: @max_age, same_site: "Lax"]
+
+  def on_mount(
+        :ensure_authenticated,
+        _params,
+        %{"user_token" => user_token},
+        socket
+      ) do
+    new_socket =
+      LiveView.assign_new(
+        socket,
+        :current_user,
+        fn ->
+          Accounts.get_user_by_session_token!(user_token)
+        end
+      )
+      |> LiveView.assign(:visitor, false)
+
+    %Accounts.User{} = new_socket.assigns.current_user
+
+    {:cont, new_socket}
+  rescue
+    Ecto.NoResultsError -> {:halt, redirect_require_login(socket)}
+  end
+
+  def on_mount(:ensure_authenticated, _params, _session, socket),
+    do: {:halt, redirect_require_login(socket)}
+
+  defp redirect_require_login(socket) do
+    socket
+    |> maybe_store_return_to()
+    |> LiveView.put_flash(
+      :error,
+      gettext("You must log in to access this page.")
+    )
+    |> LiveView.redirect(to: Routes.user_session_path(socket, :new))
+  end
 
   @doc """
   Logs the user in.
