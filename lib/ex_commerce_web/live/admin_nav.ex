@@ -16,7 +16,6 @@ defmodule ExCommerceWeb.AdminNav do
       case {socket.view, socket.assigns.live_action} do
         {_view, _action} ->
           nil
-
       end
 
     {:cont, assign(socket, active_tab: active_tab)}
