@@ -5,8 +5,10 @@ module.exports = {
     '../lib/**/*.html.heex',
     './js/**/*.js'
   ],
-  important: true,
-  plugins: [],
+  important: false,
+  plugins: [
+    require('@tailwindcss/forms')
+  ],
   theme: {
     extend: {
       borderWidth: {
