@@ -1,11 +1,16 @@
 /* This file is for your main application css. */
 @import "./phoenix.css";
 
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
 @import "./themes/colors.scss";
 
 @import "./widgets/collapsables.scss";
 @import "./widgets/scrollbar.scss";
 
+@import "./base/headings.scss";
 @import "./base/tables.scss";
 
 @import "./components/buttons.scss";
@@ -17,11 +22,26 @@
 @import "./components/links.scss";
 @import "./components/progress.scss";
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+/* General styles */
 
-/* animations */
+.container{
+  margin: 0 auto;
+  max-width: 80.0rem;
+  padding: 0 0;
+  position: relative;
+  width: 100%
+}
+
+select {
+  width: auto;
+}
+
+input[type=checkbox] {
+  display: inline-block;
+}
+
+/* Animations */
+
 .fade-in-scale {
   animation: 0.2s ease-in 0s normal forwards 1 fade-in-scale-keys;
 }
@@ -113,7 +133,6 @@
   text-decoration: none;
   cursor: pointer;
 }
-
 
 /* Alerts and form errors */
 .alert {
