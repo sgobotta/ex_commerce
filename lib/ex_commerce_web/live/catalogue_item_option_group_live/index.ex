@@ -3,7 +3,10 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.Index do
   Lists available catalogue item option groups
   """
 
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+  }
 
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Offerings

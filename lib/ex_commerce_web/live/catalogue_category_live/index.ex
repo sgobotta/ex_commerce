@@ -3,7 +3,10 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.Index do
   Lists available catalogue categories
   """
 
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+  }
 
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Offerings

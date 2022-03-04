@@ -17,7 +17,40 @@ defmodule ExCommerceWeb.AdminNav do
         {ExCommerceWeb.BrandLive.Index, _action} ->
           :brands
 
-        {_view, _action} ->
+        {ExCommerceWeb.HomeLive.Index, _action} ->
+          :home
+
+        {ExCommerceWeb.ShopLive.Index, _action} ->
+          :shops
+
+        {ExCommerceWeb.ShopLive.Show, _action} ->
+          :shops
+
+        {ExCommerceWeb.CatalogueLive.Index, _action} ->
+          :catalogues
+
+        {ExCommerceWeb.CatalogueLive.Show, _action} ->
+          :catalogues
+
+        {ExCommerceWeb.CatalogueCategoryLive.Index, _action} ->
+          :catalogue_categories
+
+        {ExCommerceWeb.CatalogueCategoryLive.Show, _action} ->
+          :catalogue_categories
+
+        {ExCommerceWeb.CatalogueItemLive.Index, _action} ->
+          :catalogue_items
+
+        {ExCommerceWeb.CatalogueItemLive.Show, _action} ->
+          :catalogue_items
+
+        {ExCommerceWeb.CatalogueItemOptionGroupLive.Index, _action} ->
+          :catalogue_item_option_groups
+
+        {ExCommerceWeb.CatalogueItemOptionGroupLive.Show, _action} ->
+          :catalogue_item_option_groups
+
+        _other ->
           nil
       end
 

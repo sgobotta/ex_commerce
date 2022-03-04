@@ -3,7 +3,10 @@ defmodule ExCommerceWeb.CatalogueItemLive.Index do
   Lists available catalogue items
   """
 
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+  }
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 

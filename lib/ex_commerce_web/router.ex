@@ -37,127 +37,134 @@ defmodule ExCommerceWeb.Router do
         :require_confirmed_user
       ]
 
-      live "/", HomeLive.Index, :index
-
-      # ------------------------------------------------------------------------
-      # Brands routes
-
-      live "/brands", BrandLive.Index, :index
-      live "/brands/new", BrandLive.Index, :new
-      live "/brands/:brand_id/edit", BrandLive.Index, :edit
-
-      live "/brands/:brand_id", BrandLive.Show, :show
-      live "/brands/:brand_id/show/edit", BrandLive.Show, :edit
-
-      # ------------------------------------------------------------------------
-      # Default routes
-      live "/shops", ShopLive.Index, :index
-      live "/shops/:shop_id", ShopLive.Show, :show
-
-      live "/catalogues", CatalogueLive.Index, :index
-      live "/catalogues/:catalogue_id", CatalogueLive.Show, :show
-
-      live "/catalogue_categories", CatalogueCategoryLive.Index, :index
-
-      live "/catalogue_categories/:catalogue_category_id",
-           CatalogueCategoryLive.Show,
-           :show
-
-      live "/catalogue_items", CatalogueItemLive.Index, :index
-      live "/catalogue_items/:catalogue_item_id", CatalogueItemLive.Show, :show
-
-      live "/catalogue_item_option_groups",
-           CatalogueItemOptionGroupLive.Index,
-           :index
-
-      live "/catalogue_item_option_groups/:catalogue_item_option_group_id",
-           CatalogueItemOptionGroupLive.Show,
-           :show
-
-      scope "/:brand_id" do
+      live_session :authenticated,
+        on_mount: [
+          {ExCommerceWeb.UserAuth, :ensure_authenticated},
+          {ExCommerceWeb.AdminNav, :default}
+        ] do
         live "/", HomeLive.Index, :index
 
-        # ----------------------------------------------------------------------
-        # Shops routes
-
-        live "/shops", ShopLive.Index, :index
-        live "/shops/new", ShopLive.Index, :new
-        live "/shops/:shop_id/edit", ShopLive.Index, :edit
-
-        live "/shops/:shop_id", ShopLive.Show, :show
-        live "/shops/:shop_id/show/edit", ShopLive.Show, :edit
-
-        # ======================================================================
-        # Offerings routes
+        # live "/brands", BrandLive.Index, :index
 
         # ----------------------------------------------------------------------
-        # Catalogues routes
-
-        live "/catalogues", CatalogueLive.Index, :index
-        live "/catalogues/new", CatalogueLive.Index, :new
-        live "/catalogues/:catalogue_id/edit", CatalogueLive.Index, :edit
-
-        live "/catalogues/:catalogue_id", CatalogueLive.Show, :show
-        live "/catalogues/:catalogue_id/show/edit", CatalogueLive.Show, :edit
-
-        # ----------------------------------------------------------------------
-        # CatalogueCategories routes
-
-        live "/catalogue_categories", CatalogueCategoryLive.Index, :index
-        live "/catalogue_categories/new", CatalogueCategoryLive.Index, :new
-
-        live "/catalogue_categories/:catalogue_category_id/edit",
-             CatalogueCategoryLive.Index,
-             :edit
-
-        live "/catalogue_categories/:catalogue_category_id",
-             CatalogueCategoryLive.Show,
-             :show
-
-        live "/catalogue_categories/:catalogue_category_id/show/edit",
-             CatalogueCategoryLive.Show,
-             :edit
+        # Brands routes
+        #
+        scope "/brands" do
+          live "/", BrandLive.Index, :index
+          live "/new", BrandLive.Index, :new
+          live "/:brand_id/edit", BrandLive.Index, :edit
+          live "/:brand_id", BrandLive.Show, :show
+          live "/:brand_id/show/edit", BrandLive.Show, :edit
+        end
 
         # ----------------------------------------------------------------------
-        # CatalogueItems routes
+        # Default routes
+        #
 
-        live "/catalogue_items", CatalogueItemLive.Index, :index
-        live "/catalogue_items/new", CatalogueItemLive.Index, :new
+        # live "/shops", ShopLive.Index, :index
+        # live "/shops/:shop_id", ShopLive.Show, :show
+        #
+        # live "/catalogues", CatalogueLive.Index, :index
+        # live "/catalogues/:catalogue_id", CatalogueLive.Show, :show
 
-        live "/catalogue_items/:catalogue_item_id/edit",
-             CatalogueItemLive.Index,
-             :edit
+        # live "/catalogue_categories", CatalogueCategoryLive.Index, :index
 
-        live "/catalogue_items/:catalogue_item_id",
-             CatalogueItemLive.Show,
-             :show
+        # live "/catalogue_categories/:catalogue_category_id",
+        #      CatalogueCategoryLive.Show,
+        #      :show
 
-        live "/catalogue_items/:catalogue_item_id/show/edit",
-             CatalogueItemLive.Show,
-             :edit
+        # live "/catalogue_items", CatalogueItemLive.Index, :index
+        # live "/catalogue_items/:catalogue_item_id", CatalogueItemLive.Show,
+        # :show
+
+        # live "/catalogue_item_option_groups",
+        #    CatalogueItemOptionGroupLive.Index,
+        #    :index
+
+        # live "/catalogue_item_option_groups/:catalogue_item_option_group_id",
+        #    CatalogueItemOptionGroupLive.Show,
+        #    :show
 
         # ----------------------------------------------------------------------
-        # CatalogueItemOptionGroup routes
+        # Brand scoped routes
 
-        live "/catalogue_item_option_groups",
-             CatalogueItemOptionGroupLive.Index,
-             :index
+        scope "/:brand_id" do
+          # --------------------------------------------------------------------
+          # Home routes
+          #
+          live "/", HomeLive.Index, :index
 
-        live "/catalogue_item_option_groups/new",
-             CatalogueItemOptionGroupLive.Index,
-             :new
+          # --------------------------------------------------------------------
+          # Shops routes
+          #
+          scope "/shops" do
+            live "/", ShopLive.Index, :index
+            live "/new", ShopLive.Index, :new
+            live "/:shop_id/edit", ShopLive.Index, :edit
+            live "/:shop_id", ShopLive.Show, :show
+            live "/:shop_id/show/edit", ShopLive.Show, :edit
+          end
 
-        live "/catalogue_item_option_groups/:catalogue_item_option_group_id/edit",
-             CatalogueItemOptionGroupLive.Index,
-             :edit
+          # --------------------------------------------------------------------
+          # Catalogues routes
+          #
+          scope "/catalogues" do
+            live "/", CatalogueLive.Index, :index
+            live "/new", CatalogueLive.Index, :new
+            live "/:catalogue_id/edit", CatalogueLive.Index, :edit
+            live "/:catalogue_id", CatalogueLive.Show, :show
+            live "/:catalogue_id/show/edit", CatalogueLive.Show, :edit
+          end
 
-        live "/catalogue_item_option_groups/:catalogue_item_option_group_id",
-             CatalogueItemOptionGroupLive.Show,
-             :show
+          # --------------------------------------------------------------------
+          # CatalogueCategories routes
+          #
+          scope "/catalogue_categories" do
+            live "/", CatalogueCategoryLive.Index, :index
+            live "/new", CatalogueCategoryLive.Index, :new
 
-        live "/catalogue_item_option_groups/:catalogue_item_option_group_id/show/edit",
-             CatalogueItemOptionGroupLive.Show,
-             :edit
+            live "/:catalogue_category_id/edit",
+                 CatalogueCategoryLive.Index,
+                 :edit
+
+            live "/:catalogue_category_id", CatalogueCategoryLive.Show, :show
+
+            live "/:catalogue_category_id/show/edit",
+                 CatalogueCategoryLive.Show,
+                 :edit
+          end
+
+          # --------------------------------------------------------------------
+          # CatalogueItems routes
+          #
+          scope "/catalogue_items" do
+            live "/", CatalogueItemLive.Index, :index
+            live "/new", CatalogueItemLive.Index, :new
+            live "/:catalogue_item_id/edit", CatalogueItemLive.Index, :edit
+            live "/:catalogue_item_id", CatalogueItemLive.Show, :show
+            live "/:catalogue_item_id/show/edit", CatalogueItemLive.Show, :edit
+          end
+
+          # --------------------------------------------------------------------
+          # CatalogueItemOptionGroup routes
+          #
+          scope "/catalogue_item_option_groups" do
+            live "/", CatalogueItemOptionGroupLive.Index, :index
+            live "/new", CatalogueItemOptionGroupLive.Index, :new
+
+            live "/:catalogue_item_option_group_id/edit",
+                 CatalogueItemOptionGroupLive.Index,
+                 :edit
+
+            live "/:catalogue_item_option_group_id",
+                 CatalogueItemOptionGroupLive.Show,
+                 :show
+
+            live "/:catalogue_item_option_group_id/show/edit",
+                 CatalogueItemOptionGroupLive.Show,
+                 :edit
+          end
+        end
       end
     end
   end
