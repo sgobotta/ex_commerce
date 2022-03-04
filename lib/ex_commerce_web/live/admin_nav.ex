@@ -3,6 +3,16 @@ defmodule ExCommerceWeb.AdminNav do
 
   import Phoenix.LiveView
 
+  alias ExCommerceWeb.{
+    BrandLive,
+    CatalogueCategoryLive,
+    CatalogueItemLive,
+    CatalogueItemOptionGroupLive,
+    CatalogueLive,
+    HomeLive,
+    ShopLive
+  }
+
   def on_mount(:default, _params, _session, socket) do
     {
       :cont,
@@ -12,48 +22,32 @@ defmodule ExCommerceWeb.AdminNav do
   end
 
   defp handle_active_tab_params(_params, _url, socket) do
-    active_tab =
-      case {socket.view, socket.assigns.live_action} do
-        {ExCommerceWeb.BrandLive.Index, _action} ->
-          :brands
-
-        {ExCommerceWeb.HomeLive.Index, _action} ->
-          :home
-
-        {ExCommerceWeb.ShopLive.Index, _action} ->
-          :shops
-
-        {ExCommerceWeb.ShopLive.Show, _action} ->
-          :shops
-
-        {ExCommerceWeb.CatalogueLive.Index, _action} ->
-          :catalogues
-
-        {ExCommerceWeb.CatalogueLive.Show, _action} ->
-          :catalogues
-
-        {ExCommerceWeb.CatalogueCategoryLive.Index, _action} ->
-          :catalogue_categories
-
-        {ExCommerceWeb.CatalogueCategoryLive.Show, _action} ->
-          :catalogue_categories
-
-        {ExCommerceWeb.CatalogueItemLive.Index, _action} ->
-          :catalogue_items
-
-        {ExCommerceWeb.CatalogueItemLive.Show, _action} ->
-          :catalogue_items
-
-        {ExCommerceWeb.CatalogueItemOptionGroupLive.Index, _action} ->
-          :catalogue_item_option_groups
-
-        {ExCommerceWeb.CatalogueItemOptionGroupLive.Show, _action} ->
-          :catalogue_item_option_groups
-
-        _other ->
-          nil
-      end
+    active_tab = get_active_tab(socket.view, socket.assigns.live_action)
 
     {:cont, assign(socket, active_tab: active_tab)}
   end
+
+  defp get_active_tab(BrandLive.Index, _action), do: :brands
+  defp get_active_tab(HomeLive.Index, _action), do: :home
+  defp get_active_tab(ShopLive.Index, _action), do: :shops
+  defp get_active_tab(ShopLive.Show, _action), do: :shops
+  defp get_active_tab(CatalogueLive.Index, _action), do: :catalogues
+  defp get_active_tab(CatalogueLive.Show, _action), do: :catalogues
+
+  defp get_active_tab(CatalogueCategoryLive.Index, _action),
+    do: :catalogue_categories
+
+  defp get_active_tab(CatalogueCategoryLive.Show, _action),
+    do: :catalogue_categories
+
+  defp get_active_tab(CatalogueItemLive.Index, _action), do: :catalogue_items
+  defp get_active_tab(CatalogueItemLive.Show, _action), do: :catalogue_items
+
+  defp get_active_tab(CatalogueItemOptionGroupLive.Index, _action),
+    do: :catalogue_item_option_groups
+
+  defp get_active_tab(CatalogueItemOptionGroupLive.Show, _action),
+    do: :catalogue_item_option_groups
+
+  defp get_active_tab(_view, _action), do: nil
 end
