@@ -16,7 +16,7 @@
       relative flex-1 flex flex-col max-w-xs w-full
       pt-5 pb-4
       bg-white
-      hidden min-h-screen
+      min-h-screen
     "
   >
     <div class="absolute top-0 right-0 -mr-12 pt-2">
@@ -72,12 +72,11 @@
       <% end %>
 
       <nav class="px-2">
-        <%= if @current_user do %>
-          <.sidebar_nav_links
-            current_user={@current_user}
-            active_tab={@active_tab}
-          />
-        <% end %>
+        <.main_sidebar_nav_links
+          brand={@brand}
+          current_user={@current_user}
+          active_tab={@active_tab}
+        />
       </nav>
     </div>
   </div>
@@ -117,13 +116,12 @@
         />
       <% end %>
       <!-- Navigation -->
-      <nav class="px-3 mt-6">
-        <%= if @current_user do %>
-          <.sidebar_nav_links
-            current_user={@current_user}
-            active_tab={@active_tab}
-          />
-        <% end %>
+      <nav class="px-3 mt-6">        
+        <.main_sidebar_nav_links
+          brand={@brand}
+          current_user={@current_user}
+          active_tab={@active_tab}
+        />
       </nav>
     </div>
   </div>

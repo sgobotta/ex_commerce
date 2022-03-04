@@ -1,20 +1,16 @@
 defmodule ExCommerceWeb.HomeLive.Index do
   @moduledoc false
 
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb,
+      {:live_view,
+       layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}}
 
   @impl true
   def mount(params, session, socket) do
-    case connected?(socket) do
-      true ->
-        {:ok,
-         socket
-         |> assign_defaults(params, session)
-         |> assign_brand_or_redirect(params, session)}
-
-      false ->
-        {:ok, socket}
-    end
+    {:ok,
+     socket
+     |> assign_defaults(params, session)
+     |> assign_brand_or_redirect(params, session)}
   end
 
   @impl true

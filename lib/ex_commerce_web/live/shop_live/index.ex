@@ -3,7 +3,10 @@ defmodule ExCommerceWeb.ShopLive.Index do
   Lists available shops
   """
 
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+  }
 
   alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.Brand
