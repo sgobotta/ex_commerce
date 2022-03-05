@@ -1,6 +1,6 @@
 @layer components {
   .base-alert {
-    @apply rounded-md p-4 fixed top-1 right-1 w-3/12 z-50;
+    @apply rounded-md p-4 fixed top-1 right-1 md:w-6/12 w-full z-50;
   }
 
   .base-alert-container {
