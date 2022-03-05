@@ -1,5 +1,5 @@
 @layer components {
   .input {
-    @apply rounded-full border-gray-300 transition duration-200 focus:border-blue-300 text-2xl #{!important};
+    @apply rounded-lg border-gray-300 transition duration-200 focus:border-blue-300 text-xl h-auto #{!important};
   }
 }

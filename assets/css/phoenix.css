@@ -526,10 +526,10 @@
    text-align: left
  }
  
- td:first-child,
+ /* td:first-child,
  th:first-child {
    padding-left: 0
- }
+ } */
  
  td:last-child,
  th:last-child {
