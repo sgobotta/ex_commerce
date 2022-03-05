@@ -171,4 +171,63 @@ defmodule ExCommerceWeb.LayoutView do
     </div>
     """
   end
+
+  def home_sidebar_nav_links(assigns) do
+    ~H"""
+    <div class="space-y-1">
+      <.link
+        class="
+          text-gray-700 hover:text-gray-900 group flex items-center
+          px-2 py-2
+          text-2xl font-medium
+          rounded-md
+        "
+        href="#welcome"
+        aria-current="false"
+      >
+        <.icon name={:home} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+        <%= gettext("Welcome") %>
+      </.link>
+      <.link
+        class="
+          text-gray-700 hover:text-gray-900 group flex items-center
+          px-2 py-2
+          text-2xl font-medium
+          rounded-md
+        "
+        href="#carousel"
+        aria-current="false"
+      >
+        <.icon name={:search} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+        <%= gettext("Search") %>
+      </.link>
+      <.link
+        class="
+          text-gray-700 hover:text-gray-900 group flex items-center
+          px-2 py-2
+          text-2xl font-medium
+          rounded-md
+        "
+        href="#benefits"
+        aria-current="false"
+      >
+        <.icon name={:information_circle} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+        <%= gettext("About") %>
+      </.link>
+      <.link
+        class="
+          text-gray-700 hover:text-gray-900 group flex items-center
+          px-2 py-2
+          text-2xl font-medium
+          rounded-md
+        "
+        href="#plans"
+        aria-current="false"
+      >
+        <.icon name={:support} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+        <%= gettext("Support") %>
+      </.link>
+    </div>
+    """
+  end
 end
