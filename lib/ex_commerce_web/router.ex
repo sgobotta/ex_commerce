@@ -44,8 +44,6 @@ defmodule ExCommerceWeb.Router do
         ] do
         live "/", HomeLive.Index, :index
 
-        # live "/brands", BrandLive.Index, :index
-
         # ----------------------------------------------------------------------
         # Brands routes
         #
@@ -60,34 +58,35 @@ defmodule ExCommerceWeb.Router do
         # ----------------------------------------------------------------------
         # Default routes
         #
+        live "/shops", ShopLive.Index, :index
+        live "/shops/:shop_id", ShopLive.Show, :show
 
-        # live "/shops", ShopLive.Index, :index
-        # live "/shops/:shop_id", ShopLive.Show, :show
-        #
-        # live "/catalogues", CatalogueLive.Index, :index
-        # live "/catalogues/:catalogue_id", CatalogueLive.Show, :show
+        live "/catalogues", CatalogueLive.Index, :index
+        live "/catalogues/:catalogue_id", CatalogueLive.Show, :show
 
-        # live "/catalogue_categories", CatalogueCategoryLive.Index, :index
+        live "/catalogue_categories", CatalogueCategoryLive.Index, :index
 
-        # live "/catalogue_categories/:catalogue_category_id",
-        #      CatalogueCategoryLive.Show,
-        #      :show
+        live "/catalogue_categories/:catalogue_category_id",
+             CatalogueCategoryLive.Show,
+             :show
 
-        # live "/catalogue_items", CatalogueItemLive.Index, :index
-        # live "/catalogue_items/:catalogue_item_id", CatalogueItemLive.Show,
-        # :show
+        live "/catalogue_items", CatalogueItemLive.Index, :index
 
-        # live "/catalogue_item_option_groups",
-        #    CatalogueItemOptionGroupLive.Index,
-        #    :index
+        live "/catalogue_items/:catalogue_item_id",
+             CatalogueItemLive.Show,
+             :show
 
-        # live "/catalogue_item_option_groups/:catalogue_item_option_group_id",
-        #    CatalogueItemOptionGroupLive.Show,
-        #    :show
+        live "/catalogue_item_option_groups",
+             CatalogueItemOptionGroupLive.Index,
+             :index
+
+        live "/catalogue_item_option_groups/:catalogue_item_option_group_id",
+             CatalogueItemOptionGroupLive.Show,
+             :show
 
         # ----------------------------------------------------------------------
         # Brand scoped routes
-
+        #
         scope "/:brand_id" do
           # --------------------------------------------------------------------
           # Home routes
