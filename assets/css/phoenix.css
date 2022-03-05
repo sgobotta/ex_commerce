@@ -47,7 +47,7 @@
    display: inline-block;
    font-size: 1.1rem;
    font-weight: 700;
-   height: 3.8rem;
+   height: auto;
    letter-spacing: .1rem;
    line-height: 3.8rem;
    padding: 0 3.0rem;
