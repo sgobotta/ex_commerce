@@ -14,10 +14,30 @@
     <%= text_input f, :name, class: "input", placeholder: gettext("My brand name")  %>
     <%= error_tag f, :name %>
 
-    <%= label f, :slug, class: "my-2" %>
-    <%= text_input f, :slug, class: "input", placeholder: gettext("my-brand-name")  %>
-    <%= label f, "slug-placeholder/something", class: "m-0 pl-10 text-xl font-normal text-gray-500" %>
-    <%= error_tag f, :slug %>
+    <div class="">
+      <%= label f, :slug, class: "my-2" %>
+      <div class="mt-1 flex rounded-lg shadow-sm">
+        <span class="
+          inline-flex items-center
+          px-3 rounded-l-lg
+          border border-r-0 border-gray-300
+          bg-gray-50
+          text-gray-500 text-xl 
+        ">
+          <%= URI.parse(ExCommerceWeb.Endpoint.url()).host %>/
+        </span>
+        <%= text_input f, :slug,
+          class: "
+            rounded-l-none rounded-r-lg h-auto
+            border-gray-300
+            text-xl
+            transition duration-200
+            focus:border-blue-300
+          "
+        %>
+        <%= error_tag f, :slug %>
+      </div>
+    </div>
 
     <div class="flex justify-end mt-6">
       <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button" %>
