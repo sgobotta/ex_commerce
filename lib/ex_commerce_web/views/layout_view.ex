@@ -100,7 +100,7 @@ defmodule ExCommerceWeb.LayoutView do
           aria-current={if @active_tab == :catalogues, do: "true", else: "false"}
         >
           <.icon name={:clipboard_list} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
-          <%= gettext("Catalogues") %> / <%= gettext("Menus") %>
+          <%= gettext("Catalogues") %>
         </.link>
         <.link
           navigate={Routes.catalogue_category_index_path(Endpoint, :index, @brand.id)}
