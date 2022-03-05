@@ -58,9 +58,9 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.Index do
     {:noreply,
      socket
      |> put_flash(
-       :info,
+       :warn,
        gettext(
-         "Please Manage a brand to continue browsing catalogue categories"
+         "Please select a brand to continue browsing catalogue categories"
        )
      )
      |> redirect(to: Routes.brand_index_path(socket, :index))}

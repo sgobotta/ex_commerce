@@ -50,8 +50,8 @@ defmodule ExCommerceWeb.ShopLive.Index do
     {:noreply,
      socket
      |> put_flash(
-       :info,
-       gettext("Please Manage a brand to continue browsing shops")
+       :warn,
+       gettext("Please select a brand to continue browsing shops")
      )
      |> redirect(to: Routes.brand_index_path(socket, :index))}
   end
