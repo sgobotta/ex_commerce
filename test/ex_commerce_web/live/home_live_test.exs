@@ -13,32 +13,34 @@ defmodule ExCommerceWeb.HomeLiveTest do
       :assoc_user_brand
     ]
 
-    test "[Success] visits the homepage", %{
+    test "[Success] visits the overview page", %{
       brand: %Brand{id: brand_id},
       conn: conn
     } do
       {:ok, _index_live, html} =
-        live(conn, Routes.home_index_path(conn, :index, brand_id))
+        live(conn, Routes.overview_index_path(conn, :index, brand_id))
 
       assert html =~ "Home"
     end
 
-    test "[Failure] visits the homepage - redirects to brands", %{conn: conn} do
+    test "[Failure] visits the overview page - redirects to brands", %{
+      conn: conn
+    } do
       assert_redirects_with_error(
         conn,
-        from: Routes.home_index_path(conn, :index),
+        from: Routes.overview_index_path(conn, :index),
         to: Routes.brand_index_path(conn, :index)
       )
 
       assert_redirects_with_error(
         conn,
-        from: Routes.home_index_path(conn, :index, Ecto.UUID.generate()),
+        from: Routes.overview_index_path(conn, :index, Ecto.UUID.generate()),
         to: Routes.brand_index_path(conn, :index)
       )
 
       assert_redirects_with_error(
         conn,
-        from: Routes.home_index_path(conn, :index, "123"),
+        from: Routes.overview_index_path(conn, :index, "123"),
         to: Routes.brand_index_path(conn, :index)
       )
     end

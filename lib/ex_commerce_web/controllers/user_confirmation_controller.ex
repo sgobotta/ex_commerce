@@ -34,7 +34,7 @@ defmodule ExCommerceWeb.UserConfirmationController do
       {:ok, _} ->
         conn
         |> put_flash(:info, gettext("User confirmed successfully."))
-        |> redirect(to: Routes.home_index_path(conn, :index))
+        |> redirect(to: Routes.overview_index_path(conn, :index))
 
       :error ->
         # If there is a current user and the account was already confirmed,

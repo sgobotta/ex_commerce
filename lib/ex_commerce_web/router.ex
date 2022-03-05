@@ -27,6 +27,8 @@ defmodule ExCommerceWeb.Router do
   scope "/", ExCommerceWeb do
     pipe_through :browser
 
+    live "/", WebLive.Index, :index
+
     live "/places", PlaceLive.Search, :search
     live "/places/:brand", PlaceLive.Index, :index
     live "/places/:brand/:shop", PlaceLive.Show, :show
@@ -42,7 +44,7 @@ defmodule ExCommerceWeb.Router do
           {ExCommerceWeb.UserAuth, :ensure_authenticated},
           {ExCommerceWeb.AdminNav, :default}
         ] do
-        live "/", HomeLive.Index, :index
+        live "/", OverviewLive.Index, :index
 
         # ----------------------------------------------------------------------
         # Brands routes
@@ -89,9 +91,9 @@ defmodule ExCommerceWeb.Router do
         #
         scope "/:brand_id" do
           # --------------------------------------------------------------------
-          # Home routes
+          # Overview routes
           #
-          live "/", HomeLive.Index, :index
+          live "/", OverviewLive.Index, :index
 
           # --------------------------------------------------------------------
           # Shops routes
@@ -219,8 +221,6 @@ defmodule ExCommerceWeb.Router do
 
   scope "/", ExCommerceWeb do
     pipe_through [:browser]
-
-    get "/", WebController, :index
 
     delete "/users/log_out", UserSessionController, :delete
     get "/users/confirm", UserConfirmationController, :new

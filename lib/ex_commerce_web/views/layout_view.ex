@@ -53,15 +53,15 @@ defmodule ExCommerceWeb.LayoutView do
         </.link>
 
         <.link
-          navigate={Routes.home_index_path(Endpoint, :index, @brand.id)}
+          navigate={Routes.overview_index_path(Endpoint, :index, @brand.id)}
           class={"
             text-gray-700 hover:text-gray-900 group flex items-center
             px-2 py-2
             text-2xl font-medium
             rounded-md
-            #{if @active_tab == :home, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
+            #{if @active_tab == :overview, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
           "}
-          aria-current={if @active_tab == :home, do: "true", else: "false"}
+          aria-current={if @active_tab == :overview, do: "true", else: "false"}
         >
           <.icon
             name={:home} outlined

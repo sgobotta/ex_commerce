@@ -1,4 +1,4 @@
-defmodule ExCommerceWeb.HomeLive.Index do
+defmodule ExCommerceWeb.OverviewLive.Index do
   @moduledoc false
 
   use ExCommerceWeb,

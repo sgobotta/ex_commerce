@@ -9,7 +9,7 @@ defmodule ExCommerceWeb.AdminNav do
     CatalogueItemLive,
     CatalogueItemOptionGroupLive,
     CatalogueLive,
-    HomeLive,
+    OverviewLive,
     ShopLive
   }
 
@@ -28,7 +28,7 @@ defmodule ExCommerceWeb.AdminNav do
   end
 
   defp get_active_tab(BrandLive.Index, _action), do: :brands
-  defp get_active_tab(HomeLive.Index, _action), do: :home
+  defp get_active_tab(OverviewLive.Index, _action), do: :overview
   defp get_active_tab(ShopLive.Index, _action), do: :shops
   defp get_active_tab(ShopLive.Show, _action), do: :shops
   defp get_active_tab(CatalogueLive.Index, _action), do: :catalogues
