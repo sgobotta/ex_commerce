@@ -36,7 +36,7 @@ defmodule ExCommerceWeb.LayoutView do
             px-2 py-2
             text-2xl font-medium
             rounded-md
-            #{if @active_tab == :brands, do: "bg-gray-200", else: "hover:bg-gray-50"}
+            #{if @active_tab == :brands, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
           "}
           aria-current={if @active_tab == :brands, do: "true", else: "false"}
         >
@@ -59,7 +59,7 @@ defmodule ExCommerceWeb.LayoutView do
             px-2 py-2
             text-2xl font-medium
             rounded-md
-            #{if @active_tab == :home, do: "bg-gray-200", else: "hover:bg-gray-50"}
+            #{if @active_tab == :home, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
           "}
           aria-current={if @active_tab == :home, do: "true", else: "false"}
         >
@@ -81,11 +81,11 @@ defmodule ExCommerceWeb.LayoutView do
             px-2 py-2
             text-2xl font-medium
             rounded-md
-            #{if @active_tab == :shops, do: "bg-gray-200", else: "hover:bg-gray-50"}
+            #{if @active_tab == :shops, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
           "}
           aria-current={if @active_tab == :shops, do: "true", else: "false"}
         >
-          <.icon name={:adjustments} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon name={:office_building} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Shops") %>
         </.link>
         <.link
@@ -95,7 +95,7 @@ defmodule ExCommerceWeb.LayoutView do
             px-2 py-2
             text-2xl font-medium
             rounded-md
-            #{if @active_tab == :catalogues, do: "bg-gray-200", else: "hover:bg-gray-50"}
+            #{if @active_tab == :catalogues, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
           "}
           aria-current={if @active_tab == :catalogues, do: "true", else: "false"}
         >
@@ -109,7 +109,7 @@ defmodule ExCommerceWeb.LayoutView do
             px-2 py-2
             text-2xl font-medium
             rounded-md
-            #{if @active_tab == :catalogue_categories, do: "bg-gray-200", else: "hover:bg-gray-50"}
+            #{if @active_tab == :catalogue_categories, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
           "}
           aria-current={if @active_tab == :catalogue_categories, do: "true", else: "false"}
         >
@@ -123,7 +123,7 @@ defmodule ExCommerceWeb.LayoutView do
             px-2 py-2
             text-2xl font-medium
             rounded-md
-            #{if @active_tab == :catalogue_items, do: "bg-gray-200", else: "hover:bg-gray-50"}
+            #{if @active_tab == :catalogue_items, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
           "}
           aria-current={if @active_tab == :catalogue_items, do: "true", else: "false"}
         >
@@ -141,7 +141,7 @@ defmodule ExCommerceWeb.LayoutView do
             px-2 py-2
             text-2xl font-medium
             rounded-md
-            #{if @active_tab == :catalogue_item_option_groups, do: "bg-gray-200", else: "hover:bg-gray-50"}
+            #{if @active_tab == :catalogue_item_option_groups, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
           "}
           aria-current={if @active_tab == :catalogue_item_option_groups, do: "true", else: "false"}
         >
