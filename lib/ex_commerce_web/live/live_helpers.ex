@@ -252,30 +252,21 @@ defmodule ExCommerceWeb.LiveHelpers do
   # Menu revamp helpers
   #
 
+  @doc """
+  Renders a connection status alert
+  """
   def connection_status(assigns) do
     ~H"""
     <div
       id="connection-status"
-      class="
-        hidden
-        rounded-md
-        bg-red-50
-        p-4
-        fixed top-1 right-1 w-96
-        fade-in-scale
-        z-50
-      "
+      class="base-alert hidden bg-red-50 fade-in-scale"
       js-show={show("#connection-status")}
       js-hide={hide("#connection-status")}
     >
       <div class="flex">
         <div class="flex-shrink-0">
           <svg
-            class="
-              animate-spin
-              -ml-1 mr-3 h-5 w-5
-              text-red-800
-            "
+            class="base-alert-icon animate-spin -ml-1 mr-3 text-red-800"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -298,7 +289,7 @@ defmodule ExCommerceWeb.LiveHelpers do
         </div>
         <div class="ml-3">
           <p
-            class="text-sm font-medium text-red-800"
+            class="text-xl font-medium text-red-800"
             role="alert"
           >
             <%= render_slot(@inner_block) %>
@@ -353,7 +344,7 @@ defmodule ExCommerceWeb.LiveHelpers do
             bg-gray-100
             hover:bg-gray-200
             focus:outline-none focus:ring-2 focus:ring-offset-2
-            focus:ring-offset-gray-100 focus:ring-purple-500
+            focus:ring-offset-gray-100 focus:ring-blue-500
           "
           phx-click={show_dropdown("##{@id}-dropdown")}
           phx-hook="Menu"
@@ -420,7 +411,7 @@ defmodule ExCommerceWeb.LiveHelpers do
                 text-sm text-gray-700
                 hover:bg-gray-100
                 focus:outline-none focus:ring-2 focus:ring-offset-2
-                focus:ring-offset-gray-100 focus:ring-purple-500
+                focus:ring-offset-gray-100 focus:ring-blue-500
               "
               {link}
             ><%= render_slot(link) %></.link>
@@ -568,17 +559,60 @@ defmodule ExCommerceWeb.LiveHelpers do
     <%= if live_flash(@flash, @kind) do %>
       <div
         id="flash"
-        class="rounded-md bg-red-50 p-4 fixed top-1 right-1 w-96 fade-in-scale z-50"
-        phx-click={JS.push("lv:clear-flash") |> JS.remove_class("fade-in-scale", to: "#flash") |> hide("#flash")}
+        class="base-alert fade-in-scale bg-red-50"
+        phx-click={
+          JS.push("lv:clear-flash")
+          |> JS.remove_class("fade-in-scale", to: "#flash")
+          |> hide("#flash")
+        }
         phx-hook="Flash"
       >
-        <div class="flex justify-between items-center space-x-3 text-red-700">
-          <.icon name={:exclamation_circle} class="w-5 w-5"/>
-          <p class="flex-1 text-sm font-medium" role="alert">
+        <div class="base-alert-container text-red-700">
+          <.icon name={:exclamation_circle} class="base-alert-icon"/>
+          <p class="base-alert-text" role="alert">
             <%= live_flash(@flash, @kind) %>
           </p>
-          <button type="button" class="inline-flex bg-red-50 rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-red-50 focus:ring-red-600">
-            <.icon name={:x} class="w-4 h-4" />
+          <button type="button" class="
+            base-alert-close-button
+            bg-red-50 text-red-500
+            hover:bg-red-300 focus:ring-offset-red-50 focus:ring-red-600
+          ">
+            <.icon name={:x} class="base-alert-close-icon" />
+          </button>
+        </div>
+      </div>
+    <% end %>
+    """
+  end
+
+  def flash(%{kind: :warn} = assigns) do
+    ~H"""
+    <%= if live_flash(@flash, @kind) do %>
+      <div
+        id="flash"
+        class="base-alert fade-in-scale bg-yellow-50"
+        phx-click={
+          JS.push("lv:clear-flash")
+          |> JS.remove_class("fade-in-scale", to: "#flash")
+          |> hide("#flash")
+        }
+        phx-hook="Flash"
+      >
+        <div class="base-alert-container text-yellow-700">
+          <.icon name={:exclamation} class="base-alert-icon"/>
+          <p class="base-alert-text" role="alert">
+            <%= live_flash(@flash, @kind) %>
+          </p>
+          <button
+            type="button"
+            class="
+              base-alert-close-button
+              bg-yellow-50 text-yellow-500
+              hover:bg-yellow-300
+              focus:ring-offset-yellow-50 focus:ring-yellow-600
+            "
+          >
+            <.icon name={:x} class="base-alert-close-icon" />
           </button>
         </div>
       </div>
@@ -591,29 +625,29 @@ defmodule ExCommerceWeb.LiveHelpers do
     <%= if live_flash(@flash, @kind) do %>
       <div
         id="flash"
-        class="rounded-md bg-green-50 p-4 fixed top-1 right-1 w-96 fade-in-scale z-50"
-        phx-click={JS.push("lv:clear-flash") |> JS.remove_class("fade-in-scale") |> hide("#flash")}
+        class="base-alert fade-in-scale bg-green-50"
+        phx-click={
+          JS.push("lv:clear-flash")
+          |> JS.remove_class("fade-in-scale")
+          |> hide("#flash")
+        }
         phx-value-key="info"
         phx-hook="Flash"
       >
-        <div class="flex justify-between items-center space-x-3 text-green-700">
-          <.icon name={:check_circle} class="w-5 h-5"/>
-          <p class="flex-1 text-sm font-medium" role="alert">
+        <div class="base-alert-container text-green-700">
+          <.icon name={:check_circle} class="base-alert-icon"/>
+          <p class="base-alert-text" role="alert">
             <%= live_flash(@flash, @kind) %>
           </p>
           <button
             type="button"
             class="
-              inline-flex
-              rounded-md p-1.5
-              text-green-500
-              bg-green-50
-              hover:bg-green-100
-              focus:outline-none focus:ring-2 focus:ring-offset-2
-              focus:ring-offset-green-50 focus:ring-green-600
+              base-alert-close-button
+              text-green-500 bg-green-50
+              hover:bg-green-300 focus:ring-offset-green-50 focus:ring-green-600
             "
           >
-            <.icon name={:x} class="w-4 h-4" />
+            <.icon name={:x} class="base-alert-close-icon" />
           </button>
         </div>
       </div>
