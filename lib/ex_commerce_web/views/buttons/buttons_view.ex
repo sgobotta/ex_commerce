@@ -3,10 +3,6 @@ defmodule ExCommerceWeb.ButtonsView do
 
   use ExCommerceWeb, :view
 
-  def render("login_button", _assigns) do
-    render("login_button.html", [])
-  end
-
   def render("logout_button", assigns) do
     opts = Map.put_new(assigns, :classes, "")
     render("logout_button.html", opts)
