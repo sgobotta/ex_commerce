@@ -20,17 +20,6 @@ defmodule ExCommerceWeb.ButtonsView do
     render("admin_dashboard_button.html", [])
   end
 
-  def render("image_button", assigns) do
-    opts =
-      assigns
-      |> Map.put_new(:text_classes, "")
-      |> Map.put_new(:img_classes, "")
-      |> Map.put_new(:text, gettext("Placeholder text"))
-      |> Map.put_new(:image_path, "/images/logo/icon.png")
-
-    render("icon_button.html", opts)
-  end
-
   def render("file_input", assigns) do
     opts =
       assigns

@@ -9,26 +9,6 @@ defmodule ExCommerceWeb.LiveHelpers do
   alias Phoenix.LiveView.JS
 
   # ----------------------------------------------------------------------------
-  # Navbar helpers
-  #
-
-  def render_navbar_link(opts) do
-    render(ExCommerceWeb.NavbarView, "navbar_link", opts)
-  end
-
-  def render_navbar_link_group(opts) do
-    render(ExCommerceWeb.NavbarView, "navbar_link_group", opts)
-  end
-
-  # ----------------------------------------------------------------------------
-  # Link helpers
-  #
-
-  def render_link(opts) do
-    render(ExCommerceWeb.LinksView, "link", opts)
-  end
-
-  # ----------------------------------------------------------------------------
   # Button helpers
   #
 
@@ -36,20 +16,8 @@ defmodule ExCommerceWeb.LiveHelpers do
     render(ExCommerceWeb.ButtonsView, "logout_button", opts)
   end
 
-  def render_image_button(opts \\ []) do
-    render(ExCommerceWeb.ButtonsView, "image_button", opts)
-  end
-
   def render_file_input(opts \\ []) do
     render(ExCommerceWeb.ButtonsView, "file_input", opts)
-  end
-
-  # ----------------------------------------------------------------------------
-  # Select helpers
-  #
-
-  def render_select(opts \\ []) do
-    render(ExCommerceWeb.SelectsView, "select", opts)
   end
 
   # ----------------------------------------------------------------------------
