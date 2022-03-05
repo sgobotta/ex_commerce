@@ -102,8 +102,6 @@
       />
     </button>
 
-
-
     <div class="flex-1 flex justify-between px-4 sm:px-6 lg:px-8">
       <div class="flex-1 flex items-center">
         <.link navigate="#">
@@ -114,18 +112,43 @@
       </div>
       <div class="flex items-center">
         <!-- Profile dropdown TODO -->
-        <div>
-          <%= render_logout_button([])  %>
-        </div>
-        <div>
+        <%= if @current_user do %>
           <%= render(ExCommerceWeb.ButtonsView, "admin_dashboard_button")  %>
-        </div>
-        <div>
-          <%= render(ExCommerceWeb.ButtonsView, "login_button") %>
-        </div>
-        <div>
+          <.link
+            navigate={Routes.user_session_path(ExCommerceWeb.Endpoint, :delete)}
+            class={"
+              group flex items-center
+              py-3 px-4 mx-2 rounded-full
+              uppercase text-lg font-medium text-gray-700
+              hover:text-purple-300
+              transition duration-200
+            "}
+          >
+            <.icon name={:logout} outlined class="
+              text-gray-400 group-hover:text-gray-500
+              mr-2 flex-shrink-0 h-6 w-6
+            "/>
+              <%= gettext("Sign out") %>
+          </.link>
+        <% else %>
+          <.link
+            navigate={Routes.user_session_path(ExCommerceWeb.Endpoint, :new)}
+            class={"
+              group flex items-center
+              py-3 px-4 mx-2 rounded-full
+              uppercase text-lg font-medium text-gray-700 hover:text-white
+              hover:bg-purple-400
+              transition duration-200
+            "}
+          >
+            <.icon name={:login} outlined class="
+              text-gray-400 group-hover:text-gray-500
+              mr-2 flex-shrink-0 h-6 w-6
+            "/>
+              <%= gettext("Log in") %>
+          </.link>
           <%= render(ExCommerceWeb.ButtonsView, "register_button") %>
-        </div>
+        <% end %>
       </div>
     </div>
   </div>

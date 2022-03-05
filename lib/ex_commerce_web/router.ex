@@ -27,11 +27,16 @@ defmodule ExCommerceWeb.Router do
   scope "/", ExCommerceWeb do
     pipe_through :browser
 
-    live "/", HomeLive.Index, :index
+    live_session :public,
+      on_mount: [
+        {ExCommerceWeb.UserAuth, :fetch_current_user}
+      ] do
+      live "/", HomeLive.Index, :index
 
-    live "/places", PlaceLive.Search, :search
-    live "/places/:brand", PlaceLive.Index, :index
-    live "/places/:brand/:shop", PlaceLive.Show, :show
+      live "/places", PlaceLive.Search, :search
+      live "/places/:brand", PlaceLive.Index, :index
+      live "/places/:brand/:shop", PlaceLive.Show, :show
+    end
 
     scope "/admin" do
       pipe_through [

@@ -23,17 +23,7 @@ defmodule ExCommerceWeb.UserAuth do
         %{"user_token" => user_token},
         socket
       ) do
-    new_socket =
-      LiveView.assign_new(
-        socket,
-        :current_user,
-        fn ->
-          Accounts.get_user_by_session_token!(user_token)
-        end
-      )
-      |> LiveView.assign(:visitor, false)
-
-    %Accounts.User{} = new_socket.assigns.current_user
+    new_socket = assign_current_user(socket, user_token)
 
     {:cont, new_socket}
   rescue
@@ -43,14 +33,20 @@ defmodule ExCommerceWeb.UserAuth do
   def on_mount(:ensure_authenticated, _params, _session, socket),
     do: {:halt, redirect_require_login(socket)}
 
-  defp redirect_require_login(socket) do
-    socket
-    |> maybe_store_return_to()
-    |> LiveView.put_flash(
-      :error,
-      gettext("You must log in to access this page.")
-    )
-    |> LiveView.redirect(to: Routes.user_session_path(socket, :new))
+  def on_mount(
+        :fetch_current_user,
+        _params,
+        %{"user_token" => user_token},
+        socket
+      ) do
+    {:cont, assign_current_user(socket, user_token)}
+  rescue
+    Ecto.NoResultsError ->
+      {:cont, assign_current_user(socket, nil)}
+  end
+
+  def on_mount(:fetch_current_user, _params, _session, socket) do
+    {:cont, assign_current_user(socket, nil)}
   end
 
   @doc """
@@ -204,6 +200,37 @@ defmodule ExCommerceWeb.UserAuth do
       |> redirect(to: Routes.user_confirmation_path(conn, :create))
       |> halt()
     end
+  end
+
+  defp assign_current_user(socket, nil) do
+    LiveView.assign_new(socket, :current_user, fn -> nil end)
+    |> LiveView.assign(:visitor, true)
+  end
+
+  defp assign_current_user(socket, user_token) do
+    new_socket =
+      LiveView.assign_new(
+        socket,
+        :current_user,
+        fn ->
+          Accounts.get_user_by_session_token!(user_token)
+        end
+      )
+      |> LiveView.assign(:visitor, false)
+
+    %Accounts.User{} = new_socket.assigns.current_user
+
+    new_socket
+  end
+
+  defp redirect_require_login(socket) do
+    socket
+    |> maybe_store_return_to()
+    |> LiveView.put_flash(
+      :error,
+      gettext("You must log in to access this page.")
+    )
+    |> LiveView.redirect(to: Routes.user_session_path(socket, :new))
   end
 
   defp maybe_store_return_to(%{method: "GET"} = conn) do
