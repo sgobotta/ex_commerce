@@ -11,7 +11,6 @@
 @import "./widgets/scrollbar.scss";
 
 @import "./base/forms.scss";
-@import "./base/headings.scss";
 @import "./base/tables.scss";
 
 @import "./components/alerts.scss";
@@ -42,6 +41,11 @@ select {
 input[type=checkbox] {
   display: inline-block;
 }
+
+pre {
+  padding: 1em;
+}
+
 
 /* Animations */
 
@@ -117,8 +121,7 @@ input[type=checkbox] {
 
 .phx-modal-content {
   background-color: #fefefe;
-  margin: 5% auto;
-  padding: 20px;
+  margin: 10% auto;
   border: 1px solid #888;
   width: 80%;
 }
