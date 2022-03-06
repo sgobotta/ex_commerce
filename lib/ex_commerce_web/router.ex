@@ -33,9 +33,11 @@ defmodule ExCommerceWeb.Router do
       ] do
       live "/", HomeLive.Index, :index
 
-      live "/places", PlaceLive.Search, :search
-      live "/places/:brand", PlaceLive.Index, :index
-      live "/places/:brand/:shop", PlaceLive.Show, :show
+      scope "/places" do
+        live "/", PlaceLive.Search, :search
+        live "/:brand", PlaceLive.Index, :index
+        live "/:brand/:shop", PlaceLive.Show, :show
+      end
     end
 
     scope "/admin" do

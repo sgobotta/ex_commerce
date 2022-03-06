@@ -3,7 +3,12 @@ defmodule ExCommerceWeb.PlaceLive.Show do
   Shows a single places
   """
 
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_places.html"}
+  }
+
+  use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
   @impl true
   def mount(params, session, socket) do
