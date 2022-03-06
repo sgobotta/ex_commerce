@@ -216,9 +216,26 @@ defmodule ExCommerceWeb.LiveHelpers do
     |> JS.hide(to: "#modal-content", transition: "fade-out-scale")
   end
 
-  # ----------------------------------------------------------------------------
-  # Menu revamp helpers
-  #
+  def title_bar(assigns) do
+    ~H"""
+    <div class="
+      sm:flex sm:items-center sm:justify-between
+      border-b border-gray-200
+      px-0 py-4
+      sm:px-0 lg:px-0 sm:h-16
+    ">
+      <div class="flex-1 min-w-0">
+        <h1 class="
+          text-2xl font-medium
+          leading-6 text-gray-900
+          sm:truncate focus:outline-none
+        ">
+          <%= @title %>
+        </h1>
+      </div>
+    </div>
+    """
+  end
 
   @doc """
   Renders a connection status alert

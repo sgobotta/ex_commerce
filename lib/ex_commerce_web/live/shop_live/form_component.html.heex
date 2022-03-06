@@ -1,148 +1,152 @@
 <div>
-  <h2><%= @title %></h2>
+  <div class="px-4">
+    <.title_bar title={@title} />
+  </div>
 
-  <%= form_for @changeset, "#", [
-      id: "shop-form",
-      phx_target: @myself,
-      phx_change: "validate",
-      phx_submit: "save",
-      class: "mb-0"
-    ],
-    fn f -> %>
+  <div class="px-6 py-2">
+    <%= form_for @changeset, "#", [
+        id: "shop-form",
+        phx_target: @myself,
+        phx_change: "validate",
+        phx_submit: "save",
+        class: "mb-0"
+      ],
+      fn f -> %>
 
-    <div class="my-6">
+      <div class="my-6">
 
-      <%= label f, :avatars, gettext("Shop logo"), class: "my-2" %>
-      <p>
-        <%= gettext("Upload a logo for this shop.") %>
-      </p>
-      <p class="italic my-1">
-        <%= gettext("File size can be up to 2 MB. Preferably use squared images.") %>
-      </p>
+        <%= label f, :avatars, gettext("Shop logo"), class: "my-2" %>
+        <p>
+          <%= gettext("Upload a logo for this shop.") %>
+        </p>
+        <p class="italic my-1">
+          <%= gettext("File size can be up to 2 MB. Preferably use squared images.") %>
+        </p>
 
-      <div class="divide-y-1 divide-solid my-2">
-        <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.avatars.entries do %>
-          <%= render_upload_image_preview([
-            entry: entry,
-            target: @myself,
-            cancel_event: "cancel_avatar_entry"
-          ]) %>
-        <% end %>
-      </div>
+        <div class="divide-y-1 divide-solid my-2">
+          <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.avatars.entries do %>
+            <%= render_upload_image_preview([
+              entry: entry,
+              target: @myself,
+              cancel_event: "cancel_avatar_entry"
+            ]) %>
+          <% end %>
+        </div>
 
-      <div class="mb-2">
-        <%= for {_ref, msg} <- @uploads.avatars.errors do %>
-          <%= error_tag Phoenix.Naming.humanize(msg) %>
-        <% end %>
-      </div>
+        <div class="mb-2">
+          <%= for {_ref, msg} <- @uploads.avatars.errors do %>
+            <%= error_tag Phoenix.Naming.humanize(msg) %>
+          <% end %>
+        </div>
 
-      <div class="grid grid-flow-col my-4 py-4">
-        <%= for photo <- get_photos(@shop.avatars, [
-          use_placeholder: true,
-          type: :avatar_with_size
-        ]) do %>
-          <%= render_image([
-            source: get_photo_source(@socket, photo),
-            size_classes: "h-64 w-64"
-          ]) %>
-        <% end %>
-      </div>
+        <div class="grid grid-flow-col my-4 py-4">
+          <%= for photo <- get_photos(@shop.avatars, [
+            use_placeholder: true,
+            type: :avatar_with_size
+          ]) do %>
+            <%= render_image([
+              source: get_photo_source(@socket, photo),
+              size_classes: "h-64 w-64"
+            ]) %>
+          <% end %>
+        </div>
 
-      <%= render_file_input([
-          text: gettext("Choose a picture"),
-          uploads: @uploads.avatars
-        ])
-      %>
-    </div>
-
-    <div class="my-6">
-      <%= label f, :banners, gettext("Shop banner"), class: "my-2" %>
-      <p>
-        <%= gettext("Upload a banner for the top of your catalogues/menus.") %>
-      </p>
-      <p class="italic my-1">
-        <%= gettext("File size can be up to 2 MB. Use wide images.") %>
-      </p>
-
-      <div class="divide-y-1 divide-solid my-2">
-        <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.banners.entries do %>
-          <%= render_upload_image_preview([
-            entry: entry,
-            target: @myself,
-            cancel_event: "cancel_banner_entry"
-          ]) %>
-        <% end %>
-      </div>
-
-      <div class="mb-2">
-        <%= for {_ref, msg} <- @uploads.banners.errors do %>
-          <%= error_tag Phoenix.Naming.humanize(msg) %>
-        <% end %>
-      </div>
-
-      <div class="grid grid-flow-col gap-4 my-4 py-4">
-        <%= for photo <- get_photos(@shop.banners, [
-          use_placeholder: true,
-          type: :banner_with_size
-        ]) do %>
-          <%= render_banner([source: get_photo_source(@socket, photo)]) %>
-        <% end %>
-      </div>
-
-      <%= render_file_input([
-          text: gettext("Choose a banner picture"),
-          uploads: @uploads.banners
-        ])
-      %>
-    </div>
-
-    <%= label f, :name, class: "my-2" %>
-    <%= text_input f, :name, class: "input", placeholder: gettext("My online shop") %>
-    <%= error_tag f, :name %>
-
-    <div class="">
-      <%= label f, :slug, class: "my-2" %>
-      <div class="mt-1 flex rounded-lg shadow-sm">
-        <span class="
-          inline-flex items-center
-          px-3 rounded-l-lg
-          border border-r-0 border-gray-300
-          bg-gray-50
-          text-gray-500 text-xl 
-        ">
-          <%= URI.parse(ExCommerceWeb.Endpoint.url()).host %>/
-        </span>
-        <%= text_input f, :slug,
-          class: "
-            rounded-l-none rounded-r-lg h-auto
-            border-gray-300
-            text-xl
-            transition duration-200
-            focus:border-blue-300
-          "
+        <%= render_file_input([
+            text: gettext("Choose a picture"),
+            uploads: @uploads.avatars
+          ])
         %>
-        <%= error_tag f, :slug %>
       </div>
-    </div>
 
-    <%= label f, :description, class: "my-2" %>
-    <%= text_input f, :description, class: "input", placeholder: gettext("Order our organic products today and receive a free gift") %>
-    <%= error_tag f, :description %>
+      <div class="my-6">
+        <%= label f, :banners, gettext("Shop banner"), class: "my-2" %>
+        <p>
+          <%= gettext("Upload a banner for the top of your catalogues/menus.") %>
+        </p>
+        <p class="italic my-1">
+          <%= gettext("File size can be up to 2 MB. Use wide images.") %>
+        </p>
 
-    <%= label f, :telephone, class: "my-2" %>
-    <%= text_input f, :telephone, class: "input", placeholder: gettext("+54 9 11 2345 6789") %>
-    <%= error_tag f, :telephone %>
+        <div class="divide-y-1 divide-solid my-2">
+          <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.banners.entries do %>
+            <%= render_upload_image_preview([
+              entry: entry,
+              target: @myself,
+              cancel_event: "cancel_banner_entry"
+            ]) %>
+          <% end %>
+        </div>
 
-    <%= label f, :banner_message, class: "my-2" %>
-    <%= text_input f, :banner_message, class: "input", placeholder: gettext("We deliver fresh products from Mondays to Sundays between 9:00 a.m. and 11:00 p.m.") %>
-    <%= error_tag f, :banner_message %>
+        <div class="mb-2">
+          <%= for {_ref, msg} <- @uploads.banners.errors do %>
+            <%= error_tag Phoenix.Naming.humanize(msg) %>
+          <% end %>
+        </div>
 
-    <%= label f, :address, class: "my-2" %>
-    <%= text_input f, :address, class: "input", placeholder: gettext("742 Evergreen Terrace, Springfield") %>
-    <%= error_tag f, :address %>
+        <div class="grid grid-flow-col gap-4 my-4 py-4">
+          <%= for photo <- get_photos(@shop.banners, [
+            use_placeholder: true,
+            type: :banner_with_size
+          ]) do %>
+            <%= render_banner([source: get_photo_source(@socket, photo)]) %>
+          <% end %>
+        </div>
 
-    <div class="flex justify-end mt-6">
-      <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button"%>
-    </div>
-  <% end %>
+        <%= render_file_input([
+            text: gettext("Choose a banner picture"),
+            uploads: @uploads.banners
+          ])
+        %>
+      </div>
+
+      <%= label f, :name, class: "my-2" %>
+      <%= text_input f, :name, class: "input", placeholder: gettext("My online shop") %>
+      <%= error_tag f, :name %>
+
+      <div class="">
+        <%= label f, :slug, class: "my-2" %>
+        <div class="mt-1 flex rounded-lg shadow-sm">
+          <span class="
+            inline-flex items-center
+            px-3 rounded-l-lg
+            border border-r-0 border-gray-300
+            bg-gray-50
+            text-gray-500 text-xl 
+          ">
+            <%= URI.parse(ExCommerceWeb.Endpoint.url()).host %>/
+          </span>
+          <%= text_input f, :slug,
+            class: "
+              rounded-l-none rounded-r-lg h-auto
+              border-gray-300
+              text-xl
+              transition duration-200
+              focus:border-blue-300
+            "
+          %>
+          <%= error_tag f, :slug %>
+        </div>
+      </div>
+
+      <%= label f, :description, class: "my-2" %>
+      <%= text_input f, :description, class: "input", placeholder: gettext("Order our organic products today and receive a free gift") %>
+      <%= error_tag f, :description %>
+
+      <%= label f, :telephone, class: "my-2" %>
+      <%= text_input f, :telephone, class: "input", placeholder: gettext("+54 9 11 2345 6789") %>
+      <%= error_tag f, :telephone %>
+
+      <%= label f, :banner_message, class: "my-2" %>
+      <%= text_input f, :banner_message, class: "input", placeholder: gettext("We deliver fresh products from Mondays to Sundays between 9:00 a.m. and 11:00 p.m.") %>
+      <%= error_tag f, :banner_message %>
+
+      <%= label f, :address, class: "my-2" %>
+      <%= text_input f, :address, class: "input", placeholder: gettext("742 Evergreen Terrace, Springfield") %>
+      <%= error_tag f, :address %>
+
+      <div class="flex justify-end mt-6">
+        <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button"%>
+      </div>
+    <% end %>
+  </div>
 </div>
