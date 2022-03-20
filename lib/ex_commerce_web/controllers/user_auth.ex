@@ -39,7 +39,15 @@ defmodule ExCommerceWeb.UserAuth do
         %{"user_token" => user_token},
         socket
       ) do
-    {:cont, assign_current_user(socket, user_token)}
+    socket = assign_current_user(socket, user_token)
+
+    case socket.assigns.current_user do
+      %Accounts.User{} ->
+        {:cont, socket}
+
+      nil ->
+        {:halt, redirect_require_login(socket)}
+    end
   rescue
     Ecto.NoResultsError ->
       {:cont, assign_current_user(socket, nil)}
@@ -208,19 +216,14 @@ defmodule ExCommerceWeb.UserAuth do
   end
 
   defp assign_current_user(socket, user_token) do
-    new_socket =
-      LiveView.assign_new(
-        socket,
-        :current_user,
-        fn ->
-          Accounts.get_user_by_session_token!(user_token)
-        end
-      )
-      |> LiveView.assign(:visitor, false)
-
-    %Accounts.User{} = new_socket.assigns.current_user
-
-    new_socket
+    LiveView.assign_new(
+      socket,
+      :current_user,
+      fn ->
+        Accounts.get_user_by_session_token!(user_token)
+      end
+    )
+    |> LiveView.assign(:visitor, false)
   end
 
   defp redirect_require_login(socket) do
