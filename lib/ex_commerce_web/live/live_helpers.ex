@@ -497,9 +497,9 @@ defmodule ExCommerceWeb.LiveHelpers do
     "}>
       <div class={"
         #{if @expanded do
-          "basis-2/12"
+            "basis-2/12"
           else
-            "basis-2/4"
+            "basis-3/4 h-full flex flex-col justify-between"
           end}
         transition-all ease-in duration-300
       "}>
@@ -508,19 +508,30 @@ defmodule ExCommerceWeb.LiveHelpers do
           #{if @expanded do
               "flex-row"
             else
-              "flex-col bg-gray-100"
+              "flex-col"
             end}
         "}>
-          <%= render_slot(@navigation) %>
+          <div class="bg-gray-100">
+            <%= render_slot(@navigation) %>
+          </div>
 
           <div class={"
-          #{if @expanded do
-              "hidden"
-            else
-              "visible"
-            end}"
-        }>
-            <%= render_slot(@banner) %>
+            #{if @expanded do
+                "hidden"
+              else
+                "visible flex justify-center w-full"
+              end}"
+          }>
+            <div class={"
+              w-full sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12 h-60   sm:h-64   md:h-72   lg:h-80   xl:h-96
+              #{if @expanded do
+                  ""
+                else
+                  ""
+                end}
+            "}>
+              <%= render_slot(@banner) %>
+            </div>
           </div>
           <div class={"
             #{if @expanded do
@@ -540,21 +551,23 @@ defmodule ExCommerceWeb.LiveHelpers do
             </div>
           </div>
         </header>
+        <section class="flex flex-col">
+          <div class={"
+            #{if @expanded do
+                "basis-10/12"
+              else
+                "basis-1/4 rounded-t-6xl bg-gray-100 border-t-4 border-gray-200"
+              end}
+            transition-all ease-in duration-300
+          "}>
+
+            <%= render_slot(@info) %>
+          </div>
+        </section>
       </div>
 
       <div class={"
-        #{if @expanded do
-            "basis-10/12"
-          else
-            "basis-1/4 rounded-6xl"
-          end}
-        transition-all ease-in duration-300
-      "}>
-        <section>
-          <%= render_slot(@shop_section) %>
-        </section>
-      </div>
-      <div class={"
+        bg-gray-100
         #{if @expanded do
             "hidden"
           else
@@ -562,7 +575,7 @@ defmodule ExCommerceWeb.LiveHelpers do
           end}
       "}>
         <section>
-          <%= render_slot(@catalogues_section) %>
+          <%= render_slot(@main) %>
         </section>
       </div>
     </div>

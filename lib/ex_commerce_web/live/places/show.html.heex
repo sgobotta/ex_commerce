@@ -37,14 +37,11 @@
           <div class={"
             row-auto col-auto
             justify-self-center self-center
-            w-full sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12
-            h-60   sm:h-64   md:h-72   lg:h-80   xl:h-96
           "}>
             <img
               src={get_photo_source(@socket, photo)}
               class={"
               rounded-b-lg shadow-button-sm
-              w-full h-60 sm:h-64 md:h-72 lg:h-80 xl:h-96
             "}
             />
           </div>
@@ -68,8 +65,8 @@
       </div>
     </:logo>
 
-    <:shop_section>
-      <div class="grid grid-cols-6 bg-gray-100">
+    <:info>
+      <div class="grid grid-cols-6">
         <div class="col-span-5">
           <div class="mx-12 mt-12 mb-9">
             <p class="mt-1 text-3xl text-gray-700">
@@ -81,7 +78,7 @@
               </p>
               <div class="flex items-center py-1">
                 <.icon name={:location_marker} outlined class="
-                  text-gray-400 group-hover:text-gray-500
+                  text-gray-400
                   mr-2 flex-shrink-0 h-5 w-5
                 "/>
                 <p class="text-xl text-gray-500">
@@ -90,7 +87,7 @@
               </div>
               <div class="flex items-center py-1">
                 <.icon name={:phone} outlined class="
-                  text-gray-400 group-hover:text-gray-500
+                  text-gray-400
                   mr-2 flex-shrink-0 h-5 w-5
                 "/>
                 <p class="text-xl text-gray-500">
@@ -101,48 +98,50 @@
           </div>
         </div>
       </div>
-    </:shop_section>
+    </:info>
 
-    <:catalogues_section>
-    <div class="bg-rose-100 p-6">
-      <div class="
-        grid grid-cols-3
-        gap-1 mx-4
-        sm:gap-14 sm:mx-12
-        md:gap-28 md:mx-26
-        lg:gap-40 lg:mx-40
-        xl:gap-56 xl:mx-56
-      ">
-        <%= for catalogue <- @shop.catalogues do %>
-          <div class="
-            p-2 my-10 mx-1 rounded-lg text-center
-            bg-gray-100 shadow-xl
-          ">
-            <.link
-              navigate={Routes.place_show_path(
-                ExCommerceWeb.Endpoint,
-                :show_catalogue,
-                @brand_slug,
-                @shop_slug
-              )}
-            >
-              <div class="flex justify-center">
-                <.icon name={:clipboard_list} outlined class="
-                  text-gray-600
-                  mr-2 flex-shrink-0 h-16 w-16
-                "/>
-              </div>
-              <div class="flex justify-center">
-                <p class="text-xl text-gray-700">
-                  <%= catalogue.name %>
-                </p>
-              </div>
-            </.link>
-          </div>
-        <% end %>
+    <:main>
+      <div class="p-6">
+        <div class="
+          grid grid-cols-3
+          gap-1 mx-4
+          sm:gap-14 sm:mx-12
+          md:gap-28 md:mx-26
+          lg:gap-40 lg:mx-40
+          xl:gap-56 xl:mx-56
+        ">
+          <%= for catalogue <- @shop.catalogues do %>
+            <div class="
+              p-2 my-10 mx-1 rounded-lg text-center
+              bg-gray-50 shadow-xl
+              hover:scale-110
+              transition-transform ease-in duration-200
+            ">
+              <.link
+                navigate={Routes.place_show_path(
+                  ExCommerceWeb.Endpoint,
+                  :show_catalogue,
+                  @brand_slug,
+                  @shop_slug
+                )}
+              >
+                <div class="flex justify-center">
+                  <.icon name={:clipboard_list} outlined class="
+                    text-gray-600
+                    mr-2 flex-shrink-0 h-16 w-16
+                  "/>
+                </div>
+                <div class="flex justify-center">
+                  <p class="text-xl text-gray-700">
+                    <%= catalogue.name %>
+                  </p>
+                </div>
+              </.link>
+            </div>
+          <% end %>
+        </div>
       </div>
-    </div>
-    </:catalogues_section>
+    </:main>
 
   </.expandable_scroll>
 <% end %>
