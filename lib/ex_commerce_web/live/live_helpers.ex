@@ -485,6 +485,90 @@ defmodule ExCommerceWeb.LiveHelpers do
     |> JS.remove_attribute("aria-expanded", to: to)
   end
 
+  def expandable_scroll(assigns) do
+    ~H"""
+    <div class={"
+      flex bg-gray-300
+      #{if @expanded do
+          "flex-row h-full"
+        else
+          "flex-col h-full"
+        end}
+    "}>
+      <div class={"
+        #{if @expanded do
+          "basis-2/12"
+          else
+            "basis-2/4"
+          end}
+        transition-all ease-in duration-300
+      "}>
+        <header class={"
+          relative w-full flex
+          #{if @expanded do
+              "flex-row"
+            else
+              "flex-col bg-gray-100"
+            end}
+        "}>
+          <%= render_slot(@navigation) %>
+
+          <div class={"
+          #{if @expanded do
+              "hidden"
+            else
+              "visible"
+            end}"
+        }>
+            <%= render_slot(@banner) %>
+          </div>
+          <div class={"
+            #{if @expanded do
+                ""
+              else
+                "absolute -bottom-16 w-full flex justify-center"
+              end}
+          "}>
+            <div class={"
+            #{if @expanded do
+                "w-12 h-12"
+              else
+                "w-32 sm:w-32 md:w-32 lg:w-32 xl:w-32 h-32 sm:h-32 md:h-32 lg:h-32 xl:h-32"
+              end}"
+            }>
+              <%= render_slot(@logo) %>
+            </div>
+          </div>
+        </header>
+      </div>
+
+      <div class={"
+        #{if @expanded do
+            "basis-10/12"
+          else
+            "basis-1/4 rounded-6xl"
+          end}
+        transition-all ease-in duration-300
+      "}>
+        <section>
+          <%= render_slot(@shop_section) %>
+        </section>
+      </div>
+      <div class={"
+        #{if @expanded do
+            "hidden"
+          else
+            "basis-1/4"
+          end}
+      "}>
+        <section>
+          <%= render_slot(@catalogues_section) %>
+        </section>
+      </div>
+    </div>
+    """
+  end
+
   def link(%{navigate: _to} = assigns) do
     assigns = assign_new(assigns, :class, fn -> nil end)
 

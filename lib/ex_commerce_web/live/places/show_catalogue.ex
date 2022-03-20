@@ -1,6 +1,6 @@
-defmodule ExCommerceWeb.PlaceLive.Show do
+defmodule ExCommerceWeb.PlaceLive.ShowCatalogue do
   @moduledoc """
-  Shows a single places
+  Shows a shop catalogue
   """
 
   use ExCommerceWeb, {
@@ -17,9 +17,7 @@ defmodule ExCommerceWeb.PlaceLive.Show do
         {:ok,
          socket
          |> assign_defaults(params, session)
-         |> assign_place_by_slug_or_redirect(params)
-         |> assign(:brand_slug, params["brand"])
-         |> assign(:shop_slug, params["shop"])}
+         |> assign_place_by_slug_or_redirect(params)}
 
       false ->
         {:ok, socket}

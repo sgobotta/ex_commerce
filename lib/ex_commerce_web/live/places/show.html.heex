@@ -1,76 +1,131 @@
 <%= if connected?(@socket) do %>
-  <div class="relative flex flex-col bg-gray-300 h-screen">
-    <div class="flex justify-center">
-      <%= for photo <- get_photos(@shop.banners, [
-        use_placeholder: true,
-        type: :banner_with_size
-      ]) do %>
-
-        <div class={"
-          row-auto col-auto
-          justify-self-center self-center
-          w-full sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12
-          h-60   sm:h-64   md:h-72   lg:h-80   xl:h-96
-        "}>
-          <img
-            src={get_photo_source(@socket, photo)}
-            class={"
-            rounded-b-lg shadow-button-sm
-            w-full h-60 sm:h-64 md:h-72 lg:h-80 xl:h-96
+  <.expandable_scroll
+    expanded={@live_action in [:show_catalogue]}
+  >
+    <:navigation>
+      <div class="">
+        <.link
+          navigate="#"
+          class={"
+            text-blue-500 group flex items-center
+            px-2 py-2
+            text-2xl font-medium
+            rounded-md
+            hover:text-blue-300
           "}
+          aria-current="false"
+        >
+          <.icon
+            name={:arrow_left} outlined
+            class="
+              flex-shrink-0
+              mr-3
+              h-6 w-6
+              text-blue-500
+            "
           />
-        </div>
-      <% end %>
-    </div>
+        </.link>
+      </div>
+    </:navigation>
 
-    <div class="
-      absolute bottom-0
-      w-full rounded-t-4xl
-      border-1 border-gray-200
-      bg-gray-50
-    ">
+    <:banner>
+      <div class="">
+        <%= for photo <- get_photos(@shop.banners, [
+          use_placeholder: true,
+          type: :banner
+        ]) do %>
+          <div class={"
+            row-auto col-auto
+            justify-self-center self-center
+            w-full sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12
+            h-60   sm:h-64   md:h-72   lg:h-80   xl:h-96
+          "}>
+            <img
+              src={get_photo_source(@socket, photo)}
+              class={"
+              rounded-b-lg shadow-button-sm
+              w-full h-60 sm:h-64 md:h-72 lg:h-80 xl:h-96
+            "}
+            />
+          </div>
+        <% end %>
+      </div>
+    </:banner>
 
-      <div class="mx-12 mt-12 mb-9">
-        <p class="mt-1 text-3xl text-gray-700">
-          <%= @shop.name %>
-        </p>
-        <p class="mt-1 text-2xl text-gray-500 italic">
-          <%= @shop.description %>
-        </p>
-        <div class="flex items-center py-1">
-          <.icon name={:location_marker} outlined class="
-            text-gray-400 group-hover:text-gray-500
-            mr-2 flex-shrink-0 h-5 w-5
-          "/>
-          <p class="text-xl text-gray-500">
-            <%= @shop.address %>
-          </p>
-        </div>
-        <div class="flex items-center py-1">
-          <.icon name={:phone} outlined class="
-            text-gray-400 group-hover:text-gray-500
-            mr-2 flex-shrink-0 h-5 w-5
-          "/>
-          <p class="text-xl text-gray-500">
-            <%= @shop.telephone %>
-          </p>
+    <:logo>
+      <div class="bg-transparent">
+        <%= for photo <- get_photos(@shop.avatars, [
+          use_placeholder: true,
+          type: :avatar
+        ]) do %>
+          <div class={""}>
+            <img
+              src={get_photo_source(@socket, photo)}
+              class={"rounded-lg shadow-button-sm"}
+            />
+          </div>
+        <% end %>
+      </div>
+    </:logo>
+
+    <:shop_section>
+      <div class="grid grid-cols-6 bg-gray-100">
+        <div class="col-span-5">
+          <div class="mx-12 mt-12 mb-9">
+            <p class="mt-1 text-3xl text-gray-700">
+              <%= @shop.name %>
+            </p>
+            <%= if @live_action in [:show] do %>
+              <p class="mt-1 text-2xl text-gray-500 italic">
+                <%= @shop.description %>
+              </p>
+              <div class="flex items-center py-1">
+                <.icon name={:location_marker} outlined class="
+                  text-gray-400 group-hover:text-gray-500
+                  mr-2 flex-shrink-0 h-5 w-5
+                "/>
+                <p class="text-xl text-gray-500">
+                  <%= @shop.address %>
+                </p>
+              </div>
+              <div class="flex items-center py-1">
+                <.icon name={:phone} outlined class="
+                  text-gray-400 group-hover:text-gray-500
+                  mr-2 flex-shrink-0 h-5 w-5
+                "/>
+                <p class="text-xl text-gray-500">
+                  <%= @shop.telephone %>
+                </p>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
+    </:shop_section>
 
-      <div class="bg-rose-100 h-full">
-        <div class="
-          grid grid-cols-3
-          gap-1 mx-4
-          sm:gap-14 sm:mx-12
-          md:gap-28 md:mx-26
-          lg:gap-40 lg:mx-40
-          xl:gap-56 xl:mx-56
-        ">
-          <%= for catalogue <- @shop.catalogues do %>
-            <div class="
-              p-2 my-10 mx-1 rounded-lg text-center
-              bg-gray-100 shadow-xl
-            ">
+    <:catalogues_section>
+    <div class="bg-rose-100 p-6">
+      <div class="
+        grid grid-cols-3
+        gap-1 mx-4
+        sm:gap-14 sm:mx-12
+        md:gap-28 md:mx-26
+        lg:gap-40 lg:mx-40
+        xl:gap-56 xl:mx-56
+      ">
+        <%= for catalogue <- @shop.catalogues do %>
+          <div class="
+            p-2 my-10 mx-1 rounded-lg text-center
+            bg-gray-100 shadow-xl
+          ">
+            <.link
+              navigate={Routes.place_show_path(
+                ExCommerceWeb.Endpoint,
+                :show_catalogue,
+                @brand_slug,
+                @shop_slug
+              )}
+            >
               <div class="flex justify-center">
                 <.icon name={:clipboard_list} outlined class="
                   text-gray-600
@@ -82,11 +137,12 @@
                   <%= catalogue.name %>
                 </p>
               </div>
-            </div>
-
-          <% end %>
-        </div>
+            </.link>
+          </div>
+        <% end %>
       </div>
     </div>
-  </div>
+    </:catalogues_section>
+
+  </.expandable_scroll>
 <% end %>
