@@ -52,7 +52,7 @@ defmodule ExCommerceWeb.PlaceLiveTest do
       assert html =~ shop_name
     end
 
-    @tag :wip
+    @tag :skip
     test "[Failure] displays brand - redirects on invalid brand slug", %{
       conn: conn
     } do
