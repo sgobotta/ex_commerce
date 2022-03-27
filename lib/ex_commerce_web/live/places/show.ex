@@ -11,7 +11,12 @@ defmodule ExCommerceWeb.PlaceLive.Show do
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
   alias ExCommerce.Marketplaces.Shop
-  alias ExCommerce.Offerings.Catalogue
+
+  alias ExCommerce.Offerings.{
+    Catalogue,
+    CatalogueCategory,
+    CatalogueItem
+  }
 
   @impl true
   def mount(params, session, socket) do

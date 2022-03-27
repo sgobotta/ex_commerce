@@ -1,6 +1,5 @@
-<div class="h-full flex flex-col">
+<div class="h-full flex flex-col overflow-y-scroll">
   <%= if @live_action in [:show] do %>
-
     <div class="pt-6 px-8">
       <div class="grid grid-cols-6">
         <div class="col-span-5">
@@ -20,7 +19,7 @@
               </div>
               <div class="">
                 <p class="text-base text-black">
-                  <%= @shop.address %> sadsadh sahd sa dhsadjhsa
+                  <%= @shop.address %>
                 </p>
               </div>
             </div>
@@ -91,51 +90,56 @@
   <% end %>
 
   <%= if @live_action in [:show_catalogue] do %>
-    <div class="basis-full bg-gray-100">
-      <p class="p-4 text-sky-600 text-xl">
-        <%= gettext("Available Catalogues") %>
-      </p>
+    <div class="basis-full px-1 bg-gray-100">
 
-      <div class="
-        grid grid-cols-3
-        gap-1 mx-4
-        sm:gap-14 sm:mx-12
-        md:gap-28 md:mx-26
-        lg:gap-40 lg:mx-40
-        xl:gap-56 xl:mx-56
-      ">
-        <%= for %Catalogue{id: catalogue_id, name: catalogue_name} <- @shop.catalogues do %>
-          <div class="
-            p-2 my-10 mx-1 rounded-lg text-center
-            bg-gray-50 shadow-xl
-            hover:scale-110
-            transition-transform ease-in-out duration-100
-            active:scale-75
-          ">
-            <.link
-              patch={Routes.place_show_path(
-                @socket,
-                :show_catalogue,
-                @brand_slug,
-                @shop_slug,
-                catalogue_id
-              )}
-            >
-              <div class="flex justify-center">
-                <.icon name={:clipboard_list} outlined class="
-                  text-sky-600
-                  mr-2 flex-shrink-0 h-16 w-16
-                "/>
+      <%= for %CatalogueCategory{name: category_name} = catalogue_category <- @catalogue.categories do %>
+        <div class="py-3">
+          <p class="text-sky-600 text-xl">
+            <%= category_name %>
+          </p>
+        </div>
+
+        <%= for %CatalogueItem{
+          name: item_name,
+          description: item_description,
+          photos: item_photos
+        } <- catalogue_category.items do %>
+          <div class="grid grid-cols-6 grid-rows-2 bg-white rounded-md mb-2 p-2">
+            <div class="col-span-1 row-span-2">
+              <div class="
+                w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32
+                h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32
+              ">
+                <%= for photo <- get_photos(item_photos, [
+                  use_placeholder: true,
+                  type: :avatar
+                ]) do %>
+                  <%= render_image([
+                    source: get_photo_source(@socket, photo),
+                    size_classes: "w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32"
+                  ]) %>
+                <% end %>
               </div>
-              <div class="flex justify-center">
-                <p class="text-xl text-gray-700">
-                  <%= catalogue_name %>
-                </p>
-              </div>
-            </.link>
+            </div>
+            <div class="col-span-5 row-span-1">
+              <p class="
+                text-base text-black
+                text-ellipsis overflow-hidden whitespace-nowrap
+              ">
+                <%= item_name  %>
+              </p>
+            </div>
+            <div class="col-span-5 row-span-1">
+              <p class="
+                text-xs text-gray-700
+                text-ellipsis overflow-hidden whitespace-nowrap
+              ">
+                <%= item_description  %>
+              </p>
+            </div>
           </div>
         <% end %>
-      </div>
+      <% end %>
     </div>
   <% end %>
 </div>
