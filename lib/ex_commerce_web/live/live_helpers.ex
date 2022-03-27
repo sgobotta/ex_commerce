@@ -540,6 +540,25 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
+  def pill(assigns) do
+    assigns =
+      assigns
+      |> assign_new(:bgcolor, fn -> "bg-gray-300" end)
+      |> assign_new(:textcolor, fn -> "text-white" end)
+      |> assign_new(:textsize, fn -> "text-xs" end)
+      |> assign_new(:class, fn -> "" end)
+
+    ~H"""
+    <p class={"
+      p-1 rounded-xl
+      #{@class} #{@bgcolor} #{@textcolor} #{@textsize}
+      text-ellipsis overflow-hidden whitespace-nowrap
+    "}>
+      <%= render_slot(@inner_block) %>
+    </p>
+    """
+  end
+
   def flash(%{kind: :error} = assigns) do
     ~H"""
     <%= if live_flash(@flash, @kind) do %>

@@ -5,7 +5,7 @@
   w-full
 ">
   <!-- Navigation -->
-  <div class="flex-none bg-gray-100 z-50 w-full">
+  <div class="flex-none bg-gray-100 z-50 w-full shadow-lg">
     <div class="flex flex-row items-center p-2">
       <.link
         patch={@return_to}
@@ -26,7 +26,7 @@
           "
         />
         <div class="text-xl group-active:scale-90">
-          <%= gettext("Back") %>
+          <%= @nav_title %>
         </div>
       </.link>
     </div>

@@ -104,8 +104,11 @@
           description: item_description,
           photos: item_photos
         } <- catalogue_category.items do %>
-          <div class="grid grid-cols-6 grid-rows-2 bg-white rounded-md mb-2 p-2">
-            <div class="col-span-1 row-span-2">
+          <div class="
+            grid grid-cols-6 grid-rows-3
+            bg-white rounded-md mb-2 p-2
+          ">
+            <div class="col-span-1 row-span-3">
               <div class="
                 w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32
                 h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32
@@ -136,6 +139,25 @@
               ">
                 <%= item_description  %>
               </p>
+            </div>
+            <div class="col-span-2 row-span-1">
+              <p class="
+                text-xs text-gray-700
+                text-ellipsis overflow-hidden whitespace-nowrap
+              ">
+                <%= gettext("<Price>") %>
+              </p>
+            </div>
+            <div class="col-span-3 row-span-1 justify-self-end">
+              <.pill bgcolor={"bg-sky-600"} textcolor="text-white"
+                class="
+                  shadow-button
+                  transition-transform ease-in-out duration-100
+                  active:scale-75
+                "
+              >
+                <%= gettext("Add to order") %>
+              </.pill>
             </div>
           </div>
         <% end %>

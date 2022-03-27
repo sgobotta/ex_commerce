@@ -103,10 +103,10 @@ defmodule ExCommerceWeb.PlaceLive.Show do
     title =
       case socket.assigns.live_action do
         :show ->
-          socket.assigns.shop.name
+          gettext("Back")
 
         :show_catalogue ->
-          socket.assigns.catalogue.name
+          socket.assigns.shop.name
       end
 
     socket
