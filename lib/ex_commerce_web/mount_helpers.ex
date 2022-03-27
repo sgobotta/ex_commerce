@@ -148,6 +148,38 @@ defmodule ExCommerceWeb.MountHelpers do
     end
   end
 
+  def assign_catalogue_item_by_id_or_redirect(socket, catalogue_item_id) do
+    case Offerings.get_catalogue_item(catalogue_item_id) do
+      nil ->
+        redirect_with_flash(
+          socket,
+          to:
+            Routes.place_show_path(
+              socket,
+              :show_catalogue,
+              socket.assigns.brand.id,
+              socket.assigns.shop.id,
+              socket.assigns.catalogue.id
+            ),
+          kind: :info,
+          message:
+            gettext("The item could not be found, please choose another one.")
+        )
+
+      %CatalogueItem{} = catalogue_item ->
+        socket
+        |> assign(
+          :catalogue_item,
+          Repo.preload(
+            catalogue_item,
+            option_groups: [],
+            photos: [],
+            variants: []
+          )
+        )
+    end
+  end
+
   # ============================================================================
   # Helpers below belong and should be used for Admin pages only
   #

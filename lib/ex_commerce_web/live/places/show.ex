@@ -74,6 +74,28 @@ defmodule ExCommerceWeb.PlaceLive.Show do
     |> assign_nav_title()
   end
 
+  defp apply_action(socket, :show_item, %{
+         "brand" => brand_slug,
+         "shop" => shop_slug,
+         "catalogue" => catalogue_id,
+         "item" => catalogue_item_id
+       }) do
+    socket
+    |> assign(:page_title, gettext("[Item Name]"))
+    |> assign(
+      :return_to,
+      Routes.place_show_path(
+        socket,
+        :show_catalogue,
+        brand_slug,
+        shop_slug,
+        catalogue_id
+      )
+    )
+    |> assign_catalogue_item(catalogue_item_id)
+    |> assign_nav_title()
+  end
+
   defp assign_photos_sources(
          %{assigns: %{shop: %Shop{avatars: avatars, banners: banners}}} = socket
        ) do
@@ -101,6 +123,9 @@ defmodule ExCommerceWeb.PlaceLive.Show do
   defp assign_catalogue(socket, catalogue_id),
     do: assign_catalogue_by_id_or_redirect(socket, catalogue_id)
 
+  defp assign_catalogue_item(socket, catalogue_id),
+    do: assign_catalogue_item_by_id_or_redirect(socket, catalogue_id)
+
   defp assign_nav_title(socket) do
     title =
       case socket.assigns.live_action do
@@ -109,6 +134,9 @@ defmodule ExCommerceWeb.PlaceLive.Show do
 
         :show_catalogue ->
           socket.assigns.shop.name
+
+        :show_item ->
+          socket.assigns.catalogue_item.name
       end
 
     socket

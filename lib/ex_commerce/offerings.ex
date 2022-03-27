@@ -78,13 +78,14 @@ defmodule ExCommerce.Offerings do
 
   ## Examples
 
-      iex> get_catalogue!(123)
+      iex> get_catalogue(123)
       %Catalogue{}
 
-      iex> get_catalogue!(456)
+      iex> get_catalogue(456)
       nil
 
   """
+  @spec get_catalogue(Ecto.UUID.t()) :: Catalogue.t() | nil
   def get_catalogue(id), do: Repo.get(Catalogue, id)
 
   @doc """
@@ -337,6 +338,23 @@ defmodule ExCommerce.Offerings do
         where: ci.id in ^item_ids
     )
   end
+
+  @doc """
+  Gets a single catalogue item.
+
+  Returns `nil` if the CatalogueItem does not exist.
+
+  ## Examples
+
+      iex> get_catalogue_item(123)
+      %Catalogue{}
+
+      iex> get_catalogue_item(456)
+      nil
+
+  """
+  @spec get_catalogue_item(Ecto.UUID.t()) :: CatalogueItem.t() | nil
+  def get_catalogue_item(id), do: Repo.get(CatalogueItem, id)
 
   @doc """
   Gets a single catalogue_item.

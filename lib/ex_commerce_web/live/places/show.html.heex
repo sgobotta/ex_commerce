@@ -101,6 +101,7 @@
 
         <div class="lg:grid lg:grid-cols-2">
           <%= for %CatalogueItem{
+            id: item_id,
             name: item_name,
             description: item_description,
             photos: item_photos,
@@ -159,16 +160,27 @@
                   col-span-6 lg:col-span-5 row-span-1
                   justify-self-end self-center
                 ">
-                  <.pill bgcolor={"bg-sky-600"} textcolor="text-sky-600"
-                    outlined
-                    class="
-                      shadow-button
-                      transition-transform ease-in-out duration-100
-                      active:scale-75 active:shadow-lg
-                    "
+                  <.link
+                    patch={Routes.place_show_path(
+                      @socket,
+                      :show_item,
+                      @brand_slug,
+                      @shop_slug,
+                      @catalogue.id,
+                      item_id
+                    )}
                   >
-                    <%= gettext("Add to order") %>
-                  </.pill>
+                    <.pill bgcolor={"bg-sky-600"} textcolor="text-sky-600"
+                      outlined
+                      class="
+                        shadow-button
+                        transition-transform ease-in-out duration-100
+                        active:scale-75 active:shadow-lg
+                      "
+                    >
+                      <%= gettext("Add to order") %>
+                    </.pill>
+                  </.link>
                 </div>
               </div>
             </div>
@@ -176,5 +188,11 @@
         </div>
       <% end %>
     </div>
+  <% end %>
+
+  <%= if @live_action in [:show_item] do %>
+
+    <div>Haha, item!</div>
+
   <% end %>
 </div>

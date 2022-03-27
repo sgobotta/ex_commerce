@@ -39,6 +39,7 @@ defmodule ExCommerceWeb.Router do
         live "/:brand", PlaceLive.Index, :index
         live "/:brand/:shop", PlaceLive.Show, :show
         live "/:brand/:shop/:catalogue", PlaceLive.Show, :show_catalogue
+        live "/:brand/:shop/:catalogue/:item", PlaceLive.Show, :show_item
       end
     end
 
