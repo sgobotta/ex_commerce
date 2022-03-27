@@ -433,6 +433,8 @@ defmodule ExCommerce.Offerings do
 
   alias ExCommerce.Offerings.CatalogueItemVariant
 
+  @type variant_price() :: Decimal.t()
+
   @doc """
   Returns the list of catalogue_item_variants.
 
@@ -533,6 +535,14 @@ defmodule ExCommerce.Offerings do
         attrs \\ %{}
       ) do
     CatalogueItemVariant.changeset(catalogue_item_variant, attrs)
+  end
+
+  @spec get_cheapest_variant_price(list(CatalogueItemVariant.t())) ::
+          variant_price()
+  def get_cheapest_variant_price(variants) do
+    variants
+    |> Enum.map(fn %CatalogueItemVariant{price: price} -> price end)
+    |> Enum.min()
   end
 
   # ----------------------------------------------------------------------------

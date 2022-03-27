@@ -12,6 +12,8 @@ defmodule ExCommerceWeb.PlaceLive.Show do
 
   alias ExCommerce.Marketplaces.Shop
 
+  alias ExCommerce.Offerings
+
   alias ExCommerce.Offerings.{
     Catalogue,
     CatalogueCategory,
@@ -112,4 +114,14 @@ defmodule ExCommerceWeb.PlaceLive.Show do
     socket
     |> assign(:nav_title, title)
   end
+
+  defp get_item_price([]), do: gettext("Price not available")
+
+  defp get_item_price(variants) do
+    Offerings.get_cheapest_variant_price(variants)
+    |> ExCommerceNumeric.format_price()
+    |> prepend_currency()
+  end
+
+  defp prepend_currency(price), do: "$#{price}"
 end

@@ -543,15 +543,30 @@ defmodule ExCommerceWeb.LiveHelpers do
   def pill(assigns) do
     assigns =
       assigns
-      |> assign_new(:bgcolor, fn -> "bg-gray-300" end)
-      |> assign_new(:textcolor, fn -> "text-white" end)
+      |> assign_new(:bgcolor, fn -> "bg-transparent" end)
+      |> assign_new(:textcolor, fn -> "text-black" end)
       |> assign_new(:textsize, fn -> "text-xs" end)
       |> assign_new(:class, fn -> "" end)
+      |> assign_new(:outlined, fn -> nil end)
+
+    assigns =
+      case assigns.outlined do
+        nil ->
+          assigns
+
+        true ->
+          assigns
+          |> assign(
+            :bgcolor,
+            "outline outline-1 outline-offset-0 outline-sky-600"
+          )
+      end
 
     ~H"""
     <p class={"
       p-1 rounded-xl
       #{@class} #{@bgcolor} #{@textcolor} #{@textsize}
+
       text-ellipsis overflow-hidden whitespace-nowrap
     "}>
       <%= render_slot(@inner_block) %>

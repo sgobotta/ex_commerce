@@ -94,7 +94,7 @@
 
       <%= for %CatalogueCategory{name: category_name} = catalogue_category <- @catalogue.categories do %>
         <div class="py-3">
-          <p class="text-sky-600 text-xl">
+          <p class="font-bold text-xl tracking-wider text-sky-600">
             <%= category_name %>
           </p>
         </div>
@@ -102,7 +102,8 @@
         <%= for %CatalogueItem{
           name: item_name,
           description: item_description,
-          photos: item_photos
+          photos: item_photos,
+          variants: item_variants
         } <- catalogue_category.items do %>
           <div class="
             grid grid-cols-6 grid-rows-3
@@ -142,18 +143,19 @@
             </div>
             <div class="col-span-2 row-span-1">
               <p class="
-                text-xs text-gray-700
+                tracking-wider font-bold text-xs text-sky-600
                 text-ellipsis overflow-hidden whitespace-nowrap
               ">
-                <%= gettext("<Price>") %>
+                <%= get_item_price(item_variants) %>
               </p>
             </div>
             <div class="col-span-3 row-span-1 justify-self-end">
-              <.pill bgcolor={"bg-sky-600"} textcolor="text-white"
+              <.pill bgcolor={"bg-sky-600"} textcolor="text-sky-600"
+                outlined
                 class="
                   shadow-button
                   transition-transform ease-in-out duration-100
-                  active:scale-75
+                  active:scale-75 active:shadow-lg
                 "
               >
                 <%= gettext("Add to order") %>
