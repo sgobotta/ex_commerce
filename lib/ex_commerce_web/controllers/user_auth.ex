@@ -46,7 +46,7 @@ defmodule ExCommerceWeb.UserAuth do
         {:cont, socket}
 
       nil ->
-        {:halt, redirect_require_login(socket)}
+        {:cont, assign_current_user(socket, nil)}
     end
   rescue
     Ecto.NoResultsError ->

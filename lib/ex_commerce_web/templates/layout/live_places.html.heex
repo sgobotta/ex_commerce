@@ -1,210 +1,113 @@
-<main class="flex-1 relative z-0 overflow-y-auto focus:outline-none">
+<main class="flex-1 relative z-0 overflow-y-auto focus:outline-none bg-gray-300">
+
+  <!-- Navigation -->
+  <div class="bg-gray-100 fixed z-50 w-full">
+    <div class="flex flex-row items-center p-2">
+      <.link
+        patch={@return_to}
+        class={"
+          text-sky-600 group flex items-center
+          text-2xl font-medium
+          rounded-md
+          hover:text-sky-300
+        "}
+        aria-current="false"
+      >
+        <.icon
+          name={:chevron_left} outlined
+          class="
+            flex-shrink-0
+            h-6 w-6
+          "
+        />
+        <div class="text-xl">
+          Back
+        </div>
+      </.link>
+    </div>
+  </div>
+
   <div class={"
-    flex bg-gray-300 flex-col h-full
+    container h-full
+    flex bg-gray-300 flex-col
   "}>
 
     <div class={"
+      
+      flex justify-center transition-all ease-in-out duration-300
       #{if @expanded do
-          "basis-0"
+          "basis-0 -translate-y-96"
         else
-          "basis-3/4 h-full flex flex-col justify-between"
+          "basis-2/4 translate-y-0 w-full"
         end}
-      transition-all ease-in-out duration-100
     "}>
-
-      <header class={"
-        relative w-full flex flex-col
-        transition-all ease-in-out duration-100
+      <!-- Banner -->
+      <div class={"
+      #{if @expanded do
+        "absolute"
+      else
+        "relative"
+      end}
+        w-full sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12
+        h-60   sm:h-64   md:h-72   lg:h-80   xl:h-80
       "}>
-        <div class="bg-gray-100 z-50">
-          <!-- Navigation -->
-          <div class="">
-            <.link
-              patch={@return_to}
-              class={"
-                text-blue-500 group flex items-center
-                px-2 py-2
-                text-2xl font-medium
-                rounded-md
-                hover:text-blue-300
-              "}
-              aria-current="false"
-            >
-              <.icon
-                name={:arrow_left} outlined
-                class="
-                  flex-shrink-0
-                  mr-3
-                  h-6 w-6
-                  text-blue-500
-                "
+        <div class={"
+          row-auto col-auto
+          justify-self-center self-center
+        "}>
+          <img
+            src={@banner_source}
+            class={"
+            rounded-b-lg shadow-button-sm
+          "}
+          />
+        </div>
+
+        <div class="absolute -bottom-16 w-full flex justify-center">
+          <!-- Logo -->
+          <div class="
+            w-32 sm:w-32 md:w-32 lg:w-32 xl:w-32 h-32 sm:h-32 md:h-32 lg:h-32 xl:h-32
+            bg-transparent
+          ">
+            <div class={"
+              transition-all ease-in-out duration-500
+              #{if @expanded do 
+                  "-translate-y-96"
+                else
+                  "translate-y-0 visible w-full"
+                end}
+            "}>
+              <img
+                src={@avatar_source}
+                class={"rounded-lg shadow-button-sm"}
               />
-            </.link>
-          </div>
-        </div>
-
-        <div class={"
-          flex justify-center 
-          #{if @expanded do
-              "-translate-y-96 absolute"
-            else
-              "translate-y-0 visible w-full"
-            end}
-          transition-all ease-in-out duration-100
-        "}>
-          <div class={"
-            w-full sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12 h-60   sm:h-64   md:h-72   lg:h-80   xl:h-96
-            #{if @expanded do
-                ""
-              else
-                ""
-              end}
-            transition-all ease-in-out duration-100
-          "}>
-            <!-- Banner -->
-            <div class="">
-              <div class={"
-                row-auto col-auto
-                justify-self-center self-center
-              "}>
-                <img
-                  src={@banner_source}
-                  class={"
-                  rounded-b-lg shadow-button-sm
-                "}
-                />
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <div class={"
-          #{if @expanded do
-              "hidden"
-            else
-              "absolute -bottom-16 w-full flex justify-center"
-            end}
-        "}>
-          <div class={"
-          #{if @expanded do
-              "w-12 h-12"
-            else
-              "w-32 sm:w-32 md:w-32 lg:w-32 xl:w-32 h-32 sm:h-32 md:h-32 lg:h-32 xl:h-32"
-            end}"
-          }>
-            <!-- Logo -->
-            <div class="bg-transparent">
-              <div class={"
-                #{if @expanded, do: "hidden"}
-              "}>
-                <img
-                  src={@avatar_source}
-                  class={"rounded-lg shadow-button-sm"}
-                />
-              </div>
             </div>
           </div>
         </div>
-      </header>
+      </div>
     </div>
 
     <div class={"
-      transition-all ease-in-out duration-100
+      bg-transparent h-full
+      transition-all ease-linear duration-100
       #{if @expanded do
-          "basis-full bg-gray-100"
-        else
-          "basis-1/4"
-        end}
+        "basis-full rounded-none"
+      else
+        "grow mt-24"
+      end}
     "}>
-      <section>
-        <!-- Info -->
-        <div class="flex flex-col">
-          <div class={"
-            bg-gray-100 border-t-4 border-gray-200
-            #{if @expanded do
-                ""
-              else
-                "rounded-t-6xl"
-              end}
-            transition-all ease-in-out duration-100
-          "}>
-            <!-- Info -->
-            <div class="grid grid-cols-6">
-              <div class="col-span-5">
-                <div class="mx-12 mt-12 mb-9">
-                  <p class="mt-1 text-3xl text-gray-700">
-                    <%= @shop.name %>
-                  </p>
-                  <%= if @live_action in [:show] do %>
-                    <p class="mt-1 text-2xl text-gray-500 italic">
-                      <%= @shop.description %>
-                    </p>
-                    <div class="flex items-center py-1">
-                      <.icon name={:location_marker} outlined class="
-                        text-gray-400
-                        mr-2 flex-shrink-0 h-5 w-5
-                      "/>
-                      <p class="text-xl text-gray-500">
-                        <%= @shop.address %>
-                      </p>
-                    </div>
-                    <div class="flex items-center py-1">
-                      <.icon name={:phone} outlined class="
-                        text-gray-400
-                        mr-2 flex-shrink-0 h-5 w-5
-                      "/>
-                      <p class="text-xl text-gray-500">
-                        <%= @shop.telephone %>
-                      </p>
-                    </div>
-                  <% end %>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Main -->
-        <div class={"p-6 bg-gray-100 #{if @live_action != :show, do: "hidden"}"}>
-          <div class="
-            grid grid-cols-3
-            gap-1 mx-4
-            sm:gap-14 sm:mx-12
-            md:gap-28 md:mx-26
-            lg:gap-40 lg:mx-40
-            xl:gap-56 xl:mx-56
-          ">
-            <%= for catalogue <- @shop.catalogues do %>
-              <div class="
-                p-2 my-10 mx-1 rounded-lg text-center
-                bg-gray-50 shadow-xl
-                hover:scale-110
-                transition-transform ease-in-out duration-100
-              ">
-                <.link
-                  patch={Routes.place_show_path(
-                    ExCommerceWeb.Endpoint,
-                    :show_catalogue,
-                    @brand_slug,
-                    @shop_slug
-                  )}
-                >
-                  <div class="flex justify-center">
-                    <.icon name={:clipboard_list} outlined class="
-                      text-gray-600
-                      mr-2 flex-shrink-0 h-16 w-16
-                    "/>
-                  </div>
-                  <div class="flex justify-center">
-                    <p class="text-xl text-gray-700">
-                      <%= catalogue.name %>
-                    </p>
-                  </div>
-                </.link>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      </section>
+      <div class={"
+        bg-white h-full
+        border-t-4 border-gray-200
+        transition-all ease-in-out
+        #{if @expanded do
+          "duration-500 rounded-none"
+        else
+          "duration-300 rounded-t-5xl"
+        end}
+      "}>
+        <%= @inner_content %>
+      </div>
     </div>
   </div>
 </main>

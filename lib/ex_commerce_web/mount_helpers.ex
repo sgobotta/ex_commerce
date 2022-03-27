@@ -9,6 +9,7 @@ defmodule ExCommerceWeb.MountHelpers do
   alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.{Brand, Shop}
+  alias ExCommerce.Offerings
 
   alias ExCommerce.Offerings.{
     Catalogue,
@@ -106,6 +107,40 @@ defmodule ExCommerceWeb.MountHelpers do
                   photos: [],
                   variants: []
                 ]
+              ]
+            ]
+          )
+        )
+    end
+  end
+
+  def assign_catalogue_by_id_or_redirect(socket, catalogue_id) do
+    case Offerings.get_catalogue(catalogue_id) do
+      nil ->
+        redirect_with_flash(
+          socket,
+          to:
+            Routes.place_show_path(
+              socket,
+              :show,
+              socket.assigns.brand.id,
+              socket.assigns.shop.id
+            ),
+          kind: :info,
+          message: gettext("Choose a catalogue")
+        )
+
+      %Catalogue{} = catalogue ->
+        socket
+        |> assign(
+          :catalogue,
+          Repo.preload(
+            catalogue,
+            categories: [
+              items: [
+                option_groups: [],
+                photos: [],
+                variants: []
               ]
             ]
           )

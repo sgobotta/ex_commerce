@@ -1,3 +1,92 @@
-<%= if connected?(@socket) do %>
+<div class="h-full flex flex-col">
+  <%= if @live_action in [:show] do %>
 
-<% end %>
+    <div class="pt-6 px-8">
+      <div class="grid grid-cols-6">
+        <div class="col-span-5">
+          <div class="mb-4">
+            <p class="mt-1 text-2xl text-black font-bold">
+              <%= @shop.name %>
+            </p>
+            <p class="mt-1 text-xl text-black italic">
+              <%= @shop.description %>
+            </p>
+            <div class="flex flex-row">
+              <div class="pt-1">
+                <.icon name={:location_marker} outlined class="
+                  text-sky-600
+                  flex-shrink-0 h-4 w-4
+                "/>
+              </div>
+              <div class="">
+                <p class="text-base text-black">
+                  <%= @shop.address %> sadsadh sahd sa dhsadjhsa
+                </p>
+              </div>
+            </div>
+            <div class="flex flex-row">
+              <div class="pt-1">
+                <.icon name={:phone} outlined class="
+                  text-sky-600
+                  flex-shrink-0 h-4 w-4
+                "/>
+              </div>
+              <div class="">
+                <p class="text-base text-black">
+                  <%= @shop.telephone %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="basis-full bg-gray-100">
+      <p class="p-4 text-sky-600 text-xl">
+        <%= gettext("Available Catalogues") %>
+      </p>
+
+      <div class="
+        grid grid-cols-3
+        gap-1 mx-4
+        sm:gap-14 sm:mx-12
+        md:gap-28 md:mx-26
+        lg:gap-40 lg:mx-40
+        xl:gap-56 xl:mx-56
+      ">
+        <%= for %Catalogue{id: catalogue_id, name: catalogue_name} <- @shop.catalogues do %>
+          <div class="
+            p-2 my-10 mx-1 rounded-lg text-center
+            bg-gray-50 shadow-xl
+            hover:scale-110
+            transition-transform ease-in-out duration-100
+            active:scale-75
+          ">
+            <.link
+              patch={Routes.place_show_path(
+                @socket,
+                :show_catalogue,
+                @brand_slug,
+                @shop_slug,
+                catalogue_id
+              )}
+            >
+              <div class="flex justify-center">
+                <.icon name={:clipboard_list} outlined class="
+                  text-sky-600
+                  mr-2 flex-shrink-0 h-16 w-16
+                "/>
+              </div>
+              <div class="flex justify-center">
+                <p class="text-xl text-gray-700">
+                  <%= catalogue_name %>
+                </p>
+              </div>
+            </.link>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

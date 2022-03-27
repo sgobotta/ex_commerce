@@ -72,6 +72,22 @@ defmodule ExCommerce.Offerings do
   def get_catalogue!(id), do: Repo.get!(Catalogue, id)
 
   @doc """
+  Gets a single catalogue.
+
+  Returns `nil` if the Catalogue does not exist.
+
+  ## Examples
+
+      iex> get_catalogue!(123)
+      %Catalogue{}
+
+      iex> get_catalogue!(456)
+      nil
+
+  """
+  def get_catalogue(id), do: Repo.get(Catalogue, id)
+
+  @doc """
   Creates a catalogue.
 
   ## Examples
