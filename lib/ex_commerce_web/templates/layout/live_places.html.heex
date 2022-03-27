@@ -1,7 +1,11 @@
-<main class="flex-1 relative z-0 overflow-y-auto focus:outline-none bg-gray-300">
+<main class="
+  flex-1 relative z-0
+  overflow-y-hidden
+  focus:outline-none bg-gray-300
+">
 
   <!-- Navigation -->
-  <div class="bg-gray-100 fixed z-50 w-full">
+  <div class="bg-gray-100 sticky z-50 w-full">
     <div class="flex flex-row items-center p-2">
       <.link
         patch={@return_to}
@@ -18,10 +22,11 @@
           class="
             flex-shrink-0
             h-6 w-6
+            group-active:scale-90
           "
         />
-        <div class="text-xl">
-          Back
+        <div class="text-xl group-active:scale-90">
+          <%= gettext("Back") %>
         </div>
       </.link>
     </div>
