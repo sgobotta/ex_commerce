@@ -1,4 +1,4 @@
-<div class="h-full flex flex-col overflow-y-scroll">
+<div class="flex flex-col h-full">
   <%= if @live_action in [:show] do %>
     <div class="pt-6 px-8">
       <div class="grid grid-cols-6">
@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div class="basis-full bg-gray-100">
+    <div class="basis-full bg-gray-100 h-full">
       <p class="p-4 text-sky-600 text-xl">
         <%= gettext("Available Catalogues") %>
       </p>
@@ -90,7 +90,7 @@
   <% end %>
 
   <%= if @live_action in [:show_catalogue] do %>
-    <div class="basis-full px-1 bg-gray-100">
+    <div class="basis-full px-1 bg-gray-100 w-full">
 
       <%= for %CatalogueCategory{name: category_name} = catalogue_category <- @catalogue.categories do %>
         <div class="py-3">
