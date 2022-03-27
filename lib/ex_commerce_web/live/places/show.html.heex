@@ -99,76 +99,81 @@
           </p>
         </div>
 
-        <%= for %CatalogueItem{
-          name: item_name,
-          description: item_description,
-          photos: item_photos,
-          variants: item_variants
-        } <- catalogue_category.items do %>
-          <div class="flex">
-            <div class="basis-1/12">
-            </div>
-            <div class="
-              basis-11/12
-              grid grid-cols-12 grid-rows-3
-              bg-white rounded-md mb-2 p-2
-            ">
-              <div class="col-span-1 row-span-3">
+        <div class="lg:grid lg:grid-cols-2">
+          <%= for %CatalogueItem{
+            name: item_name,
+            description: item_description,
+            photos: item_photos,
+            variants: item_variants
+          } <- catalogue_category.items do %>
+            <div class="lg:col-span-1 flex">
+              <div class="basis-1/12 lg:basis-2/12 self-center">
+              </div>
+              <div class="
+                basis-11/12 lg:basis-10/12
+                grid grid-cols-12 grid-rows-3
+                bg-white rounded-md mb-2 p-2 sm:p-4
+              ">
                 <div class="
-                  absolute left-3
+                  relative col-span-1 lg:col-span-2 row-span-3
                   w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32
                   h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32
                 ">
-                  <%= for photo <- get_photos(item_photos, [
-                    use_placeholder: true,
-                    type: :avatar
-                  ]) do %>
-                    <%= render_image([
-                      source: get_photo_source(@socket, photo),
-                      size_classes: "w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32"
-                    ]) %>
-                  <% end %>
+                  <div class="absolute -left-9 lg:-left-16">
+                    <%= for photo <- get_photos(item_photos, [
+                      use_placeholder: true,
+                      type: :avatar
+                    ]) do %>
+                      <%= render_image([
+                        source: get_photo_source(@socket, photo),
+                        size_classes: "w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32"
+                      ]) %>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="col-span-10 lg:col-span-9 row-span-1">
+                  <p class="
+                    text-base text-black
+                    text-ellipsis overflow-hidden whitespace-nowrap
+                  ">
+                    <%= item_name  %>
+                  </p>
+                </div>
+                <div class="col-span-10 lg:col-span-9 row-span-1">
+                  <p class="
+                    text-xs text-gray-700
+                    text-ellipsis overflow-hidden whitespace-nowrap
+                  ">
+                    <%= item_description  %>
+                  </p>
+                </div>
+                <div class="col-span-5 lg:col-span-5 row-span-1 self-center">
+                  <p class="
+                    tracking-wider font-bold text-xs text-sky-600
+                    text-ellipsis overflow-hidden whitespace-nowrap
+                  ">
+                    <%= get_item_price(item_variants) %>
+                  </p>
+                </div>
+                <div class="
+                  col-span-6 lg:col-span-5 row-span-1
+                  justify-self-end self-center
+                ">
+                  <.pill bgcolor={"bg-sky-600"} textcolor="text-sky-600"
+                    outlined
+                    class="
+                      shadow-button
+                      transition-transform ease-in-out duration-100
+                      active:scale-75 active:shadow-lg
+                    "
+                  >
+                    <%= gettext("Add to order") %>
+                  </.pill>
                 </div>
               </div>
-              <div class="col-span-11 row-span-1">
-                <p class="
-                  text-base text-black
-                  text-ellipsis overflow-hidden whitespace-nowrap
-                ">
-                  <%= item_name  %>
-                </p>
-              </div>
-              <div class="col-span-11 row-span-1">
-                <p class="
-                  text-xs text-gray-700
-                  text-ellipsis overflow-hidden whitespace-nowrap
-                ">
-                  <%= item_description  %>
-                </p>
-              </div>
-              <div class="col-span-5 row-span-1 self-center">
-                <p class="
-                  tracking-wider font-bold text-xs text-sky-600
-                  text-ellipsis overflow-hidden whitespace-nowrap
-                ">
-                  <%= get_item_price(item_variants) %>
-                </p>
-              </div>
-              <div class="col-span-6 row-span-1 justify-self-end">
-                <.pill bgcolor={"bg-sky-600"} textcolor="text-sky-600"
-                  outlined
-                  class="
-                    shadow-button
-                    transition-transform ease-in-out duration-100
-                    active:scale-75 active:shadow-lg
-                  "
-                >
-                  <%= gettext("Add to order") %>
-                </.pill>
-              </div>
             </div>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       <% end %>
     </div>
   <% end %>
