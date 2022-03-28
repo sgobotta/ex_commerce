@@ -90,9 +90,11 @@
   <% end %>
 
   <%= if @live_action in [:show_catalogue] do %>
-    <div class="basis-full px-1 bg-gray-100 w-full">
-
-      <%= for %CatalogueCategory{name: category_name} = catalogue_category <- @catalogue.categories do %>
+    <div class={"
+      px-1 bg-gray-100 w-full
+      #{if @live_action in [:show_catalogue] do "translate-in" end}
+    "}>
+      <%= for %CatalogueCategory{name: category_name} = catalogue_category <- Enum.take(@catalogue.categories, 5) do %>
         <div class="py-3">
           <p class="font-bold text-xl tracking-wider text-sky-600">
             <%= category_name %>

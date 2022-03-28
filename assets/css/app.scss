@@ -88,6 +88,24 @@ pre {
   100%{ transform: translateX(0%); }
 }
 
+.translate-in {
+  transform: translate(50%);
+  animation: fadeIn 0.5s linear;
+  animation-fill-mode: both;
+}
+
+// Keyframe animation
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,
 .phx-no-feedback .invalid-feedback {
