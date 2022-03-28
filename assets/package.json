@@ -9,7 +9,8 @@
     "deploy": "node build.js --deploy",
     "eslint": "node_modules/.bin/eslint --config .eslintrc.json js/",
     "eslint-fix": "node_modules/.bin/eslint --fix --config .eslintrc.json js/",
-    "watch": "node build.js --watch"
+    "watch": "node build.js --watch",
+    "watch:tailwind": "NODE_ENV=production ./node_modules/.bin/tailwindcss -c ./tailwind.config.js -o ./css/tailwind.css -w -m"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.4.0",

@@ -31,6 +31,7 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
   secret_key_base:
     "d4VqBGN5Pol0OR4hijP7BM9lcCsmsZiXov9vaDpLe14cTcJTZ53onXAgzQMpYYmW",
   watchers: [
+    npm: ["run", "watch:tailwind", cd: Path.expand("../assets", __DIR__)],
     npm: ["run", "watch", cd: Path.expand("../assets", __DIR__)]
   ]
 
