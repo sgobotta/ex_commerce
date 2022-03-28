@@ -28,7 +28,7 @@ module.exports = {
         'button-xs': '2px 2px 2px 0px rgba(0, 0, 0, 0.3)'
       },
       fontFamily: {
-        'sans': ['Helvetica', 'Arial', 'sans-serif']
+        'sans': ['Montserrat-Thin', 'Helvetica', 'Arial', 'sans-serif']
       },
       gridRow: {
         'span-10': 'span 10 / span 10',
