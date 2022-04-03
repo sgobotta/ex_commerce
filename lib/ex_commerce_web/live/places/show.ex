@@ -92,6 +92,7 @@ defmodule ExCommerceWeb.PlaceLive.Show do
         catalogue_id
       )
     )
+    |> assign_catalogue(catalogue_id)
     |> assign_catalogue_item(catalogue_item_id)
     |> assign_nav_title()
   end

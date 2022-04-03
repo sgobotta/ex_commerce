@@ -32,94 +32,77 @@
     </div>
   </div>
 
-  <!-- Content -->
+  <!-- Main -->
   <div class={"
     basis-full
     container
     flex bg-gray-300 flex-col
-    #{if @expanded do
-        "overflow-y-scroll"
-      else
-        ""
-      end}
+    #{@container_classes}
   "}>
 
-    <!-- Banner -->
+    <!-- Headers -->
     <div class={"
-      flex justify-center transition-all ease-in-out duration-700
-      #{if @expanded do
-          "basis-0 -translate-y-96"
-        else
-          "basis-2/4 translate-y-0 w-full"
-        end}
+      flex flex-col justify-start
+      transition-all ease-in-out duration-700
+      w-full
+      h-0
+      #{@header_classes}
     "}>
+      <!-- Banner -->
       <div class={"
-        #{if @expanded do
-          "absolute"
-        else
-          "relative"
-        end}
-          w-full sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12
-          h-60   sm:h-64   md:h-72   lg:h-80   xl:h-80
+        row-auto col-auto
+        justify-self-center self-center
+        transition-all ease-in-out duration-700
+        #{@banner_classes}
+        w-full sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12
+        h-60   sm:h-64   md:h-72   lg:h-80   xl:h-80
       "}>
-        <div class={"
-          row-auto col-auto
-          justify-self-center self-center
-        "}>
-          <img
-            src={@banner_source}
-            class={"
-            rounded-b-lg shadow-button-sm
-          "}
-          />
-        </div>
+        <img
+          src={@banner_source}
+          class={"
+          rounded-b-lg shadow-button-sm top-
+        "}
+        />
+      </div>
 
-        <!-- Logo -->
-        <div class="absolute -bottom-16 w-full flex justify-center">
-          <div class="
-            w-32 sm:w-32 md:w-32 lg:w-32 xl:w-32
-            h-32 sm:h-32 md:h-32 lg:h-32 xl:h-32
-            bg-transparent
-          ">
-            <div class={"
-              transition-all ease-in-out duration-1000
-              #{if @expanded do 
-                  "-translate-y-96"
-                else
-                  "translate-y-0 visible w-full"
-                end}
-            "}>
-              <img
-                src={@avatar_source}
-                class={"rounded-lg shadow-button-sm"}
-              />
-            </div>
+      <!-- Logo -->
+      <div class={"
+        transition-all ease-in-out duration-700 w-
+        #{@avatar_container_classes}
+        w-full flex justify-center
+      "}>
+        <div class={"#{@avatar_size_classes}
+          bg-transparent
+        "}>
+          <div class={"
+            transition-all ease-in-out duration-1000 top-
+            #{@avatar_classes}
+          "}>
+            <img
+              src={@avatar_source}
+              class={"rounded-lg shadow-button-sm"}
+            />
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Inner Content -->
+    <!-- Content -->
     <div class={"
-      bg-transparent h-full
+      z-50
+      bg-transparent 
       transition-all ease-linear duration-700
-      
-      #{if @expanded do
-        "basis-full rounded-none"
-      else
-        "basis-2/4"
-      end}
+      #{@content_container_classes}
     "}>
       <div class={"
         bg-white h-full
         border-t-4 border-gray-200
         transition-all ease-in-out duration-1000
-        #{if @expanded do
-          "basis-full rounded-none"
-        else
-          "grow  rounded-t-5xl"
-        end}
+        #{@content_classes}
       "}>
+        <div class={"flex justify-center py-2 #{@accordion_container_classes}"}>
+          <div class={"transition-all ease-in-out duration-1000 rounded-sm self-center shadow-inner #{@accordion_classes}"} />
+        </div>
         <%= @inner_content %>
       </div>
     </div>
