@@ -18,7 +18,7 @@ defmodule ExCommerceWeb.PlaceLive.Show do
     Catalogue,
     CatalogueCategory,
     CatalogueItem,
-    CatalogueItemOption,
+    # CatalogueItemOption,
     CatalogueItemVariant
   }
 
@@ -26,7 +26,7 @@ defmodule ExCommerceWeb.PlaceLive.Show do
   def mount(params, session, socket) do
     {:ok,
      socket
-     |> assign_defaults(params, session)
+     |> assign_public_defaults(params, session)
      |> assign_place_by_slug_or_redirect(params)
      |> assign(:brand_slug, params["brand"])
      |> assign(:shop_slug, params["shop"])
