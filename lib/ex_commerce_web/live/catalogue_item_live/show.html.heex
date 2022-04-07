@@ -21,12 +21,7 @@
       %>
   <% end %>
 
-  <%= render_layout(
-      ExCommerceWeb.DashboardView,
-      "dashboard",
-      [current_page: "catalogue_items", user_email: @user.email, brand: @brand]
-    )
-  do %>
+  <div class="p-12">
 
     <h1><%= gettext("Show Catalogue item") %></h1>
 
@@ -52,5 +47,5 @@
     <span><%= live_patch gettext("Edit"), to: Routes.catalogue_item_show_path(@socket, :edit, @brand.id, @catalogue_item.id), class: "button" %></span>
     <span><%= live_redirect gettext("Back"), to: Routes.catalogue_item_index_path(@socket, :index, @brand.id), class: "link" %></span>
 
-  <% end %>
+  </div>
 <% end %>

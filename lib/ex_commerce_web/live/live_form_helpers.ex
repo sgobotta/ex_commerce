@@ -213,7 +213,7 @@ defmodule ExCommerceWeb.LiveFormHelpers do
 
       :ok = File.cp!(meta.path, destination_path)
 
-      {destination_path, entry}
+      {:ok, {destination_path, entry}}
     end)
   end
 

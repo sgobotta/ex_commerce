@@ -3,7 +3,10 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.Index do
   Lists available catalogue categories
   """
 
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+  }
 
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Offerings
@@ -55,9 +58,9 @@ defmodule ExCommerceWeb.CatalogueCategoryLive.Index do
     {:noreply,
      socket
      |> put_flash(
-       :info,
+       :warn,
        gettext(
-         "Please Manage a brand to continue browsing catalogue categories"
+         "Please select a brand to continue browsing catalogue categories"
        )
      )
      |> redirect(to: Routes.brand_index_path(socket, :index))}

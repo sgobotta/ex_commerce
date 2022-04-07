@@ -9,26 +9,6 @@ defmodule ExCommerceWeb.LiveHelpers do
   alias Phoenix.LiveView.JS
 
   # ----------------------------------------------------------------------------
-  # Navbar helpers
-  #
-
-  def render_navbar_link(opts) do
-    render(ExCommerceWeb.NavbarView, "navbar_link", opts)
-  end
-
-  def render_navbar_link_group(opts) do
-    render(ExCommerceWeb.NavbarView, "navbar_link_group", opts)
-  end
-
-  # ----------------------------------------------------------------------------
-  # Link helpers
-  #
-
-  def render_link(opts) do
-    render(ExCommerceWeb.LinksView, "link", opts)
-  end
-
-  # ----------------------------------------------------------------------------
   # Button helpers
   #
 
@@ -36,20 +16,8 @@ defmodule ExCommerceWeb.LiveHelpers do
     render(ExCommerceWeb.ButtonsView, "logout_button", opts)
   end
 
-  def render_image_button(opts \\ []) do
-    render(ExCommerceWeb.ButtonsView, "image_button", opts)
-  end
-
   def render_file_input(opts \\ []) do
     render(ExCommerceWeb.ButtonsView, "file_input", opts)
-  end
-
-  # ----------------------------------------------------------------------------
-  # Select helpers
-  #
-
-  def render_select(opts \\ []) do
-    render(ExCommerceWeb.SelectsView, "select", opts)
   end
 
   # ----------------------------------------------------------------------------
@@ -93,17 +61,29 @@ defmodule ExCommerceWeb.LiveHelpers do
   end
 
   # ----------------------------------------------------------------------------
-  # Select helpers
+  # Image helpers
   #
 
   @doc """
-  Renders a squared image.
+  Renders an image.
 
   ### Options
 
   * `source`: path to the picture
-  * `size`: a valid tailwind height/width value without the h- or w-
-  * `container_classes` (Optional): style classes for the div container
+  * `layout`: one of landscape, portrait or squared
+
+  """
+  @spec render_image(keyword) :: {:safe, any}
+  def render_image(opts \\ []) do
+    render(ExCommerceWeb.ImagesView, "image", opts)
+  end
+
+  @doc """
+  Renders a small squared image.
+
+  ### Options
+
+  * `source`: path to the picture
 
   """
   @spec render_thumbnail(keyword) :: {:safe, any}
@@ -234,5 +214,464 @@ defmodule ExCommerceWeb.LiveHelpers do
     js
     |> JS.hide(to: "#modal", transition: "fade-out")
     |> JS.hide(to: "#modal-content", transition: "fade-out-scale")
+  end
+
+  def title_bar(assigns) do
+    ~H"""
+    <div class="
+      sm:flex sm:items-center sm:justify-between
+      border-b border-gray-200
+      px-0 py-4
+      sm:px-0 lg:px-0 sm:h-16
+    ">
+      <div class="flex-1 min-w-0">
+        <h1 class="
+          text-2xl font-medium
+          leading-6 text-gray-900
+          sm:truncate focus:outline-none
+        ">
+          <%= @title %>
+        </h1>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders a connection status alert
+  """
+  def connection_status(assigns) do
+    ~H"""
+    <div
+      id="connection-status"
+      class="base-alert hidden bg-red-50 fade-in-scale"
+      js-show={show("#connection-status")}
+      js-hide={hide("#connection-status")}
+    >
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg
+            class="base-alert-icon animate-spin -ml-1 mr-3 text-red-800"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+            </path>
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p
+            class="text-xl font-medium text-red-800"
+            role="alert"
+          >
+            <%= render_slot(@inner_block) %>
+          </p>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Returns a button triggered dropdown with aria keyboard and focus supporrt.
+
+  Accepts the follow slots:
+
+    * `:id` - The id to uniquely identify this dropdown
+    * `:img` - The optional img to show beside the button title
+    * `:title` - The button title
+    * `:subtitle` - The button subtitle
+
+  ## Examples
+
+      <.dropdown id={@id}>
+        <:img src={@current_user.avatar_url}/>
+        <:title><%= @current_user.name %></:title>
+        <:subtitle>@<%= @current_user.username %></:subtitle>
+
+        <:link navigate={profile_path(@current_user)}>View Profile</:link>
+        <:link navigate={Routes.settings_path(LiveBeatsWeb.Endpoint, :edit)}Settings</:link>
+      </.dropdown>
+  """
+  def dropdown(assigns) do
+    assigns =
+      assigns
+      |> assign_new(:img, fn -> nil end)
+      |> assign_new(:title, fn -> nil end)
+      |> assign_new(:subtitle, fn -> nil end)
+
+    ~H"""
+    <!-- User account dropdown -->
+    <div class="px-3 mt-6 relative inline-block text-left">
+      <div>
+        <button
+          id={@id}
+          type="button"
+          class="
+            group
+            w-full
+            rounded-md
+            px-3.5 py-2
+            text-sm text-left font-medium text-gray-700
+            bg-gray-100
+            hover:bg-gray-200
+            focus:outline-none focus:ring-2 focus:ring-offset-2
+            focus:ring-offset-gray-100 focus:ring-blue-500
+          "
+          phx-click={show_dropdown("##{@id}-dropdown")}
+          phx-hook="Menu"
+          data-active-class="bg-gray-100"
+          aria-haspopup="true"
+        >
+          <span class="flex w-full justify-between items-center">
+            <span class="flex min-w-0 items-center justify-between space-x-3">
+              <%= for img <- @img do %>
+                <img
+                  class="
+                    w-10 h-10
+                    bg-gray-300
+                    rounded-full
+                    flex-shrink-0
+                  "
+                  alt=""
+                  {assigns_to_attributes(img)}
+                />
+              <% end %>
+              <span class="flex-1 flex flex-col min-w-0">
+                <span class="text-gray-900 text-sm font-medium truncate">
+                  <%= render_slot(@title) %>
+                </span>
+                <span class="text-gray-500 text-sm truncate">
+                  <%= render_slot(@subtitle) %>
+                </span>
+              </span>
+            </span>
+            <svg class="flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+              fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd"
+                d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
+                clip-rule="evenodd"></path>
+            </svg>
+          </span>
+        </button>
+      </div>
+      <div
+        id={"#{@id}-dropdown"}
+        phx-click-away={hide_dropdown("##{@id}-dropdown")}
+        class="
+          hidden z-10 mx-3 origin-top
+          absolute right-0 left-0
+          mt-1
+          rounded-md
+          shadow-lg
+          bg-white
+          ring-1 ring-black ring-opacity-5
+          divide-y divide-gray-200
+        "
+        role="menu"
+        aria-labelledby={@id}
+      >
+        <div class="py-1" role="none">
+          <%= for link <- @link do %>
+            <.link
+              tabindex="-1"
+              role="menuitem"
+              class="
+                block
+                px-4 py-2
+                rounded-md
+                text-sm text-gray-700
+                hover:bg-gray-100
+                focus:outline-none focus:ring-2 focus:ring-offset-2
+                focus:ring-offset-gray-100 focus:ring-blue-500
+              "
+              {link}
+            ><%= render_slot(link) %></.link>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  def show_mobile_sidebar(js \\ %JS{}) do
+    js
+    |> JS.show(to: "#mobile-sidebar-container", transition: "fade-in")
+    |> JS.show(
+      to: "#mobile-sidebar",
+      display: "flex",
+      time: 300,
+      transition:
+        {"transition ease-in-out duration-300 transform", "-translate-x-full",
+         "translate-x-0"}
+    )
+    |> JS.hide(to: "#show-mobile-sidebar", transition: "fade-out")
+    |> JS.dispatch("js:exec",
+      to: "#hide-mobile-sidebar",
+      detail: %{call: "focus", args: []}
+    )
+  end
+
+  def hide_mobile_sidebar(js \\ %JS{}) do
+    js
+    |> JS.hide(to: "#mobile-sidebar-container", transition: "fade-out")
+    |> JS.hide(
+      to: "#mobile-sidebar",
+      time: 300,
+      transition:
+        {"transition ease-in-out duration-300 transform", "translate-x-0",
+         "-translate-x-full"}
+    )
+    |> JS.show(to: "#show-mobile-sidebar", transition: "fade-in")
+    |> JS.dispatch("js:exec",
+      to: "#show-mobile-sidebar",
+      detail: %{call: "focus", args: []}
+    )
+  end
+
+  def show(js \\ %JS{}, selector) do
+    JS.show(js,
+      to: selector,
+      time: 300,
+      display: "inline-block",
+      transition:
+        {"ease-out duration-300",
+         "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95",
+         "opacity-100 translate-y-0 sm:scale-100"}
+    )
+  end
+
+  def hide(js \\ %JS{}, selector) do
+    JS.hide(js,
+      to: selector,
+      time: 300,
+      transition:
+        {"transition ease-in duration-300", "transform opacity-100 scale-100",
+         "transform opacity-0 scale-95"}
+    )
+  end
+
+  def show_dropdown(to) do
+    JS.show(
+      to: to,
+      transition:
+        {"transition ease-out duration-120", "transform opacity-0 scale-95",
+         "transform opacity-100 scale-100"}
+    )
+    |> JS.set_attribute({"aria-expanded", "true"}, to: to)
+  end
+
+  def hide_dropdown(to) do
+    JS.hide(
+      to: to,
+      transition:
+        {"transition ease-in duration-120", "transform opacity-100 scale-100",
+         "transform opacity-0 scale-95"}
+    )
+    |> JS.remove_attribute("aria-expanded", to: to)
+  end
+
+  def link(%{navigate: _to} = assigns) do
+    assigns = assign_new(assigns, :class, fn -> nil end)
+
+    ~H"""
+    <a
+      href={@navigate}
+      data-phx-link="redirect"
+      data-phx-link-state="push"
+      class={@class}
+    >
+      <%= render_slot(@inner_block) %>
+    </a>
+    """
+  end
+
+  def link(%{patch: to} = assigns) do
+    opts = assigns |> assigns_to_attributes() |> Keyword.put(:to, to)
+    assigns = assign(assigns, :opts, opts)
+
+    ~H"""
+    <%= live_patch @opts do %><%= render_slot(@inner_block) %><% end %>
+    """
+  end
+
+  def link(%{} = assigns) do
+    opts =
+      assigns
+      |> assigns_to_attributes()
+      |> Keyword.put(:to, assigns[:href] || "#")
+
+    assigns = assign(assigns, :opts, opts)
+
+    ~H"""
+    <%= Phoenix.HTML.Link.link @opts do %><%= render_slot(@inner_block) %><% end %>
+    """
+  end
+
+  def icon(assigns) do
+    assigns =
+      assigns
+      |> assign_new(:outlined, fn -> false end)
+      |> assign_new(:class, fn -> "w-4 h-4 inline-block" end)
+      |> assign_new(:"aria-hidden", fn ->
+        !Map.has_key?(assigns, :"aria-label")
+      end)
+
+    ~H"""
+    <%= if @outlined do %>
+      <%= apply(Heroicons.Outline, @name, [assigns_to_attributes(assigns, [:outlined, :name])]) %>
+    <% else %>
+      <%= apply(Heroicons.Solid, @name, [assigns_to_attributes(assigns, [:outlined, :name])]) %>
+    <% end %>
+    """
+  end
+
+  def pill(assigns) do
+    assigns =
+      assigns
+      |> assign_new(:bgcolor, fn -> "bg-transparent" end)
+      |> assign_new(:textcolor, fn -> "text-black" end)
+      |> assign_new(:textsize, fn -> "text-xs" end)
+      |> assign_new(:class, fn -> "" end)
+      |> assign_new(:outlined, fn -> nil end)
+
+    assigns =
+      case assigns.outlined do
+        nil ->
+          assigns
+
+        true ->
+          assigns
+          |> assign(
+            :bgcolor,
+            "outline outline-1 outline-offset-0 outline-sky-600"
+          )
+      end
+
+    ~H"""
+    <p class={"
+      p-1 rounded-xl
+      #{@class} #{@bgcolor} #{@textcolor} #{@textsize}
+
+      text-ellipsis overflow-hidden whitespace-nowrap
+    "}>
+      <%= render_slot(@inner_block) %>
+    </p>
+    """
+  end
+
+  def flash(%{kind: :error} = assigns) do
+    ~H"""
+    <%= if live_flash(@flash, @kind) do %>
+      <div
+        id="flash"
+        class="base-alert fade-in-scale bg-red-50"
+        phx-click={
+          JS.push("lv:clear-flash")
+          |> JS.remove_class("fade-in-scale", to: "#flash")
+          |> hide("#flash")
+        }
+        phx-hook="Flash"
+      >
+        <div class="base-alert-container text-red-700">
+          <.icon name={:exclamation_circle} class="base-alert-icon"/>
+          <p class="base-alert-text" role="alert">
+            <%= live_flash(@flash, @kind) %>
+          </p>
+          <button type="button" class="
+            base-alert-close-button
+            bg-red-50 text-red-500
+            hover:bg-red-300 focus:ring-offset-red-50 focus:ring-red-600
+          ">
+            <.icon name={:x} class="base-alert-close-icon" />
+          </button>
+        </div>
+      </div>
+    <% end %>
+    """
+  end
+
+  def flash(%{kind: :warn} = assigns) do
+    ~H"""
+    <%= if live_flash(@flash, @kind) do %>
+      <div
+        id="flash"
+        class="base-alert fade-in-scale bg-yellow-50"
+        phx-click={
+          JS.push("lv:clear-flash")
+          |> JS.remove_class("fade-in-scale", to: "#flash")
+          |> hide("#flash")
+        }
+        phx-hook="Flash"
+      >
+        <div class="base-alert-container text-yellow-700">
+          <.icon name={:exclamation} class="base-alert-icon"/>
+          <p class="base-alert-text" role="alert">
+            <%= live_flash(@flash, @kind) %>
+          </p>
+          <button
+            type="button"
+            class="
+              base-alert-close-button
+              bg-yellow-50 text-yellow-500
+              hover:bg-yellow-300
+              focus:ring-offset-yellow-50 focus:ring-yellow-600
+            "
+          >
+            <.icon name={:x} class="base-alert-close-icon" />
+          </button>
+        </div>
+      </div>
+    <% end %>
+    """
+  end
+
+  def flash(%{kind: :info} = assigns) do
+    ~H"""
+    <%= if live_flash(@flash, @kind) do %>
+      <div
+        id="flash"
+        class="base-alert fade-in-scale bg-green-50"
+        phx-click={
+          JS.push("lv:clear-flash")
+          |> JS.remove_class("fade-in-scale")
+          |> hide("#flash")
+        }
+        phx-value-key="info"
+        phx-hook="Flash"
+      >
+        <div class="base-alert-container text-green-700">
+          <.icon name={:check_circle} class="base-alert-icon"/>
+          <p class="base-alert-text" role="alert">
+            <%= live_flash(@flash, @kind) %>
+          </p>
+          <button
+            type="button"
+            class="
+              base-alert-close-button
+              text-green-500 bg-green-50
+              hover:bg-green-300 focus:ring-offset-green-50 focus:ring-green-600
+            "
+          >
+            <.icon name={:x} class="base-alert-close-icon" />
+          </button>
+        </div>
+      </div>
+    <% end %>
+    """
   end
 end

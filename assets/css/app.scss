@@ -1,19 +1,21 @@
 /* This file is for your main application css. */
 @import "./phoenix.css";
+@import "./tailwind.css";
 
-@tailwind base;
-
-@tailwind components;
-
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @import "./themes/colors.scss";
 
 @import "./widgets/collapsables.scss";
 @import "./widgets/scrollbar.scss";
 
+@import "./base/fonts.scss";
+@import "./base/forms.scss";
 @import "./base/tables.scss";
 
+@import "./components/alerts.scss";
 @import "./components/buttons.scss";
 @import "./components/cards.scss";
 @import "./components/forms.scss";
@@ -22,6 +24,89 @@
 @import "./components/layout.scss";
 @import "./components/links.scss";
 @import "./components/progress.scss";
+@import "./components/sidebars.scss";
+
+/* General styles */
+
+.container{
+  margin: 0 auto;
+  max-width: 80.0rem;
+  padding: 0 0;
+  position: relative;
+  width: 100%
+}
+
+select {
+  width: auto;
+}
+
+input[type=checkbox] {
+  display: inline-block;
+}
+
+pre {
+  padding: 1em;
+}
+
+
+/* Animations */
+
+.fade-in-scale {
+  animation: 0.2s ease-in 0s normal forwards 1 fade-in-scale-keys;
+}
+
+.fade-out-scale {
+  animation: 0.2s ease-out 0s normal forwards 1 fade-out-scale-keys;
+}
+
+.fade-in {
+  animation: 0.2s ease-out 0s normal forwards 1 fade-in-keys;
+}
+.fade-out {
+  animation: 0.2s ease-out 0s normal forwards 1 fade-out-keys;
+}
+
+@keyframes fade-in-scale-keys {
+  0% { scale: 0.95; opacity: 0; }
+  100% { scale: 1.0; opacity: 1; }
+}
+
+@keyframes fade-out-scale-keys {
+  0% { scale: 1.0; opacity: 1; }
+  100% { scale: 0.95; opacity: 0; }
+}
+
+@keyframes fade-in-keys {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fade-out-keys {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes slide-in-right-keys {
+  100%{ transform: translateX(0%); }
+}
+
+.translate-in {
+  transform: translate(50%);
+  animation: fadeIn 0.5s linear;
+  animation-fill-mode: both;
+}
+
+// Keyframe animation
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
 
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback,
@@ -56,8 +141,7 @@
 
 .phx-modal-content {
   background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
+  margin: 10% auto;
   border: 1px solid #888;
   width: 80%;
 }
@@ -75,7 +159,6 @@
   text-decoration: none;
   cursor: pointer;
 }
-
 
 /* Alerts and form errors */
 .alert {
@@ -108,5 +191,4 @@
 .invalid-feedback {
   color: #a94442;
   display: block;
-  margin: -1rem 0 2rem;
 }

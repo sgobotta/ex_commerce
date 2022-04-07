@@ -1,5 +1,265 @@
 [
   {
+    "id": "8dd41c87-57f3-421c-abde-0e970e8dd02b",
+    "catalogue_item_id": "969eb47a-aeec-486a-8d63-e341388520f3",
+    "code": "VARIANT-AVOCADO-TOAST-x2",
+    "price": 8.50,
+    "type": "Two Toasts portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "619697a0-035a-4e7c-b40b-cf5a4f04a917",
+    "catalogue_item_id": "969eb47a-aeec-486a-8d63-e341388520f3",
+    "code": "VARIANT-AVOCADO-TOAST-x4",
+    "price": 13.50,
+    "type": "Four Toasts portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
+  {
+    "id": "dce1deca-8917-4d6e-880e-32ac9b451e7c",
+    "catalogue_item_id": "eded4b96-c714-4a4d-9c20-cfd457332b2b",
+    "code": "VARIANT-MUSH-TOAST-x2",
+    "price": 10.50,
+    "type": "Two Toasts portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "8e2dca68-7b63-4f90-801d-a607e6ec6a2a",
+    "catalogue_item_id": "eded4b96-c714-4a4d-9c20-cfd457332b2b",
+    "code": "VARIANT-MUSH-TOAST-x4",
+    "price": 16.50,
+    "type": "Four Toasts portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
+  {
+    "id": "e8b9f2c5-8bce-4306-b53e-f3b290e5dc0f",
+    "catalogue_item_id": "9a872244-b3ff-4f1f-93b9-f4b4725f8c5a",
+    "code": "VARIANT-BANANA-TOAST-x2",
+    "price": 6.50,
+    "type": "Two Toasts portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "1123c2ae-9fb4-4ecf-a83c-be2d6cfdfd5f",
+    "catalogue_item_id": "9a872244-b3ff-4f1f-93b9-f4b4725f8c5a",
+    "code": "VARIANT-BANANA-TOAST-x2",
+    "price": 10.25,
+    "type": "Four Toasts portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
+  {
+    "id": "2c50e4b2-4f4e-4388-b303-043fc4da83cd",
+    "catalogue_item_id": "8ed9c412-fcaf-46de-966c-f70cd8f15465",
+    "code": "VARIANT-SMASHED-AVOCADO-TOAST-x2",
+    "price": 4.50,
+    "type": "Two Toasts portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "1d0b1bd2-ca6b-45d2-b570-bda3368dec26",
+    "catalogue_item_id": "8ed9c412-fcaf-46de-966c-f70cd8f15465",
+    "code": "VARIANT-SMASHED-AVOCADO-TOAST-x2",
+    "price": 9.00,
+    "type": "Four Toasts portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
+  {
+    "id": "1fcd6f1b-72aa-4e62-9528-800bf1b0df2a",
+    "catalogue_item_id": "9215063a-80e5-4927-9b4f-089eaafad168",
+    "code": "VARIANT-SANDWICH-BLT-MEDIUM",
+    "price": 6.25,
+    "type": "Medium portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "fc27ac21-21ef-4bd9-b9ae-0fd830ba07cb",
+    "catalogue_item_id": "9215063a-80e5-4927-9b4f-089eaafad168",
+    "code": "VARIANT-SANDWICH-BLT-LARGE",
+    "price": 11.00,
+    "type": "Large portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "53edf768-1e33-4230-9dee-52f51857e401",
+    "catalogue_item_id": "746a84ea-b063-4343-b3de-25bcad2b3271",
+    "code": "VARTIANT-SANDWICH-VEGGIE-LOAF-MEDIUM",
+    "price": 7.00,
+    "type": "Medium portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "c8420172-d81d-46de-9d54-46cfc4fab276",
+    "catalogue_item_id": "746a84ea-b063-4343-b3de-25bcad2b3271",
+    "code": "VARTIANT-SANDWICH-VEGGIE-LOAF-LARGE",
+    "price": 13.00,
+    "type": "Large portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "6b3186ae-e8f8-4e41-95eb-ff2cabe18e5b",
+    "catalogue_item_id": "2ae30967-27a9-43e1-96b7-3c25579ab8fc",
+    "code": "VARIANT-SANDWICH-SMOKED-TURKEY-CLUB-MEDIUM",
+    "price": 12.00,
+    "type": "Medium portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "2a70e4e7-12ea-4c32-b230-821ba7748a0b",
+    "catalogue_item_id": "2ae30967-27a9-43e1-96b7-3c25579ab8fc",
+    "code": "VARIANT-SANDWICH-SMOKED-TURKEY-CLUB-LARGE",
+    "price": 18.75,
+    "type": "Large portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "30b54257-4b87-405f-934b-d2557d0d3d28",
+    "catalogue_item_id": "26b86013-6378-4aee-b3b5-46805b1f6c53",
+    "code": "VARIANT-SANDWICH-JACKFRUIT-PULLED-PORK-MEDIUM",
+    "price": 13.00,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "7fae6d91-1a1d-42f9-9e65-d8bcf260ba6f",
+    "catalogue_item_id": "26b86013-6378-4aee-b3b5-46805b1f6c53",
+    "code": "VARIANT-SANDWICH-JACKFRUIT-PULLED-PORK-LARGE",
+    "price": 21.00,
+    "type": "Large portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "0e35f0cc-6018-41a2-a86a-d66a0279d5b0",
+    "catalogue_item_id": "01692e87-7b4d-4a3e-a3f7-410f3955d2ea",
+    "code": "VARIANT-SANDWICH-SMOKED-PEPPER-PORK-MEDIUM",
+    "price": 15.00,
+    "type": "Medium portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "5b4ea56f-e7de-44db-8181-74b7e0432f77",
+    "catalogue_item_id": "01692e87-7b4d-4a3e-a3f7-410f3955d2ea",
+    "code": "VARIANT-SANDWICH-SMOKED-PEPPER-PORK-LARGE",
+    "price": 25.50,
+    "type": "Large portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
+  {
+    "id": "3188cf08-89ba-458c-93ca-777589f465e6",
+    "catalogue_item_id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
+    "code": "FINGERFOOD-00-2-PEOPLE-PORTION",
+    "price": 5.50,
+    "type": "2 people portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "6cbc7cd5-1577-48bf-8a5b-81de961aec73",
+    "catalogue_item_id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
+    "code": "FINGERFOOD-00-1-PERSON-PORTION",
+    "price": 3,
+    "type": "Portion for one person",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "099ecff9-11a6-4efd-b00d-02a5e90d30aa",
+    "catalogue_item_id": "110ec880-b01c-4db7-b0f1-b156b43214d0",
+    "code": "FINGERFOOD-02-SINGLE-PORTION",
+    "price": 5,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "beca7ee4-35b4-4e10-a4c8-5bf0467980f4",
+    "catalogue_item_id": "42cf48ab-4fb0-47cc-9e9e-fd04f4368179",
+    "code": "FINGERFOOD-01-SINGLE-PORTION",
+    "price": 5.25,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
+
+  {
+    "id": "39915f03-f157-4aa6-89c7-cb4af06566ed",
+    "catalogue_item_id": "4461401c-868e-4db9-a45d-3461d771234c",
+    "code": "VARIANT-DESSERT-POPCORN-PIMP-CHEESECAKE-SINGLE",
+    "price": 15.25,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "67c56f6a-48fd-4571-9d3a-16fe1eb74588",
+    "catalogue_item_id": "d127fcac-4bba-41a0-8e1c-f86d7d247bc2",
+    "code": "VARIANT-DESSERT-RED-VELVET-SHEETS-SINGLE",
+    "price": 16.50,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "6769ff98-cae4-4ba2-9fb0-64e017a3d40d",
+    "catalogue_item_id": "676943ae-1b1c-42a3-8596-845959dedf47",
+    "code": "VARIANT-DESSERT-CARESS-MY-CARROT-SINGLE",
+    "price": 13.00,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "454a8eb5-e2a5-4ca6-b321-c58b13e100a4",
+    "catalogue_item_id": "16590eaa-fc7e-4e08-ac05-020c1c229584",
+    "code": "VARIANT-DESSERT-MISSIONARY-CRISP-SINGLE",
+    "price": 12.75,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "956210ef-a946-4fad-b49e-36414e857903",
+    "catalogue_item_id": "93d15ee1-01a0-4fe8-aa8a-a575e2ef30a3",
+    "code": "VARIANT-DESSERT-BLUEBERRY-BIRTHDAY-SINGLE",
+    "price": 22.50,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "2fd65940-6f97-4815-b330-f1d3e18b4e91",
+    "catalogue_item_id": "bc2761e8-796c-4a42-88af-f6bdd6e563cb",
+    "code": "VARIANT-DESSERT-MAN-FLOWERS-SINGLE",
+    "price": 20.75,
+    "type": "Single portion",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
+  {
     "id": "6b2fc307-7d41-487a-a649-1adc12c77a72",
     "catalogue_item_id": "c4df5917-9ba3-457f-b27e-3efd5e5c5edc",
     "code": "BEER-000-1-PINT",
@@ -50,42 +310,6 @@
     "code": "BEER-002-1/2-PINT",
     "price": 3.50,
     "type": "1/2 pint",
-    "inserted_at": "2020-11-15 22:13:29",
-    "updated_at": "2020-11-17 14:15:00"
-  },
-  {
-    "id": "3188cf08-89ba-458c-93ca-777589f465e6",
-    "catalogue_item_id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
-    "code": "FINGERFOOD-00-2-PEOPLE-PORTION",
-    "price": 5.50,
-    "type": "2 people portion",
-    "inserted_at": "2020-11-15 22:13:29",
-    "updated_at": "2020-11-17 14:15:00"
-  },
-  {
-    "id": "6cbc7cd5-1577-48bf-8a5b-81de961aec73",
-    "catalogue_item_id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
-    "code": "FINGERFOOD-00-1-PERSON-PORTION",
-    "price": 3,
-    "type": "Portion for one person",
-    "inserted_at": "2020-11-15 22:13:29",
-    "updated_at": "2020-11-17 14:15:00"
-  },
-  {
-    "id": "099ecff9-11a6-4efd-b00d-02a5e90d30aa",
-    "catalogue_item_id": "110ec880-b01c-4db7-b0f1-b156b43214d0",
-    "code": "FINGERFOOD-02-SINGLE-PORTION",
-    "price": 5,
-    "type": "Single portion",
-    "inserted_at": "2020-11-15 22:13:29",
-    "updated_at": "2020-11-17 14:15:00"
-  },
-  {
-    "id": "beca7ee4-35b4-4e10-a4c8-5bf0467980f4",
-    "catalogue_item_id": "42cf48ab-4fb0-47cc-9e9e-fd04f4368179",
-    "code": "FINGERFOOD-01-SINGLE-PORTION",
-    "price": 5.25,
-    "type": "Single portion",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
   },

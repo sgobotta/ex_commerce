@@ -44,15 +44,15 @@ defmodule ExCommerceWeb.PlaceLiveTest do
     test "[Success] displays brand", %{
       conn: conn,
       brand: %Brand{slug: brand_slug},
-      shop: %Shop{slug: shop_slug}
+      shop: %Shop{slug: shop_slug, name: shop_name}
     } do
       {:ok, _show_live, html} =
         live(conn, Routes.place_show_path(conn, :show, brand_slug, shop_slug))
 
-      assert html =~ "Place"
+      assert html =~ shop_name
     end
 
-    @tag :wip
+    @tag :skip
     test "[Failure] displays brand - redirects on invalid brand slug", %{
       conn: conn
     } do

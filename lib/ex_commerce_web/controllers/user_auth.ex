@@ -8,6 +8,7 @@ defmodule ExCommerceWeb.UserAuth do
 
   alias ExCommerce.Accounts
   alias ExCommerceWeb.Router.Helpers, as: Routes
+  alias Phoenix.LiveView
 
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change
@@ -15,6 +16,46 @@ defmodule ExCommerceWeb.UserAuth do
   @max_age 60 * 60 * 24 * 60
   @remember_me_cookie "_ex_commerce_web_user_remember_me"
   @remember_me_options [sign: true, max_age: @max_age, same_site: "Lax"]
+
+  def on_mount(
+        :ensure_authenticated,
+        _params,
+        %{"user_token" => user_token},
+        socket
+      ) do
+    new_socket = assign_current_user(socket, user_token)
+
+    {:cont, new_socket}
+  rescue
+    Ecto.NoResultsError -> {:halt, redirect_require_login(socket)}
+  end
+
+  def on_mount(:ensure_authenticated, _params, _session, socket),
+    do: {:halt, redirect_require_login(socket)}
+
+  def on_mount(
+        :fetch_current_user,
+        _params,
+        %{"user_token" => user_token},
+        socket
+      ) do
+    socket = assign_current_user(socket, user_token)
+
+    case socket.assigns.current_user do
+      %Accounts.User{} ->
+        {:cont, socket}
+
+      nil ->
+        {:cont, assign_current_user(socket, nil)}
+    end
+  rescue
+    Ecto.NoResultsError ->
+      {:cont, assign_current_user(socket, nil)}
+  end
+
+  def on_mount(:fetch_current_user, _params, _session, socket) do
+    {:cont, assign_current_user(socket, nil)}
+  end
 
   @doc """
   Logs the user in.
@@ -167,6 +208,32 @@ defmodule ExCommerceWeb.UserAuth do
       |> redirect(to: Routes.user_confirmation_path(conn, :create))
       |> halt()
     end
+  end
+
+  defp assign_current_user(socket, nil) do
+    LiveView.assign_new(socket, :current_user, fn -> nil end)
+    |> LiveView.assign(:visitor, true)
+  end
+
+  defp assign_current_user(socket, user_token) do
+    LiveView.assign_new(
+      socket,
+      :current_user,
+      fn ->
+        Accounts.get_user_by_session_token!(user_token)
+      end
+    )
+    |> LiveView.assign(:visitor, false)
+  end
+
+  defp redirect_require_login(socket) do
+    socket
+    |> maybe_store_return_to()
+    |> LiveView.put_flash(
+      :error,
+      gettext("You must log in to access this page.")
+    )
+    |> LiveView.redirect(to: Routes.user_session_path(socket, :new))
   end
 
   defp maybe_store_return_to(%{method: "GET"} = conn) do

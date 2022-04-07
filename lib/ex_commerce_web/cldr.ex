@@ -10,8 +10,8 @@ defmodule ExCommerceWeb.Cldr do
     data_dir: "./priv/cldr",
     otp_app: :ex_commerce,
     precompile_number_formats: ["¤¤#,##0.##"],
-    precompile_transliterations: [{:latn, :arab}, {:thai, :latn}],
+    precompile_transliterations: [],
     providers: [Cldr.Number],
     generate_docs: true,
-    force_locale_download: false
+    force_locale_download: Mix.env() == :prod
 end

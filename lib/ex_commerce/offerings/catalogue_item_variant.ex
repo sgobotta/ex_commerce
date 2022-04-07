@@ -8,6 +8,8 @@ defmodule ExCommerce.Offerings.CatalogueItemVariant do
 
   import Ecto.Changeset
 
+  @type t :: %__MODULE__{}
+
   @fields [:code, :type, :price]
   @foreign_fields [:catalogue_item_id]
 

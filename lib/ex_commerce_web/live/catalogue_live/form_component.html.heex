@@ -1,77 +1,81 @@
 <div>
-  <h2><%= @title %></h2>
+  <div class="px-4">
+    <.title_bar title={@title} />
+  </div>
 
-  <%= form_for @changeset, "#", [
-      id: "catalogue-form",
-      phx_target: @myself,
-      phx_change: "validate",
-      phx_submit: "save",
-      class: "mb-0"
-    ], fn f -> %>
+  <div class="px-6 py-2">
+    <%= form_for @changeset, "#", [
+        id: "catalogue-form",
+        phx_target: @myself,
+        phx_change: "validate",
+        phx_submit: "save",
+        class: "mb-0"
+      ], fn f -> %>
 
-    <%= label f, :code, class: "my-2" %>
-    <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: SALOON-00-YORK / TAKE-00-YORK") %>
-    <%= error_tag f, :code %>
+      <%= label f, :code, class: "my-2" %>
+      <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: SALOON-00-YORK / TAKE-00-YORK") %>
+      <%= error_tag f, :code %>
 
-    <%= label f, :name, class: "my-2" %>
-    <%= text_input f, :name, class: "input", placeholder: gettext("Saloon Menu / Delivery Menu / Take away Menu, ...") %>
-    <%= error_tag f, :name %>
+      <%= label f, :name, class: "my-2" %>
+      <%= text_input f, :name, class: "input", placeholder: gettext("Saloon Menu / Delivery Menu / Take away Menu, ...") %>
+      <%= error_tag f, :name %>
 
-    <div class="border-b-1 border-gray-300 my-3">
-      <p class="mt-4 mb-2 font-bold"><%= gettext("Assign Categories") %> (<%= gettext("Optional") %>)</p>
-      <p class="pb-2">
-        <%= gettext("Assign one or more categories to this catalogue.") %>
-      </p>
-      <p class="pb-2 italic">
-        <%= gettext("Catalogues can also be assigned when creating a Category.") %>
-      </p>
-    </div>
-
-    <div class="mx-8">
-      <div>
-        <%= label f, gettext("Select categories"), class: "my-2" %>
-        <%=
-          options = build_catalogue_category_options(@catalogue_categories)
-          multiselect_checkboxes f, :categories, options,
-            selected: get_selected_catalogue_categories(f),
-            class: ""
-        %>
+      <div class="border-b-1 border-gray-300 my-3">
+        <p class="mt-4 mb-2 font-bold"><%= gettext("Assign Categories") %> (<%= gettext("Optional") %>)</p>
+        <p class="pb-2">
+          <%= gettext("Assign one or more categories to this catalogue.") %>
+        </p>
+        <p class="pb-2 italic">
+          <%= gettext("Catalogues can also be assigned when creating a Category.") %>
+        </p>
       </div>
 
-      <div class="flex justify-start my-6">
-        <a
-          href="#"
-          phx-click="create_category"
-          phx-target={@myself}
-          class="button"
-          id="catalogue-add-category-input"
-        >
-          <%= gettext("Create a Category") %>
-        </a>
+      <div class="mx-8">
+        <div>
+          <%= label f, gettext("Select categories"), class: "my-2" %>
+          <%=
+            options = build_catalogue_category_options(@catalogue_categories)
+            multiselect_checkboxes f, :categories, options,
+              selected: get_selected_catalogue_categories(f),
+              class: ""
+          %>
+        </div>
+
+        <div class="flex justify-start my-6">
+          <a
+            href="#"
+            phx-click="create_category"
+            phx-target={@myself}
+            class="button"
+            id="catalogue-add-category-input"
+          >
+            <%= gettext("Create a Category") %>
+          </a>
+        </div>
       </div>
-    </div>
 
-    <div class="border-b-1 border-gray-300 my-3">
-      <p class="mt-4 mb-2 font-bold"><%= gettext("Assign Shops") %> (<%= gettext("Optional") %>)</p>
-      <p class="pb-2">
-        <%= gettext("Assign this catalogue to one or more shops.") %>
-      </p>
-    </div>
-
-    <div class="mx-8">
-      <div>
-        <%= label f, gettext("Select shops"), class: "my-2" %>
-        <%=
-          options = build_shop_options(@shops)
-          multiselect_checkboxes f, :shops, options,
-            selected: get_selected_shops(f),
-            class: ""
-        %>
+      <div class="border-b-1 border-gray-300 my-3">
+        <p class="mt-4 mb-2 font-bold"><%= gettext("Assign Shops") %> (<%= gettext("Optional") %>)</p>
+        <p class="pb-2">
+          <%= gettext("Assign this catalogue to one or more shops.") %>
+        </p>
       </div>
-    </div>
 
-    <div class="submit-button-container">
-      <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button"%>
-    </div>
-  <% end %>
+      <div class="mx-8">
+        <div>
+          <%= label f, gettext("Select shops"), class: "my-2" %>
+          <%=
+            options = build_shop_options(@shops)
+            multiselect_checkboxes f, :shops, options,
+              selected: get_selected_shops(f),
+              class: ""
+          %>
+        </div>
+      </div>
+
+      <div class="submit-button-container">
+        <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button"%>
+      </div>
+    <% end %>
+  </div>
 </div>

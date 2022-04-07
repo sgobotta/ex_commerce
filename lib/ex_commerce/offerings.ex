@@ -72,6 +72,23 @@ defmodule ExCommerce.Offerings do
   def get_catalogue!(id), do: Repo.get!(Catalogue, id)
 
   @doc """
+  Gets a single catalogue.
+
+  Returns `nil` if the Catalogue does not exist.
+
+  ## Examples
+
+      iex> get_catalogue(123)
+      %Catalogue{}
+
+      iex> get_catalogue(456)
+      nil
+
+  """
+  @spec get_catalogue(Ecto.UUID.t()) :: Catalogue.t() | nil
+  def get_catalogue(id), do: Repo.get(Catalogue, id)
+
+  @doc """
   Creates a catalogue.
 
   ## Examples
@@ -323,6 +340,23 @@ defmodule ExCommerce.Offerings do
   end
 
   @doc """
+  Gets a single catalogue item.
+
+  Returns `nil` if the CatalogueItem does not exist.
+
+  ## Examples
+
+      iex> get_catalogue_item(123)
+      %Catalogue{}
+
+      iex> get_catalogue_item(456)
+      nil
+
+  """
+  @spec get_catalogue_item(Ecto.UUID.t()) :: CatalogueItem.t() | nil
+  def get_catalogue_item(id), do: Repo.get(CatalogueItem, id)
+
+  @doc """
   Gets a single catalogue_item.
 
   Raises `Ecto.NoResultsError` if the Catalogue item does not exist.
@@ -416,6 +450,8 @@ defmodule ExCommerce.Offerings do
   defp after_save(error, _func), do: error
 
   alias ExCommerce.Offerings.CatalogueItemVariant
+
+  @type variant_price() :: Decimal.t()
 
   @doc """
   Returns the list of catalogue_item_variants.
@@ -517,6 +553,14 @@ defmodule ExCommerce.Offerings do
         attrs \\ %{}
       ) do
     CatalogueItemVariant.changeset(catalogue_item_variant, attrs)
+  end
+
+  @spec get_cheapest_variant_price(list(CatalogueItemVariant.t())) ::
+          variant_price()
+  def get_cheapest_variant_price(variants) do
+    variants
+    |> Enum.map(fn %CatalogueItemVariant{price: price} -> price end)
+    |> Enum.min()
   end
 
   # ----------------------------------------------------------------------------
