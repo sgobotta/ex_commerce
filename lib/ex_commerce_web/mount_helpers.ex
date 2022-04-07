@@ -198,7 +198,6 @@ defmodule ExCommerceWeb.MountHelpers do
             photos: [],
             variants: []
           )
-          |> IO.inspect(label: "\n\nItem")
         )
     end
   end
