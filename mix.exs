@@ -129,6 +129,7 @@ defmodule ExCommerce.MixProject do
       # Build the web client
       "assets.deploy": [
         "cmd npm install --prefix assets",
+        "cmd npm run compile:tailwind --prefix assets",
         "cmd npm run deploy --prefix assets",
         "phx.digest"
       ]

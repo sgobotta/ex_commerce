@@ -6,7 +6,7 @@
   "description": "Web client application",
   "license": "MIT",
   "scripts": {
-    "deploy": "npm run compile:tailwind && node build.js --deploy",
+    "deploy": "node build.js --deploy",
     "eslint": "node_modules/.bin/eslint --config .eslintrc.json js/",
     "eslint-fix": "node_modules/.bin/eslint --fix --config .eslintrc.json js/",
     "watch": "node build.js --watch",
