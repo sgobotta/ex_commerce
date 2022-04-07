@@ -417,13 +417,16 @@ defmodule ExCommerceWeb.MountHelpers do
   # Private helpers
 
   defp assign_user(socket, %{"user_token" => user_token} = _session) do
-    %User{} =
-      user =
-      Accounts.get_user_by_session_token(user_token)
-      |> Repo.preload([:brands])
+    case Accounts.get_user_by_session_token(user_token) do
+      %User{} = user ->
+        user
+        |> Repo.preload([:brands])
 
-    socket
-    |> assign_new(:user, fn -> user end)
+        assign(socket, :user, user)
+
+      nil ->
+        assign_user(socket, %{})
+    end
   end
 
   defp assign_user(socket, _session) do
