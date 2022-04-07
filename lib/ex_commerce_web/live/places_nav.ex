@@ -38,12 +38,12 @@ defmodule ExCommerceWeb.PlacesNav do
   end
 
   def get_container_classes(:show), do: ""
-  def get_container_classes(:show_catalogue), do: "overflow-y-scroll"
+  def get_container_classes(:show_catalogue), do: ""
   def get_container_classes(:show_item), do: ""
 
-  def get_header_classes(:show), do: "basis-2/4 relative"
-  def get_header_classes(:show_catalogue), do: "basis-0 absolute"
-  def get_header_classes(:show_item), do: "basis-2/4 relative"
+  def get_header_classes(:show), do: "basis-2/4 h-full -translate-y-0"
+  def get_header_classes(:show_catalogue), do: "basis-none h-0 -translate-y-96"
+  def get_header_classes(:show_item), do: "basis-2/4 h-full -translate-y-0"
 
   def get_banner_classes(:show), do: "translate-y-0"
   def get_banner_classes(:show_catalogue), do: "-translate-y-96"
@@ -78,7 +78,10 @@ defmodule ExCommerceWeb.PlacesNav do
   def get_content_classes(:show_item), do: "rounded-t-5xl"
 
   def get_accordion_container_classes(:show), do: ""
-  def get_accordion_container_classes(:show_catalogue), do: "bg-gray-200 w-full"
+
+  def get_accordion_container_classes(:show_catalogue),
+    do: "bg-gray-200 w-full hidden"
+
   def get_accordion_container_classes(:show_item), do: ""
 
   def get_accordion_classes(:show), do: "bg-gray-300 h-1 w-16"
