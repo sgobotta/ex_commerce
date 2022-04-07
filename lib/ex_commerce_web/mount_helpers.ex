@@ -43,6 +43,24 @@ defmodule ExCommerceWeb.MountHelpers do
     |> assign_navigation_helpers(params)
   end
 
+  @spec assign_public_defaults(
+          Phoenix.LiveView.Socket.t(),
+          any,
+          nil | maybe_improper_list | map
+        ) :: any
+  @doc """
+  Mount helper to assign defaults values to the socket. Includes: `%User{}` and
+  browser locale, timezone and timezone offset.
+  """
+  def assign_public_defaults(socket, params, _session) do
+    socket
+    |> assign_user(%{})
+    |> assign_locale()
+    |> assign_timezone()
+    |> assign_timezone_offset()
+    |> assign_navigation_helpers(params)
+  end
+
   # ============================================================================
   # Helpers belong can be used in Places pages
   #
@@ -180,6 +198,7 @@ defmodule ExCommerceWeb.MountHelpers do
             photos: [],
             variants: []
           )
+          |> IO.inspect(label: "\n\nItem")
         )
     end
   end
@@ -421,16 +440,13 @@ defmodule ExCommerceWeb.MountHelpers do
   # Private helpers
 
   defp assign_user(socket, %{"user_token" => user_token} = _session) do
-    case Accounts.get_user_by_session_token(user_token) do
-      %User{} = user ->
-        user
-        |> Repo.preload([:brands])
+    %User{} =
+      user =
+      Accounts.get_user_by_session_token(user_token)
+      |> Repo.preload([:brands])
 
-        assign(socket, :user, user)
-
-      nil ->
-        assign_user(socket, %{})
-    end
+    socket
+    |> assign_new(:user, fn -> user end)
   end
 
   defp assign_user(socket, _session) do
