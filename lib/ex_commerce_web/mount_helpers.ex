@@ -172,7 +172,11 @@ defmodule ExCommerceWeb.MountHelpers do
           :catalogue_item,
           Repo.preload(
             catalogue_item,
-            option_groups: [],
+            option_groups: [
+              options: [
+                catalogue_item_variant: [:catalogue_item]
+              ]
+            ],
             photos: [],
             variants: []
           )
