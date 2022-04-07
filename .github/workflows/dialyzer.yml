@@ -52,6 +52,9 @@ jobs:
         run: |
           mix deps.compile
           mix compile
+      - name: Setup web client
+        run: |
+          mix setup.web
       - name: Run code analysis
         run: |
           mix check.dialyzer
