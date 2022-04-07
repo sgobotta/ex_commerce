@@ -91,6 +91,7 @@
 
   <%= if @live_action in [:show_catalogue] do %>
     <div class={"
+      overflow-y-scroll h-screen-19/20
       px-1 bg-gray-100 w-full
       #{if @live_action in [:show_catalogue] do "" end}
     "}>
@@ -194,15 +195,89 @@
 
   <%= if @live_action in [:show_item] do %>
     <div class={"
-      px-1 h-full
+      p-12 h-full
       flex flex-grow justify-center items-center rounded-2xl
     "}>
       <div class={"
         bg-white
-         h-2/4 w-3/4 rounded-lg
+         h-full w-full rounded-lg
         #{if @live_action in [:show_item] do "translate-in" end}
       "}>
-        <p>Some Item</p>
+
+        <div class="grid grid-cols-6 gap-y-4">
+          <div class="col-span-4">
+            <p class="font-bold text-xl tracking-wider text-black">
+              <%= @catalogue_item.name %>
+            </p>
+          </div>
+          <div class="col-span-2 justify-self-center w-full">
+            <div class="flex flex-row items-center h-full">
+              <div class="
+                 bg-black h-7 w-7 rounded-lg shadow-button
+                transition-transform ease-in-out duration-100
+                active:scale-75 active:shadow-lg cursor-pointer
+              "
+                phx-click="add_item"
+              >
+                <.icon name={:plus_sm} class="text-white"/>
+              </div>
+              <div class="px-4 text-center">
+                <span class="
+                  text-xl oldstyle-nums text-black font-medium
+                ">
+                  <%= @quantity %>
+                </span>
+              </div>
+              <div
+                class={"
+                  rounded-lg shadow-button
+                  transition-transform ease-in-out duration-100
+                  h-7 w-7
+                  #{if @quantity == 1 do
+                    "bg-gray-700"
+                    else
+                      "bg-black active:scale-75 active:shadow-lg cursor-pointer"
+                  end}
+                "}
+                phx-click="remove_item"
+              >
+                <.icon name={:minus_sm} class="text-white"/>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-6">
+            <p class="font-bold text-base text-gray-500">
+              <%= @catalogue_item.description %>
+            </p>
+          </div>
+          <div class="col-span-6">
+            <%= for %CatalogueItemVariant{type: type, price: price} <- @catalogue_item.variants do %>
+              <div class="flex flex-row items-center">
+                <div class="basis-5/6">
+                  <p class="font-bold text-base text-black">
+                    <%= type %>
+                  </p>
+                </div>
+                <div class="basis-1/6">
+                  <p class="text-lg text-black font-medium">
+                    $ <%= price %>
+                  </p>  
+                </div>
+                <div class="basis-1/6">
+                  <input
+                    class="
+                      m-auto block checked:bg-black outline-black
+                    "
+                    type="radio"
+                    name="selected_variant"
+                  >
+                </div>
+              </div>
+            <% end %>
+
+            
+          </div>
+        </div>
       </div>
     </div>
 

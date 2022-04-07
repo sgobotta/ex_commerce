@@ -17,7 +17,9 @@ defmodule ExCommerceWeb.PlaceLive.Show do
   alias ExCommerce.Offerings.{
     Catalogue,
     CatalogueCategory,
-    CatalogueItem
+    CatalogueItem,
+    CatalogueItemOption,
+    CatalogueItemVariant
   }
 
   @impl true
@@ -26,9 +28,9 @@ defmodule ExCommerceWeb.PlaceLive.Show do
      socket
      |> assign_defaults(params, session)
      |> assign_place_by_slug_or_redirect(params)
-     |> assign_photos_sources()
      |> assign(:brand_slug, params["brand"])
-     |> assign(:shop_slug, params["shop"])}
+     |> assign(:shop_slug, params["shop"])
+     |> assign(:quantity, 1)}
 
     # case connected?(socket) do
     #   true ->
@@ -52,10 +54,33 @@ defmodule ExCommerceWeb.PlaceLive.Show do
   #   end
   # end
 
+  @impl true
+  def handle_event(
+        "remove_item",
+        _params,
+        %{assigns: %{quantity: 1 = quantity}} = socket
+      ),
+      do: {:noreply, assign(socket, :quantity, quantity)}
+
+  def handle_event(
+        "remove_item",
+        _params,
+        %{assigns: %{quantity: quantity}} = socket
+      ),
+      do: {:noreply, assign(socket, :quantity, quantity - 1)}
+
+  def handle_event(
+        "add_item",
+        _params,
+        %{assigns: %{quantity: quantity}} = socket
+      ),
+      do: {:noreply, assign(socket, :quantity, quantity + 1)}
+
   defp apply_action(socket, :show, %{"brand" => brand_slug}) do
     socket
     |> assign(:page_title, gettext("[Shop Name]"))
     |> assign(:return_to, Routes.place_index_path(socket, :index, brand_slug))
+    |> assign_shop_photos_sources()
     |> assign_nav_title()
   end
 
@@ -94,10 +119,11 @@ defmodule ExCommerceWeb.PlaceLive.Show do
     )
     |> assign_catalogue(catalogue_id)
     |> assign_catalogue_item(catalogue_item_id)
+    |> assign_item_photos_sources()
     |> assign_nav_title()
   end
 
-  defp assign_photos_sources(
+  defp assign_shop_photos_sources(
          %{assigns: %{shop: %Shop{avatars: avatars, banners: banners}}} = socket
        ) do
     avatar_source =
@@ -110,6 +136,30 @@ defmodule ExCommerceWeb.PlaceLive.Show do
 
     banner_source =
       get_photos(banners,
+        use_placeholder: true,
+        type: :banner
+      )
+      |> Enum.map(&get_photo_source(socket, &1))
+      |> hd()
+
+    socket
+    |> assign(:avatar_source, avatar_source)
+    |> assign(:banner_source, banner_source)
+  end
+
+  defp assign_item_photos_sources(
+         %{assigns: %{catalogue_item: %CatalogueItem{photos: photos}}} = socket
+       ) do
+    avatar_source =
+      get_photos(photos,
+        use_placeholder: true,
+        type: :avatar
+      )
+      |> Enum.map(&get_photo_source(socket, &1))
+      |> hd()
+
+    banner_source =
+      get_photos([],
         use_placeholder: true,
         type: :banner
       )
