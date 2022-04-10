@@ -18,7 +18,8 @@ defmodule ExCommerceWeb.PlaceLive.Show do
     Catalogue,
     CatalogueCategory,
     CatalogueItem,
-    # CatalogueItemOption,
+    CatalogueItemOption,
+    CatalogueItemOptionGroup,
     CatalogueItemVariant
   }
 
@@ -96,6 +97,7 @@ defmodule ExCommerceWeb.PlaceLive.Show do
       Routes.place_show_path(socket, :show, brand_slug, shop_slug)
     )
     |> assign_catalogue(catalogue_id)
+    |> assign_shop_photos_sources()
     |> assign_nav_title()
   end
 

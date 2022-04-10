@@ -210,8 +210,8 @@
               <%= @catalogue_item.name %>
             </p>
           </div>
-          <div class="col-span-2 w-full">
-            <div class="flex flex-row items-center justify-center h-full">
+          <div class="col-span-2 w-full flex justify-center">
+            <div class="flex flex-row items-center h-full">
               <div class="
                  bg-black h-7 w-7 rounded-lg shadow-button
                 transition-transform ease-in-out duration-100
@@ -253,15 +253,15 @@
           <div class="col-span-6">
             <%= for %CatalogueItemVariant{type: type, price: price} <- @catalogue_item.variants do %>
               <div class="flex flex-row items-center">
-                <div class="basis-5/6">
+                <div class="basis-4/6 sm:basis-5/6">
                   <p class="font-bold text-base text-black">
                     <%= type %>
                   </p>
                 </div>
-                <div class="basis-1/6">
+                <div class="basis-2/6 sm:basis-1/6 flex justify-end">
                   <p class="text-lg text-black font-medium">
                     $ <%= price %>
-                  </p>  
+                  </p>
                 </div>
                 <div class="basis-1/6">
                   <input
@@ -274,12 +274,72 @@
                 </div>
               </div>
             <% end %>
-
-            
           </div>
+          <div class="col-span-6">
+            <div class="">
+              <p class="font-bold text-xl tracking-wider text-black">
+                <%= gettext("Options") %>
+              </p>
+            </div>
+          </div>
+          <%= for %CatalogueItemOptionGroup{
+            name: name,
+            options: options
+          } <- @catalogue_item.option_groups do %>
+            <div class="col-span-6 h-full">
+              <div class="">
+                <p class="font-semibold text-xl tracking-wider text-black">
+                  <%= name %>
+                </p>
+              </div>
+
+              <%= for %CatalogueItemOption{
+                catalogue_item_variant: %CatalogueItemVariant{
+                  catalogue_item: %CatalogueItem{
+                    name: name,
+                    description: description
+                  },
+                  price: price,
+                  type: type
+                }
+              } <- options do %>
+                <div class="flex flex-row items-center my-1">
+                  <div class="basis-4/6 sm:basis-5/6 flex-col">
+                    <div class="">
+                      <p class="font-medium text-base text-black">
+                        <%= name %>
+                      </p>
+                    </div>
+                    <div class="">
+                      <p class="font-medium text-sm text-gray-500">
+                        <%= description %>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="basis-2/6 sm:basis-1/6 justify-self-center self-start">
+                    <div class="flex flex-row">
+                      <div class="basis-1/2 mx-4">
+                        <p class="font-medium text-sm text-black">
+                          $ <%= price %>
+                        </p>
+                      </div>
+                      <div class="basis-1/2 mx-4 flex">
+                        <input
+                          class="
+                            m-auto block checked:bg-black outline-black
+                          "
+                          type="checkbox"
+                          name="selected_variant"
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>
-
   <% end %>
 </div>
