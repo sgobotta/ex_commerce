@@ -1,6 +1,7 @@
 import "phoenix_html"
 import {LiveSocket} from "phoenix_live_view"
 import {Socket} from "phoenix"
+import {createLiveMotion} from 'live_motion';
 import topbar from "topbar"
 
 const isVisible = el =>
@@ -11,6 +12,8 @@ const execJS = (selector, attr) => {
   .querySelectorAll(selector)
   .forEach(el => liveSocket.execJS(el, el.getAttribute(attr)))
 }
+
+const {hook: motionHook, handleMotionUpdates} = createLiveMotion();
 
 const Hooks = {}
 
@@ -221,13 +224,20 @@ const liveSocket = new LiveSocket(
   Socket,
   {
     dom: {
+      onBeforeElUpdated(from, to) {
+        // add this line
+        handleMotionUpdates(from, to);
+      },
       onNodeAdded(node){
         if (node instanceof HTMLElement && node.autofocus){
           node.focus()
         }
       }
     },
-    hooks: Hooks,
+    hooks: {
+      ...motionHook,
+      ...Hooks
+    },
     params: {_csrf_token: csrfToken}
   }
 )
