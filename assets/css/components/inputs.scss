@@ -3,3 +3,10 @@
     @apply rounded-lg border-gray-300 transition duration-200 focus:border-blue-300 text-xl h-auto #{!important};
   }
 }
+
+input.checkbox[type=checkbox], input.radio[type=radio] {
+  border: 1px solid gray;
+  color: black;
+  --tw-ring-offset-width: 2px;
+  --tw-ring-color: black;
+}
