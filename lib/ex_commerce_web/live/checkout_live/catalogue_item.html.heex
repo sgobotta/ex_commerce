@@ -40,7 +40,7 @@
 
           <div class="pt-6 px-8">
             <div class="grid grid-cols-6">
-              <div class="col-span-5">
+              <div class="col-span-4 sm:col-span-5">
                 <div class="mb-4">
                   <p class="mt-1 text-xl text-black font-bold">
                     <%= @catalogue_item.name %>
@@ -57,6 +57,42 @@
                         <%= @catalogue_item.description %>
                       </p>
                     </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-span-2 sm:col-span-1">
+                <div class="flex flex-row items-center h-full shrink-0 grow-0 justify-center">
+                  <div class="
+                    shrink-0 grow-0
+                     bg-black h-7 w-7 rounded-lg shadow-button
+                    transition-transform ease-in-out duration-100
+                    active:scale-75 active:shadow-lg cursor-pointer
+                  "
+                    phx-click="add_item"
+                  >
+                    <.icon name={:plus_sm} class="text-white"/>
+                  </div>
+                  <div class="text-center shrink-0 grow-0 w-10">
+                    <span class="
+                      text-xl oldstyle-nums text-black font-medium
+                    ">
+                      <%= @quantity %>
+                    </span>
+                  </div>
+                  <div
+                    class={"
+                      shrink-0 grow-0
+                      h-7 w-7 rounded-lg shadow-button
+                      transition-transform ease-in-out duration-100
+                      #{if @quantity == 1 do
+                        "bg-gray-700"
+                        else
+                          "bg-black active:scale-75 active:shadow-lg cursor-pointer"
+                      end}
+                    "}
+                    phx-click="remove_item"
+                  >
+                    <.icon name={:minus_sm} class="text-white"/>
                   </div>
                 </div>
               </div>
@@ -131,10 +167,13 @@
                       <div class="">
                         <p class="font-medium text-base text-black">
                           <%= name %>
+                          <span class="font-medium text-sm text-gray-500">
+                          (<%= type %>)
+                          </span>
                         </p>
                       </div>
                       <div class="">
-                        <p class="font-medium text-sm text-gray-500">
+                        <p class="font-normal italic text-sm text-gray-500">
                           <%= description %>
                         </p>
                       </div>

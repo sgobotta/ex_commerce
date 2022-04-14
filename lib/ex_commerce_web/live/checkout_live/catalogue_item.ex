@@ -26,12 +26,35 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
       |> assign_shop_by_slug_or_redirect(params)
       |> assign(:brand_slug, params["brand"])
       |> assign(:shop_slug, params["shop"])
+      |> assign(:quantity, 0)
     }
   end
 
   @impl true
   def handle_params(params, _session, socket),
     do: {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+
+  @impl true
+  def handle_event(
+        "remove_item",
+        _params,
+        %{assigns: %{quantity: 1 = quantity}} = socket
+      ),
+      do: {:noreply, assign(socket, :quantity, quantity)}
+
+  def handle_event(
+        "remove_item",
+        _params,
+        %{assigns: %{quantity: quantity}} = socket
+      ),
+      do: {:noreply, assign(socket, :quantity, quantity - 1)}
+
+  def handle_event(
+        "add_item",
+        _params,
+        %{assigns: %{quantity: quantity}} = socket
+      ),
+      do: {:noreply, assign(socket, :quantity, quantity + 1)}
 
   defp apply_action(socket, :index, %{
          "brand" => brand_slug,
