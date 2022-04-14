@@ -1,0 +1,153 @@
+<div class="flex flex-col h-full">
+  <div class="basis-2/4 flex flex-col w-full justify-start items-center">
+    <!-- Banner -->
+    <LiveMotion.motion
+      id="shop-banner"
+      initial={[y: [-1000]]}
+      animate={[y: [0]]}
+      transition={[duration: 0.7]}
+      exit={[y: [-1000]]}
+      class="flex justify-center"
+    >
+      <div class={"
+        w-full sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12
+        h-60   sm:h-64   md:h-72   lg:h-80   xl:h-80
+      "}>
+        <img
+          src={@banner_source}
+          class={"
+          rounded-b-lg shadow-button-sm
+        "}
+        />
+      </div>
+    </LiveMotion.motion>
+    <!-- Logo -->
+    <LiveMotion.motion
+      id="shop-banner"
+      initial={[y: [-1000]]}
+      animate={[y: [0]]}
+      transition={[duration: 1]}
+      exit={[y: [-1000]]}
+      class="flex justify-center absolute top-44"
+    >
+      <div class="w-32 h-32 bg-transparent">
+        <div class="">
+          <img
+            src={@avatar_source}
+            class={"rounded-lg shadow-button-sm"}
+          />
+        </div>
+      </div>
+    </LiveMotion.motion>
+  </div>
+  <div class="flex items-end basis-2/4 self-center h-full">
+    <LiveMotion.motion
+      id="shop-content"
+      initial={[y: [1000]]}
+      animate={[y: [0]]}
+      transition={[duration: 2]}
+      exit={[y: [1000]]}
+    >
+      <div class={"z-50 bg-transparent"}>
+        <div class={"
+          bg-white
+          border-t-4 border-gray-200
+          rounded-t-5xl shadow-button
+        "}>
+          <div class="flex justify-center py-2">
+            <div class="rounded-sm self-center shadow-inner bg-gray-300 h-1 w-16" />
+          </div>
+
+          <div class="pt-6 px-8">
+            <div class="grid grid-cols-6">
+              <div class="col-span-5">
+                <div class="mb-4">
+                  <p class="mt-1 text-2xl text-black font-bold">
+                    <%= @shop.name %>
+                  </p>
+                  <p class="mt-1 text-xl text-black italic">
+                    <%= @shop.description %>
+                  </p>
+                  <div class="flex flex-row">
+                    <div class="pt-1">
+                      <.icon name={:location_marker} outlined class="
+                        text-sky-600
+                        flex-shrink-0 h-4 w-4
+                      "/>
+                    </div>
+                    <div class="">
+                      <p class="text-base text-black">
+                        <%= @shop.address %>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex flex-row">
+                    <div class="pt-1">
+                      <.icon name={:phone} outlined class="
+                        text-sky-600
+                        flex-shrink-0 h-4 w-4
+                      "/>
+                    </div>
+                    <div class="">
+                      <p class="text-base text-black">
+                        <%= @shop.telephone %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="basis-full bg-gray-100 h-full">
+            <p class="p-4 text-sky-600 text-xl">
+              <%= gettext("Available Catalogues") %>
+            </p>
+
+            <div class="
+              grid grid-cols-3
+              gap-1 mx-4
+              sm:gap-14 sm:mx-12
+              md:gap-28 md:mx-26
+              lg:gap-40 lg:mx-40
+              xl:gap-56 xl:mx-56
+            ">
+              <%= for %Catalogue{id: catalogue_id, name: catalogue_name} <- @shop.catalogues do %>
+                <div class="
+                  p-2 my-10 mx-1 rounded-lg text-center
+                  bg-gray-50 shadow-xl
+                  hover:scale-110
+                  transition-transform ease-in-out duration-100
+                  active:scale-75
+                ">
+                  <.link
+                    patch={Routes.checkout_catalogue_path(
+                      @socket,
+                      :index,
+                      @brand_slug,
+                      @shop_slug,
+                      catalogue_id
+                    )}
+                  >
+                    <div class="flex justify-center">
+                      <.icon name={:clipboard_list} outlined class="
+                        text-sky-600
+                        mr-2 flex-shrink-0 h-16 w-16
+                      "/>
+                    </div>
+                    <div class="flex justify-center">
+                      <p class="text-xl text-gray-700">
+                        <%= catalogue_name %>
+                      </p>
+                    </div>
+                  </.link>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </LiveMotion.motion>
+  </div>
+</div>
