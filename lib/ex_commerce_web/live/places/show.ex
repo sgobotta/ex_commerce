@@ -28,7 +28,7 @@ defmodule ExCommerceWeb.PlaceLive.Show do
     {:ok,
      socket
      |> assign_public_defaults(params, session)
-     |> assign_place_by_slug_or_redirect(params)
+     |> assign_shop_by_slug_or_redirect(params)
      |> assign(:brand_slug, params["brand"])
      |> assign(:shop_slug, params["shop"])
      |> assign(:quantity, 1)}

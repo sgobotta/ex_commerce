@@ -97,7 +97,7 @@ defmodule ExCommerceWeb.MountHelpers do
     end
   end
 
-  def assign_place_by_slug_or_redirect(socket, %{
+  def assign_shop_by_slug_or_redirect(socket, %{
         "brand" => brand_slug,
         "shop" => shop_slug
       }) do
