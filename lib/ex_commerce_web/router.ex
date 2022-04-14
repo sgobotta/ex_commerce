@@ -27,7 +27,7 @@ defmodule ExCommerceWeb.Router do
   scope "/", ExCommerceWeb do
     pipe_through :browser
 
-    live_session :public,
+    live_session :places,
       on_mount: [
         {ExCommerceWeb.UserAuth, :fetch_current_user},
         {ExCommerceWeb.PlacesNav, :check_action}
@@ -40,6 +40,21 @@ defmodule ExCommerceWeb.Router do
         live "/:brand/:shop", PlaceLive.Show, :show
         live "/:brand/:shop/:catalogue", PlaceLive.Show, :show_catalogue
         live "/:brand/:shop/:catalogue/:item", PlaceLive.Show, :show_item
+      end
+    end
+
+    live_session :public,
+      on_mount: [
+        {ExCommerceWeb.UserAuth, :fetch_current_user},
+        {ExCommerceWeb.CheckoutNav, :check_action}
+      ] do
+      scope "/checkout" do
+        live "/:brand/:shop", CheckoutLive.Shop, :index
+        live "/:brand/:shop/:catalogue", CheckoutLive.Catalogue, :index
+
+        live "/:brand/:shop/:catalogue/:item",
+             CheckoutLive.CatalogueItem,
+             :index
       end
     end
 
