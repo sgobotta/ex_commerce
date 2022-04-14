@@ -10,7 +10,12 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
-  alias ExCommerce.Offerings.{Catalogue, CatalogueItem}
+  alias ExCommerce.Offerings.{
+    CatalogueItem,
+    CatalogueItemOption,
+    CatalogueItemOptionGroup,
+    CatalogueItemVariant
+  }
 
   @impl true
   def mount(params, session, socket) do
@@ -77,4 +82,12 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     socket
     |> assign(:nav_title, gettext("Back"))
   end
+
+  defp get_price(price) do
+    price
+    |> ExCommerceNumeric.format_price()
+    |> prepend_currency()
+  end
+
+  defp prepend_currency(price), do: "$#{price}"
 end
