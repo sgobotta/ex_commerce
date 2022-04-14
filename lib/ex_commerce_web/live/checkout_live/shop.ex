@@ -32,11 +32,11 @@ defmodule ExCommerceWeb.CheckoutLive.Shop do
     socket
     |> assign(:page_title, gettext("[Shop Name]"))
     |> assign(:return_to, Routes.place_index_path(socket, :index, brand_slug))
-    |> assign_shop_photos_sources()
+    |> assign_photos_sources()
     |> assign_nav_title()
   end
 
-  defp assign_shop_photos_sources(
+  defp assign_photos_sources(
          %{assigns: %{shop: %Shop{avatars: avatars, banners: banners}}} = socket
        ) do
     avatar_source =
