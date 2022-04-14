@@ -26,7 +26,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
       |> assign_shop_by_slug_or_redirect(params)
       |> assign(:brand_slug, params["brand"])
       |> assign(:shop_slug, params["shop"])
-      |> assign(:quantity, 0)
+      |> assign(:quantity, 1)
     }
   end
 
