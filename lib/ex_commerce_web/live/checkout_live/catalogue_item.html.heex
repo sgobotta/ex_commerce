@@ -1,7 +1,18 @@
 <div class="flex flex-col h-full">
-  <div class="fixed bottom-4 w-full z-50">
+  <LiveMotion.motion
+    id="add-item-button"
+    initial={[y: [1000]]}
+    animate={[y: [0]]}
+    transition={[duration: 3.0]}
+    exit={[y: [1000]]}
+    class="
+      fixed bottom-4 flex justify-center px-4
+      max-w-7xl w-full z-50
+    "
+  >
     <div class="
-      mx-4 flex justify-center rounded-lg py-2 bg-green-400
+      flex justify-center rounded-lg py-2 bg-green-400
+      w-full sm:w-1/2
       cursor-pointer shadow-button
       transition-transform ease-in-out duration-100
       active:scale-90 active:shadow-lg
@@ -21,7 +32,8 @@
         </div>
       </div>
     </div>
-  </div>
+  </LiveMotion.motion>
+
   <div class="
     basis-2/4 flex flex-col w-full justify-center items-center shrink-0
   ">
