@@ -20,6 +20,7 @@ defmodule ExCommerceWeb.CheckoutLive.Shop do
      socket
      |> assign_public_defaults(params, session)
      |> assign_shop_by_slug_or_redirect(params)
+     |> assign(:cart_visible, false)
      |> assign(:brand_slug, params["brand"])
      |> assign(:shop_slug, params["shop"])}
   end
