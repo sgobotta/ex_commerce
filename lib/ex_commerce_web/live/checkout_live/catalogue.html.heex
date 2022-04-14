@@ -1,9 +1,9 @@
 <LiveMotion.motion
   id="catalogue-content"
-  initial={[y: [1000]]}
+  initial={[y: [6000]]}
   animate={[y: [0]]}
-  transition={[duration: 1]}
-  exit={[y: [1000]]}
+  transition={[duration: 2]}
+  exit={[y: [6000]]}
   class="px-1"
 >
   <%= for %CatalogueCategory{name: category_name} = catalogue_category <- @catalogue.categories do %>
