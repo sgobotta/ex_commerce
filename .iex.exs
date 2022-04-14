@@ -14,3 +14,7 @@ alias ExCommerce.Offerings.{
 
 alias ExCommerce.Uploads
 alias ExCommerce.Uploads.{Photo}
+
+require Logger
+
+:ok = Logger.configure(level: :info)
