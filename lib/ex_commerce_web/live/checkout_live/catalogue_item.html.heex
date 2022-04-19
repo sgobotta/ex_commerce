@@ -100,7 +100,7 @@
                   <div class="
                      bg-black h-7 w-7 rounded-lg shadow-button
                     transition-transform ease-in-out duration-100
-                    active:scale-75 active:shadow-lg cursor-pointer
+                    active:scale-90 active:shadow-lg cursor-pointer
                   "
                     phx-click="add_item"
                   >
@@ -118,9 +118,9 @@
                       h-7 w-7 rounded-lg shadow-button
                       transition-transform ease-in-out duration-100
                       #{if @quantity == 1 do
-                        "bg-gray-700"
+                        "bg-gray-400"
                         else
-                          "bg-black active:scale-75 active:shadow-lg cursor-pointer"
+                          "bg-black active:scale-90 active:shadow-lg cursor-pointer"
                       end}
                     "}
                     phx-click="remove_item"

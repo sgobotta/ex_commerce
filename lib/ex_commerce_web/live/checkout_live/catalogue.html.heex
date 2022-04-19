@@ -48,7 +48,7 @@
             </div>
             <div class="col-span-10 lg:col-span-9 row-span-1">
               <p class="
-                text-base text-black
+                text-xl text-black font-medium
                 text-ellipsis overflow-hidden whitespace-nowrap
               ">
                 <%= item_name  %>
@@ -56,7 +56,7 @@
             </div>
             <div class="col-span-10 lg:col-span-9 row-span-1">
               <p class="
-                text-xs text-gray-700
+                text-base text-gray-700
                 text-ellipsis overflow-hidden whitespace-nowrap
               ">
                 <%= item_description  %>
@@ -64,7 +64,7 @@
             </div>
             <div class="col-span-5 lg:col-span-5 row-span-1 self-center">
               <p class="
-                tracking-wider font-bold text-xs text-sky-600
+                tracking-wider font-bold text-xl text-sky-600
                 text-ellipsis overflow-hidden whitespace-nowrap
               ">
                 <%= get_item_price(item_variants) %>
@@ -78,9 +78,9 @@
                 <.pill bgcolor={"bg-sky-600"} textcolor="text-sky-600"
                   outlined
                   class="
-                    shadow-button
+                    text-base shadow-button px-2
                     transition-transform ease-in-out duration-100
-                    active:scale-75 active:shadow-lg
+                    active:scale-90 active:shadow-lg
                   "
                 >
                   <%= gettext("Add to order") %>
