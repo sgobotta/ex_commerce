@@ -75,5 +75,16 @@
     "catalogue_item_variant_id": "6cbc7cd5-1577-48bf-8a5b-81de961aec73",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "id": "b72d97fd-878e-44b5-b463-47865ed1e327",
+    "catalogue_item_option_group_id": "4bf0d287-311d-48fb-8fa3-d081a898d935",
+    "is_visible": true,
+    "price_modifier": 50,
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "catalogue_item_id": "42cf48ab-4fb0-47cc-9e9e-fd04f4368179",
+    "catalogue_item_variant_id": "beca7ee4-35b4-4e10-a4c8-5bf0467980f4",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
   }
 ]
