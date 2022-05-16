@@ -107,7 +107,7 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
 
   defp maybe_build_price_preview(changeset, _attrs), do: changeset
 
-  defp apply_discount(price, price_modifier) do
+  def apply_discount(price, price_modifier) do
     format_price(
       Decimal.sub(price, Decimal.mult(price, Decimal.div(price_modifier, 100)))
     )

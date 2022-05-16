@@ -10,6 +10,9 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
+  alias ExCommerce.Checkout
+  alias ExCommerce.Checkout.OrderItem
+
   alias ExCommerce.Offerings.{
     CatalogueItem,
     CatalogueItemOption,
@@ -39,23 +42,162 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   def handle_event(
         "remove_item",
         _params,
-        %{assigns: %{quantity: 1 = quantity}} = socket
+        %{assigns: %{changeset: %Ecto.Changeset{changes: %{quantity: 1}}}} =
+          socket
       ),
-      do: {:noreply, assign(socket, :quantity, quantity)}
+      do: {:noreply, socket}
 
   def handle_event(
         "remove_item",
         _params,
-        %{assigns: %{quantity: quantity}} = socket
+        %{
+          assigns: %{
+            changeset:
+              %Ecto.Changeset{changes: %{quantity: quantity}} = changeset
+          }
+        } = socket
       ),
-      do: {:noreply, assign(socket, :quantity, quantity - 1)}
+      do:
+        {:noreply,
+         assign(
+           socket,
+           :changeset,
+           OrderItem.changeset(changeset, %{quantity: quantity - 1})
+           |> Map.put(:action, :change)
+         )}
 
   def handle_event(
         "add_item",
         _params,
-        %{assigns: %{quantity: quantity}} = socket
-      ),
-      do: {:noreply, assign(socket, :quantity, quantity + 1)}
+        %{
+          assigns: %{
+            changeset:
+              %Ecto.Changeset{changes: %{quantity: quantity}} = changeset
+          }
+        } = socket
+      ) do
+    {:noreply,
+     assign(
+       socket,
+       :changeset,
+       OrderItem.changeset(changeset, %{quantity: quantity + 1})
+       |> Map.put(:action, :change)
+     )}
+  end
+
+  def handle_event("select_variant", %{"value" => variant_id}, socket) do
+    changeset =
+      OrderItem.changeset(socket.assigns.changeset, %{variant_id: variant_id})
+      |> Map.put(:action, :change)
+
+    {:noreply, assign(socket, :changeset, changeset)}
+  end
+
+  def handle_event(
+        "check_option",
+        %{
+          "value" => _on,
+          "option_group_id" => _option_group_id,
+          "option_id" => _option_id
+        },
+        socket
+      ) do
+    %{assigns: %{changeset: _changeset}} = socket
+    {:noreply, socket}
+  end
+
+  def handle_event(
+        "check_option",
+        %{"option_group_id" => option_group_id, "option_id" => option_id},
+        socket
+      ) do
+    IO.puts(
+      "Unchecked option_group_id=#{option_group_id} option_id=#{option_id}"
+    )
+
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("validate", %{"order_item" => _order_item}, socket) do
+    changeset =
+      socket.assigns.order_item
+      |> Checkout.change_order_item(%{})
+      |> Map.put(:action, :validate)
+
+    {:noreply, assign(socket, :changeset, changeset)}
+  end
+
+  def render_option_price(price, price_modifier, assigns) do
+    case Decimal.eq?(price_modifier, Decimal.new(0)) do
+      true ->
+        ~H"""
+        <p class="font-medium text-sm text-black">
+          <%= get_price(price) %>
+        </p>
+        """
+
+      false ->
+        ~H"""
+        <p class="font-medium text-sm text-black line line-through">
+          <%= get_price(price) %>
+        </p>
+        <p class="font-medium text-sm text-green-400">
+          <%= get_price(price, price_modifier) %>
+        </p>
+        """
+    end
+  end
+
+  defp assign_changeset(socket) do
+    %{
+      assigns: %{
+        catalogue_item:
+          %CatalogueItem{
+            id: catalogue_item_id,
+            option_groups: option_groups,
+            variants: variants
+          } = _ci
+      }
+    } = socket
+
+    order_item = %OrderItem{
+      catalogue_item_id: catalogue_item_id,
+      variants: variants,
+      available_option_groups: %{
+        values: option_groups,
+        rules:
+          Enum.map(option_groups, fn %CatalogueItemOptionGroup{
+                                       id: id,
+                                       mandatory: mandatory,
+                                       max_selection: max_selection,
+                                       multiple_selection: multiple_selection,
+                                       options: options
+                                     } ->
+            %{
+              available_options:
+                Enum.map(options, fn %CatalogueItemOption{id: id} ->
+                  id
+                end),
+              id: id,
+              mandatory: mandatory,
+              max_selection: max_selection,
+              multiple_selection: multiple_selection
+            }
+          end)
+      },
+      option_groups: %{}
+    }
+
+    socket
+    |> assign(:order_item, order_item)
+    |> assign(
+      :changeset,
+      OrderItem.changeset(order_item, %{
+        quantity: 1
+      })
+    )
+  end
 
   defp apply_action(socket, :index, %{
          "brand" => brand_slug,
@@ -77,6 +219,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     )
     |> assign_catalogue(catalogue_id)
     |> assign_catalogue_item(catalogue_item_id)
+    |> assign_changeset()
     |> assign_photos_sources()
     |> assign_nav_title()
   end
@@ -113,5 +256,20 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     |> prepend_currency()
   end
 
+  defp get_price(price, price_modifier) do
+    price =
+      price
+      |> ExCommerceNumeric.format_price()
+
+    price_modifier = ExCommerceNumeric.format_price(price_modifier)
+
+    CatalogueItemOption.apply_discount(price, price_modifier)
+    |> prepend_currency()
+  end
+
   defp prepend_currency(price), do: "$#{price}"
+
+  defp get_quantity(changeset) do
+    changeset.changes.quantity
+  end
 end

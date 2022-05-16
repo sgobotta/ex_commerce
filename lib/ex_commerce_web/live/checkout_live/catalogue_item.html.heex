@@ -1,242 +1,258 @@
 <div class="flex flex-col h-full">
-  <LiveMotion.motion
-    id="add-item-button"
-    initial={[y: [1000]]}
-    animate={[y: [0]]}
-    transition={[duration: 3.0]}
-    exit={[y: [1000]]}
-    class="
-      fixed bottom-4 flex justify-center px-4
-      max-w-7xl w-full z-50
-    "
-  >
-    <div class="
-      flex justify-center rounded-lg py-2 bg-green-400
-      w-full sm:w-1/2
-      cursor-pointer shadow-button
-      transition-transform ease-in-out duration-100
-      active:scale-90 active:shadow-lg
-      hover:bg-green-300
-    ">
-      <div class="flex flex-row">
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= gettext("Add to order") %>
-          </p>
-        </div>
-        <div class="pt-1">
-          <.icon name={:shopping_bag} outlined class="
-            text-white
-            flex-shrink-0 h-7 w-7
-          "/>
-        </div>
-      </div>
-    </div>
-  </LiveMotion.motion>
+  
+  <%= form_for @changeset, "#",
+    [
+      id: "order_item-form",
+      style: "all: inherit"
+    ], fn f -> %>
 
-  <div class="
-    basis-2/4 flex flex-col w-full justify-center items-center shrink-0
-  ">
-    <!-- Item photo -->
     <LiveMotion.motion
-      id="item-photo"
-      initial={[y: [-1000]]}
+      id="add-item-button"
+      initial={[y: [1000]]}
       animate={[y: [0]]}
-      transition={[duration: 0.7]}
-      exit={[y: [-1000]]}
-      class="flex justify-center"
+      transition={[duration: 3.0]}
+      exit={[y: [1000]]}
+      class="
+        fixed bottom-4 flex justify-center px-4
+        max-w-7xl w-full z-50
+      "
     >
-      <div class="w-72 h-72 sm:w-72 sm:h-72 bg-transparent">
-        <img
-          src={@item_photo_source}
-          class="rounded-lg shadow-button-sm"
-        />
+      <div class="
+        flex justify-center rounded-lg py-2 bg-green-400
+        w-full sm:w-1/2
+        cursor-pointer shadow-button
+        transition-transform ease-in-out duration-100
+        active:scale-90 active:shadow-lg
+        hover:bg-green-300
+      ">
+      
+        <div class="flex flex-row">
+          <div class="px-2">
+            <p class="font-medium text-white">
+              <%= gettext("Add to order") %>
+            </p>
+          </div>
+          <div class="pt-1">
+            <.icon name={:shopping_bag} outlined class="
+              text-white
+              flex-shrink-0 h-7 w-7
+            "/>
+          </div>
+        </div>
       </div>
     </LiveMotion.motion>
-  </div>
 
-  <div class="flex items-end basis-2/4 self-center">
-    <LiveMotion.motion
-      id="item-content"
-      initial={[y: [1500]]}
-      animate={[y: [0]]}
-      transition={[duration: 1]}
-      exit={[y: [1500]]}
-    >
-      <div class={"z-50 bg-transparent"}>
-        <div class={"
-          bg-white
-          border-t-4 border-gray-200
-          rounded-t-5xl shadow-button
-        "}>
-          <div class="flex justify-center py-2">
-            <div class="rounded-sm self-center shadow-inner bg-gray-300 h-1 w-16" />
-          </div>
+    <div class="
+      basis-2/4 flex flex-col w-full justify-center items-center shrink-0
+    ">
+      <!-- Item photo -->
+      <LiveMotion.motion
+        id="item-photo"
+        initial={[y: [-1000]]}
+        animate={[y: [0]]}
+        transition={[duration: 0.7]}
+        exit={[y: [-1000]]}
+        class="flex justify-center"
+      >
+        <div class="w-72 h-72 sm:w-72 sm:h-72 bg-transparent">
+          <img
+            src={@item_photo_source}
+            class="rounded-lg shadow-button-sm"
+          />
+        </div>
+      </LiveMotion.motion>
+    </div>
 
-          <div class="pt-6 px-8">
-            <div class="grid grid-cols-6">
-              <div class="col-span-4 sm:col-span-5">
-                <div class="mb-4">
-                  <p class="mt-1 text-xl text-black font-bold">
-                    <%= @catalogue_item.name %>
-                  </p>
-                  <div class="flex flex-row">
-                    <div class="pt-1">
-                      <.icon name={:information_circle} outlined class="
-                        text-gray-500
-                        flex-shrink-0 h-4 w-4
-                      "/>
-                    </div>
-                    <div class="">
-                      <p class="text-base text-gray-500 italic">
-                        <%= @catalogue_item.description %>
-                      </p>
+    <div class="flex items-end basis-2/4 self-center">
+      <LiveMotion.motion
+        id="item-content"
+        initial={[y: [1500]]}
+        animate={[y: [0]]}
+        transition={[duration: 1]}
+        exit={[y: [1500]]}
+      >
+        <div class={"z-50 bg-transparent"}>
+          <div class={"
+            bg-white
+            border-t-4 border-gray-200
+            rounded-t-5xl shadow-button
+          "}>
+            <div class="flex justify-center py-2">
+              <div class="rounded-sm self-center shadow-inner bg-gray-300 h-1 w-16" />
+            </div>
+
+            <div class="pt-6 px-8">
+              <div class="grid grid-cols-6">
+                <div class="col-span-4 sm:col-span-5">
+                  <div class="mb-4">
+                    <p class="mt-1 text-xl text-black font-bold">
+                      <%= @catalogue_item.name %>
+                    </p>
+                    <div class="flex flex-row">
+                      <div class="pt-1">
+                        <.icon name={:information_circle} outlined class="
+                          text-gray-500
+                          flex-shrink-0 h-4 w-4
+                        "/>
+                      </div>
+                      <div class="">
+                        <p class="text-base text-gray-500 italic">
+                          <%= @catalogue_item.description %>
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-span-2 sm:col-span-1">
-                <div class="flex flex-row items-center h-full justify-center">
-                  <div class="
-                     bg-black h-7 w-7 rounded-lg shadow-button
-                    transition-transform ease-in-out duration-100
-                    active:scale-90 active:shadow-lg cursor-pointer
-                  "
-                    phx-click="add_item"
-                  >
-                    <.icon name={:plus_sm} class="text-white"/>
-                  </div>
-                  <div class="text-center w-10">
-                    <span class="
-                      text-xl oldstyle-nums text-black font-medium
-                    ">
-                      <%= @quantity %>
-                    </span>
-                  </div>
-                  <div
-                    class={"
-                      h-7 w-7 rounded-lg shadow-button
+                <div class="col-span-2 sm:col-span-1">
+                  <div class="flex flex-row items-center h-full justify-center">
+                    <div class="
+                      bg-black h-7 w-7 rounded-lg shadow-button
                       transition-transform ease-in-out duration-100
-                      #{if @quantity == 1 do
-                        "bg-gray-400"
-                        else
-                          "bg-black active:scale-90 active:shadow-lg cursor-pointer"
-                      end}
-                    "}
-                    phx-click="remove_item"
-                  >
-                    <.icon name={:minus_sm} class="text-white"/>
+                      active:scale-90 active:shadow-lg cursor-pointer
+                    "
+                      phx-click="add_item"
+                    >
+                      <.icon name={:plus_sm} class="text-white"/>
+                    </div>
+                    <div class="text-center w-10">
+                      <span class="
+                        text-xl oldstyle-nums text-black font-medium
+                      ">
+                        <%= get_quantity(@changeset) %>
+                      </span>
+                    </div>
+                    <div
+                      class={"
+                        h-7 w-7 rounded-lg shadow-button
+                        transition-transform ease-in-out duration-100
+                        #{if @changeset.data.quantity == 0 do
+                          "bg-gray-400"
+                          else
+                            "bg-black active:scale-90 active:shadow-lg cursor-pointer"
+                        end}
+                      "}
+                      phx-click="remove_item"
+                    >
+                      <.icon name={:minus_sm} class="text-white"/>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="basis-full bg-gray-100 h-full px-6 pb-40">
-            <div>
-              <p class="p-2 text-sky-600 text-xl">
-                <%= gettext("Variants") %>
-              </p>
-            </div>
+            <div class="basis-full bg-gray-100 h-full px-6 pb-40">
+              <div>
+                <p class="p-2 text-sky-600 text-xl">
+                  <%= gettext("Variants") %>
+                </p>
+              </div>
 
-            <div class="">
-              <%= for %CatalogueItemVariant{
-                type: type,
-                price: price
-              } <- @catalogue_item.variants do %>
-                <div class="flex flex-row items-center">
-                  <div class="basis-4/6 sm:basis-5/6">
-                    <p class="font-semibold text-base text-black">
-                      <%= type %>
+              <div class="">
+                <fieldset>
+                  <%= for %CatalogueItemVariant{
+                    id: variant_id,
+                    type: type,
+                    price: price
+                  } <- @changeset.data.variants do %>
+                  
+                    <div class="flex flex-row items-center">
+                      <div class="basis-4/6 sm:basis-5/6">
+                        <p class="font-semibold text-base text-black">
+                          <%= type %>
+                        </p>
+                      </div>
+                      <div class="basis-2/6 sm:basis-1/6 flex justify-end">
+                        <p class="text-lg text-black font-medium">
+                          <%= get_price(price) %>
+                        </p>
+                      </div>
+                      <div class="basis-1/6">
+                        <input
+                          name="variant-selection"
+                          type="radio"
+                          class="radio m-auto block checked:bg-black outline-black"
+                          value={variant_id}
+                          phx-click="select_variant"
+                          checked={Map.get(@changeset.changes, :variant_id) == variant_id}
+                        />
+                      </div>
+                    </div>
+                  <% end %>
+                </fieldset>
+              </div>
+
+              <div>
+                <p class="p-2 text-sky-600 text-xl">
+                  <%= gettext("Options") %>
+                </p>
+              </div>
+
+              <%= for %CatalogueItemOptionGroup{
+                id: option_group_id,
+                name: name,
+                options: options
+              } <- @changeset.data.available_option_groups.values do %>
+                <div class="col-span-6 h-full">
+                  <div class="">
+                    <p class="font-semibold text-xl tracking-wider text-black">
+                      <%= name %>
                     </p>
                   </div>
-                  <div class="basis-2/6 sm:basis-1/6 flex justify-end">
-                    <p class="text-lg text-black font-medium">
-                      <%= get_price(price) %>
-                    </p>
-                  </div>
-                  <div class="basis-1/6">
-                    <input
-                      class="
-                        radio m-auto block checked:bg-black outline-black
-                      "
-                      type="radio"
-                      name="selected_variant"
-                    >
-                  </div>
+
+                  <%= for %CatalogueItemOption{
+                    id: option_id,
+                    catalogue_item_variant: %CatalogueItemVariant{
+                      catalogue_item: %CatalogueItem{
+                        name: name,
+                        description: description
+                      },
+                      price: price,
+                      type: type
+                    },
+                    price_modifier: price_modifier
+                  } <- options do %>
+                    <div class="flex flex-row items-center my-1">
+                      <div class="basis-4/6 sm:basis-5/6">
+                        <div class="">
+                          <p class="font-medium text-base text-black">
+                            <%= name %>
+                            <span class="font-medium text-sm text-gray-500">
+                            (<%= type %>)
+                            </span>
+                          </p>
+                        </div>
+                        <div class="">
+                          <p class="font-normal italic text-sm text-gray-500">
+                            <%= description %>
+                          </p>
+                        </div>
+                      </div>
+                      <div class="basis-2/6 sm:basis-1/6 justify-self-center self-start">
+                        <div class="flex flex-row">
+                          <div class="basis-1/2 mx-4">
+                            <%= render_option_price(price, price_modifier, @socket) %>
+                          </div>
+                          <div class="basis-1/2 mx-4 flex self-start">
+                            <input
+                              type="checkbox"
+                              name="option-groups"
+                              class="checkbox m-auto block checked:bg-black outline-black"
+                              checked={false}
+                              phx-click="check_option"
+                              phx-value-option_id={option_id}
+                              phx-value-option_group_id={option_group_id}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
                 </div>
               <% end %>
             </div>
-
-            <div>
-              <p class="p-2 text-sky-600 text-xl">
-                <%= gettext("Options") %>
-              </p>
-            </div>
-
-            <%= for %CatalogueItemOptionGroup{
-              name: name,
-              options: options
-            } <- @catalogue_item.option_groups do %>
-              <div class="col-span-6 h-full">
-                <div class="">
-                  <p class="font-semibold text-xl tracking-wider text-black">
-                    <%= name %>
-                  </p>
-                </div>
-
-                <%= for %CatalogueItemOption{
-                  catalogue_item_variant: %CatalogueItemVariant{
-                    catalogue_item: %CatalogueItem{
-                      name: name,
-                      description: description
-                    },
-                    price: price,
-                    type: type
-                  }
-                } <- options do %>
-                  <div class="flex flex-row items-center my-1">
-                    <div class="basis-4/6 sm:basis-5/6">
-                      <div class="">
-                        <p class="font-medium text-base text-black">
-                          <%= name %>
-                          <span class="font-medium text-sm text-gray-500">
-                          (<%= type %>)
-                          </span>
-                        </p>
-                      </div>
-                      <div class="">
-                        <p class="font-normal italic text-sm text-gray-500">
-                          <%= description %>
-                        </p>
-                      </div>
-                    </div>
-                    <div class="basis-2/6 sm:basis-1/6 justify-self-center self-start">
-                      <div class="flex flex-row">
-                        <div class="basis-1/2 mx-4">
-                          <p class="font-medium text-sm text-black">
-                            <%= get_price(price) %>
-                          </p>
-                        </div>
-                        <div class="basis-1/2 mx-4 flex">
-                          <input
-                            class="
-                              checkbox m-auto block
-                              checked:bg-black outline-black
-                            "
-                            type="checkbox"
-                            name="selected_variant"
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                <% end %>
-              </div>
-            <% end %>
           </div>
         </div>
-      </div>
-    </LiveMotion.motion>
-  </div>
+      </LiveMotion.motion>
+    </div>
+  <% end %>
 </div>
