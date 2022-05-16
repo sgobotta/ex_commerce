@@ -16,7 +16,7 @@
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
     "mandatory": true,
     "max_selection": 1,
-    "multiple_selection": true,
+    "multiple_selection": false,
     "code": "SNACKS-00",
     "name": "Snacks",
     "description": "Our fries and fingers selection for your hamburguer",
