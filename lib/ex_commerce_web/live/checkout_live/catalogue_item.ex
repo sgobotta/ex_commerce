@@ -97,13 +97,37 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         "check_option",
         %{
           "value" => _on,
-          "option_group_id" => _option_group_id,
-          "option_id" => _option_id
+          "option_group_id" => option_group_id,
+          "option_id" => option_id
         },
         socket
       ) do
-    %{assigns: %{changeset: _changeset}} = socket
-    {:noreply, socket}
+    %{assigns: %{changeset: %Ecto.Changeset{changes: changes} = changeset}} =
+      socket
+
+    changeset =
+      case get_option_group_rules(changeset, option_group_id) do
+        nil ->
+          changeset
+
+        rules ->
+          %{multiple_selection: multiple_selection} = rules
+
+          if multiple_selection &&
+               valid_option?(changes, rules, option_group_id, option_id) do
+            option_groups = Map.get(changes, :option_groups, Map.new())
+            options = Map.get(option_groups, option_group_id, []) ++ [option_id]
+
+            OrderItem.changeset(socket.assigns.changeset, %{
+              option_groups: Map.put(option_groups, option_group_id, options)
+            })
+            |> Map.put(:action, :change)
+          else
+            changeset
+          end
+      end
+
+    {:noreply, assign(socket, :changeset, changeset)}
   end
 
   def handle_event(
@@ -111,11 +135,60 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         %{"option_group_id" => option_group_id, "option_id" => option_id},
         socket
       ) do
-    IO.puts(
-      "Unchecked option_group_id=#{option_group_id} option_id=#{option_id}"
-    )
+    %{assigns: %{changeset: %Ecto.Changeset{changes: changes} = changeset}} =
+      socket
 
-    {:noreply, socket}
+    changeset =
+      case get_option_group_rules(changeset, option_group_id) do
+        nil ->
+          changeset
+
+        rules ->
+          %{multiple_selection: multiple_selection} = rules
+
+          if multiple_selection && valid_option?(rules, option_id) do
+            option_groups = Map.get(changes, :option_groups, Map.new())
+            options = Map.get(option_groups, option_group_id, []) -- [option_id]
+
+            OrderItem.changeset(socket.assigns.changeset, %{
+              option_groups: Map.put(option_groups, option_group_id, options)
+            })
+            |> Map.put(:action, :change)
+          else
+            changeset
+          end
+      end
+
+    {:noreply, assign(socket, :changeset, changeset)}
+  end
+
+  def handle_event(
+        "choose_option",
+        %{"value" => option_id, "option_group_id" => option_group_id},
+        socket
+      ) do
+    %{assigns: %{changeset: %Ecto.Changeset{changes: changes} = changeset}} =
+      socket
+
+    changeset =
+      case get_option_group_rules(changeset, option_group_id) do
+        nil ->
+          changeset
+
+        rules ->
+          if valid_option?(rules, option_id) do
+            option_groups = Map.get(changes, :option_groups, Map.new())
+
+            OrderItem.changeset(socket.assigns.changeset, %{
+              option_groups: Map.put(option_groups, option_group_id, option_id)
+            })
+            |> Map.put(:action, :change)
+          else
+            changeset
+          end
+      end
+
+    {:noreply, assign(socket, :changeset, changeset)}
   end
 
   @impl true
@@ -185,8 +258,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
               multiple_selection: multiple_selection
             }
           end)
-      },
-      option_groups: %{}
+      }
     }
 
     socket
@@ -194,7 +266,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     |> assign(
       :changeset,
       OrderItem.changeset(order_item, %{
-        quantity: 1
+        quantity: 1,
+        option_groups: Map.new()
       })
     )
   end
@@ -269,7 +342,71 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   defp prepend_currency(price), do: "$#{price}"
 
-  defp get_quantity(changeset) do
-    changeset.changes.quantity
+  defp get_quantity(%Ecto.Changeset{changes: changes}), do: changes.quantity
+
+  defp variant_selected?(%Ecto.Changeset{changes: changes}, variant_id),
+    do: Map.get(changes, :variant_id) == variant_id
+
+  defp is_option_checked(changeset, option_group_id, option_id) do
+    case Map.has_key?(changeset.changes, :option_groups) do
+      true ->
+        Map.get(changeset.changes.option_groups, option_group_id) == option_id
+
+      false ->
+        false
+    end
+  end
+
+  defp multiple_option_checked?(changeset, option_group_id, option_id) do
+    case Map.has_key?(changeset.changes, :option_groups) do
+      true ->
+        Map.get(changeset.changes.option_groups, option_group_id, [])
+        |> Enum.member?(option_id)
+
+      false ->
+        false
+    end
+  end
+
+  defp get_option_group_rules(%Ecto.Changeset{data: data}, option_group_id),
+    do:
+      Enum.find(data.available_option_groups.rules, fn %{id: id} ->
+        id == option_group_id
+      end)
+
+  defp valid_option?(rules, option_id),
+    do: Enum.find(rules.available_options, fn id -> id == option_id end) !== nil
+
+  defp valid_option?(changes, rules, option_group_id, option_id) do
+    case valid_option?(rules, option_id) do
+      true ->
+        %{max_selection: max_selection} = rules
+
+        options_length =
+          Map.get(changes, :option_groups, %{option_group_id => []})
+          |> Map.get(option_group_id, [])
+          |> length()
+
+        options_length + 1 <= max_selection
+
+      false ->
+        false
+    end
+  end
+
+  defp multiple_select_disabled?(changeset, option_group_id, option_id) do
+    case get_option_group_rules(changeset, option_group_id) do
+      nil ->
+        true
+
+      rules ->
+        %{max_selection: max_selection} = rules
+
+        options =
+          Map.get(changeset.changes, :option_groups, %{option_group_id => []})
+          |> Map.get(option_group_id, [])
+
+        length(options) >= max_selection && !Enum.member?(options, option_id)
+    end
   end
 end

@@ -173,7 +173,7 @@
                           class="radio m-auto block checked:bg-black outline-black"
                           value={variant_id}
                           phx-click="select_variant"
-                          checked={Map.get(@changeset.changes, :variant_id) == variant_id}
+                          checked={variant_selected?(@changeset, variant_id)}
                         />
                       </div>
                     </div>
@@ -189,6 +189,7 @@
 
               <%= for %CatalogueItemOptionGroup{
                 id: option_group_id,
+                multiple_selection: multiple_selection,
                 name: name,
                 options: options
               } <- @changeset.data.available_option_groups.values do %>
@@ -233,15 +234,28 @@
                             <%= render_option_price(price, price_modifier, @socket) %>
                           </div>
                           <div class="basis-1/2 mx-4 flex self-start">
-                            <input
-                              type="checkbox"
-                              name="option-groups"
-                              class="checkbox m-auto block checked:bg-black outline-black"
-                              checked={false}
-                              phx-click="check_option"
-                              phx-value-option_id={option_id}
-                              phx-value-option_group_id={option_group_id}
-                            />
+                            <%= if multiple_selection do %>
+                              <input
+                                type="checkbox"
+                                name={"#{option_group_id}-option-selection"}
+                                class="checkbox m-auto block checked:bg-black outline-black"
+                                checked={multiple_option_checked?(@changeset, option_group_id, option_id)}
+                                phx-click="check_option"
+                                phx-value-option_id={option_id}
+                                phx-value-option_group_id={option_group_id}
+                                disabled={multiple_select_disabled?(@changeset, option_group_id, option_id)}
+                              />
+                            <% else %>
+                              <input
+                                name={"#{option_group_id}-option-selection"}
+                                type="radio"
+                                class="radio m-auto block checked:bg-black outline-black"
+                                value={option_id}
+                                phx-click="choose_option"
+                                phx-value-option_group_id={option_group_id}
+                                checked={is_option_checked(@changeset, option_group_id, option_id)}
+                              />
+                            <% end %>
                           </div>
                         </div>
                       </div>
