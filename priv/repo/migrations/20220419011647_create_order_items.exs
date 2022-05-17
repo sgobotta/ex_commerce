@@ -8,7 +8,7 @@ defmodule ExCommerce.Repo.Migrations.CreateOrderItems do
       add :variant_id, :binary
       add :quantity, :integer
       add :price, :decimal
-      add :option_groups, {:array, :map}
+      add :option_groups, :map
 
       timestamps()
     end

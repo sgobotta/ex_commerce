@@ -13,7 +13,7 @@ defmodule ExCommerce.Checkout.OrderItem do
     field :variant_id, :binary
     field :price, :decimal
     field :variants, {:array, :map}, virtual: true, default: []
-    field :option_groups, {:array, :map}, default: []
+    field :option_groups, :map, default: %{}
     field :available_option_groups, {:array, :map}, virtual: true, default: []
 
     timestamps()
@@ -22,7 +22,24 @@ defmodule ExCommerce.Checkout.OrderItem do
   @doc false
   def changeset(order_item, attrs) do
     order_item
-    |> cast(attrs, [:quantity, :catalogue_item_id, :variant_id])
-    |> validate_required([:quantity, :catalogue_item_id, :variant_id])
+    |> cast(attrs, [:quantity, :catalogue_item_id, :variant_id, :option_groups])
+    |> validate_required([
+      :quantity,
+      :catalogue_item_id,
+      :variant_id,
+      :option_groups
+    ])
+
+    # |> validate_option_groups()
   end
+
+  # defp validate_option_groups(changeset) do
+  #   validate_change(changeset, :option_groups, fn :option_groups,
+  #                                                 option_groups ->
+  #     # IO.inspect(option_groups, label: "\n\nOption Groups!")
+  #     []
+  #   end)
+
+  #   # changeset
+  # end
 end
