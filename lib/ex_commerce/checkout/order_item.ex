@@ -29,17 +29,5 @@ defmodule ExCommerce.Checkout.OrderItem do
       :variant_id,
       :option_groups
     ])
-
-    # |> validate_option_groups()
   end
-
-  # defp validate_option_groups(changeset) do
-  #   validate_change(changeset, :option_groups, fn :option_groups,
-  #                                                 option_groups ->
-  #     # IO.inspect(option_groups, label: "\n\nOption Groups!")
-  #     []
-  #   end)
-
-  #   # changeset
-  # end
 end

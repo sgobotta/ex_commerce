@@ -52,8 +52,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         _params,
         %{
           assigns: %{
-            changeset:
-              %Ecto.Changeset{changes: %{quantity: quantity}} = changeset
+            changeset: %Ecto.Changeset{changes: %{quantity: quantity} = changes},
+            order_item: %OrderItem{} = order_item
           }
         } = socket
       ),
@@ -62,7 +62,10 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
          assign(
            socket,
            :changeset,
-           OrderItem.changeset(changeset, %{quantity: quantity - 1})
+           Checkout.change_order_item(
+             order_item,
+             Map.merge(changes, %{quantity: quantity - 1})
+           )
            |> Map.put(:action, :change)
          )}
 
@@ -71,8 +74,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         _params,
         %{
           assigns: %{
-            changeset:
-              %Ecto.Changeset{changes: %{quantity: quantity}} = changeset
+            changeset: %Ecto.Changeset{changes: %{quantity: quantity} = changes},
+            order_item: %OrderItem{} = order_item
           }
         } = socket
       ) do
@@ -80,15 +83,26 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
      assign(
        socket,
        :changeset,
-       OrderItem.changeset(changeset, %{quantity: quantity + 1})
+       Checkout.change_order_item(
+         order_item,
+         Map.merge(changes, %{quantity: quantity + 1})
+       )
        |> Map.put(:action, :change)
      )}
   end
 
   def handle_event("select_variant", %{"value" => variant_id}, socket) do
+    %{
+      changeset: %Ecto.Changeset{changes: changes},
+      order_item: %OrderItem{} = order_item
+    } = socket.assigns
+
     changeset =
-      OrderItem.changeset(socket.assigns.changeset, %{variant_id: variant_id})
-      |> Map.put(:action, :change)
+      Checkout.change_order_item(
+        order_item,
+        Map.merge(changes, %{variant_id: variant_id})
+      )
+      |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
   end
@@ -102,8 +116,10 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         },
         socket
       ) do
-    %{assigns: %{changeset: %Ecto.Changeset{changes: changes} = changeset}} =
-      socket
+    %{
+      changeset: %Ecto.Changeset{changes: changes} = changeset,
+      order_item: %OrderItem{} = order_item
+    } = socket.assigns
 
     changeset =
       case get_option_group_rules(changeset, option_group_id) do
@@ -118,9 +134,12 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
             option_groups = Map.get(changes, :option_groups, Map.new())
             options = Map.get(option_groups, option_group_id, []) ++ [option_id]
 
-            OrderItem.changeset(socket.assigns.changeset, %{
-              option_groups: Map.put(option_groups, option_group_id, options)
-            })
+            Checkout.change_order_item(
+              order_item,
+              Map.merge(changes, %{
+                option_groups: Map.put(option_groups, option_group_id, options)
+              })
+            )
             |> Map.put(:action, :change)
           else
             changeset
@@ -135,8 +154,10 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         %{"option_group_id" => option_group_id, "option_id" => option_id},
         socket
       ) do
-    %{assigns: %{changeset: %Ecto.Changeset{changes: changes} = changeset}} =
-      socket
+    %{
+      changeset: %Ecto.Changeset{changes: changes} = changeset,
+      order_item: %OrderItem{} = order_item
+    } = socket.assigns
 
     changeset =
       case get_option_group_rules(changeset, option_group_id) do
@@ -150,9 +171,12 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
             option_groups = Map.get(changes, :option_groups, Map.new())
             options = Map.get(option_groups, option_group_id, []) -- [option_id]
 
-            OrderItem.changeset(socket.assigns.changeset, %{
-              option_groups: Map.put(option_groups, option_group_id, options)
-            })
+            Checkout.change_order_item(
+              order_item,
+              Map.merge(changes, %{
+                option_groups: Map.put(option_groups, option_group_id, options)
+              })
+            )
             |> Map.put(:action, :change)
           else
             changeset
@@ -167,8 +191,10 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         %{"value" => option_id, "option_group_id" => option_group_id},
         socket
       ) do
-    %{assigns: %{changeset: %Ecto.Changeset{changes: changes} = changeset}} =
-      socket
+    %{
+      changeset: %Ecto.Changeset{changes: changes} = changeset,
+      order_item: %OrderItem{} = order_item
+    } = socket.assigns
 
     changeset =
       case get_option_group_rules(changeset, option_group_id) do
@@ -179,9 +205,13 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
           if valid_option?(rules, option_id) do
             option_groups = Map.get(changes, :option_groups, Map.new())
 
-            OrderItem.changeset(socket.assigns.changeset, %{
-              option_groups: Map.put(option_groups, option_group_id, option_id)
-            })
+            Checkout.change_order_item(
+              order_item,
+              Map.merge(changes, %{
+                option_groups:
+                  Map.put(option_groups, option_group_id, option_id)
+              })
+            )
             |> Map.put(:action, :change)
           else
             changeset
@@ -200,6 +230,10 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
     {:noreply, assign(socket, :changeset, changeset)}
   end
+
+  # ----------------------------------------------------------------------------
+  # Render functions
+  #
 
   def render_option_price(price, price_modifier, assigns) do
     case Decimal.eq?(price_modifier, Decimal.new(0)) do
@@ -222,6 +256,10 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     end
   end
 
+  # ----------------------------------------------------------------------------
+  # Private functions
+  #
+
   defp assign_changeset(socket) do
     %{
       assigns: %{
@@ -236,6 +274,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
     order_item = %OrderItem{
       catalogue_item_id: catalogue_item_id,
+      variant_id: nil,
       variants: variants,
       available_option_groups: %{
         values: option_groups,
@@ -265,9 +304,9 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     |> assign(:order_item, order_item)
     |> assign(
       :changeset,
-      OrderItem.changeset(order_item, %{
+      Checkout.change_order_item(order_item, %{
         quantity: 1,
-        option_groups: Map.new()
+        option_groups: assign_option_groups(option_groups)
       })
     )
   end
@@ -310,6 +349,26 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
     socket
     |> assign(:item_photo_source, item_photo_source)
+  end
+
+  defp assign_option_groups(option_groups) do
+    Enum.reduce(option_groups, Map.new(), fn %CatalogueItemOptionGroup{
+                                               id: option_group_id,
+                                               multiple_selection:
+                                                 multiple_selection
+                                             },
+                                             acc ->
+      initial_value =
+        case multiple_selection do
+          true ->
+            []
+
+          false ->
+            nil
+        end
+
+      Map.put(acc, option_group_id, initial_value)
+    end)
   end
 
   defp assign_catalogue(socket, catalogue_id),
@@ -408,5 +467,13 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
         length(options) >= max_selection && !Enum.member?(options, option_id)
     end
+  end
+
+  defp valid_form?(%Ecto.Changeset{} = changeset) do
+    # IO.inspect(changeset.data, label: "Data")
+    # IO.inspect(changeset.changes, label: "Changes")
+    # IO.inspect(changeset, label: "Changeset")
+
+    false
   end
 end
