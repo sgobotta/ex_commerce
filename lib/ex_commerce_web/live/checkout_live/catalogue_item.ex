@@ -91,21 +91,10 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
      )}
   end
 
-  def handle_event("select_variant", %{"value" => variant_id}, socket) do
-    %{
-      changeset: %Ecto.Changeset{changes: changes},
-      order_item: %OrderItem{} = order_item
-    } = socket.assigns
-
-    changeset =
-      Checkout.change_order_item(
-        order_item,
-        Map.merge(changes, %{variant_id: variant_id})
-      )
-      |> Map.put(:action, :validate)
-
-    {:noreply, assign(socket, :changeset, changeset)}
-  end
+  def handle_event("select_variant", %{"value" => variant_id}, socket),
+    do:
+      {:noreply,
+       assign(socket, :changeset, select_variant_maybe(socket, variant_id))}
 
   def handle_event(
         "check_option",
@@ -260,57 +249,6 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   # Private functions
   #
 
-  defp assign_changeset(socket) do
-    %{
-      assigns: %{
-        catalogue_item:
-          %CatalogueItem{
-            id: catalogue_item_id,
-            option_groups: option_groups,
-            variants: variants
-          } = _ci
-      }
-    } = socket
-
-    order_item = %OrderItem{
-      catalogue_item_id: catalogue_item_id,
-      variant_id: nil,
-      variants: variants,
-      available_option_groups: %{
-        values: option_groups,
-        rules:
-          Enum.map(option_groups, fn %CatalogueItemOptionGroup{
-                                       id: id,
-                                       mandatory: mandatory,
-                                       max_selection: max_selection,
-                                       multiple_selection: multiple_selection,
-                                       options: options
-                                     } ->
-            %{
-              available_options:
-                Enum.map(options, fn %CatalogueItemOption{id: id} ->
-                  id
-                end),
-              id: id,
-              mandatory: mandatory,
-              max_selection: max_selection,
-              multiple_selection: multiple_selection
-            }
-          end)
-      }
-    }
-
-    socket
-    |> assign(:order_item, order_item)
-    |> assign(
-      :changeset,
-      Checkout.change_order_item(order_item, %{
-        quantity: 1,
-        option_groups: assign_option_groups(option_groups)
-      })
-    )
-  end
-
   defp apply_action(socket, :index, %{
          "brand" => brand_slug,
          "shop" => shop_slug,
@@ -331,9 +269,58 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     )
     |> assign_catalogue(catalogue_id)
     |> assign_catalogue_item(catalogue_item_id)
-    |> assign_changeset()
+    |> assign_order_item()
     |> assign_photos_sources()
     |> assign_nav_title()
+  end
+
+  defp assign_order_item(socket) do
+    %{
+      catalogue_item: %CatalogueItem{
+        id: catalogue_item_id,
+        option_groups: option_groups,
+        variants: variants
+      }
+    } = socket.assigns
+
+    %OrderItem{} =
+      order_item = %OrderItem{
+        catalogue_item_id: catalogue_item_id,
+        variant_id: nil,
+        variants: variants,
+        available_option_groups: %{
+          values: option_groups,
+          rules:
+            Enum.map(option_groups, fn %CatalogueItemOptionGroup{
+                                         id: id,
+                                         mandatory: mandatory,
+                                         max_selection: max_selection,
+                                         multiple_selection: multiple_selection,
+                                         options: options
+                                       } ->
+              %{
+                available_options:
+                  Enum.map(options, fn %CatalogueItemOption{id: id} ->
+                    id
+                  end),
+                id: id,
+                mandatory: mandatory,
+                max_selection: max_selection,
+                multiple_selection: multiple_selection
+              }
+            end)
+        }
+      }
+
+    socket
+    |> assign(:order_item, order_item)
+    |> assign(
+      :changeset,
+      Checkout.change_order_item(order_item, %{
+        quantity: 1,
+        option_groups: assign_option_groups(option_groups)
+      })
+    )
   end
 
   defp assign_photos_sources(
@@ -377,10 +364,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   defp assign_catalogue_item(socket, catalogue_item_id),
     do: assign_catalogue_item_by_id_or_redirect(socket, catalogue_item_id)
 
-  defp assign_nav_title(socket) do
-    socket
-    |> assign(:nav_title, gettext("Back"))
-  end
+  defp assign_nav_title(socket), do: assign(socket, :nav_title, gettext("Back"))
 
   defp get_price(price) do
     price
@@ -401,37 +385,37 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   defp prepend_currency(price), do: "$#{price}"
 
-  defp get_quantity(%Ecto.Changeset{changes: changes}), do: changes.quantity
+  defp get_quantity(%Ecto.Changeset{changes: %{quantity: quantity}}),
+    do: quantity
 
   defp variant_selected?(%Ecto.Changeset{changes: changes}, variant_id),
     do: Map.get(changes, :variant_id) == variant_id
 
-  defp is_option_checked(changeset, option_group_id, option_id) do
-    case Map.has_key?(changeset.changes, :option_groups) do
-      true ->
-        Map.get(changeset.changes.option_groups, option_group_id) == option_id
+  defp is_option_checked(
+         %Ecto.Changeset{changes: changes},
+         option_group_id,
+         option_id
+       )
+       when is_map_key(changes, :option_groups),
+       do: Map.get(changes.option_groups, option_group_id) == option_id
 
-      false ->
-        false
-    end
-  end
+  defp is_option_checked(%Ecto.Changeset{}, _og_id, _o_id), do: false
 
-  defp multiple_option_checked?(changeset, option_group_id, option_id) do
-    case Map.has_key?(changeset.changes, :option_groups) do
-      true ->
-        Map.get(changeset.changes.option_groups, option_group_id, [])
-        |> Enum.member?(option_id)
+  defp multiple_option_checked?(
+         %Ecto.Changeset{changes: changes},
+         option_group_id,
+         option_id
+       )
+       when is_map_key(changes, :option_groups),
+       do:
+         Map.get(changes.option_groups, option_group_id, [])
+         |> Enum.member?(option_id)
 
-      false ->
-        false
-    end
-  end
+  defp multiple_option_checked?(%Ecto.Changeset{}, _og_id, _o_id), do: false
 
   defp get_option_group_rules(%Ecto.Changeset{data: data}, option_group_id),
     do:
-      Enum.find(data.available_option_groups.rules, fn %{id: id} ->
-        id == option_group_id
-      end)
+      Enum.find(data.available_option_groups.rules, &(&1.id == option_group_id))
 
   defp valid_option?(rules, option_id),
     do: Enum.find(rules.available_options, fn id -> id == option_id end) !== nil
@@ -442,7 +426,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         %{max_selection: max_selection} = rules
 
         options_length =
-          Map.get(changes, :option_groups, %{option_group_id => []})
+          Map.fetch!(changes, :option_groups)
           |> Map.get(option_group_id, [])
           |> length()
 
@@ -469,10 +453,48 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     end
   end
 
-  defp valid_form?(%Ecto.Changeset{} = changeset) do
+  defp select_variant_maybe(socket, variant_id) do
+    %{
+      changeset: %Ecto.Changeset{changes: changes} = changeset,
+      order_item: %OrderItem{variants: variants} = order_item
+    } = socket.assigns
+
+    case Enum.member?(Enum.map(variants, & &1.id), variant_id) do
+      true ->
+        Checkout.change_order_item(
+          order_item,
+          Map.merge(changes, %{variant_id: variant_id})
+        )
+        |> Map.put(:action, :validate)
+
+      false ->
+        changeset
+    end
+  end
+
+  defp valid_form?(%Ecto.Changeset{data: data} = changeset) do
+    %{
+      data: %OrderItem{} = order_item,
+      changes: changes
+    } = changeset
+
+    Enum.map(data.available_option_groups.rules, fn %{
+                                                      available_options:
+                                                        available_options,
+                                                      id: id,
+                                                      mandatory: mandatory,
+                                                      max_selection:
+                                                        max_selection,
+                                                      multiple_selection:
+                                                        multiple_selection
+                                                    } ->
+      nil
+    end)
+
     # IO.inspect(changeset.data, label: "Data")
     # IO.inspect(changeset.changes, label: "Changes")
-    # IO.inspect(changeset, label: "Changeset")
+    IO.inspect(changeset, label: "Changeset")
+    # IO.inspect(order_item, label: "OrderItem")
 
     false
   end
