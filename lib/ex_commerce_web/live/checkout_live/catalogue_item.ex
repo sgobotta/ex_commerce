@@ -66,7 +66,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
              order_item,
              Map.merge(changes, %{quantity: quantity - 1})
            )
-           |> Map.put(:action, :change)
+           |> Map.put(:action, :validate)
          )}
 
   def handle_event(
@@ -87,7 +87,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
          order_item,
          Map.merge(changes, %{quantity: quantity + 1})
        )
-       |> Map.put(:action, :change)
+       |> Map.put(:action, :validate)
      )}
   end
 
@@ -140,7 +140,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
                 option_groups: Map.put(option_groups, option_group_id, options)
               })
             )
-            |> Map.put(:action, :change)
+            |> Map.put(:action, :validate)
           else
             changeset
           end
@@ -177,7 +177,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
                 option_groups: Map.put(option_groups, option_group_id, options)
               })
             )
-            |> Map.put(:action, :change)
+            |> Map.put(:action, :validate)
           else
             changeset
           end
@@ -212,7 +212,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
                   Map.put(option_groups, option_group_id, option_id)
               })
             )
-            |> Map.put(:action, :change)
+            |> Map.put(:action, :validate)
           else
             changeset
           end
