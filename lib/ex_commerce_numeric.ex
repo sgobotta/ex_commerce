@@ -52,6 +52,8 @@ defmodule ExCommerceNumeric do
 
   def add(first, second), do: Decimal.add(first, second)
 
+  def mult(first, second), do: Decimal.mult(first, second)
+
   defp parse_price(value) when Decimal.is_decimal(value), do: value
 
   defp parse_price(value) when is_float(value), do: Decimal.from_float(value)

@@ -9,7 +9,12 @@ defmodule ExCommerce.CheckoutTest do
 
     import ExCommerce.CheckoutFixtures
 
-    @invalid_attrs %{catalogue_item_id: nil, variant_id: nil, quantity: nil}
+    @invalid_attrs %{
+      catalogue_item_id: nil,
+      variant_id: nil,
+      price: nil,
+      quantity: nil
+    }
 
     test "list_order_items/0 returns all order_items" do
       order_item = order_item_fixture()
@@ -25,7 +30,8 @@ defmodule ExCommerce.CheckoutTest do
       valid_attrs = %{
         catalogue_item_id: "some catalogue_item_id",
         variant_id: "some variant_id",
-        quantity: 1
+        quantity: 1,
+        price: ExCommerceNumeric.format_price(32.2)
       }
 
       assert {:ok, %OrderItem{} = order_item} =

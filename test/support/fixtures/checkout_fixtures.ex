@@ -13,6 +13,7 @@ defmodule ExCommerce.CheckoutFixtures do
       |> Enum.into(%{
         catalogue_item_id: "some catalogue_item_id",
         variant_id: "some variant_id",
+        price: ExCommerceNumeric.format_price(42.0),
         quantity: 1
       })
       |> ExCommerce.Checkout.create_order_item()
