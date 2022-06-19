@@ -339,9 +339,90 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   defp prepend_currency(price), do: "$#{price}"
 
   defp get_total_price(%Ecto.Changeset{changes: changes, data: data}) do
-    IO.inspect(changes, label: "Changes")
-    IO.inspect(changes, label: "Changes")
-    get_price(changes.price)
+    variant_price = get_variant_price(changes, data)
+    option_groups_price = get_option_groups_price(changes.option_groups, data)
+
+    ExCommerceNumeric.add(variant_price, option_groups_price)
+    |> get_price()
+  end
+
+  defp get_variant_price(changes, %OrderItem{variants: variants}) do
+    case Map.get(changes, :variant_id) do
+      nil ->
+        0
+
+      variant_id ->
+        %CatalogueItemVariant{price: price} =
+          Enum.find(variants, fn %CatalogueItemVariant{id: id} ->
+            id == variant_id
+          end)
+
+        price
+    end
+  end
+
+  defp get_option_groups_price(option_groups, %OrderItem{
+         available_option_groups: available_option_groups
+       }) do
+    Enum.reduce(
+      available_option_groups.values,
+      ExCommerceNumeric.format_price(0),
+      fn %CatalogueItemOptionGroup{id: id} = option_group, acc ->
+        get_total_option_group_price(
+          Map.fetch!(option_groups, id)["value"],
+          option_group
+        )
+        |> ExCommerceNumeric.add(acc)
+      end
+    )
+  end
+
+  defp get_total_option_group_price([], %CatalogueItemOptionGroup{}),
+    do: ExCommerceNumeric.format_price(0)
+
+  defp get_total_option_group_price(option_ids, %CatalogueItemOptionGroup{
+         options: options
+       })
+       when is_list(option_ids) do
+    Enum.reduce(
+      options,
+      ExCommerceNumeric.format_price(0),
+      fn %CatalogueItemOption{
+           id: id,
+           catalogue_item_variant: %CatalogueItemVariant{price: price},
+           price_modifier: price_modifier
+         },
+         acc ->
+        case id in option_ids do
+          true ->
+            ExCommerceNumeric.add(
+              acc,
+              CatalogueItemOption.apply_discount(price, price_modifier)
+            )
+
+          false ->
+            acc
+        end
+      end
+    )
+  end
+
+  defp get_total_option_group_price(nil, %CatalogueItemOptionGroup{}),
+    do: ExCommerceNumeric.format_price(0)
+
+  defp get_total_option_group_price(option_id, %CatalogueItemOptionGroup{
+         options: options
+       })
+       when is_binary(option_id) do
+    %CatalogueItemOption{
+      catalogue_item_variant: %CatalogueItemVariant{price: price},
+      price_modifier: price_modifier
+    } =
+      Enum.find(options, 0, fn %CatalogueItemOption{id: id} ->
+        option_id == id
+      end)
+
+    CatalogueItemOption.apply_discount(price, price_modifier)
   end
 
   # ----------------------------------------------------------------------------
