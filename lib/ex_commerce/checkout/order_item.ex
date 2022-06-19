@@ -22,12 +22,19 @@ defmodule ExCommerce.Checkout.OrderItem do
   @doc false
   def changeset(order_item, attrs) do
     order_item
-    |> cast(attrs, [:quantity, :catalogue_item_id, :variant_id, :option_groups])
-    |> validate_required([
-      :quantity,
+    |> cast(attrs, [
       :catalogue_item_id,
-      :variant_id,
-      :option_groups
+      :option_groups,
+      :price,
+      :quantity,
+      :variant_id
+    ])
+    |> validate_required([
+      :catalogue_item_id,
+      :option_groups,
+      :price,
+      :quantity,
+      :variant_id
     ])
   end
 end

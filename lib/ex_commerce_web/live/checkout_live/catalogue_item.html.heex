@@ -26,6 +26,11 @@
         <div class="flex flex-row">
           <div class="px-2">
             <p class="font-medium text-white">
+              <%= get_total_price(@changeset) %>
+            </p>
+          </div>
+          <div class="px-2">
+            <p class="font-medium text-white">
               <%= gettext("Add to order") %>
             </p>
           </div>
@@ -45,6 +50,11 @@
       ">
 
         <div class="flex flex-row">
+          <div class="px-2">
+            <p class="font-medium text-white">
+              <%= get_total_price(@changeset) %>
+            </p>
+          </div>
           <div class="px-2">
             <p class="font-medium text-white">
               <%= gettext("Add to order") %>
@@ -273,7 +283,7 @@
                               type="checkbox"
                               name={"#{option_group_id}-option-selection"}
                               class="checkbox m-auto block checked:bg-black outline-black"
-                              checked={multiple_option_checked?(@changeset, option_group_id, option_id)}
+                              checked={option_checked?(:multiple, @changeset, option_group_id, option_id)}
                               phx-click="check_option"
                               phx-value-option_id={option_id}
                               phx-value-option_group_id={option_group_id}
@@ -287,7 +297,7 @@
                               value={option_id}
                               phx-click="choose_option"
                               phx-value-option_group_id={option_group_id}
-                              checked={is_option_checked(@changeset, option_group_id, option_id)}
+                              checked={option_checked?(:single, @changeset, option_group_id, option_id)}
                             />
                           <% end %>
                         </div>
