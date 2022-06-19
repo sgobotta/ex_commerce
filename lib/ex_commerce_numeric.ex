@@ -50,6 +50,8 @@ defmodule ExCommerceNumeric do
     |> Decimal.round(round_places)
   end
 
+  def add(first, second), do: Decimal.add(first, second)
+
   defp parse_price(value) when Decimal.is_decimal(value), do: value
 
   defp parse_price(value) when is_float(value), do: Decimal.from_float(value)
