@@ -52,7 +52,9 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         _params,
         %{
           assigns: %{
-            changeset: %Ecto.Changeset{changes: %{quantity: quantity} = changes},
+            changeset: %Ecto.Changeset{
+              changes: %{quantity: quantity} = changes
+            },
             order_item: %OrderItem{} = order_item
           }
         } = socket
@@ -74,7 +76,9 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         _params,
         %{
           assigns: %{
-            changeset: %Ecto.Changeset{changes: %{quantity: quantity} = changes},
+            changeset: %Ecto.Changeset{
+              changes: %{quantity: quantity} = changes
+            },
             order_item: %OrderItem{} = order_item
           }
         } = socket
@@ -341,8 +345,10 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   defp get_total_price(%Ecto.Changeset{changes: changes, data: data}) do
     variant_price = get_variant_price(changes, data)
     option_groups_price = get_option_groups_price(changes.option_groups, data)
+    %{quantity: quantity} = changes
 
     ExCommerceNumeric.add(variant_price, option_groups_price)
+    |> ExCommerceNumeric.mult(quantity)
     |> get_price()
   end
 
@@ -588,7 +594,13 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     with {:ok, rules} <- get_option_group_rules(changeset, option_group_id),
          true <- option_exists?(rules, option_id),
          false <-
-           max_selection_reached?(type, action, changes, rules, option_group_id) do
+           max_selection_reached?(
+             type,
+             action,
+             changes,
+             rules,
+             option_group_id
+           ) do
       option_groups = Map.fetch!(changes, :option_groups)
 
       new_value =
