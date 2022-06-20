@@ -339,9 +339,9 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   defp prepend_currency(price), do: "$#{price}"
 
-  defp get_total_price(%Ecto.Changeset{changes: changes, data: data}) do
+  defp get_total_price(%Ecto.Changeset{changes: changes, data: data} = cs) do
     variant_price = get_variant_price(changes, data)
-    option_groups_price = get_option_groups_price(changes.option_groups, data)
+    option_groups_price = get_option_groups_price(cs)
     %{quantity: quantity} = changes
 
     ExCommerceNumeric.add(variant_price, option_groups_price)
@@ -364,21 +364,25 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     end
   end
 
-  defp get_option_groups_price(option_groups, %OrderItem{
-         available_option_groups: available_option_groups
+  defp get_option_groups_price(%Ecto.Changeset{
+         changes: %{option_groups: ogs},
+         data: %OrderItem{available_option_groups: aogs}
        }) do
     Enum.reduce(
-      available_option_groups.values,
+      aogs.values,
       ExCommerceNumeric.format_price(0),
-      fn %CatalogueItemOptionGroup{id: id} = option_group, acc ->
+      fn %CatalogueItemOptionGroup{id: id} = og, acc ->
         get_total_option_group_price(
-          Map.fetch!(option_groups, id)["value"],
-          option_group
+          Map.fetch!(ogs, id)["value"],
+          og
         )
         |> ExCommerceNumeric.add(acc)
       end
     )
   end
+
+  defp get_option_groups_price(%Ecto.Changeset{}),
+    do: ExCommerceNumeric.format_price(0)
 
   defp get_total_option_group_price([], %CatalogueItemOptionGroup{}),
     do: ExCommerceNumeric.format_price(0)
@@ -550,6 +554,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   defp valid_option_groups?(%Ecto.Changeset{changes: %{option_groups: ogs}}),
     do:
       Enum.all?(ogs, fn {_option_group_id, %{"valid?" => valid?}} -> valid? end)
+
+  defp valid_option_groups?(%Ecto.Changeset{}), do: true
 
   defp valid_quantity?(%Ecto.Changeset{changes: %{quantity: quantity}}),
     do: quantity >= 1
