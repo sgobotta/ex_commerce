@@ -194,6 +194,26 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     end
   end
 
+  def render_option_group_info(%CatalogueItemOptionGroup{
+        mandatory: mandatory,
+        multiple_selection: false
+      }) do
+    gettext("Choose %{amount} of the folowing", amount: 1)
+    |> maybe_append_required(mandatory)
+  end
+
+  def render_option_group_info(%CatalogueItemOptionGroup{
+        mandatory: mandatory,
+        max_selection: max_selection,
+        multiple_selection: true
+      }) do
+    gettext("Choose %{amount} of the folowing", amount: max_selection)
+    |> maybe_append_required(mandatory)
+  end
+
+  defp maybe_append_required(msg, false), do: msg
+  defp maybe_append_required(msg, true), do: "#{msg} (#{gettext("Required")})"
+
   # ----------------------------------------------------------------------------
   # Private functions
   #
