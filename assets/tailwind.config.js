@@ -83,7 +83,8 @@ module.exports = {
   variants: {
     extend: {
       borderRadius: ['active', 'hover', 'focus'],
-      scale: ['focus-within']
+      boxShadow: ['active', 'hover', 'focus'],
+      scale: ['focus-within', 'hover']
     }
   }
 }

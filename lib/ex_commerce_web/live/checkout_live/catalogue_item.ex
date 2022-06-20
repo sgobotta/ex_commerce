@@ -162,14 +162,22 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     {:noreply, assign(socket, :changeset, changeset)}
   end
 
-  @impl true
-  def handle_event("validate", %{"order_item" => _order_item}, socket) do
-    changeset =
-      socket.assigns.order_item
-      |> Checkout.change_order_item(%{})
-      |> Map.put(:action, :validate)
+  # @impl true
+  # def handle_event("validate", %{"order_item" => _order_item}, socket) do
+  #   IO.inspect(label: "\n\n\nhandle event VALIDATE")
+  #   changeset =
+  #     socket.assigns.order_item
+  #     |> Checkout.change_order_item(%{})
+  #     |> Map.put(:action, :validate)
 
-    {:noreply, assign(socket, :changeset, changeset)}
+  #   {:noreply, assign(socket, :changeset, changeset)}
+  # end
+
+  @impl true
+  def handle_event("add_to_order", params, socket) do
+    IO.inspect(params, label: "\n\n\nhandle event VALIDATE")
+
+    {:noreply, socket}
   end
 
   # ----------------------------------------------------------------------------
