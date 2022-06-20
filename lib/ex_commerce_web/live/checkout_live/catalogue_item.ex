@@ -162,20 +162,9 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     {:noreply, assign(socket, :changeset, changeset)}
   end
 
-  # @impl true
-  # def handle_event("validate", %{"order_item" => _order_item}, socket) do
-  #   IO.inspect(label: "\n\n\nhandle event VALIDATE")
-  #   changeset =
-  #     socket.assigns.order_item
-  #     |> Checkout.change_order_item(%{})
-  #     |> Map.put(:action, :validate)
-
-  #   {:noreply, assign(socket, :changeset, changeset)}
-  # end
-
   @impl true
-  def handle_event("add_to_order", params, socket) do
-    IO.inspect(params, label: "\n\n\nhandle event VALIDATE")
+  def handle_event("add_to_order", _params, socket) do
+    IO.puts("ADD ORDER_ITEM TO CART")
 
     {:noreply, socket}
   end
@@ -551,17 +540,19 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     end
   end
 
-  defp valid_form?(
-         %Ecto.Changeset{changes: changes, valid?: valid?} = _changeset
-       ) do
-    valid_groups? =
-      Enum.map(changes.option_groups, fn {_option_group_id,
-                                          %{"valid?" => valid?}} ->
-        valid?
-      end)
-
-    Enum.all?([valid?] ++ valid_groups?)
+  defp valid_form?(%Ecto.Changeset{valid?: valid?} = changeset) do
+    Enum.all?(
+      [valid?] ++
+        [valid_quantity?(changeset)] ++ [valid_option_groups?(changeset)]
+    )
   end
+
+  defp valid_option_groups?(%Ecto.Changeset{changes: %{option_groups: ogs}}),
+    do:
+      Enum.all?(ogs, fn {_option_group_id, %{"valid?" => valid?}} -> valid? end)
+
+  defp valid_quantity?(%Ecto.Changeset{changes: %{quantity: quantity}}),
+    do: quantity >= 1
 
   # ----------------------------------------------------------------------------
   # Changeset Modifiers
