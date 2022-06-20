@@ -80,21 +80,32 @@
                       <%= get_quantity(@changeset) %>
                     </span>
                   </div>
-                  <button
-                    class={"
-                      h-7 w-7 rounded-lg hover:shadow-button hover:scale-105
-                      transition-transform ease-in-out duration-100
-                      #{if @changeset.changes.quantity < 2 do
-                        "bg-gray-400"
-                        else
-                          "bg-black active:scale-90 active:shadow-lg cursor-pointer"
-                      end}
-                      outline-pink-600
-                    "}
-                    phx-click="remove_item"
-                  >
-                    <.icon name={:minus_sm} class="text-white"/>
-                  </button>
+                  <%= if @changeset.changes.quantity < 2 do %>
+                    <button
+                      class={"
+                        h-7 w-7 rounded-lg hover:shadow-button hover:scale-105
+                        transition-transform ease-in-out duration-100
+                        bg-gray-400
+                      "}
+                      tabindex="-1"
+                      phx-click="remove_item"
+                    >
+                      <.icon name={:minus_sm} class="text-white"/>
+                    </button>
+                  <% else %>
+                    <button
+                      class={"
+                        h-7 w-7 rounded-lg
+                        transition-transform ease-in-out duration-100
+                        bg-black outline-pink-600
+                        active:scale-90 active:shadow-lg cursor-pointer
+                        hover:shadow-button hover:scale-105
+                      "}
+                      phx-click="remove_item"
+                    >
+                      <.icon name={:minus_sm} class="text-white"/>
+                    </button>
+                  <% end %>
                 </div>
               </div>
             </div>

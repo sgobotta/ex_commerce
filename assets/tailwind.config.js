@@ -84,7 +84,7 @@ module.exports = {
     extend: {
       borderRadius: ['active', 'hover', 'focus'],
       boxShadow: ['active', 'hover', 'focus'],
-      scale: ['focus-within', 'hover']
+      scale: ['active', 'focus-within', 'hover']
     }
   }
 }
