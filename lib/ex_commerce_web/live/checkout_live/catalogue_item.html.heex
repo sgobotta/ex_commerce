@@ -82,11 +82,7 @@
                   </div>
                   <%= if @changeset.changes.quantity < 2 do %>
                     <button
-                      class={"
-                        h-7 w-7 rounded-lg hover:shadow-button hover:scale-105
-                        transition-transform ease-in-out duration-100
-                        bg-gray-400
-                      "}
+                      class={"h-7 w-7 rounded-lg bg-gray-400 cursor-not-allowed"}
                       tabindex="-1"
                       phx-click="remove_item"
                     >
