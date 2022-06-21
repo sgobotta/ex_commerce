@@ -1,9 +1,36 @@
 <main class="flex flex-col focus:outline-none bg-gray-300 w-full">
   <!-- Navigation -->
-  <div class="basis-12 bg-gray-100 z-50 w-full shadow-lg">
-    <div class="flex flex-row items-center p-2">
+  <nav class="
+    flex flex-row justify-between w-full p-2
+    bg-gray-100 shadow-lg z-50
+  ">
+    <!-- Back Button -->
+    <.link
+      patch={@return_to}
+      class={"
+        text-sky-600 group flex items-center
+        text-2xl font-medium
+        rounded-md
+        hover:text-sky-300
+      "}
+      aria-current="false"
+    >
+      <.icon
+        name={:chevron_left} outlined
+        class="
+          flex-shrink-0
+          h-6 w-6
+          group-active:scale-90
+        "
+      />
+      <div class="text-xl group-active:scale-90">
+        <%= @nav_title %>
+      </div>
+    </.link>
+    <!-- Cart -->
+    <%= if @cart_visible do %>
       <.link
-        patch={@return_to}
+        patch={"#"}
         class={"
           text-sky-600 group flex items-center
           text-2xl font-medium
@@ -13,19 +40,16 @@
         aria-current="false"
       >
         <.icon
-          name={:chevron_left} outlined
+          name={:shopping_cart} outlined
           class="
             flex-shrink-0
             h-6 w-6
             group-active:scale-90
           "
         />
-        <div class="text-xl group-active:scale-90">
-          <%= @nav_title %>
-        </div>
       </.link>
-    </div>
-  </div>
+    <% end %>
+  </nav>
 
   <!-- Main -->
   <div class="
@@ -33,11 +57,4 @@
   >
     <%= @inner_content %>
   </div>
-
-  <!-- Cart -->
-  <%= if @cart_visible do %>
-    <div class="">
-      <p>Cart</p>
-    </div>
-  <% end %>
 </main>

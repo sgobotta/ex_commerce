@@ -50,6 +50,23 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
     |> assign_nav_title()
   end
 
+  @impl true
+  def handle_event("checkout_order", _params, socket) do
+    {:noreply, socket}
+  end
+
+  defp valid_order? do
+    true
+  end
+
+  defp get_order_items(items) do
+    items
+  end
+
+  defp get_order_price(price) do
+    "$#{price}"
+  end
+
   defp assign_catalogue(socket, catalogue_id),
     do: assign_catalogue_by_id_or_redirect(socket, catalogue_id)
 
