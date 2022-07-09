@@ -32,8 +32,8 @@
   id="catalogue-content"
   initial={[y: [6000]]}
   animate={[y: [0]]}
-  transition={[duration: 0.5]}
-  exit={[y: [6000]]}
+  transition={[]}
+  exit={[y: [0]]}
   class="px-1"
 >
   <%= for %CatalogueCategory{name: category_name} = catalogue_category <- @catalogue.categories do %>
@@ -126,10 +126,10 @@
 
 <LiveMotion.motion
   id="add-item-button"
-  initial={[y: [1000]]}
+  initial={[y: [400]]}
   animate={[y: [0]]}
-  transition={[duration: 3.0]}
-  exit={[y: [1000]]}
+  transition={[]}
+  exit={[y: [400]]}
   class="
     fixed bottom-4 flex justify-center px-4
     max-w-7xl w-full z-50
