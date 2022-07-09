@@ -47,6 +47,33 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
       Routes.checkout_shop_path(socket, :index, brand_slug, shop_slug)
     )
     |> assign_catalogue(catalogue_id)
+    |> assign_cart_path(brand_slug, shop_slug, catalogue_id)
+    |> assign_nav_title()
+  end
+
+  defp apply_action(
+         socket,
+         :cart,
+         %{
+           "brand" => brand_slug,
+           "shop" => shop_slug,
+           "catalogue" => catalogue_id
+         }
+       ) do
+    socket
+    |> assign(:page_title, gettext("[Cart]"))
+    |> assign(
+      :return_to,
+      Routes.checkout_catalogue_path(
+        socket,
+        :index,
+        brand_slug,
+        shop_slug,
+        catalogue_id
+      )
+    )
+    |> assign_catalogue(catalogue_id)
+    |> assign(:cart_path, "#")
     |> assign_nav_title()
   end
 
@@ -55,8 +82,8 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
     {:noreply, socket}
   end
 
-  defp valid_order? do
-    true
+  defp valid_order?(catalogue) do
+    catalogue != nil
   end
 
   defp get_order_items(items) do
@@ -69,6 +96,19 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
 
   defp assign_catalogue(socket, catalogue_id),
     do: assign_catalogue_by_id_or_redirect(socket, catalogue_id)
+
+  defp assign_cart_path(socket, brand_slug, shop_slug, catalogue_id) do
+    cart_path =
+      Routes.checkout_catalogue_path(
+        socket,
+        :cart,
+        brand_slug,
+        shop_slug,
+        catalogue_id
+      )
+
+    assign(socket, :cart_path, cart_path)
+  end
 
   defp assign_nav_title(socket) do
     socket

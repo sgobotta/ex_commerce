@@ -236,12 +236,68 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         catalogue_id
       )
     )
-    |> assign_catalogue(catalogue_id)
-    |> assign_catalogue_item(catalogue_item_id)
-    |> assign_order_item()
-    |> assign_photos_sources()
+    |> maybe_assign_catalogue(catalogue_id)
+    |> maybe_assign_catalogue_item(catalogue_item_id)
+    |> maybe_assign_order_item()
+    |> assign_cart_path(brand_slug, shop_slug, catalogue_id, catalogue_item_id)
+    |> maybe_assign_photos_sources()
     |> assign_nav_title()
   end
+
+  defp apply_action(socket, :cart, %{
+         "brand" => brand_slug,
+         "shop" => shop_slug,
+         "catalogue" => catalogue_id,
+         "item" => catalogue_item_id
+       }) do
+    socket
+    |> assign(:page_title, gettext("[Cart]"))
+    |> assign(
+      :return_to,
+      Routes.checkout_catalogue_item_path(
+        socket,
+        :index,
+        brand_slug,
+        shop_slug,
+        catalogue_id,
+        catalogue_item_id
+      )
+    )
+    |> maybe_assign_catalogue(catalogue_id)
+    |> maybe_assign_catalogue_item(catalogue_item_id)
+    |> maybe_assign_order_item()
+    |> assign(:cart_path, "#")
+    |> maybe_assign_photos_sources()
+    |> assign_nav_title()
+  end
+
+  defp assign_cart_path(
+         socket,
+         brand_slug,
+         shop_slug,
+         catalogue_id,
+         catalogue_item_id
+       ) do
+    cart_path =
+      Routes.checkout_catalogue_item_path(
+        socket,
+        :cart,
+        brand_slug,
+        shop_slug,
+        catalogue_id,
+        catalogue_item_id
+      )
+
+    assign(socket, :cart_path, cart_path)
+  end
+
+  defp maybe_assign_order_item(socket),
+    do:
+      maybe_assign(
+        socket,
+        :order_item,
+        fn socket -> assign_order_item(socket) end
+      )
 
   defp assign_order_item(socket) do
     %{
@@ -293,6 +349,12 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     )
   end
 
+  defp maybe_assign_photos_sources(socket),
+    do:
+      maybe_assign(socket, :item_photo_source, fn socket ->
+        assign_photos_sources(socket)
+      end)
+
   defp assign_photos_sources(
          %{assigns: %{catalogue_item: %CatalogueItem{photos: photos}}} = socket
        ) do
@@ -332,8 +394,22 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     end)
   end
 
+  defp maybe_assign_catalogue(socket, catalogue_id),
+    do:
+      maybe_assign(
+        socket,
+        :catalogue,
+        fn socket -> assign_catalogue(socket, catalogue_id) end
+      )
+
   defp assign_catalogue(socket, catalogue_id),
     do: assign_catalogue_by_id_or_redirect(socket, catalogue_id)
+
+  defp maybe_assign_catalogue_item(socket, catalogue_item_id),
+    do:
+      maybe_assign(socket, :catalogue_item, fn socket ->
+        assign_catalogue_item(socket, catalogue_item_id)
+      end)
 
   defp assign_catalogue_item(socket, catalogue_item_id),
     do: assign_catalogue_item_by_id_or_redirect(socket, catalogue_item_id)

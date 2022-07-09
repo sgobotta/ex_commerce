@@ -1,3 +1,33 @@
+<%= if @live_action in [:cart] do %>
+  <%= live_modal @socket, ExCommerceWeb.CheckoutLive.CartComponent,
+    id: Ecto.UUID.generate(),
+    title: @page_title,
+    action: @live_action,
+    return_to: Routes.checkout_catalogue_path(
+      @socket,
+      :index,
+      @brand_slug,
+      @shop_slug,
+      @catalogue.id
+    ),
+    patch_to: Routes.checkout_catalogue_path(
+      @socket,
+      :index,
+      @brand_slug,
+      @shop_slug,
+      @catalogue.id
+    ),
+    redirect_to: @redirect_to,
+    current_route: Routes.checkout_catalogue_path(
+      @socket,
+      :index,
+      @brand_slug,
+      @shop_slug,
+      @catalogue.id
+    )
+  %>
+<% end %>
+
 <LiveMotion.motion
   id="catalogue-content"
   initial={[y: [6000]]}
@@ -106,7 +136,7 @@
   "
 >
 
-  <%= if valid_order?() do %>
+  <%= if valid_order?(@catalogue) do %>
     <button class="
       flex justify-center rounded-lg py-2 bg-green-400
       w-full sm:w-1/2

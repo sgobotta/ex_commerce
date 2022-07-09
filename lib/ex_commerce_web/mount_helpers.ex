@@ -62,7 +62,7 @@ defmodule ExCommerceWeb.MountHelpers do
   end
 
   # ============================================================================
-  # Helpers belong can be used in Places pages
+  # Helpers below can be used in Places pages
   #
 
   # ----------------------------------------------------------------------------
@@ -133,37 +133,36 @@ defmodule ExCommerceWeb.MountHelpers do
   end
 
   def assign_catalogue_by_id_or_redirect(socket, catalogue_id) do
-    case Offerings.get_catalogue(catalogue_id) do
-      nil ->
-        redirect_with_flash(
-          socket,
-          to:
-            Routes.place_show_path(
-              socket,
-              :show,
-              socket.assigns.brand.id,
-              socket.assigns.shop.id
-            ),
-          kind: :info,
-          message: gettext("Choose a catalogue")
-        )
+    %Catalogue{} = catalogue = Offerings.get_catalogue!(catalogue_id)
 
-      %Catalogue{} = catalogue ->
-        socket
-        |> assign(
-          :catalogue,
-          Repo.preload(
-            catalogue,
-            categories: [
-              items: [
-                option_groups: [],
-                photos: [],
-                variants: []
-              ]
-            ]
-          )
-        )
-    end
+    socket
+    |> assign(
+      :catalogue,
+      Repo.preload(
+        catalogue,
+        categories: [
+          items: [
+            option_groups: [],
+            photos: [],
+            variants: []
+          ]
+        ]
+      )
+    )
+  rescue
+    _error ->
+      redirect_with_flash(
+        socket,
+        to:
+          Routes.checkout_shop_path(
+            socket,
+            :index,
+            socket.assigns.brand_slug,
+            socket.assigns.shop_slug
+          ),
+        kind: :info,
+        message: gettext("Choose a catalogue")
+      )
   end
 
   def assign_catalogue_item_by_id_or_redirect(socket, catalogue_item_id) do
@@ -433,6 +432,24 @@ defmodule ExCommerceWeb.MountHelpers do
       to:
         Routes.catalogue_item_option_group_index_path(socket, :index, brand_id)
     )
+  end
+
+  # ----------------------------------------------------------------------------
+  # Other helpers
+
+  @doc """
+  Checks an assignment is present to return a new socket or the given socket
+  whenever the assignment is present.
+  """
+  @spec maybe_assign(Phoenix.Socket.t(), atom(), fun()) :: Phoenix.Socket.t()
+  def maybe_assign(socket, prop, function) do
+    case Map.get(socket.assigns, prop) do
+      nil ->
+        function.(socket)
+
+      _assigned ->
+        socket
+    end
   end
 
   # ----------------------------------------------------------------------------

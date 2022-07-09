@@ -30,7 +30,7 @@
     <!-- Cart -->
     <%= if @cart_visible do %>
       <.link
-        patch={"#"}
+        patch={@cart_path}
         class={"
           text-sky-600 group flex items-center
           text-2xl font-medium

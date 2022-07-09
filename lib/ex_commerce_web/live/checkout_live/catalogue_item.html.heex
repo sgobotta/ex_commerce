@@ -1,3 +1,36 @@
+<%= if @live_action in [:cart] do %>
+  <%= live_modal @socket, ExCommerceWeb.CheckoutLive.CartComponent,
+    id: Ecto.UUID.generate(),
+    title: @page_title,
+    action: @live_action,
+    return_to: Routes.checkout_catalogue_item_path(
+      @socket,
+      :index,
+      @brand_slug,
+      @shop_slug,
+      @catalogue.id,
+      @catalogue_item.id
+    ),
+    patch_to: Routes.checkout_catalogue_item_path(
+      @socket,
+      :index,
+      @brand_slug,
+      @shop_slug,
+      @catalogue.id,
+      @catalogue_item.id
+    ),
+    redirect_to: @redirect_to,
+    current_route: Routes.checkout_catalogue_item_path(
+      @socket,
+      :index,
+      @brand_slug,
+      @shop_slug,
+      @catalogue.id,
+      @catalogue_item.id
+    )
+  %>
+<% end %>
+
 <div class="flex flex-col h-full">
   <div class="
     basis-2/4 flex flex-col w-full justify-center items-center shrink-0
