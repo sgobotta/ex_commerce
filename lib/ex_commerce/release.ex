@@ -37,7 +37,7 @@ defmodule ExCommerce.Release do
         {:ok, _apps} = Application.ensure_all_started(:ssl)
       end
 
-      {:ok, _, _} =
+      {:ok, _res, _apps} =
         Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :up, all: true))
     end
   end
@@ -45,7 +45,7 @@ defmodule ExCommerce.Release do
   def rollback(repo, version) do
     load_app()
 
-    {:ok, _, _} =
+    {:ok, _res, _apps} =
       Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
   end
 
