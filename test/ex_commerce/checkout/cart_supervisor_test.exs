@@ -11,7 +11,7 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
     @supervisor_name :cart_supervisor_test
 
     setup do
-      pid = start_supervised!({CartSupervisor, []})
+      pid = start_supervised!({CartSupervisor, [name: @supervisor_name]})
 
       %{pid: pid}
     end
@@ -21,23 +21,23 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
     end
 
     test "start_child/2 starts a cart server with args", %{pid: pid} do
-      {:ok, pid} = start_child(id: "some id")
+      {:ok, pid} = start_child(pid, id: "some cart id")
 
       assert valid_pid?(pid)
     end
 
-    test "list_children/1 returns a list of pids" do
-      {:ok, pid} = start_child(id: "some cart id")
+    test "list_children/1 returns a list of pids", %{pid: pid} do
+      {:ok, child_pid} = start_child(pid, id: "some cart id")
 
-      assert Enum.member?(list_children(), pid)
+      assert Enum.member?(list_children(pid), child_pid)
     end
 
     test "get_child/2 returns a pid and state", %{pid: pid} do
       cart_id = "some cart id"
 
-      {:ok, pid} = start_child(id: cart_id)
+      {:ok, child_pid} = start_child(pid, id: cart_id)
 
-      {^pid, %{id: ^cart_id} = state} = get_child(cart_id)
+      {^child_pid, %{id: ^cart_id} = state} = get_child(pid, cart_id)
 
       assert is_map(state)
     end
@@ -45,23 +45,23 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
     test "terminate_child/2 shuts down a pid", %{pid: pid} do
       cart_id = "some cart id"
 
-      {:ok, pid} = start_child(id: cart_id)
+      {:ok, child_pid} = start_child(pid, id: cart_id)
 
-      assert valid_pid?(pid)
+      assert valid_pid?(child_pid)
 
-      :ok = terminate_child(pid)
-      refute valid_pid?(pid)
+      :ok = terminate_child(pid, child_pid)
+      refute valid_pid?(child_pid)
     end
 
-    defp start_child(args), do: CartSupervisor.start_child(CartSupervisor, args)
+    defp start_child(pid, args), do: CartSupervisor.start_child(pid, args)
 
-    defp list_children, do: CartSupervisor.list_children(CartSupervisor)
+    defp list_children(pid), do: CartSupervisor.list_children(pid)
 
-    defp get_child(cart_id),
-      do: CartSupervisor.get_child(CartSupervisor, cart_id)
+    defp get_child(pid, cart_id),
+      do: CartSupervisor.get_child(pid, cart_id)
 
-    defp terminate_child(pid),
-      do: CartSupervisor.terminate_child(CartSupervisor, pid)
+    defp terminate_child(pid, child_pid),
+      do: CartSupervisor.terminate_child(pid, child_pid)
   end
 
   defp valid_pid?(pid), do: is_pid(pid) and Process.alive?(pid)

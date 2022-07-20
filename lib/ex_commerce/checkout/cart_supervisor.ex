@@ -8,21 +8,34 @@ defmodule ExCommerce.Checkout.CartSupervisor do
 
   alias ExCommerce.Checkout.CartServer
 
+  @doc """
+  Given a keyword of args, initialises the dynamic Cart Supervisor.
+  """
   @spec start_link(keyword()) :: {:ok, pid()}
   def start_link(init_arg) do
-    {:ok, pid} =
-      DynamicSupervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+    name = Keyword.get(init_arg, :name, __MODULE__)
+    init_arg = Keyword.delete(init_arg, :name)
 
-    :ok = Logger.info("#{__MODULE__} :: started with pid: #{inspect(pid)}")
-
-    {:ok, pid}
+    DynamicSupervisor.start_link(__MODULE__, init_arg, name: name)
   end
 
+  @impl true
+  def init(_init_arg) do
+    DynamicSupervisor.init(strategy: :one_for_one)
+  end
+
+  @doc """
+  Given a reference and some arguments starts a `CartServer` child and returns
+  it's pid.
+  """
   @spec start_child(module(), keyword()) :: {:ok, pid()}
   def start_child(supervisor \\ __MODULE__, [id: _id] = args) do
     DynamicSupervisor.start_child(supervisor, {CartServer, args})
   end
 
+  @doc """
+  Given a reference returns all supervisor children pids.
+  """
   @spec list_children(module()) :: [pid()]
   def list_children(supervisor \\ __MODULE__) do
     DynamicSupervisor.which_children(supervisor)
@@ -33,6 +46,11 @@ defmodule ExCommerce.Checkout.CartSupervisor do
     |> Enum.map(fn {_id, pid, :worker, _modules} -> pid end)
   end
 
+  @doc """
+  Given a reference and a cart id, returns `nil` or a tuple where the first
+  component is a `CartServer` pid and the second component the cart server
+  state.
+  """
   @spec get_child(module(), binary()) :: {pid(), map()} | nil
   def get_child(supervisor \\ __MODULE__, child_id) do
     list_children(supervisor)
@@ -40,13 +58,11 @@ defmodule ExCommerce.Checkout.CartSupervisor do
     |> Enum.find(fn {_pid, state} -> state.id == child_id end)
   end
 
+  @doc """
+  Given a reference and a child pid, terminates a `CartServer` process.
+  """
   @spec terminate_child(module(), pid()) :: :ok | {:error, :not_found}
   def terminate_child(supervisor \\ __MODULE__, pid) do
     DynamicSupervisor.terminate_child(supervisor, pid)
-  end
-
-  @impl true
-  def init(_init_arg) do
-    DynamicSupervisor.init(strategy: :one_for_one)
   end
 end
