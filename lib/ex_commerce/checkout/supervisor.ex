@@ -8,8 +8,8 @@ defmodule ExCommerce.Checkout.Supervisor do
   alias ExCommerce.Checkout.CartSupervisor
 
   @spec start_link(keyword()) :: {:ok, pid()}
-  def start_link(state) do
-    Supervisor.start_link(__MODULE__, state, name: __MODULE__)
+  def start_link(init_arg) do
+    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
   end
 
   @impl true
