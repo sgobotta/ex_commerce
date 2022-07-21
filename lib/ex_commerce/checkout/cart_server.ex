@@ -4,6 +4,8 @@ defmodule ExCommerce.Checkout.CartServer do
   """
   use GenServer, restart: :transient
 
+  alias ExCommerce.Checkout.Cart
+
   require Logger
 
   @kill_after :timer.seconds(10)
@@ -12,7 +14,7 @@ defmodule ExCommerce.Checkout.CartServer do
     GenServer.start_link(__MODULE__, init_args)
   end
 
-  def add_to_order(pid, order_item) do
+  def add_to_order(%Cart{server: pid}, order_item) do
     GenServer.call(pid, {:add_to_order, order_item})
   end
 

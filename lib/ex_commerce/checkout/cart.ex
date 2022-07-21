@@ -4,11 +4,13 @@ defmodule ExCommerce.Checkout.Cart do
   alias __MODULE__
   alias ExCommerce.Checkout.CartSupervisor
 
+  @type state :: map() | nil
+
   @type t :: %__MODULE__{
           id: binary(),
           order: map() | nil,
           server: pid() | nil,
-          state: map() | nil
+          state: state()
         }
 
   @enforce_keys [:id]
@@ -26,6 +28,16 @@ defmodule ExCommerce.Checkout.Cart do
   def new(id) do
     %Cart{id: id}
     |> get_server()
+  end
+
+  @spec set_server(t(), pid()) :: t()
+  def set_server(%Cart{} = cart, pid) do
+    %Cart{cart | server: pid}
+  end
+
+  @spec set_state(t(), state()) :: t()
+  def set_state(%Cart{} = cart, state) do
+    %Cart{cart | state: state}
   end
 
   defp get_server(%Cart{id: id} = cart) do

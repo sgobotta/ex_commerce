@@ -14,7 +14,9 @@ defmodule ExCommerce.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: ExCommerce.PubSub},
       # Start the Endpoint (http/https)
-      ExCommerceWeb.Endpoint
+      ExCommerceWeb.Endpoint,
+      # Start the Checkout supervisor
+      ExCommerce.Checkout
       # Start a worker by calling: ExCommerce.Worker.start_link(arg)
       # {ExCommerce.Worker, arg}
     ]

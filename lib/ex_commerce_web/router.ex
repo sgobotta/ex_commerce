@@ -46,7 +46,8 @@ defmodule ExCommerceWeb.Router do
     live_session :public,
       on_mount: [
         {ExCommerceWeb.UserAuth, :fetch_current_user},
-        {ExCommerceWeb.CheckoutNav, :check_action}
+        {ExCommerceWeb.CheckoutNav, :check_action},
+        {ExCommerceWeb.CheckoutNav, :check_cart}
       ] do
       scope "/checkout" do
         live "/:brand/:shop", CheckoutLive.Shop, :index

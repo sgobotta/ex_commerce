@@ -7,6 +7,56 @@ defmodule ExCommerce.Checkout do
   alias ExCommerce.Repo
 
   alias ExCommerce.Checkout.OrderItem
+  alias ExCommerce.Checkout.Supervisor
+  alias ExCommerce.Checkout.{Cart, CartServer, CartSupervisor}
+
+  defdelegate child_spec(init_arg), to: Supervisor
+
+  def add_to_order(%Cart{id: cart_id, server: nil} = cart, _order, _order_item) do
+    case CartSupervisor.get_child(CartSupervisor, cart_id) do
+      nil ->
+        {:ok, pid} = CartSupervisor.start_child(CartSupervisor, id: cart_id)
+
+        %Cart{} = cart = Cart.set_server(cart, pid)
+
+        {:ok, state} = add_to_order(cart, %{order_id: Ecto.UUID.generate()})
+
+        %Cart{} = Cart.set_state(cart, state)
+
+      {pid, _state} ->
+        %Cart{} = cart = Cart.set_server(cart, pid)
+
+        {:ok, state} = add_to_order(cart, %{order_id: Ecto.UUID.generate()})
+
+        %Cart{} = Cart.set_state(cart, state)
+    end
+  end
+
+  def add_to_order(%Cart{id: cart_id, server: pid} = cart, _order, _order_item) do
+    case Process.alive?(pid) do
+      true ->
+        {:ok, state} = add_to_order(cart, %{order_id: Ecto.UUID.generate()})
+
+        %Cart{} = Cart.set_state(cart, state)
+
+      false ->
+        {:ok, pid} = CartSupervisor.start_child(CartSupervisor, id: cart_id)
+
+        %Cart{} = cart = Cart.set_server(cart, pid)
+
+        {:ok, state} = add_to_order(cart, %{order_id: Ecto.UUID.generate()})
+
+        %Cart{} = Cart.set_state(cart, state)
+    end
+  end
+
+  defp add_to_order(%Cart{} = cart, order) do
+    CartServer.add_to_order(cart, order)
+  end
+
+  # ---------------------------------------------------------------------------
+  # Data Access layer
+  #
 
   @doc """
   Returns the list of order_items.
