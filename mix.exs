@@ -85,6 +85,7 @@ defmodule ExCommerce.MixProject do
       {:cloudex,
        git: "https://github.com/sgobotta/cloudex.git", branch: "main"},
       # Others
+      {:tzdata, "~> 1.0.0"},
       {:decimal, "~> 2.0"}
     ]
   end
