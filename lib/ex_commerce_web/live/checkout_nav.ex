@@ -26,15 +26,10 @@ defmodule ExCommerceWeb.CheckoutNav do
   end
 
   def on_mount(:check_cart, _params, _session, socket),
-    do: {:cont, socket}
+    do: {:cont, assign_cart(socket)}
 
   defp handle_expanded_params(_params, _url, socket) do
     {:cont, socket}
-  end
-
-  defp assign_cart_defaults(socket) do
-    socket
-    |> assign_cart()
   end
 
   defp assign_cart(socket), do: assign_new(socket, :cart, fn -> nil end)
