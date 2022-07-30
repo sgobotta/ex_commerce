@@ -32,13 +32,14 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
       assert Enum.member?(list_children(pid), child_pid)
     end
 
-    test "get_child/2 returns a pid and state", %{pid: pid} do
+    test "get_child/1 returns a pid and state", %{pid: pid} do
       cart_id = "some cart id"
 
       {:ok, child_pid} = start_child(pid, id: cart_id)
 
-      {^child_pid, %{id: ^cart_id} = state} = get_child(pid, cart_id)
+      {^child_pid, %{id: ^cart_id} = state} = get_child(cart_id)
 
+      valid_pid?(child_pid)
       assert is_map(state)
     end
 
@@ -57,8 +58,8 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
 
     defp list_children(pid), do: CartSupervisor.list_children(pid)
 
-    defp get_child(pid, cart_id),
-      do: CartSupervisor.get_child(pid, cart_id)
+    defp get_child(cart_id),
+      do: CartSupervisor.get_child(cart_id)
 
     defp terminate_child(pid, child_pid),
       do: CartSupervisor.terminate_child(pid, child_pid)

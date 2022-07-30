@@ -29,7 +29,15 @@ defmodule ExCommerce.Checkout.CartSupervisor do
   it's pid.
   """
   @spec start_child(module(), keyword()) :: {:ok, pid()}
-  def start_child(supervisor \\ __MODULE__, [id: _id] = args) do
+  def start_child(supervisor \\ __MODULE__, [id: id] = args) do
+    on_start = fn state ->
+      {:ok, _registry_pid} = Registry.register(Registry.Cart, id, state)
+
+      :ok
+    end
+
+    args = Keyword.put(args, :on_start, on_start)
+
     DynamicSupervisor.start_child(supervisor, {CartServer, args})
   end
 
@@ -47,15 +55,18 @@ defmodule ExCommerce.Checkout.CartSupervisor do
   end
 
   @doc """
-  Given a reference and a cart id, returns `nil` or a tuple where the first
-  component is a `CartServer` pid and the second component the cart server
-  state.
+  Given a cart id, returns `nil` or a tuple where the first component is a
+  `CartServer` pid and the second component the cart server state.
   """
-  @spec get_child(module(), binary()) :: {pid(), map()} | nil
-  def get_child(supervisor \\ __MODULE__, child_id) do
-    list_children(supervisor)
-    |> Enum.map(&{&1, CartServer.get_state(&1)})
-    |> Enum.find(fn {_pid, state} -> state.id == child_id end)
+  @spec get_child(binary()) :: {pid(), map()} | nil
+  def get_child(child_id) do
+    case Registry.lookup(Registry.Cart, child_id) do
+      [] ->
+        nil
+
+      [{_pid, _state} = child] ->
+        child
+    end
   end
 
   @doc """
