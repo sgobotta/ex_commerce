@@ -7,6 +7,10 @@ defmodule ExCommerce.CheckoutTest do
   describe "order_items" do
     alias ExCommerce.Checkout.OrderItem
 
+    alias ExCommerce.Marketplaces.Brand
+
+    alias ExCommerce.BrandsFixtures
+
     import ExCommerce.CheckoutFixtures
 
     @invalid_attrs %{

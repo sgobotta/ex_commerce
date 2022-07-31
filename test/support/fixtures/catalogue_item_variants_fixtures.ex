@@ -4,9 +4,10 @@ defmodule ExCommerce.CatalogueItemVariantsFixtures do
   `ExCommerce.Offerings.CatalogueItemVariant` context.
   """
 
-  alias ExCommerce.CatalogueItemsFixtures
   alias ExCommerce.Offerings
-  alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemVariant}
+  alias ExCommerce.Offerings.CatalogueItemVariant
+
+  import ExCommerce.FixtureHelpers
 
   @valid_attrs %{
     code: "some code",
@@ -25,7 +26,7 @@ defmodule ExCommerce.CatalogueItemVariantsFixtures do
   def invalid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@invalid_attrs)
 
   def create(attrs \\ %{}) do
-    attrs = assign_catalogue_item_maybe(attrs)
+    attrs = maybe_assign_catalogue_item(attrs)
 
     {:ok, %CatalogueItemVariant{} = catalogue_item_variant} =
       attrs
@@ -33,16 +34,5 @@ defmodule ExCommerce.CatalogueItemVariantsFixtures do
       |> Offerings.create_catalogue_item_variant()
 
     catalogue_item_variant
-  end
-
-  defp assign_catalogue_item_maybe(attrs) do
-    case Map.has_key?(attrs, :catalogue_item_id) do
-      false ->
-        %CatalogueItem{id: catalogue_item_id} = CatalogueItemsFixtures.create()
-        Map.merge(attrs, %{catalogue_item_id: catalogue_item_id})
-
-      true ->
-        attrs
-    end
   end
 end

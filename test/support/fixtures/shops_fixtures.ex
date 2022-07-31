@@ -8,6 +8,8 @@ defmodule ExCommerce.ShopsFixtures do
   alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.{Brand, Shop}
 
+  import ExCommerce.FixtureHelpers
+
   @valid_attrs %{
     name: "some name",
     slug: "some-slug",
@@ -57,25 +59,13 @@ defmodule ExCommerce.ShopsFixtures do
   def invalid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@invalid_attrs)
 
   def create(attrs \\ %{}) do
-    attrs = assign_brand_maybe(attrs)
-
     {:ok, %Shop{} = shop} =
       attrs
+      |> maybe_assign_brand()
       |> Enum.into(valid_attrs())
       |> Marketplaces.create_shop()
 
     shop
-  end
-
-  defp assign_brand_maybe(attrs) do
-    case Map.has_key?(attrs, :brand_id) do
-      false ->
-        %Brand{id: brand_id} = BrandsFixtures.create()
-        Map.merge(attrs, %{brand_id: brand_id})
-
-      true ->
-        attrs
-    end
   end
 
   defp unique_shop_name, do: "shop#{System.unique_integer()}"

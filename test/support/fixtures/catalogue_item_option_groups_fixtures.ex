@@ -4,10 +4,10 @@ defmodule ExCommerce.CatalogueItemOptionGroupsFixtures do
   `ExCommerce.Offerings.CatalogueItemOptionGroup` context.
   """
 
-  alias ExCommerce.BrandsFixtures
-  alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.CatalogueItemOptionGroup
+
+  import ExCommerce.FixtureHelpers
 
   @valid_attrs %{
     mandatory: true,
@@ -39,24 +39,12 @@ defmodule ExCommerce.CatalogueItemOptionGroupsFixtures do
   def invalid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@invalid_attrs)
 
   def create(attrs \\ %{}) do
-    attrs = assign_brand_maybe(attrs)
-
     {:ok, %CatalogueItemOptionGroup{} = catalogue_item_option_group} =
       attrs
+      |> maybe_assign_brand()
       |> Enum.into(@valid_attrs)
       |> Offerings.create_catalogue_item_option_group()
 
     catalogue_item_option_group
-  end
-
-  defp assign_brand_maybe(attrs) do
-    case Map.has_key?(attrs, :brand_id) do
-      false ->
-        %Brand{id: brand_id} = BrandsFixtures.create()
-        Map.merge(attrs, %{brand_id: brand_id})
-
-      true ->
-        attrs
-    end
   end
 end
