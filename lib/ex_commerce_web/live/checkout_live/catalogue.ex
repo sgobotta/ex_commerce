@@ -10,6 +10,9 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
+  # alias ExCommerce.Checkout
+  alias ExCommerce.Checkout.Cart
+
   alias ExCommerce.Offerings
 
   alias ExCommerce.Offerings.{
@@ -79,7 +82,9 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
 
   @impl true
   def handle_event("checkout_order", _params, socket) do
-    {:noreply, socket}
+    %{cart: %Cart{} = cart} = socket.assigns
+
+    {:noreply, assign(socket, :cart, cart)}
   end
 
   defp valid_order?(catalogue) do

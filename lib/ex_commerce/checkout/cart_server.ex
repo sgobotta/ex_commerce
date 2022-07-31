@@ -6,7 +6,7 @@ defmodule ExCommerce.Checkout.CartServer do
 
   require Logger
 
-  @timeout :timer.seconds(10)
+  @timeout :timer.seconds(3600)
 
   @type order :: map()
   @type state :: %{
@@ -60,7 +60,7 @@ defmodule ExCommerce.Checkout.CartServer do
   def init(init_args) do
     :ok =
       Logger.info(
-        "#{__MODULE__} :: started with pid: #{inspect(self())} args=#{inspect(init_args)}"
+        "#{__MODULE__} :: Started process with pid=#{inspect(self())}, args=#{inspect(init_args)}"
       )
 
     {:ok, initial_state(init_args),
@@ -90,6 +90,11 @@ defmodule ExCommerce.Checkout.CartServer do
 
   @impl GenServer
   def handle_info(:kill, state) do
+    :ok =
+      Logger.info(
+        "#{__MODULE__} :: Terminating process with pid=#{inspect(self())}"
+      )
+
     true = Process.exit(self(), :normal)
 
     {:noreply, state}

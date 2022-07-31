@@ -11,6 +11,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
   alias ExCommerce.Checkout
+  alias ExCommerce.Checkout.Cart
   alias ExCommerce.Checkout.OrderItem
 
   alias ExCommerce.Offerings.{
@@ -164,9 +165,13 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   @impl true
   def handle_event("add_to_order", _params, socket) do
+    %{cart: %Cart{} = cart} = socket.assigns
+
+    %Cart{} = cart = Checkout.add_to_order(cart, %{some: "value"})
+
     IO.puts("ADD ORDER_ITEM TO CART")
 
-    {:noreply, socket}
+    {:noreply, assign(socket, :cart, cart)}
   end
 
   # ----------------------------------------------------------------------------

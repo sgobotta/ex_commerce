@@ -28,7 +28,7 @@
       </div>
     </.link>
     <!-- Cart -->
-    <%= if @cart_visible do %>
+    <%= if @cart_visible && (@cart != nil) do %>
       <.link
         patch={@cart_path}
         class={"
