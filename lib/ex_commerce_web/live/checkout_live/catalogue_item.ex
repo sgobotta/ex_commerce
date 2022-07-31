@@ -165,13 +165,24 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   @impl true
   def handle_event("add_to_order", _params, socket) do
-    %{cart: %Cart{} = cart} = socket.assigns
+    %{changeset: %Ecto.Changeset{} = changeset} = socket.assigns
 
-    %Cart{} = cart = Checkout.add_to_order(cart, %{some: "value"})
+    socket =
+      case valid_form?(changeset) do
+        true ->
+          %{cart: %Cart{} = cart} = socket.assigns
 
-    IO.puts("ADD ORDER_ITEM TO CART")
+          %Cart{} = cart = Checkout.add_to_order(cart, %{some: "value"})
 
-    {:noreply, assign(socket, :cart, cart)}
+          IO.puts("ADD ORDER_ITEM TO CART")
+
+          assign(socket, :cart, cart)
+
+        false ->
+          socket
+      end
+
+    {:noreply, socket}
   end
 
   # ----------------------------------------------------------------------------

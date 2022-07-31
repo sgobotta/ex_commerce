@@ -93,12 +93,6 @@ defmodule ExCommerce.Checkout.Cart do
     %Cart{cart | state: state}
   end
 
-  @spec add_order(t(), map()) :: t()
-  def add_order(%Cart{} = cart, order) do
-    %Cart{} = cart = maybe_start_server(cart)
-    %Cart{cart | order: order}
-  end
-
   @doc """
   Given a #{__MODULE__} struct and an OrderItem, updates the Cart order with the
   order item to return a new #{__MODULE__} struct.
@@ -110,7 +104,7 @@ defmodule ExCommerce.Checkout.Cart do
 
   """
   @spec add_to_order(t(), map()) :: t()
-  def add_to_order(%Cart{order: nil} = cart, order_item) do
+  def add_to_order(%Cart{order: _order} = cart, order_item) do
     %Cart{server: server} = cart = maybe_start_server(cart)
 
     order = CartServer.get_order(server)

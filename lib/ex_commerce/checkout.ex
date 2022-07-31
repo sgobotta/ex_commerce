@@ -17,7 +17,7 @@ defmodule ExCommerce.Checkout do
   """
   @spec add_to_order(Cart.t(), map()) :: Cart.t()
   def add_to_order(%Cart{} = cart, order_item) do
-    Cart.add_order(cart, order_item)
+    Cart.add_to_order(cart, order_item)
   end
 
   # ---------------------------------------------------------------------------
