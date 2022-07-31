@@ -4,28 +4,54 @@ defmodule ExCommerce.Checkout.CartServer do
   """
   use GenServer, restart: :transient
 
-  alias ExCommerce.Checkout.Cart
-
   require Logger
 
-  @kill_after :timer.seconds(10)
+  @timeout :timer.seconds(10)
 
+  @type order :: map()
+  @type state :: %{
+          :id => binary(),
+          :order => order(),
+          :timeout => pos_integer(),
+          :timer_ref => reference() | nil
+        }
+
+  @doc """
+  Given a keyword of arguments, starts a #{GenServer} process linked to the
+  current process.
+  """
+  @spec start_link(keyword()) :: {:ok, pid()}
   def start_link(init_args) do
     GenServer.start_link(__MODULE__, init_args)
   end
 
-  def add_to_order(%Cart{server: pid}, order_item) do
-    GenServer.call(pid, {:add_to_order, order_item})
+  @doc """
+  Given a pid, returns the current order.
+  """
+  @spec get_order(pid()) :: order()
+  def get_order(pid) do
+    GenServer.call(pid, :get_order)
   end
 
-  def get_state(pid) do
-    GenServer.call(pid, :get_state)
+  @doc """
+  Given a #pid and an order, sets the order to the current state.
+  Always returns `:ok`.
+  """
+  @spec set_order(pid(), order()) :: :ok
+  def set_order(pid, order) do
+    GenServer.cast(pid, {:set_order, order})
   end
 
-  def initial_state(id: id) do
+  @doc """
+  Given a keyword of args returns a new map that represents the #{__MODULE__}
+  state.
+  """
+  @spec initial_state(keyword()) :: state()
+  def initial_state(opts) do
     %{
-      id: id,
+      id: Keyword.fetch!(opts, :id),
       order: %{},
+      timeout: Keyword.get(opts, :timeout, @timeout),
       timer_ref: nil
     }
   end
@@ -37,39 +63,45 @@ defmodule ExCommerce.Checkout.CartServer do
         "#{__MODULE__} :: started with pid: #{inspect(self())} args=#{inspect(init_args)}"
       )
 
-    timer_ref = Process.send_after(self(), :kill, @kill_after)
+    {:ok, initial_state(init_args),
+     {:continue, Keyword.fetch!(init_args, :on_start)}}
+  end
 
+  @impl GenServer
+  def handle_continue(on_start, state) do
+    :ok = on_start.(state)
+
+    {:noreply, set_timeout(state)}
+  end
+
+  @impl GenServer
+  def handle_call(:get_order, _from, state) do
+    {:reply, state.order, set_timeout(state)}
+  end
+
+  @impl GenServer
+  def handle_cast({:set_order, order}, state) do
     state =
-      initial_state(init_args)
-      |> Map.put(:timer_ref, timer_ref)
+      set_timeout(state)
+      |> Map.put(:order, order)
 
-    {:ok, state}
-  end
-
-  @impl GenServer
-  def handle_call(:get_state, _from, state) do
-    Logger.info("#{__MODULE__} :: :get_state state=#{inspect(state)}")
-
-    {:reply, state, state}
-  end
-
-  @impl GenServer
-  def handle_call({:add_to_order, order_item}, _from, state) do
-    Logger.info(
-      "#{__MODULE__} :: :add_to_order order_item=#{inspect(order_item)}"
-    )
-
-    state = %{state | order: order_item}
-
-    {:reply, {:ok, state}, state}
+    {:noreply, state}
   end
 
   @impl GenServer
   def handle_info(:kill, state) do
-    :ok = Logger.info("#{__MODULE__} :: killed")
-
     true = Process.exit(self(), :normal)
 
     {:noreply, state}
+  end
+
+  defp set_timeout(%{timeout: timeout, timer_ref: nil} = state) do
+    %{state | timer_ref: Process.send_after(self(), :kill, timeout)}
+  end
+
+  defp set_timeout(%{timeout: timeout, timer_ref: timer_ref} = state) do
+    _timeleft = Process.cancel_timer(timer_ref)
+
+    %{state | timer_ref: Process.send_after(self(), :kill, timeout)}
   end
 end
