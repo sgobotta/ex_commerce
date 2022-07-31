@@ -9,7 +9,6 @@ defmodule ExCommerceWeb.PlaceLiveTest do
   alias ExCommerce.Marketplaces.Brand
 
   describe "Search" do
-    @tag :wip
     test "[Success] search places", %{conn: conn} do
       {:ok, _index_live, html} =
         live(conn, Routes.place_search_path(conn, :search))
@@ -21,7 +20,6 @@ defmodule ExCommerceWeb.PlaceLiveTest do
   describe "Index" do
     setup [:create_brand]
 
-    @tag :wip
     test "[Success] lists all places", %{
       conn: conn,
       brand: %Brand{slug: slug}
@@ -40,7 +38,6 @@ defmodule ExCommerceWeb.PlaceLiveTest do
       :assoc_brand_shop
     ]
 
-    @tag :wip
     test "[Success] displays brand", %{
       conn: conn,
       brand: %Brand{slug: brand_slug},
