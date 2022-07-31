@@ -13,6 +13,8 @@ defmodule ExCommerce.Offerings.RelationsFixtures do
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.Relations
 
+  import ExCommerce.FixtureHelpers
+
   @valid_attrs %{visible: true}
   @update_attrs %{visible: false}
   @invalid_attrs %{visible: nil}
@@ -63,5 +65,23 @@ defmodule ExCommerce.Offerings.RelationsFixtures do
       |> Relations.create_catalogue_category()
 
     catalogue_category
+  end
+
+  @doc """
+  Generate a catalogue_item_option_group_item
+  """
+  @spec catalogue_item_option_group_item_fixture(map()) ::
+          Relations.CatalogueItemOptionGroupItem
+  def catalogue_item_option_group_item_fixture(attrs \\ %{}) do
+    {:ok,
+     %Relations.CatalogueItemOptionGroupItem{} =
+       catalogue_item_option_group_item} =
+      attrs
+      |> maybe_assign_catalogue_item_option_group()
+      |> maybe_assign_catalogue_item()
+      |> Enum.into(@valid_attrs)
+      |> Relations.create_catalogue_item_option_item()
+
+    catalogue_item_option_group_item
   end
 end
