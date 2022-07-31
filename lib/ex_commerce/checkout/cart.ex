@@ -2,7 +2,7 @@ defmodule ExCommerce.Checkout.Cart do
   @moduledoc false
 
   alias __MODULE__
-  alias ExCommerce.Checkout.CartSupervisor
+  alias ExCommerce.Checkout.{CartServer, CartSupervisor}
 
   @type state :: map() | nil
 
@@ -60,7 +60,7 @@ defmodule ExCommerce.Checkout.Cart do
 
   ## Examples:
 
-      iex> set_server(cart, self())
+      iex> set_server(%Cart{}, self())
       %ExCommerce.Checkout.Cart{
         id: "caf6c585d9ba724539d27b301a5ebd22e904fa5023cc1f888adc13529898e5ea",
         order: nil,
@@ -79,7 +79,7 @@ defmodule ExCommerce.Checkout.Cart do
 
   ## Examples:
 
-      iex> set_state(cart, %{some: "value"})
+      iex> set_state(%Cart{}, %{some: "value"})
       %ExCommerce.Checkout.Cart{
         id: "caf6c585d9ba724539d27b301a5ebd22e904fa5023cc1f888adc13529898e5ea",
         order: nil,
@@ -93,12 +93,55 @@ defmodule ExCommerce.Checkout.Cart do
     %Cart{cart | state: state}
   end
 
+  @spec add_order(t(), map()) :: t()
+  def add_order(%Cart{} = cart, order) do
+    %Cart{} = cart = maybe_start_server(cart)
+    %Cart{cart | order: order}
+  end
+
+  @doc """
+  Given a #{__MODULE__} struct and an OrderItem, updates the Cart order with the
+  order item to return a new #{__MODULE__} struct.
+
+  ## Examples:
+
+      iex> add_to_order(%Cart{}, %{id: "some id})
+      %Cart{order: %{order_items: [%{id: "some id}]]}
+
+  """
+  @spec add_to_order(t(), map()) :: t()
+  def add_to_order(%Cart{order: nil} = cart, order_item) do
+    %Cart{server: server} = cart = maybe_start_server(cart)
+
+    order = CartServer.get_order(server)
+
+    # TODO: Add item to %Order{}
+    order_items = Map.get(order, :order_items, [])
+    order = Map.put(order, :order_items, order_items ++ [order_item])
+
+    :ok = CartServer.set_order(server, order)
+
+    %Cart{cart | order: order}
+  end
+
+  defp maybe_start_server(%Cart{id: id} = cart) do
+    case maybe_get_server(cart) do
+      %Cart{server: nil} ->
+        {:ok, server_pid} = CartSupervisor.start_child(CartSupervisor, id: id)
+        %Cart{cart | server: server_pid}
+
+      %Cart{} = cart ->
+        cart
+    end
+  end
+
   defp maybe_get_server(%Cart{id: id} = cart) do
     case CartSupervisor.get_child(id) do
       nil ->
         %Cart{cart | server: nil}
 
       {pid, state} ->
+        # Send tick to pid
         %Cart{cart | server: pid, state: state}
     end
   end
