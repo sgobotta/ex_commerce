@@ -49,13 +49,20 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
       catalogue_item_option.temp_id || attrs["temp_id"]
     )
     |> cast(attrs, @fields ++ @foreign_fields ++ @virtual_fields)
-    # Removed to put structs in form params
-    # |> cast_assoc(:catalogue_item)
-    # |> cast_assoc(:catalogue_item_variant)
     |> validate_required(@fields ++ @foreign_fields)
     |> validate_number(:price_modifier, greater_than_or_equal_to: 0)
     |> maybe_mark_for_deletion()
     |> maybe_build_price_preview(attrs)
+  end
+
+  @doc """
+  Given a `:price` and a `:price_modifier`, returns the applied price.
+  """
+  @spec apply_discount(Decimal.t(), Decimal.t()) :: Decimal.t()
+  def apply_discount(price, price_modifier) do
+    format_price(
+      Decimal.sub(price, Decimal.mult(price, Decimal.div(price_modifier, 100)))
+    )
   end
 
   defp maybe_mark_for_deletion(%{data: %{id: nil}} = changeset), do: changeset
@@ -106,10 +113,4 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
   end
 
   defp maybe_build_price_preview(changeset, _attrs), do: changeset
-
-  def apply_discount(price, price_modifier) do
-    format_price(
-      Decimal.sub(price, Decimal.mult(price, Decimal.div(price_modifier, 100)))
-    )
-  end
 end
