@@ -95,7 +95,7 @@ defmodule ExCommerce.FixtureHelpers do
     do:
       maybe_assign(
         attrs,
-        :catalogue_item_option_group_id,
+        :catalogue_item_variant_id,
         CatalogueItemVariant,
         CatalogueItemVariantsFixtures
       )
