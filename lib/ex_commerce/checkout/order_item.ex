@@ -17,8 +17,8 @@ defmodule ExCommerce.Checkout.OrderItem do
   @foreign_key_type :binary_id
   schema "order_items" do
     field :quantity, :integer
-    field :catalogue_item_id, :binary
-    field :variant_id, :binary
+    field :catalogue_item_id, :binary_id
+    field :variant_id, :binary_id
     field :price, :decimal
     field :variants, {:array, :map}, virtual: true, default: []
     field :option_groups, :map, default: %{}

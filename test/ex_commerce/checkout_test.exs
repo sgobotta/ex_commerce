@@ -31,9 +31,14 @@ defmodule ExCommerce.CheckoutTest do
     end
 
     test "create_order_item/1 with valid data creates a order_item" do
+      %OrderItem{
+        catalogue_item_id: catalogue_item_id,
+        variant_id: variant_id
+      } = order_item_fixture()
+
       valid_attrs = %{
-        catalogue_item_id: "some catalogue_item_id",
-        variant_id: "some variant_id",
+        catalogue_item_id: catalogue_item_id,
+        variant_id: variant_id,
         quantity: 1,
         price: ExCommerceNumeric.format_price(32.2)
       }
@@ -41,8 +46,8 @@ defmodule ExCommerce.CheckoutTest do
       assert {:ok, %OrderItem{} = order_item} =
                Checkout.create_order_item(valid_attrs)
 
-      assert order_item.catalogue_item_id == "some catalogue_item_id"
-      assert order_item.variant_id == "some variant_id"
+      assert order_item.catalogue_item_id == catalogue_item_id
+      assert order_item.variant_id == variant_id
     end
 
     test "create_order_item/1 with invalid data returns error changeset" do
@@ -51,19 +56,24 @@ defmodule ExCommerce.CheckoutTest do
     end
 
     test "update_order_item/2 with valid data updates the order_item" do
-      order_item = order_item_fixture()
+      %OrderItem{} = order_item = order_item_fixture()
+
+      %OrderItem{
+        catalogue_item_id: catalogue_item_id,
+        variant_id: variant_id
+      } = order_item_fixture()
 
       update_attrs = %{
-        catalogue_item_id: "some updated catalogue_item_id",
-        variant_id: "some updated variant_id",
+        catalogue_item_id: catalogue_item_id,
+        variant_id: variant_id,
         quantity: 2
       }
 
       assert {:ok, %OrderItem{} = order_item} =
                Checkout.update_order_item(order_item, update_attrs)
 
-      assert order_item.catalogue_item_id == "some updated catalogue_item_id"
-      assert order_item.variant_id == "some updated variant_id"
+      assert order_item.catalogue_item_id == catalogue_item_id
+      assert order_item.variant_id == variant_id
     end
 
     test "update_order_item/2 with invalid data returns error changeset" do
