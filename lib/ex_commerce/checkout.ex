@@ -33,6 +33,7 @@ defmodule ExCommerce.Checkout do
       [%OrderItem{}, ...]
 
   """
+  @spec list_order_items() :: [OrderItem.t()]
   def list_order_items do
     Repo.all(OrderItem)
   end
@@ -51,6 +52,7 @@ defmodule ExCommerce.Checkout do
       ** (Ecto.NoResultsError)
 
   """
+  @spec get_order_item!(binary()) :: OrderItem.t()
   def get_order_item!(id), do: Repo.get!(OrderItem, id)
 
   @doc """
@@ -65,6 +67,8 @@ defmodule ExCommerce.Checkout do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec create_order_item(map()) ::
+          {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
   def create_order_item(attrs \\ %{}) do
     %OrderItem{}
     |> OrderItem.changeset(attrs)
@@ -83,6 +87,8 @@ defmodule ExCommerce.Checkout do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec update_order_item(OrderItem.t(), map()) ::
+          {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
   def update_order_item(%OrderItem{} = order_item, attrs) do
     order_item
     |> OrderItem.changeset(attrs)
@@ -101,6 +107,8 @@ defmodule ExCommerce.Checkout do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec delete_order_item(OrderItem.t()) ::
+          {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
   def delete_order_item(%OrderItem{} = order_item) do
     Repo.delete(order_item)
   end
@@ -114,6 +122,7 @@ defmodule ExCommerce.Checkout do
       %Ecto.Changeset{data: %OrderItem{}}
 
   """
+  @spec change_order_item(OrderItem.t(), map()) :: Ecto.Changeset.t()
   def change_order_item(%OrderItem{} = order_item, attrs \\ %{}) do
     OrderItem.changeset(order_item, attrs)
   end

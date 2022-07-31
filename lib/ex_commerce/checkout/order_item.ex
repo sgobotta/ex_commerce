@@ -11,6 +11,8 @@ defmodule ExCommerce.Checkout.OrderItem do
     CatalogueItemVariant
   }
 
+  @type t :: %__MODULE__{}
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "order_items" do
