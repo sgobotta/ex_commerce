@@ -3,6 +3,7 @@ defmodule ExCommerce.Checkout.OrderItem do
   The OrderItem schema
   """
   use Ecto.Schema
+
   import Ecto.Changeset
 
   alias ExCommerce.Offerings.{
@@ -10,6 +11,8 @@ defmodule ExCommerce.Checkout.OrderItem do
     CatalogueItemOptionGroup,
     CatalogueItemVariant
   }
+
+  alias ExCommerce.Checkout.Order
 
   @type t :: %__MODULE__{}
 
@@ -23,6 +26,8 @@ defmodule ExCommerce.Checkout.OrderItem do
     field :variants, {:array, :map}, virtual: true, default: []
     field :option_groups, :map, default: %{}
     field :available_option_groups, {:array, :map}, virtual: true, default: []
+
+    belongs_to :order, Order, type: :binary_id
 
     timestamps()
   end

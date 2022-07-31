@@ -3,7 +3,10 @@ defmodule ExCommerce.Checkout.Order do
   The Order schema
   """
   use Ecto.Schema
+
   import Ecto.Changeset
+
+  alias ExCommerce.Checkout.OrderItem
 
   @type t :: %__MODULE__{}
 
@@ -17,6 +20,8 @@ defmodule ExCommerce.Checkout.Order do
     field :buyer_name, :string
     field :address, :string
     field :note, :string
+
+    has_many :order_items, OrderItem, on_delete: :delete_all
 
     timestamps()
   end

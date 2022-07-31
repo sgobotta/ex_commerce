@@ -14,6 +14,12 @@ defmodule ExCommerce.Repo.Migrations.CreateOrders do
       add :address, :string
       add :note, :string
 
+      add :order_items,
+          references(:order_items,
+            on_delete: :nothing,
+            type: :binary_id
+          )
+
       timestamps()
     end
 
