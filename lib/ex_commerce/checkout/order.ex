@@ -14,13 +14,31 @@ defmodule ExCommerce.Checkout.Order do
     field :shop_id, :binary_id
     field :catalogue_id, :binary_id
 
+    field :buyer_name, :string
+    field :address, :string
+    field :note, :string
+
     timestamps()
   end
 
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:brand_id, :shop_id, :catalogue_id])
-    |> validate_required([:brand_id, :shop_id, :catalogue_id])
+    |> cast(attrs, [
+      :brand_id,
+      :shop_id,
+      :catalogue_id,
+      :buyer_name,
+      :address,
+      :note
+    ])
+    |> validate_required([
+      :brand_id,
+      :shop_id,
+      :catalogue_id,
+      :buyer_name,
+      :address,
+      :note
+    ])
   end
 end

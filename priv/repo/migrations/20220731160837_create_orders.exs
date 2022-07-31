@@ -10,6 +10,10 @@ defmodule ExCommerce.Repo.Migrations.CreateOrders do
       add :catalogue_id,
           references(:catalogues, on_delete: :nothing, type: :binary_id)
 
+      add :buyer_name, :string
+      add :address, :string
+      add :note, :string
+
       timestamps()
     end
 

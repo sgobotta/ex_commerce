@@ -108,12 +108,16 @@ defmodule ExCommerce.CheckoutTest do
 
     import ExCommerce.CheckoutFixtures
 
-    @valid_attrs %{}
+    @valid_attrs %{
+      buyer_name: "some buyer name",
+      address: "some address",
+      note: "some note"
+    }
 
     @invalid_attrs %{
-      brand_id: nil,
-      shop_id: nil,
-      catalogue_id: nil
+      buyer_name: nil,
+      address: nil,
+      note: nil
     }
 
     setup do

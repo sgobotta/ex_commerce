@@ -13,7 +13,7 @@ defmodule ExCommerce.CheckoutFixtures do
   import ExCommerce.FixtureHelpers
 
   @doc """
-  Generate a order_item.
+  Generate an order_item.
   """
   def order_item_fixture(attrs \\ %{}) do
     {:ok, %OrderItem{} = order_item} =
@@ -29,8 +29,33 @@ defmodule ExCommerce.CheckoutFixtures do
     order_item
   end
 
+  @valid_order_attrs %{
+    buyer_name: "some buyer name",
+    address: "some address",
+    note: "some note"
+  }
+  @update_order_attrs %{
+    buyer_name: "some updated buyer name",
+    address: "some updated address",
+    note: "some updated note"
+  }
+  @invalid_order_attrs %{
+    buyer_name: nil,
+    address: nil,
+    note: nil
+  }
+
+  def valid_order_attrs(attrs \\ %{}),
+    do: attrs |> Enum.into(@valid_order_attrs)
+
+  def update_order_attrs(attrs \\ %{}),
+    do: attrs |> Enum.into(@update_order_attrs)
+
+  def invalid_order_attrs(attrs \\ %{}),
+    do: attrs |> Enum.into(@invalid_order_attrs)
+
   @doc """
-  Generate a order.
+  Generate an order.
   """
   def order_fixture(attrs \\ %{}) do
     attrs =
@@ -41,7 +66,7 @@ defmodule ExCommerce.CheckoutFixtures do
 
     {:ok, %Order{} = order} =
       attrs
-      |> Enum.into(%{})
+      |> Enum.into(valid_order_attrs(attrs))
       |> ExCommerce.Checkout.create_order()
 
     order
