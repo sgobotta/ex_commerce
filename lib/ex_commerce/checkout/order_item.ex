@@ -25,7 +25,10 @@ defmodule ExCommerce.Checkout.OrderItem do
     field :price, :decimal
     field :variants, {:array, :map}, virtual: true, default: []
     field :option_groups, :map, default: %{}
-    field :available_option_groups, {:array, :map}, virtual: true, default: []
+
+    field :available_option_groups, :map,
+      virtual: true,
+      default: %{values: [], rules: []}
 
     belongs_to :order, Order, type: :binary_id
 
