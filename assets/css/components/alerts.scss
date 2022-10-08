@@ -1,0 +1,25 @@
+@layer components {
+  .base-alert {
+    @apply rounded-md p-4 fixed top-1 right-1 md:w-6/12 w-full z-50;
+  }
+
+  .base-alert-container {
+    @apply flex justify-between items-center space-x-3;
+  }
+
+  .base-alert-icon {
+    @apply w-9 h-9;
+  }
+
+  .base-alert-text {
+    @apply flex-1 text-2xl font-medium;
+  }
+
+  .base-alert-close-button {
+    @apply inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .base-alert-close-icon {
+    @apply w-4 h-4;
+  }
+}

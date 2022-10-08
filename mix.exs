@@ -63,7 +63,7 @@ defmodule ExCommerce.MixProject do
       {:phoenix_html, "~> 3.1.0"},
       {:phoenix_live_reload, "~> 1.3.3", only: :dev},
       {:phoenix_live_dashboard, "~> 0.6.2"},
-      {:phoenix_live_view, "~> 0.17.5"},
+      {:phoenix_live_view, "~> 0.17.6"},
       {:floki, ">= 0.30.0"},
       {:telemetry_metrics, "~> 0.6.1"},
       {:telemetry_poller, "~> 0.5"},
@@ -79,6 +79,7 @@ defmodule ExCommerce.MixProject do
       {:ex_cldr_numbers, "~> 2.24"},
       # Web Helpers
       {:phoenix_inline_svg, "~> 1.4"},
+      {:heroicons, "~> 0.2.2"},
       # Assets handling deps
       {:cloudex,
        git: "https://github.com/sgobotta/cloudex.git", branch: "main"},
@@ -128,6 +129,7 @@ defmodule ExCommerce.MixProject do
       # Build the web client
       "assets.deploy": [
         "cmd npm install --prefix assets",
+        "cmd npm run compile:tailwind --prefix assets",
         "cmd npm run deploy --prefix assets",
         "phx.digest"
       ]

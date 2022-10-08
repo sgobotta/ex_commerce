@@ -15,8 +15,10 @@ defmodule ExCommerceWeb.ModalComponent do
       phx-target={"##{@id}"}
       phx-page-loading>
 
-      <div class="phx-modal-content card">
-        <%= live_close(@opts) %>
+      <div class="phx-modal-content p-0 card relative">
+        <div class="absolute right-0 p-2">
+          <%= live_close(@opts) %>
+        </div>
         <%= live_component(%{
               id: @id,
               module: Keyword.get(@opts, :component)

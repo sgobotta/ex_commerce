@@ -9,6 +9,7 @@ defmodule ExCommerceWeb.MountHelpers do
   alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.{Brand, Shop}
+  alias ExCommerce.Offerings
 
   alias ExCommerce.Offerings.{
     Catalogue,
@@ -36,6 +37,24 @@ defmodule ExCommerceWeb.MountHelpers do
   def assign_defaults(socket, params, session) do
     socket
     |> assign_user(session)
+    |> assign_locale()
+    |> assign_timezone()
+    |> assign_timezone_offset()
+    |> assign_navigation_helpers(params)
+  end
+
+  @spec assign_public_defaults(
+          Phoenix.LiveView.Socket.t(),
+          any,
+          nil | maybe_improper_list | map
+        ) :: any
+  @doc """
+  Mount helper to assign defaults values to the socket. Includes: `%User{}` and
+  browser locale, timezone and timezone offset.
+  """
+  def assign_public_defaults(socket, params, _session) do
+    socket
+    |> assign_user(%{})
     |> assign_locale()
     |> assign_timezone()
     |> assign_timezone_offset()
@@ -108,6 +127,76 @@ defmodule ExCommerceWeb.MountHelpers do
                 ]
               ]
             ]
+          )
+        )
+    end
+  end
+
+  def assign_catalogue_by_id_or_redirect(socket, catalogue_id) do
+    case Offerings.get_catalogue(catalogue_id) do
+      nil ->
+        redirect_with_flash(
+          socket,
+          to:
+            Routes.place_show_path(
+              socket,
+              :show,
+              socket.assigns.brand.id,
+              socket.assigns.shop.id
+            ),
+          kind: :info,
+          message: gettext("Choose a catalogue")
+        )
+
+      %Catalogue{} = catalogue ->
+        socket
+        |> assign(
+          :catalogue,
+          Repo.preload(
+            catalogue,
+            categories: [
+              items: [
+                option_groups: [],
+                photos: [],
+                variants: []
+              ]
+            ]
+          )
+        )
+    end
+  end
+
+  def assign_catalogue_item_by_id_or_redirect(socket, catalogue_item_id) do
+    case Offerings.get_catalogue_item(catalogue_item_id) do
+      nil ->
+        redirect_with_flash(
+          socket,
+          to:
+            Routes.place_show_path(
+              socket,
+              :show_catalogue,
+              socket.assigns.brand.id,
+              socket.assigns.shop.id,
+              socket.assigns.catalogue.id
+            ),
+          kind: :info,
+          message:
+            gettext("The item could not be found, please choose another one.")
+        )
+
+      %CatalogueItem{} = catalogue_item ->
+        socket
+        |> assign(
+          :catalogue_item,
+          Repo.preload(
+            catalogue_item,
+            option_groups: [
+              options: [
+                catalogue_item_variant: [:catalogue_item]
+              ]
+            ],
+            photos: [],
+            variants: []
           )
         )
     end

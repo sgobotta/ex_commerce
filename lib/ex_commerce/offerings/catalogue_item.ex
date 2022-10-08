@@ -22,6 +22,8 @@ defmodule ExCommerce.Offerings.CatalogueItem do
 
   alias ExCommerce.Uploads
 
+  @type t :: %__MODULE__{}
+
   @fields [:code, :name, :description]
   @foreign_fields [:brand_id]
 

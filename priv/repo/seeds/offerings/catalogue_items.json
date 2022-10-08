@@ -1,35 +1,90 @@
 [
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
-    "id": "c4df5917-9ba3-457f-b27e-3efd5e5c5edc",
-    "code": "BEER-000",
-    "name": "Indian Pale Ale",
-    "description": "Characterized by floral, fruity, citrus-like, piney or resinous American-variety hop character, the IPA beer style is all about hop flavor, aroma and bitterness.",
+    "id": "969eb47a-aeec-486a-8d63-e341388520f3",
+    "code": "TOAST-AVOCADO-EGG",
+    "name": "Avocado Egg Toast",
+    "description": "Healthy avocaddo toast. A protein poacked breakfast with eggs and avocado.",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
   },
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
-    "id": "0f8f8614-47bf-4710-871d-5c65bdb58a38",
-    "code": "BEER-001",
-    "name": "American Pale Ale",
-    "description": "Characterized by floral, fruity, citrus-like, piney, resinous American hops, the American pale ale is a medium-bodied beer with low to medium caramel, and carries with it a toasted maltiness.",
+    "id": "eded4b96-c714-4a4d-9c20-cfd457332b2b",
+    "code": "TOAST-MISHROOM-HUMMUS",
+    "name": "Mushroom Hummus Toast",
+    "description": "This mushroom hummus toast is a great start to the day! Piled high with sauteed mushrooms, herbs, and a big schmear of hummus.",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
   },
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
-    "id": "fffa1a42-c59e-474c-b87f-6fb2402bf209",
-    "code": "BEER-002",
-    "name": "Scotch Ale",
-    "description": "Overwhelmingly malty, with a rich and dominant sweet malt flavor and aroma.",
+    "id": "9a872244-b3ff-4f1f-93b9-f4b4725f8c5a",
+    "code": "TOAST-BANANA-GRANOLA",
+    "name": "Banana Toast with Granola and Honey",
+    "description": "For those in need of a quick and healthy fast meal for morning breakfast.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "8ed9c412-fcaf-46de-966c-f70cd8f15465",
+    "code": "TOAST-SMASHED-AVOCADO",
+    "name": "Smashed Avocado Toast With Watermelon Radish",
+    "description": "Made with a crusty sourdough bread.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "9215063a-80e5-4927-9b4f-089eaafad168",
+    "code": "SANDWICH-BLT",
+    "name": "BLT",
+    "description": "A Southern classic served with hickory smoked bacon, tomato, lettuce and Duke’s mayonnaise.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "746a84ea-b063-4343-b3de-25bcad2b3271",
+    "code": "SANDWICH-VEGGIE-LOAF",
+    "name": "Veggie Loaf",
+    "description": "Topped with Swiss cheese anD sweet & spicy bbq sauce.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "2ae30967-27a9-43e1-96b7-3c25579ab8fc",
+    "code": "SANDWICH-SMOKED-TURKEY-CLUB",
+    "name": "Smoked Turkey Club",
+    "description": "Avocado, lettuce, tomato, bacon and onion jam, Dijon aioli.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "26b86013-6378-4aee-b3b5-46805b1f6c53",
+    "code": "SANDWICH-JACKFRUIT-PULLED-PORK",
+    "name": "Jackfruit Pulled Pork",
+    "description": "Vegan twist on a BBQ sandwich with “vegan slaw”.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "01692e87-7b4d-4a3e-a3f7-410f3955d2ea",
+    "code": "SANDWICH-SMOKED-PEPPER-PORK",
+    "name": "Smoked salt and pepper pork belly, Cheerwine blackberry glaze and swiss cheese.",
+    "description": "A Southern classic served with hickory smoked bacon, tomato, lettuce and Duke’s mayonnaise.",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
   },
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
     "id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
-    "code": "FINGERFOOD-00",
+    "code": "FINGERFOOD-FRIED-POTATOES",
     "name": "Fried potatoes",
     "description": "Just fried potatoes",
     "inserted_at": "2020-11-15 22:13:29",
@@ -38,7 +93,7 @@
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
     "id": "42cf48ab-4fb0-47cc-9e9e-fd04f4368179",
-    "code": "FINGERFOOD-01",
+    "code": "FINGERFOOD-SPICY-POTATOES",
     "name": "Spicy fried potatoes",
     "description": "Fried potatoes with chili sauce",
     "inserted_at": "2020-11-15 22:13:29",
@@ -47,16 +102,100 @@
   {
     "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
     "id": "110ec880-b01c-4db7-b0f1-b156b43214d0",
-    "code": "FINGERFOOD-02",
+    "code": "FINGERFOOD-MOZZARELLA-STICKS",
     "name": "Mozzarella sticks",
     "description": "Mozzarella sticks with special mayonnaise",
     "inserted_at": "2020-11-15 22:13:29",
     "updated_at": "2020-11-17 14:15:00"
   },
+
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "4461401c-868e-4db9-a45d-3461d771234c",
+    "code": "DESSERT-POPCORN-PIMP-CHEESECAKE",
+    "name": "Popcorn Pimp Cheesecake",
+    "description": "Rich. Smooth. Airy... Just how we like our men. Vanilla Bean Cheesecake. Sugar Cookie Dough Crust. Salted Popcorn Chocolate Bark. Caramel Saucy.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "d127fcac-4bba-41a0-8e1c-f86d7d247bc2",
+    "code": "DESSERT-RED-VELVET-SHEETS",
+    "name": "Between My Red Velvet Sheets Cheesecake",
+    "description": "Double Chocolate Cookie Dough Bottom. Red Velvet Cheesecake Mounted with Cream Cheese Frosting.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "676943ae-1b1c-42a3-8596-845959dedf47",
+    "code": "DESSERT-CARESS-MY-CARROT",
+    "name": "Caress My Carrot",
+    "description": "Embrace your inner snuggle-bunny and nuzzle up to this smooth carrot cake. Dried cranberries, pineapple, and pecans deep within. Fondled with vanilla-bean cream cheese frosting and a dribble of honey.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "16590eaa-fc7e-4e08-ac05-020c1c229584",
+    "code": "DESSERT-MISSIONARY-CRISP",
+    "name": "Missionary Crisp",
+    "description": "Red Delicious ‘skin-on’ apples. Buttery cake-like layer ”On Top”. Salted Graham Cracker. Vanilla Bean Balls. Caramel.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "93d15ee1-01a0-4fe8-aa8a-a575e2ef30a3",
+    "code": "DESSERT-BLUEBERRY-BIRTHDAY",
+    "name": "Blueberry Birthday Suit",
+    "description": "Buttered up Frenchy toast. Belgian White Chocolate. Spiked Blueberry Compote and Brie Cheesy kind of Mate. Strawberry Champagne Soup.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "bc2761e8-796c-4a42-88af-f6bdd6e563cb",
+    "code": "DESSERT-MAN-FLOWERS",
+    "name": "Man Flowers",
+    "description": "Tall. Dark. Handsome. Proud and Erect Chocolate Stout Cake. Tart Dark Chocolate Frosting. Chocolate Stout Ganache. Irish Cream Ice Cream. Salted Caramel.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "c4df5917-9ba3-457f-b27e-3efd5e5c5edc",
+    "code": "BEER-INDIAN-PALE-ALE",
+    "name": "Indian Pale Ale",
+    "description": "Characterized by floral, fruity, citrus-like, piney or resinous American-variety hop character, the IPA beer style is all about hop flavor, aroma and bitterness.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "0f8f8614-47bf-4710-871d-5c65bdb58a38",
+    "code": "BEER-AMERICAN-PALE-ALE",
+    "name": "American Pale Ale",
+    "description": "Characterized by floral, fruity, citrus-like, piney, resinous American hops, the American pale ale is a medium-bodied beer with low to medium caramel, and carries with it a toasted maltiness.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "brand_id": "25f12246-4639-481a-a7ff-ec487599d320",
+    "id": "fffa1a42-c59e-474c-b87f-6fb2402bf209",
+    "code": "BEER-SCOTCH-ALE",
+    "name": "Scotch Ale",
+    "description": "Overwhelmingly malty, with a rich and dominant sweet malt flavor and aroma.",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
   {
     "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
     "id": "b76e97a4-4187-4e48-b447-96fdd0f71e27",
-    "code": "SANDWICH-00",
+    "code": "SANDWICH-EGGPLANT",
     "name": "Eggplant",
     "description": "Eggplant sandwich with carrot, tomatoes and potatoes",
     "inserted_at": "2020-11-15 22:13:29",
@@ -65,7 +204,7 @@
   {
     "brand_id": "e6977cba-4936-4753-b731-16edddbc8923",
     "id": "1a9e7783-918b-41ff-b12e-c1b1b8279134",
-    "code": "SANDWICH-01",
+    "code": "SANDWICH-MUSHROOM",
     "name": "Mushroom",
     "description": "Spicy Mushrooms with cheese and potatoes",
     "inserted_at": "2020-11-15 22:13:29",

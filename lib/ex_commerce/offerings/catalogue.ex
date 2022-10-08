@@ -18,6 +18,8 @@ defmodule ExCommerce.Offerings.Catalogue do
     Relations
   }
 
+  @type t :: %__MODULE__{}
+
   @fields [:name, :code]
   @foreign_fields [:brand_id]
 

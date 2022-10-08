@@ -50,3 +50,6 @@ rel
 
 # Elixir ls
 .elixir_ls/
+
+# Web client
+tailwind.css

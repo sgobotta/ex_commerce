@@ -11,7 +11,7 @@ defmodule ExCommerceWeb.PlaceLive.Index do
       true ->
         {:ok,
          socket
-         |> assign_defaults(params, session)
+         |> assign_public_defaults(params, session)
          |> assign_brand_by_slug_or_redirect(params)}
 
       false ->

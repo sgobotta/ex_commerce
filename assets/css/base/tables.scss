@@ -1,6 +1,17 @@
 @layer base {
+
+  thead {
+    tr {
+      @apply border-t border-gray-200;
+    }
+
+    th {
+      @apply px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-lg font-medium text-gray-500 uppercase tracking-wider;
+    }
+  }
+
   tbody tr {
-    @apply h-32;
+    @apply h-32 px-6 py-3 text-lg font-medium text-gray-900;
   }
 
   tr td:first-child {

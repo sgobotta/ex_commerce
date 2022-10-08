@@ -1,0 +1,213 @@
+<%= if Phoenix.LiveView.connected?(@socket) do %>
+
+  <div
+    id="mobile-sidebar-container"
+    class="fixed inset-0 flex z-40 lg:hidden"
+    aria-modal="true"
+    style="display: none;"
+    role="region"
+  >
+    <div
+      class="fixed inset-0 bg-gray-600 bg-opacity-75"
+      phx-click={hide_mobile_sidebar()}>
+    </div>
+
+    <div
+      id="mobile-sidebar"
+      class="
+        relative flex-1 flex flex-col max-w-xs w-full
+        pt-5 pb-4
+        bg-white
+        min-h-screen
+      "
+    >
+      <div class="absolute top-0 right-0 -mr-12 pt-2">
+        <button type="button"
+          id="hide-mobile-sidebar"
+          aria-expanded="true"
+          aria-controls="mobile-sidebar"
+          class="
+            ml-1 flex items-center justify-center
+            h-10 w-10
+            rounded-full
+            focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white
+          "
+          phx-click={hide_mobile_sidebar()}
+        >
+          <span class="sr-only"><%= gettext("Close sidebar") %></span>
+          <svg
+            class="h-6 w-6 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex-shrink-0 flex items-center px-4">
+        <.link navigate="#"}>
+          <.icon
+            name={:shopping_bag}
+            class="w-8 h-8 text-blue-500 -mt-2 inline-block"
+            outlined
+          />
+          <span class="h-8 w-auto text-2xl ml-1 font-bold">
+            <%= gettext("ExCommerce") %>
+          </span>
+        </.link>
+      </div>
+      <div class="mt-5 flex-1 h-0 overflow-y-auto">
+        <%= if @current_user do %>
+          <.sidebar_account_dropdown
+            id="mobile-account-dropdown"
+            current_user={@current_user}
+          />
+        <% end %>
+
+        <nav class="px-2">
+          <.main_sidebar_nav_links
+            brand={@brand}
+            current_user={@current_user}
+            active_tab={@active_tab}
+          />
+        </nav>
+      </div>
+    </div>
+
+    <div class="flex-shrink-0 w-14" aria-hidden="true">
+      <!-- Dummy element to force sidebar to shrink to fit close icon -->
+    </div>
+  </div>
+
+  <!-- Static sidebar for desktop -->
+  <div class="base-sidebar hidden" role="region">
+    <div class="
+      base-sidebar-container
+      border-r border-gray-200
+      bg-gray-100
+    ">
+      <div class="flex items-center flex-shrink-0 px-6">
+        <.link navigate="#">
+          <.icon
+            name={:shopping_bag}
+            class="w-8 h-8 text-blue-500 -mt-2 inline-block"
+            outlined
+          />
+          <span class="h-8 w-auto text-2xl ml-1 font-bold">
+            <%= gettext("ExCommerce") %>
+          </span>
+        </.link>
+      </div>
+      <!-- Sidebar component, swap this element with another sidebar if you like -->
+      <div class="h-0 flex-1 flex flex-col overflow-y-auto">
+        <%= if @current_user do %>
+          <.sidebar_account_dropdown
+            id="account-dropdown"
+            current_user={@current_user}
+          />
+        <% end %>
+        <!-- Navigation -->
+        <nav class="px-3 mt-6">        
+          <.main_sidebar_nav_links
+            brand={@brand}
+            current_user={@current_user}
+            active_tab={@active_tab}
+          />
+        </nav>
+      </div>
+    </div>
+  </div>
+  <!-- Main column -->
+  <div class="flex flex-col w-0 flex-1 overflow-hidden">
+    <!-- Mobile Header -->
+    <div
+      class="
+        relative z-10 flex-shrink-0 flex
+        h-16
+        bg-white
+        border-b border-gray-200
+        lg:hidden
+      "
+      role="navigation"
+    >
+      <button type="button"
+        id="show-mobile-sidebar"
+        aria-expanded="false"
+        aria-controls="mobile-sidebar"
+        class="
+          px-4
+          border-r border-gray-200
+          text-gray-500
+          focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500
+          lg:hidden
+        "
+        phx-click={show_mobile_sidebar()}
+      >
+        <span class="sr-only"><%= gettext("Open sidebar") %></span>
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round" stroke-linejoin="round"
+            stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"
+          ></path>
+        </svg>
+      </button>
+      <div class="flex-1 flex justify-between px-4 sm:px-6 lg:px-8">
+        <div class="flex-1 flex items-center">
+          <%= gettext("ExCommerce") %>
+        </div>
+        <%= if @current_user do %>
+          <div class="flex items-center">
+            <!-- Profile dropdown TODO -->
+            <div class="ml-3 relative">
+              <div>
+                <button
+                  type="button"
+                  class="
+                    max-w-xs
+                    bg-white
+                    flex items-center
+                    text-sm rounded-full
+                    focus:outline-none focus:ring-2 focus:ring-offset-2
+                    focus:ring-blue-500
+                  "
+                  id="user-menu-button" @click="open = true"
+                  aria-expanded="false" aria-haspopup="true"
+                >
+                  <span class="sr-only"><%= gettext("Open user menu") %></span>
+                  <img class="h-8 w-8 rounded-full"
+                    src={"https://images.unsplash.com/photo-1610397095767-84a5b4736cbd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"}
+                    alt="">
+                </button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <.flash flash={@flash} kind={:info}/>
+    <.flash flash={@flash} kind={:warn}/>
+    <.flash flash={@flash} kind={:error}/>
+    <.connection_status>
+      <%= gettext("Re-establishing connection...") %>
+    </.connection_status>
+
+    <.live_component module={ExCommerceWeb.LayoutComponent} id="layout" />
+
+    <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none">
+      <%= @inner_content %>
+    </main>
+  </div>
+<% end %>

@@ -44,10 +44,19 @@ defmodule ExCommerceWeb do
     end
   end
 
-  def live_view do
+  def live_view(opts \\ []) do
     quote do
-      use Phoenix.LiveView,
-        layout: {ExCommerceWeb.LayoutView, "live.html"}
+      @opts Keyword.merge(
+              [
+                layout: {ExCommerceWeb.LayoutView, "live.html"},
+                container:
+                  {:div,
+                   class: "relative h-screen flex overflow-hidden bg-white"}
+              ],
+              unquote(opts)
+            )
+
+      use Phoenix.LiveView, @opts
 
       import PhoenixInlineSvg.Helpers
 
@@ -98,13 +107,19 @@ defmodule ExCommerceWeb do
       import ExCommerceWeb.ErrorHelpers
       import ExCommerceWeb.Gettext
       import ExCommerceWeb.MountHelpers
+
       alias ExCommerceWeb.Router.Helpers, as: Routes
+      alias Phoenix.LiveView.JS
     end
   end
 
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """
+  defmacro __using__({which, opts}) when is_atom(which) do
+    apply(__MODULE__, which, [opts])
+  end
+
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end

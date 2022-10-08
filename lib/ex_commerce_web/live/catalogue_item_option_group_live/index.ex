@@ -3,7 +3,10 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.Index do
   Lists available catalogue item option groups
   """
 
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+  }
 
   alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Offerings
@@ -53,9 +56,9 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.Index do
     {:noreply,
      socket
      |> put_flash(
-       :info,
+       :warn,
        gettext(
-         "Please Manage a brand to continue browsing catalogue item option groups"
+         "Please select a brand to continue browsing catalogue item option groups"
        )
      )
      |> redirect(to: Routes.brand_index_path(socket, :index))}

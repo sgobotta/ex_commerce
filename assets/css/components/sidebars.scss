@@ -1,0 +1,9 @@
+@layer components {
+  .base-sidebar {
+    @apply lg:flex lg:flex-shrink-0 w-2/12 #{!important};
+  }
+
+  .base-sidebar-container {
+    @apply flex flex-col pt-5 pb-4 w-full #{!important};
+  }
+}

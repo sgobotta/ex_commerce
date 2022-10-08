@@ -12,13 +12,7 @@
     %>
   <% end %>
 
-  <%= render_layout(
-        ExCommerceWeb.DashboardView,
-        "dashboard",
-        [current_page: "shops", user_email: @user.email, brand: @brand]
-      )
-  do %>
-
+  <div class="p-12">
     <h1>
       <%= gettext("My Shops") %>
     </h1>
@@ -51,7 +45,6 @@
     <span>
       <%= live_patch "+", to: Routes.shop_index_path(@socket, :new, @brand.id), class: "button" %>
     </span>
-
-  <% end %>
+  </div>
 
 <% end %>

@@ -22,12 +22,7 @@
       redirect_to: @redirect_to %>
   <% end %>
 
-  <%= render_layout(
-      ExCommerceWeb.DashboardView,
-      "dashboard",
-      [current_page: "catalogue_item_option_groups", user_email: @user.email, brand: @brand]
-    )
-  do %>
+  <div class="p-12">
 
     <h1><%= gettext("Show Catalogue item option group") %></h1>
 
@@ -69,5 +64,5 @@
     <span><%= live_redirect gettext("Back"), to: Routes.catalogue_item_option_group_index_path(@socket, :index, @brand.id), class: "link" %></span>
 
 
-  <% end %>
+  </div>
 <% end %>

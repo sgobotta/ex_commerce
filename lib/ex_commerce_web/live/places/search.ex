@@ -11,7 +11,7 @@ defmodule ExCommerceWeb.PlaceLive.Search do
       true ->
         {:ok,
          socket
-         |> assign_defaults(params, session)}
+         |> assign_public_defaults(params, session)}
 
       false ->
         {:ok, socket}

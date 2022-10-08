@@ -2,7 +2,10 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.Show do
   @moduledoc """
   Shows a single catalogue item option group
   """
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+  }
 
   @impl true
   def mount(params, session, socket) do

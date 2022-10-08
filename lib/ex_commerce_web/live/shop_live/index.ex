@@ -3,7 +3,10 @@ defmodule ExCommerceWeb.ShopLive.Index do
   Lists available shops
   """
 
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+  }
 
   alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.Brand
@@ -47,8 +50,8 @@ defmodule ExCommerceWeb.ShopLive.Index do
     {:noreply,
      socket
      |> put_flash(
-       :info,
-       gettext("Please Manage a brand to continue browsing shops")
+       :warn,
+       gettext("Please select a brand to continue browsing shops")
      )
      |> redirect(to: Routes.brand_index_path(socket, :index))}
   end

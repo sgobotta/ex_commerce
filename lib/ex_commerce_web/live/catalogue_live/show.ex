@@ -3,7 +3,10 @@ defmodule ExCommerceWeb.CatalogueLive.Show do
   Shows a single catalogue
   """
 
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+  }
 
   @impl true
   def mount(params, session, socket) do

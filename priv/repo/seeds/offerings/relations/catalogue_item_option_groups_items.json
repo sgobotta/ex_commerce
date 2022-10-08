@@ -1,0 +1,47 @@
+[
+  {
+    "visible": true,
+    "catalogue_item_option_group_id": "4bf0d287-311d-48fb-8fa3-d081a898d935",
+    "catalogue_item_id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
+    "catalogue_item_option_group_id": "4bf0d287-311d-48fb-8fa3-d081a898d935",
+    "catalogue_item_id": "42cf48ab-4fb0-47cc-9e9e-fd04f4368179",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
+    "catalogue_item_option_group_id": "4bf0d287-311d-48fb-8fa3-d081a898d935",
+    "catalogue_item_id": "110ec880-b01c-4db7-b0f1-b156b43214d0",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+
+  {
+    "visible": true,
+    "catalogue_item_option_group_id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "catalogue_item_id": "c4df5917-9ba3-457f-b27e-3efd5e5c5edc",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
+    "catalogue_item_option_group_id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "catalogue_item_id": "0f8f8614-47bf-4710-871d-5c65bdb58a38",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
+    "catalogue_item_option_group_id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "catalogue_item_id": "fffa1a42-c59e-474c-b87f-6fb2402bf209",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  }
+]
+
+

@@ -2,7 +2,10 @@ defmodule ExCommerceWeb.BrandLive.Show do
   @moduledoc """
   Shows a single brand
   """
-  use ExCommerceWeb, :live_view
+  use ExCommerceWeb, {
+    :live_view,
+    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+  }
 
   @impl true
   def mount(params, session, socket) do

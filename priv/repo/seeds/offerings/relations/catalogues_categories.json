@@ -1,0 +1,30 @@
+[
+  {
+    "visible": true,
+    "catalogue_id": "c804fb53-fbdb-4e54-9cf2-32c3d648a351",
+    "catalogue_category_id": "45a73e5f-4998-481c-8c4f-f0aa655fb788",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
+    "catalogue_id": "c804fb53-fbdb-4e54-9cf2-32c3d648a351",
+    "catalogue_category_id": "54b67b8e-569f-427a-bd36-8d22d0c31d1a",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
+    "catalogue_id": "c804fb53-fbdb-4e54-9cf2-32c3d648a351",
+    "catalogue_category_id": "d29b0813-2425-49bb-8cce-9c1f241596f4",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
+    "catalogue_id": "c804fb53-fbdb-4e54-9cf2-32c3d648a351",
+    "catalogue_category_id": "6a5919cc-881b-46ec-8a81-5330f60b075f",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  }
+]

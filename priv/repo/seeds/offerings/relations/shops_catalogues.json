@@ -1,0 +1,23 @@
+[
+  {
+    "visible": true,
+    "catalogue_id": "c804fb53-fbdb-4e54-9cf2-32c3d648a351",
+    "shop_id": "f83e31bd-d5c7-4bbf-bddb-56a7ef59f339",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
+    "catalogue_id": "fd5cbc17-2441-449f-ab83-58c79dbb5d37",
+    "shop_id": "f83e31bd-d5c7-4bbf-bddb-56a7ef59f339",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
+    "catalogue_id": "86d8bb3c-d2c2-42aa-b49b-0f7751e35fab",
+    "shop_id": "f83e31bd-d5c7-4bbf-bddb-56a7ef59f339",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  }
+]

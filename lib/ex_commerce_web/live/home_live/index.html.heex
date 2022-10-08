@@ -1,14 +1,86 @@
-<%= if connected?(@socket) do %>
+<div>
+  <div id="welcome" class="l-centered h-screen bg-purple-200">
+    <div class="">
+      Welcome layout
+    </div>
+  </div>
 
-  <%= render_layout(
-        ExCommerceWeb.DashboardView,
-        "dashboard",
-        [current_page: "home", user_email: @user.email, brand: @brand]
-      )
-  do %>
+  <div id="carousel" class="l-centered h-screen-1/4 bg-red-200">
+    <div class="">
+      Corousel (recently added shops)
+    </div>
+  </div>
 
-    <div><%= gettext("Home") %></div>
+  <div id="benefits" class="l-centered h-screen-1/2 bg-yellow-200">
+    <div class="relative">
+      Benefits (cards)
+    </div>
+  </div>
 
-  <% end %>
+  <div id="plans" class="l-centered h-screen-3/4 bg-green-200">
+    <div class="relative">
+      Features/Plans
+    </div>
+  </div>
+</div>
 
-<% end %>
+<footer class="footer bg-gray-800 relative pt-1 border-b-2 border-white">
+  <div class="container mx-auto px-6">
+
+    <div class="sm:flex sm:mt-8">
+      <div class="mt-8 sm:mt-0 sm:w-full sm:px-8 flex flex-col sm:flex-row justify-between text-center sm:text-left">
+
+        <div class="flex flex-col">
+          <span class="font-bold text-white uppercase mb-2"><%= gettext("Social media") %></span>
+          <span class="my-2">
+            <a href="#" class="text-white hover:text-blue-300 link">Instagram</a>
+          </span>
+          <span class="my-2">
+            <a href="#" class="text-white hover:text-blue-300 link">Twitter</a>
+          </span>
+          <span class="my-2">
+            <a href="#" class="text-white hover:text-blue-300 link">Facebook</a>
+          </span>
+        </div>
+
+        <div class="flex flex-col">
+          <span class="font-bold text-white uppercase mt-4 sm:mt-0 mb-2">
+            <%= gettext("Explore") %>
+          </span>
+          <span class="my-2">
+            <a href="#" class="text-white hover:text-blue-300 link">
+              <%= gettext("Home") %>
+            </a>
+          </span>
+          <span class="my-2">
+            <a href="#" class="text-white hover:text-blue-300 link">
+              <%= gettext("Search") %>
+            </a>
+          </span>
+          <span class="my-2">
+            <a href="#" class="text-white hover:text-blue-300 link">
+              <%= gettext("About us") %>
+            </a>
+          </span>
+          <span class="my-2">
+            <a href="#" class="text-white hover:text-blue-300 link">
+              <%= gettext("Help") %>
+            </a>
+          </span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="container">
+    <div class="mt-16 border-t-2 border-gray-300 flex flex-col items-center">
+      <div class="sm:w-2/3 text-center py-6">
+        <p class="text-lg text-white font-bold mb-2">
+          © <%= DateTime.utc_now |> Map.fetch!(:year) %> - ExCommerce. <%= gettext("All rights reserved") %> - <%= gettext("Privacy Policy") %> - <%= gettext("Cookies Policy") %>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+

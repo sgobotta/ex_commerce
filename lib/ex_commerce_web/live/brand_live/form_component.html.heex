@@ -1,26 +1,52 @@
 <div>
-  <h2><%= @title %></h2>
 
-  <%= form_for @changeset, "#", [
-      id: "brand-form",
-      phx_target: @myself,
-      phx_change: "validate",
-      phx_submit: "save",
-      class: "mb-0"
-    ],
-    fn f -> %>
+  <div class="px-4">
+    <.title_bar title={@title} />
+  </div>
 
-    <%= label f, :name, class: "my-2" %>
-    <%= text_input f, :name, class: "input", placeholder: gettext("My brand name")  %>
-    <%= error_tag f, :name %>
+  <div class="px-6 py-2">
+    <%= form_for @changeset, "#", [
+        id: "brand-form",
+        phx_target: @myself,
+        phx_change: "validate",
+        phx_submit: "save",
+        class: "mb-0"
+      ],
+      fn f -> %>
 
-    <%= label f, :slug, class: "my-2" %>
-    <%= text_input f, :slug, class: "input", placeholder: gettext("my-brand-name")  %>
-    <%= label f, "slug-placeholder/something", class: "m-0 pl-10 text-xl font-normal text-gray-500" %>
-    <%= error_tag f, :slug %>
+      <%= label f, :name, class: "my-2" %>
+      <%= text_input f, :name, class: "input", placeholder: gettext("My brand name")  %>
+      <%= error_tag f, :name %>
 
-    <div class="flex justify-end mt-6">
-      <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button" %>
-    </div>
-  <% end %>
+      <div class="">
+        <%= label f, :slug, class: "my-2" %>
+        <div class="mt-1 flex rounded-lg shadow-sm">
+          <span class="
+            inline-flex items-center
+            px-3 rounded-l-lg
+            border border-r-0 border-gray-300
+            bg-gray-50
+            text-gray-500 text-xl 
+          ">
+            <%= URI.parse(ExCommerceWeb.Endpoint.url()).host %>/
+          </span>
+          <%= text_input f, :slug,
+            class: "
+              rounded-l-none rounded-r-lg h-auto
+              border-gray-300
+              text-xl
+              transition duration-200
+              focus:border-blue-300
+            "
+          %>
+          <%= error_tag f, :slug %>
+        </div>
+      </div>
+
+      <div class="flex justify-end mt-6">
+        <%= submit gettext("Save"), phx_disable_with: gettext("Saving..."), class: "button" %>
+      </div>
+    <% end %>
+  </div>
+
 </div>
