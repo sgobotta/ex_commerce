@@ -48,7 +48,6 @@ defmodule ExCommerce.Checkout.CartTest do
         |> Cart.set_state(%{some: "value"})
     end
 
-    @tag :wip
     test "add_to_order/2 returns a new Cart struct with an updated order" do
       id = generate_id()
 
