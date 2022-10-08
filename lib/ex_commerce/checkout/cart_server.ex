@@ -4,11 +4,13 @@ defmodule ExCommerce.Checkout.CartServer do
   """
   use GenServer, restart: :transient
 
+  alias ExCommerce.Checkout.Order
+
   require Logger
 
   @timeout :timer.seconds(3600)
 
-  @type order :: map()
+  @type order :: Order.t()
   @type state :: %{
           :id => binary(),
           :order => order(),
@@ -50,7 +52,7 @@ defmodule ExCommerce.Checkout.CartServer do
   def initial_state(opts) do
     %{
       id: Keyword.fetch!(opts, :id),
-      order: %{},
+      order: ExCommerce.Repo.preload(%Order{}, [:order_items]),
       timeout: Keyword.get(opts, :timeout, @timeout),
       timer_ref: nil
     }

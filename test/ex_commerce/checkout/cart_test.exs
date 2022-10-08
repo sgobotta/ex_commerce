@@ -6,7 +6,7 @@ defmodule ExCommerce.Checkout.CartTest do
   use ExUnit.Case
 
   describe "cart" do
-    alias ExCommerce.Checkout.{Cart, CartSupervisor}
+    alias ExCommerce.Checkout.{Cart, CartSupervisor, Order, OrderItem}
 
     test "generate_id/2 returns an encoded id" do
       session_id = "123"
@@ -48,12 +48,13 @@ defmodule ExCommerce.Checkout.CartTest do
         |> Cart.set_state(%{some: "value"})
     end
 
+    @tag :wip
     test "add_to_order/2 returns a new Cart struct with an updated order" do
       id = generate_id()
 
-      %Cart{order: %{order_items: [%{id: "some id"}]}} =
+      %Cart{order: %Order{order_items: [%OrderItem{}]}} =
         new(id)
-        |> Cart.add_to_order(%{id: "some id"})
+        |> Cart.add_to_order(%OrderItem{})
     end
 
     defp generate_id do

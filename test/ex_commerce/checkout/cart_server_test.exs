@@ -6,7 +6,7 @@ defmodule ExCommerce.Checkout.CartServerTest do
   use ExCommerce.RuntimeCase, ratio: 1 / 32
   use ExUnit.Case
 
-  alias ExCommerce.Checkout.CartServer
+  alias ExCommerce.Checkout.{CartServer, Order}
 
   describe "cart_server lifecycle" do
     test "a server automatically terminates after a certain period" do
@@ -73,7 +73,7 @@ defmodule ExCommerce.Checkout.CartServerTest do
 
     test "get_order/2 returns an order from the current state", %{pid: pid} do
       response = do_get_order(pid)
-      assert response == %{}
+      assert response == %Order{order_items: []}
     end
 
     test "set_order/2 returns :ok", %{pid: pid} do

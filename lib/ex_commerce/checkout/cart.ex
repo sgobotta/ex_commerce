@@ -2,7 +2,7 @@ defmodule ExCommerce.Checkout.Cart do
   @moduledoc false
 
   alias __MODULE__
-  alias ExCommerce.Checkout.{CartServer, CartSupervisor}
+  alias ExCommerce.Checkout.{CartServer, CartSupervisor, Order, OrderItem}
 
   @type state :: map() | nil
 
@@ -50,7 +50,7 @@ defmodule ExCommerce.Checkout.Cart do
   """
   @spec new(binary()) :: t()
   def new(id) do
-    %Cart{id: id}
+    %Cart{id: id, order: %Order{}}
     |> maybe_get_server()
   end
 
@@ -103,14 +103,12 @@ defmodule ExCommerce.Checkout.Cart do
       %Cart{order: %{order_items: [%{id: "some id}]]}
 
   """
-  @spec add_to_order(t(), map()) :: t()
-  def add_to_order(%Cart{order: _order} = cart, order_item) do
+  @spec add_to_order(t(), OrderItem.t()) :: t()
+  def add_to_order(%Cart{} = cart, %OrderItem{} = order_item) do
     %Cart{server: server} = cart = maybe_start_server(cart)
 
-    order = CartServer.get_order(server)
+    %Order{order_items: order_items} = order = CartServer.get_order(server)
 
-    # TODO: Add item to %Order{}
-    order_items = Map.get(order, :order_items, [])
     order = Map.put(order, :order_items, order_items ++ [order_item])
 
     :ok = CartServer.set_order(server, order)

@@ -15,9 +15,14 @@ defmodule ExCommerce.Checkout do
   @doc """
   Given a cart and an order item, add the item to return a new Cart.
   """
-  @spec add_to_order(Cart.t(), map()) :: Cart.t()
-  def add_to_order(%Cart{} = cart, order_item) do
-    Cart.add_to_order(cart, order_item)
+  @spec add_to_order(Cart.t(), Ecto.Changeset.t()) :: Cart.t()
+  def add_to_order(%Cart{} = cart, %Ecto.Changeset{} = order_item) do
+    with price <- OrderItem.get_total_price(order_item),
+         %Ecto.Changeset{changes: changes, data: data} <-
+           __MODULE__.change_order_item(order_item, %{price: price}),
+         %OrderItem{} = order_item <- Map.merge(data, changes) do
+      Cart.add_to_order(cart, order_item)
+    end
   end
 
   # ---------------------------------------------------------------------------
@@ -122,8 +127,9 @@ defmodule ExCommerce.Checkout do
       %Ecto.Changeset{data: %OrderItem{}}
 
   """
-  @spec change_order_item(OrderItem.t(), map()) :: Ecto.Changeset.t()
-  def change_order_item(%OrderItem{} = order_item, attrs \\ %{}) do
+  @spec change_order_item(OrderItem.t() | Ecto.Changeset.t(), map()) ::
+          Ecto.Changeset.t()
+  def change_order_item(order_item, attrs \\ %{}) do
     OrderItem.changeset(order_item, attrs)
   end
 

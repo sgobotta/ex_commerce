@@ -172,9 +172,10 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         true ->
           %{cart: %Cart{} = cart} = socket.assigns
 
-          %Cart{} = cart = Checkout.add_to_order(cart, %{some: "value"})
+          price = OrderItem.get_total_price(changeset)
+          order_item = Checkout.change_order_item(changeset, %{price: price})
 
-          IO.puts("ADD ORDER_ITEM TO CART")
+          %Cart{} = cart = Checkout.add_to_order(cart, order_item)
 
           assign(socket, :cart, cart)
 
@@ -599,7 +600,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
       true ->
         Checkout.change_order_item(
           order_item,
-          Map.merge(changes, %{variant_id: variant_id, price: 10})
+          Map.merge(changes, %{variant_id: variant_id})
         )
         |> Map.put(:action, :validate)
 

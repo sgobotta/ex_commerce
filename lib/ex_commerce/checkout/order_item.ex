@@ -48,7 +48,6 @@ defmodule ExCommerce.Checkout.OrderItem do
     |> validate_required([
       :catalogue_item_id,
       :option_groups,
-      :price,
       :quantity,
       :variant_id
     ])

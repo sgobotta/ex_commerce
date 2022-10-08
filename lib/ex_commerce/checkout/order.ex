@@ -46,4 +46,15 @@ defmodule ExCommerce.Checkout.Order do
       :note
     ])
   end
+
+  # def changeset_pre_order(order, attrs) do
+  #   order
+  #   |> cast(attrs, [:brand_id, :shop_id, :catalogue_id, :order_items])
+  #   |> validate_required([
+  #     :brand_id,
+  #     :shop_id,
+  #     :catalogue_id,
+  #     :order_items
+  #   ])
+  # end
 end
