@@ -21,6 +21,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     CatalogueItemVariant
   }
 
+  alias Phoenix.LiveView
+
   @impl true
   def mount(params, session, socket) do
     {
@@ -177,7 +179,9 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
           %Cart{} = cart = Checkout.add_to_order(cart, order_item)
 
-          assign(socket, :cart, cart)
+          socket = assign(socket, :cart, cart)
+
+          LiveView.push_redirect(socket, to: socket.assigns.return_to)
 
         false ->
           socket
