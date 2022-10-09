@@ -6,6 +6,7 @@ defmodule ExCommerce.Checkout.CartServerTest do
   use ExCommerce.RuntimeCase, ratio: 1 / 32
   use ExUnit.Case
 
+  alias ExCommerce.Checkout
   alias ExCommerce.Checkout.{CartServer, Order}
 
   describe "cart_server lifecycle" do
@@ -55,18 +56,20 @@ defmodule ExCommerce.Checkout.CartServerTest do
     defp start_server(timeout) do
       cart_id = "some id"
       on_start = fn _state -> :ok end
+      order = Checkout.preload_order(%Order{}, [:order_items])
+      args = [on_start: on_start, id: cart_id, timeout: timeout, order: order]
 
-      start_supervised!(
-        {CartServer, [on_start: on_start, id: cart_id, timeout: timeout]}
-      )
+      start_supervised!({CartServer, args})
     end
   end
 
   describe "cart_server client interface" do
     setup do
       cart_id = "some id"
+      order = Checkout.preload_order(%Order{}, [:order_items])
       on_start = fn _state -> :ok end
-      pid = start_supervised!({CartServer, [on_start: on_start, id: cart_id]})
+      args = [on_start: on_start, id: cart_id, order: order]
+      pid = start_supervised!({CartServer, args})
 
       %{pid: pid, id: cart_id}
     end
@@ -90,7 +93,9 @@ defmodule ExCommerce.Checkout.CartServerTest do
     setup do
       on_start = fn _state -> :ok end
       cart_id = "some id"
-      state = CartServer.initial_state(on_start: on_start, id: cart_id)
+      order = Checkout.preload_order(%Order{}, [:order_items])
+      args = [on_start: on_start, id: cart_id, order: order]
+      state = CartServer.initial_state(args)
 
       %{state: state}
     end

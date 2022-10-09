@@ -6,36 +6,47 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
   use ExUnit.Case
 
   describe "cart_supervisor" do
-    alias ExCommerce.Checkout.CartSupervisor
+    alias ExCommerce.Checkout
+    alias ExCommerce.Checkout.{CartSupervisor, Order}
 
     @supervisor_name :cart_supervisor_test
 
     setup do
       pid = start_supervised!({CartSupervisor, [name: @supervisor_name]})
+      order = Checkout.preload_order(%Order{}, [:order_items])
 
-      %{pid: pid}
+      %{pid: pid, order: order}
     end
 
     test "child_spec/2 starts a cart supervisor", %{pid: pid} do
       assert valid_pid?(pid)
     end
 
-    test "start_child/2 starts a cart server with args", %{pid: pid} do
-      {:ok, pid} = start_child(pid, id: "some cart id")
+    test "start_child/2 starts a cart server with args", %{
+      pid: pid,
+      order: %Order{} = order
+    } do
+      {:ok, pid} = start_child(pid, id: "some cart id", order: order)
 
       assert valid_pid?(pid)
     end
 
-    test "list_children/1 returns a list of pids", %{pid: pid} do
-      {:ok, child_pid} = start_child(pid, id: "some cart id")
+    test "list_children/1 returns a list of pids", %{
+      pid: pid,
+      order: %Order{} = order
+    } do
+      {:ok, child_pid} = start_child(pid, id: "some cart id", order: order)
 
       assert Enum.member?(list_children(pid), child_pid)
     end
 
-    test "get_child/1 returns a pid and state", %{pid: pid} do
+    test "get_child/1 returns a pid and state", %{
+      pid: pid,
+      order: %Order{} = order
+    } do
       cart_id = "some cart id"
 
-      {:ok, child_pid} = start_child(pid, id: cart_id)
+      {:ok, child_pid} = start_child(pid, id: cart_id, order: order)
 
       {^child_pid, %{id: ^cart_id} = state} = get_child(cart_id)
 
@@ -43,10 +54,13 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
       assert is_map(state)
     end
 
-    test "terminate_child/2 shuts down a pid", %{pid: pid} do
+    test "terminate_child/2 shuts down a pid", %{
+      pid: pid,
+      order: %Order{} = order
+    } do
       cart_id = "some cart id"
 
-      {:ok, child_pid} = start_child(pid, id: cart_id)
+      {:ok, child_pid} = start_child(pid, id: cart_id, order: order)
 
       assert valid_pid?(child_pid)
 

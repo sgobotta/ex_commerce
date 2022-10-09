@@ -24,7 +24,6 @@ defmodule ExCommerce.CheckoutTest do
       CatalogueItemsFixtures,
       CatalogueItemVariantsFixtures,
       CataloguesFixtures,
-      CheckoutFixtures,
       Offerings
     }
 
@@ -287,6 +286,15 @@ defmodule ExCommerce.CheckoutTest do
     test "change_order/1 returns a order changeset" do
       %Order{} = order = order_fixture()
       assert %Ecto.Changeset{} = Checkout.change_order(order)
+    end
+
+    test "preload_order/2 returns a preloadad order" do
+      %Order{} = order = order_fixture()
+
+      %Order{order_items: order_items} =
+        Checkout.preload_order(order, [:order_items])
+
+      assert order_items == []
     end
   end
 end
