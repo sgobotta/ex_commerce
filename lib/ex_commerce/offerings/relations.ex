@@ -315,4 +315,24 @@ defmodule ExCommerce.Offerings.Relations do
   def change_shop_catalogue(%ShopCatalogue{} = shop_catalogue, attrs \\ %{}) do
     ShopCatalogue.changeset(shop_catalogue, attrs)
   end
+
+  alias ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem
+
+  @doc """
+  Creates a catalogue_item_option_item.
+
+  ## Examples
+
+      iex> create_catalogue_item_option_item(%{field: value})
+      {:ok, %CatalogueItemOptionGroupItem{}}
+
+      iex> create_catalogue_item_option_item(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_catalogue_item_option_item(attrs \\ %{}) do
+    %CatalogueItemOptionGroupItem{}
+    |> CatalogueItemOptionGroupItem.changeset(attrs)
+    |> Repo.insert()
+  end
 end

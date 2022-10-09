@@ -148,7 +148,7 @@ defmodule ExCommerce.Accounts.UserToken do
     from t in ExCommerce.Accounts.UserToken, where: t.user_id == ^user.id
   end
 
-  def user_and_contexts_query(user, [_ | _] = contexts) do
+  def user_and_contexts_query(user, [_c | _cs] = contexts) do
     from t in ExCommerce.Accounts.UserToken,
       where: t.user_id == ^user.id and t.context in ^contexts
   end

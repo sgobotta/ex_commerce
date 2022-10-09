@@ -18,7 +18,8 @@ defmodule ExCommerceWeb.PlaceLive.Show do
     Catalogue,
     CatalogueCategory,
     CatalogueItem,
-    # CatalogueItemOption,
+    CatalogueItemOption,
+    CatalogueItemOptionGroup,
     CatalogueItemVariant
   }
 
@@ -27,7 +28,7 @@ defmodule ExCommerceWeb.PlaceLive.Show do
     {:ok,
      socket
      |> assign_public_defaults(params, session)
-     |> assign_place_by_slug_or_redirect(params)
+     |> assign_shop_by_slug_or_redirect(params)
      |> assign(:brand_slug, params["brand"])
      |> assign(:shop_slug, params["shop"])
      |> assign(:quantity, 1)}
@@ -96,6 +97,7 @@ defmodule ExCommerceWeb.PlaceLive.Show do
       Routes.place_show_path(socket, :show, brand_slug, shop_slug)
     )
     |> assign_catalogue(catalogue_id)
+    |> assign_shop_photos_sources()
     |> assign_nav_title()
   end
 

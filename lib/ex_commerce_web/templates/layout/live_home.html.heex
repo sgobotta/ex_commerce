@@ -115,7 +115,8 @@
         <%= if @current_user do %>
           <%= render(ExCommerceWeb.ButtonsView, "admin_dashboard_button")  %>
           <.link
-            navigate={Routes.user_session_path(ExCommerceWeb.Endpoint, :delete)}
+            href={Routes.user_session_path(Endpoint, :delete)}
+            method={:delete}
             class={"
               group flex items-center
               py-3 px-4 mx-2 rounded-full

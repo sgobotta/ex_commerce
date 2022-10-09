@@ -1,0 +1,60 @@
+<main class="flex flex-col focus:outline-none bg-gray-300 w-full">
+  <!-- Navigation -->
+  <nav class="
+    flex flex-row justify-between w-full p-2
+    bg-gray-100 shadow-lg z-50
+  ">
+    <!-- Back Button -->
+    <.link
+      patch={@return_to}
+      class={"
+        text-sky-600 group flex items-center
+        text-2xl font-medium
+        rounded-md
+        hover:text-sky-300
+      "}
+      aria-current="false"
+    >
+      <.icon
+        name={:chevron_left} outlined
+        class="
+          flex-shrink-0
+          h-6 w-6
+          group-active:scale-90
+        "
+      />
+      <div class="text-xl group-active:scale-90">
+        <%= @nav_title %>
+      </div>
+    </.link>
+    <!-- Cart -->
+    <%= if @cart_visible && (@cart != nil) do %>
+      <.link
+        patch={@cart_path}
+        class={"
+          text-sky-600 group flex items-center
+          text-2xl font-medium
+          rounded-md
+          hover:text-sky-300
+        "}
+        aria-current="false"
+      >
+        <.icon
+          name={:shopping_cart} outlined
+          class="
+            flex-shrink-0
+            h-6 w-6
+            group-active:scale-90
+          "
+        />
+      </.link>
+    <% end %>
+  </nav>
+
+  <!-- Main -->
+  <div class="
+    basis-full container bg-gray-300 h-full overflow-y-scroll no-scrollbar"
+  >
+    <%= @inner_content %>
+  </div>
+</main>

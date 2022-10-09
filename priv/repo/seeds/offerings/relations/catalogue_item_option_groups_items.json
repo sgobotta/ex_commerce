@@ -1,6 +1,20 @@
 [
   {
     "visible": true,
+    "catalogue_item_option_group_id": "7f990ef3-aad0-487a-9531-64bd2608627b",
+    "catalogue_item_id": "969eb47a-aeec-486a-8d63-e341388520f3",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
+    "catalogue_item_option_group_id": "4bf0d287-311d-48fb-8fa3-d081a898d935",
+    "catalogue_item_id": "969eb47a-aeec-486a-8d63-e341388520f3",
+    "inserted_at": "2020-11-15 22:13:29",
+    "updated_at": "2020-11-17 14:15:00"
+  },
+  {
+    "visible": true,
     "catalogue_item_option_group_id": "4bf0d287-311d-48fb-8fa3-d081a898d935",
     "catalogue_item_id": "4d2b5f80-e5e3-4f43-8d7d-45253bb73457",
     "inserted_at": "2020-11-15 22:13:29",
