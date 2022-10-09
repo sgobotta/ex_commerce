@@ -6,6 +6,8 @@ defmodule ExCommerceNumeric do
 
   require Decimal
 
+  @type t :: Decimal.t()
+
   @round_places 2
 
   @doc """

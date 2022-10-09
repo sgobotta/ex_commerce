@@ -1,4 +1,4 @@
-defmodule ExCommerceWeb.CheckoutLive.CartComponent do
+defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
   @moduledoc """
   Component to display the current Cart status
   """

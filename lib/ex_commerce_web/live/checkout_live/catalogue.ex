@@ -10,7 +10,6 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
-  # alias ExCommerce.Checkout
   alias ExCommerce.Checkout.Cart
 
   alias ExCommerce.Offerings
@@ -20,6 +19,8 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
     CatalogueCategory,
     CatalogueItem
   }
+
+  alias ExCommerceWeb.CheckoutLive.Components
 
   @impl true
   def mount(params, session, socket) do
@@ -85,18 +86,6 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
     %{cart: %Cart{} = cart} = socket.assigns
 
     {:noreply, assign(socket, :cart, cart)}
-  end
-
-  defp valid_order?(catalogue) do
-    catalogue != nil
-  end
-
-  defp get_order_items(items) do
-    items
-  end
-
-  defp get_order_price(price) do
-    "$#{price}"
   end
 
   defp assign_catalogue(socket, catalogue_id),

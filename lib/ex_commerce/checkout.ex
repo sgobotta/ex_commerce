@@ -5,15 +5,18 @@ defmodule ExCommerce.Checkout do
 
   import Ecto.Query, warn: false
 
-  alias ExCommerce.Checkout.Cart
-  alias ExCommerce.Checkout.OrderItem
-  alias ExCommerce.Checkout.Supervisor
+  alias ExCommerce.Checkout.{Cart, Order, OrderItem, Supervisor}
   alias ExCommerce.Repo
 
   defdelegate child_spec(init_arg), to: Supervisor
 
+  # ---------------------------------------------------------------------------
+  # Checkout APIs
+  #
+
   @doc """
-  Given a cart and an order item, add the item to return a new Cart.
+  Given a #{Cart} and an #{OrderItem}, adds the `order_item` to return a new
+  #{Cart}.
   """
   @spec add_to_order(Cart.t(), Ecto.Changeset.t()) :: Cart.t()
   def add_to_order(%Cart{} = cart, %Ecto.Changeset{} = order_item) do
@@ -23,6 +26,36 @@ defmodule ExCommerce.Checkout do
          %OrderItem{} = order_item <- Map.merge(data, changes) do
       Cart.add_to_order(cart, order_item)
     end
+  end
+
+  @doc """
+  Given a #{Cart} validates the are order items in the #{Order} to checkout.
+  """
+  @spec valid_checkout?(Cart.t()) :: boolean()
+  def valid_checkout?(%Cart{order: %Order{order_items: order_items}}) do
+    length(order_items) > 0
+  end
+
+  @doc """
+  Given a #{Cart} returns the amount of totals items in the current #{Order}.
+  """
+  @spec get_order_items(Cart.t()) :: non_neg_integer()
+  def get_order_items(%Cart{order: %Order{order_items: order_items}}) do
+    order_items
+    |> Enum.reduce(0, fn %OrderItem{quantity: quantity}, acc ->
+      acc + quantity
+    end)
+  end
+
+  @doc """
+  Given a #{Cart} returns the total price of the current #{Order}.
+  """
+  @spec get_order_price(Cart.t()) :: ExCommerceNumeric.t()
+  def get_order_price(%Cart{order: %Order{order_items: order_items}}) do
+    order_items
+    |> Enum.reduce(0, fn %OrderItem{price: price}, acc ->
+      ExCommerceNumeric.add(acc, price)
+    end)
   end
 
   # ---------------------------------------------------------------------------

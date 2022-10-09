@@ -1,5 +1,5 @@
 <%= if @live_action in [:cart] do %>
-  <%= live_modal @socket, ExCommerceWeb.CheckoutLive.CartComponent,
+  <%= live_modal @socket, ExCommerceWeb.CheckoutLive.Components.CartComponent,
     id: Ecto.UUID.generate(),
     title: @page_title,
     action: @live_action,

@@ -1,5 +1,5 @@
 <%= if @live_action in [:cart] do %>
-  <%= live_modal @socket, ExCommerceWeb.CheckoutLive.CartComponent,
+  <%= live_modal @socket, ExCommerceWeb.CheckoutLive.Components.CartComponent,
     id: Ecto.UUID.generate(),
     title: @page_title,
     action: @live_action,
@@ -136,71 +136,10 @@
   "
 >
 
-  <%= if valid_order?(@catalogue) do %>
-    <button class="
-      flex justify-center rounded-lg py-2 bg-green-400
-      w-full sm:w-1/2
-      cursor-pointer shadow-button
-      transition-transform ease-in-out duration-100
-      active:scale-90 active:shadow-lg
-      hover:bg-green-300
-    "
-      tabindex="0"
-      phx-click="checkout_order"
-    >
-      <div class="flex flex-row">
-        <div class="px-2">
-          <p class="font-medium text-white">
-            (<%= get_order_items(0) %>)
-          </p>
-        </div>
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= get_order_price(0) %>
-          </p>
-        </div>
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= gettext("Checkout") %>
-          </p>
-        </div>
-        <div class="pt-1">
-          <.icon name={:shopping_bag} outlined class="
-            text-white
-            flex-shrink-0 h-7 w-7
-          "/>
-        </div>
-      </div>
-    </button>
-  <% else %>
-    <div class="
-      flex justify-center rounded-lg py-2 bg-gray-400
-      w-full sm:w-1/2
-      cursor-not-allowed shadow-button
-    ">
-      <div class="flex flex-row">
-        <div class="px-2">
-          <p class="font-medium text-white">
-            (<%= get_order_items(1) %>)
-          </p>
-        </div>
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= get_order_price(1) %>
-          </p>
-        </div>
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= gettext("Checkout") %>
-          </p>
-        </div>
-        <div class="pt-1">
-          <.icon name={:shopping_bag} outlined class="
-            text-white
-            flex-shrink-0 h-7 w-7
-          "/>
-        </div>
-      </div>
-    </div>
-  <% end %>
+  <.live_component
+    module={Components.CheckoutButton}
+    id="checkout-button"
+    cart={@cart}
+  />
+
 </LiveMotion.motion>
