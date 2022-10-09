@@ -52,7 +52,7 @@ defmodule ExCommerce.Checkout.CartServer do
   def initial_state(opts) do
     %{
       id: Keyword.fetch!(opts, :id),
-      order: ExCommerce.Repo.preload(%Order{}, [:order_items]),
+      order: Keyword.fetch!(opts, :order),
       timeout: Keyword.get(opts, :timeout, @timeout),
       timer_ref: nil
     }

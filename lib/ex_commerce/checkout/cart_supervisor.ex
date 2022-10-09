@@ -29,7 +29,9 @@ defmodule ExCommerce.Checkout.CartSupervisor do
   it's pid.
   """
   @spec start_child(module(), keyword()) :: {:ok, pid()}
-  def start_child(supervisor \\ __MODULE__, [id: id] = args) do
+  def start_child(supervisor \\ __MODULE__, args) do
+    id = Keyword.fetch!(args, :id)
+
     on_start = fn state ->
       {:ok, _registry_pid} = Registry.register(Registry.Cart, id, state)
 

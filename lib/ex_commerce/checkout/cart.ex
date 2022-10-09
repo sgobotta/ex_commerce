@@ -2,6 +2,7 @@ defmodule ExCommerce.Checkout.Cart do
   @moduledoc false
 
   alias __MODULE__
+  alias ExCommerce.Checkout
   alias ExCommerce.Checkout.{CartServer, CartSupervisor, Order, OrderItem}
 
   @type state :: map() | nil
@@ -50,7 +51,7 @@ defmodule ExCommerce.Checkout.Cart do
   """
   @spec new(binary()) :: t()
   def new(id) do
-    %Cart{id: id, order: %Order{}}
+    %Cart{id: id}
     |> maybe_get_server()
   end
 
@@ -119,7 +120,8 @@ defmodule ExCommerce.Checkout.Cart do
   defp maybe_start_server(%Cart{id: id} = cart) do
     case maybe_get_server(cart) do
       %Cart{server: nil} ->
-        {:ok, server_pid} = CartSupervisor.start_child(CartSupervisor, id: id)
+        args = [id: id, order: create_initial_order()]
+        {:ok, server_pid} = CartSupervisor.start_child(CartSupervisor, args)
         %Cart{cart | server: server_pid}
 
       %Cart{} = cart ->
@@ -130,11 +132,14 @@ defmodule ExCommerce.Checkout.Cart do
   defp maybe_get_server(%Cart{id: id} = cart) do
     case CartSupervisor.get_child(id) do
       nil ->
-        %Cart{cart | server: nil}
+        %Cart{cart | server: nil, order: create_initial_order()}
 
       {pid, state} ->
         # Send tick to pid
-        %Cart{cart | server: pid, state: state}
+        %Order{} = order = CartServer.get_order(pid)
+        %Cart{cart | server: pid, state: state, order: order}
     end
   end
+
+  def create_initial_order, do: Checkout.preload_order(%Order{}, [:order_items])
 end

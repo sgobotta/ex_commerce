@@ -236,4 +236,18 @@ defmodule ExCommerce.Checkout do
   def change_order(%Order{} = order, attrs \\ %{}) do
     Order.changeset(order, attrs)
   end
+
+  @doc """
+  Returns an #{Order} with the given fields preloaded.
+
+  ## Examples
+
+      iex> preload_order(%Order{}, [:orde_items])
+      %Order{order_items: []}
+
+  """
+  @spec preload_order(Order.t(), [atom()]) :: Order.t()
+  def preload_order(%Order{} = order, []), do: order
+
+  def preload_order(%Order{} = order, fields), do: Repo.preload(order, fields)
 end
