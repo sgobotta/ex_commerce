@@ -5,6 +5,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CheckoutButton do
 
   use ExCommerceWeb, :live_component
 
+  alias ExCommerce.Checkout
   alias ExCommerce.Checkout.Cart
 
   @impl true
@@ -18,12 +19,12 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CheckoutButton do
   def render(assigns) do
     %{cart: %Cart{} = cart} = assigns
 
-    case valid_order?(cart) do
+    case valid_checkout?(cart) do
       true ->
         render_button(cart, assigns)
 
       false ->
-        render_placeholder_button(cart, assigns)
+        render_placeholder_button(assigns)
     end
   end
 
@@ -43,12 +44,12 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CheckoutButton do
       <div class="flex flex-row">
         <div class="px-2">
           <p class="font-medium text-white">
-            (<%= get_order_items(0) %>)
+            (<%= get_order_items(cart) %>)
           </p>
         </div>
         <div class="px-2">
           <p class="font-medium text-white">
-            <%= get_order_price(0) %>
+            <%= get_order_price(cart) %>
           </p>
         </div>
         <div class="px-2">
@@ -67,7 +68,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CheckoutButton do
     """
   end
 
-  defp render_placeholder_button(%Cart{} = cart, assigns) do
+  defp render_placeholder_button(assigns) do
     ~H"""
     <div class="
       flex justify-center rounded-lg py-2 bg-gray-400
@@ -76,22 +77,13 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CheckoutButton do
     ">
       <div class="flex flex-row">
         <div class="px-2">
-          <p class="font-medium text-white">
-            (<%= get_order_items(1) %>)
+          <p class="font-medium text-white text-center">
+            <%= gettext("Add products to your order") %>
           </p>
         </div>
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= get_order_price(1) %>
-          </p>
-        </div>
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= gettext("Checkout") %>
-          </p>
-        </div>
-        <div class="pt-1">
+        <div class="pt-1 self-center">
           <.icon name={:shopping_bag} outlined class="
+            pr-2
             text-white
             flex-shrink-0 h-7 w-7
           "/>
@@ -101,16 +93,16 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CheckoutButton do
     """
   end
 
-  defp valid_order?(cart) do
-    # Cart.valid_order?(cart)
-    cart != nil
+  defp valid_checkout?(%Cart{} = cart) do
+    Checkout.valid_checkout?(cart)
   end
 
-  defp get_order_items(items) do
-    items
+  defp get_order_items(%Cart{} = cart) do
+    Checkout.get_order_items(cart)
   end
 
-  defp get_order_price(price) do
+  defp get_order_price(%Cart{} = cart) do
+    price = Checkout.get_order_price(cart)
     "$#{price}"
   end
 end
