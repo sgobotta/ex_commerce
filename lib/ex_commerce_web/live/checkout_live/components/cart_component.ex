@@ -11,4 +11,23 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
      socket
      |> assign(assigns)}
   end
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <div class="">
+      <div class="px-4">
+        <.title_bar title="Order Items" />
+      </div>
+
+      <div class="px-6 py-2">
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+        </ul>
+      </div>
+    </div>
+    """
+  end
 end
