@@ -9,7 +9,7 @@ defmodule ExCommerce.Checkout.Cart do
 
   @type t :: %__MODULE__{
           id: binary(),
-          order: map() | nil,
+          order: Order.t() | nil,
           server: pid() | nil,
           state: state()
         }
@@ -70,9 +70,7 @@ defmodule ExCommerce.Checkout.Cart do
 
   """
   @spec set_server(t(), pid()) :: t()
-  def set_server(%Cart{} = cart, pid) do
-    %Cart{cart | server: pid}
-  end
+  def set_server(%Cart{} = cart, pid), do: %Cart{cart | server: pid}
 
   @doc """
   Given a #{__MODULE__} struct and a state, returns a new #{__MODULE__} with
@@ -90,9 +88,7 @@ defmodule ExCommerce.Checkout.Cart do
 
   """
   @spec set_state(t(), state()) :: t()
-  def set_state(%Cart{} = cart, state) do
-    %Cart{cart | state: state}
-  end
+  def set_state(%Cart{} = cart, state), do: %Cart{cart | state: state}
 
   @doc """
   Given a #{__MODULE__} struct and an OrderItem, updates the Cart order with the
@@ -101,7 +97,7 @@ defmodule ExCommerce.Checkout.Cart do
   ## Examples:
 
       iex> add_to_order(%Cart{}, %{id: "some id})
-      %Cart{order: %{order_items: [%{id: "some id}]]}
+      %Cart{order: %Order{order_items: [%{id: "some id}]]}
 
   """
   @spec add_to_order(t(), OrderItem.t()) :: t()
