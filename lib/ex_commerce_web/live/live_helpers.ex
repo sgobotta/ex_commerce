@@ -558,7 +558,8 @@ defmodule ExCommerceWeb.LiveHelpers do
           assigns
           |> assign(
             :bgcolor,
-            "outline outline-1 outline-offset-0 outline-sky-600"
+            assigns.bgcolor <>
+              " outline outline-1 outline-offset-0 outline-sky-600"
           )
       end
 
