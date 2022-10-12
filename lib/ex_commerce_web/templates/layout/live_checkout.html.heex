@@ -28,7 +28,7 @@
       </div>
     </.link>
     <!-- Cart -->
-    <%= if @cart_visible && (@cart != nil) do %>
+    <%= if @cart_visible && ExCommerce.Checkout.valid_checkout?(@cart) do %>
       <.link
         patch={@cart_path}
         class={"
@@ -48,6 +48,24 @@
           "
         />
       </.link>
+    <% else %>
+      <div
+        class={"
+          text-gray-400 group flex items-center
+          text-2xl font-medium
+          rounded-md
+        "}
+        aria-current="false"
+      >
+        <.icon
+          name={:shopping_cart} outlined
+          class="
+            flex-shrink-0
+            h-6 w-6
+            cursor-not-allowed
+          "
+        />
+      </div>
     <% end %>
   </nav>
 
