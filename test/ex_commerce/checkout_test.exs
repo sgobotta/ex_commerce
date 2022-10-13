@@ -195,6 +195,21 @@ defmodule ExCommerce.CheckoutTest do
       order_item = order_item_fixture()
       assert %Ecto.Changeset{} = Checkout.change_order_item(order_item)
     end
+
+    alias ExCommerce.Offerings.CatalogueItem
+    alias ExCommerce.Offerings.CatalogueItemVariant
+
+    test "preload_order_item/2 returns a preloadad order_item" do
+      %OrderItem{} = order_item = order_item_fixture()
+
+      %OrderItem{
+        catalogue_item: %CatalogueItem{} = catalogue_item,
+        variant: %CatalogueItemVariant{} = variant
+      } = Checkout.preload_order_item(order_item, [:catalogue_item, :variant])
+
+      assert catalogue_item != nil
+      assert variant != nil
+    end
   end
 
   describe "orders" do

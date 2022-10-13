@@ -7,6 +7,7 @@ defmodule ExCommerce.Checkout.OrderItem do
   import Ecto.Changeset
 
   alias ExCommerce.Offerings.{
+    CatalogueItem,
     CatalogueItemOption,
     CatalogueItemOptionGroup,
     CatalogueItemVariant
@@ -20,8 +21,6 @@ defmodule ExCommerce.Checkout.OrderItem do
   @foreign_key_type :binary_id
   schema "order_items" do
     field :quantity, :integer
-    field :catalogue_item_id, :binary_id
-    field :variant_id, :binary_id
     field :price, :decimal
     field :variants, {:array, :map}, virtual: true, default: []
     field :option_groups, :map, default: %{}
@@ -30,6 +29,8 @@ defmodule ExCommerce.Checkout.OrderItem do
       virtual: true,
       default: %{values: [], rules: []}
 
+    belongs_to :catalogue_item, CatalogueItem, type: :binary_id
+    belongs_to :variant, CatalogueItemVariant, type: :binary_id
     belongs_to :order, Order, type: :binary_id
 
     timestamps()

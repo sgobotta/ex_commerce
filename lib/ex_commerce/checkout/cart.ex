@@ -106,7 +106,18 @@ defmodule ExCommerce.Checkout.Cart do
 
     %Order{order_items: order_items} = order = CartServer.get_order(server)
 
-    order = Map.put(order, :order_items, order_items ++ [order_item])
+    order =
+      Map.put(
+        order,
+        :order_items,
+        order_items ++
+          [
+            Checkout.preload_order_item(order_item,
+              catalogue_item: [:photos],
+              variant: []
+            )
+          ]
+      )
 
     :ok = CartServer.set_order(server, order)
 

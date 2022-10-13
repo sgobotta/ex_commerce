@@ -27,7 +27,10 @@
       @shop_slug,
       @catalogue.id,
       @catalogue_item.id
-    )
+    ),
+    opts: %{
+      cart: @cart
+    }
   %>
 <% end %>
 

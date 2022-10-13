@@ -166,6 +166,25 @@ defmodule ExCommerce.Checkout do
     OrderItem.changeset(order_item, attrs)
   end
 
+  @doc """
+  Returns an #{OrderItem} with the given fields preloaded.
+
+  ## Examples
+
+  iex> preload_order_item(%OrderItem{}, [:catalogue_item, :variant, :order])
+  %OrderItem{
+    catalogue_item: %ExCommerce.Offerings.CatalogueItem{},
+    variant: %ExCommerce.Offerings.CatalogueItemVariant{},
+    order: %ExCommerce.Checkout.Order{}
+  }
+
+  """
+  @spec preload_order_item(OrderItem.t(), [atom()] | keyword()) :: OrderItem.t()
+  def preload_order_item(%OrderItem{} = order_item, []), do: order_item
+
+  def preload_order_item(%OrderItem{} = order_item, fields),
+    do: Repo.preload(order_item, fields)
+
   alias ExCommerce.Checkout.Order
 
   @doc """
@@ -275,7 +294,7 @@ defmodule ExCommerce.Checkout do
 
   ## Examples
 
-      iex> preload_order(%Order{}, [:orde_items])
+      iex> preload_order(%Order{}, [:order_items])
       %Order{order_items: []}
 
   """
