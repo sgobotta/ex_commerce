@@ -193,8 +193,13 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   end
 
   @impl true
-  def handle_event("remove_order_item", %{"temp_id" => temp_id}, socket) do
-    %Cart{} = cart = Checkout.remove_order_item(temp_id, socket.assigns.cart)
+  def handle_event(
+        "remove_order_item",
+        %{"remove" => order_item_temp_id},
+        socket
+      ) do
+    %{cart: %Cart{} = cart} = socket.assigns
+    %Cart{} = cart = Checkout.remove_order_item(cart, order_item_temp_id)
 
     {:noreply, assign_cart(socket, cart)}
   end
