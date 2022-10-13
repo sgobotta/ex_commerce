@@ -59,6 +59,32 @@ defmodule ExCommerce.Checkout.CartTest do
         |> Cart.add_to_order(%OrderItem{})
     end
 
+    test "remove_from_order/2 returns a new Cart struct with an updated order" do
+      id = generate_id()
+
+      %Cart{} =
+        cart =
+        %Cart{order: %Order{order_items: [%OrderItem{}]}} =
+        new(id)
+        |> Cart.add_to_order(%OrderItem{temp_id: "123"})
+
+      %Cart{order: %Order{order_items: []}} =
+        Cart.remove_from_order(cart, "123")
+    end
+
+    test "remove_from_order/2 returns a new Cart struct with no updated order on invalid temp_id" do
+      id = generate_id()
+
+      %Cart{} =
+        cart =
+        %Cart{order: %Order{order_items: [%OrderItem{}]}} =
+        new(id)
+        |> Cart.add_to_order(%OrderItem{temp_id: "123"})
+
+      %Cart{order: %Order{order_items: [%OrderItem{}]}} =
+        Cart.remove_from_order(cart, "456")
+    end
+
     defp generate_id do
       first_id = "123"
       second_id = Ecto.UUID.generate()
