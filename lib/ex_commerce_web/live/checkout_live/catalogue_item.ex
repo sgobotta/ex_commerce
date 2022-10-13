@@ -12,7 +12,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   alias ExCommerce.Checkout
   alias ExCommerce.Checkout.Cart
-  alias ExCommerce.Checkout.OrderItem
+  alias ExCommerce.Checkout.{Order, OrderItem}
 
   alias ExCommerce.Offerings.{
     CatalogueItem,
@@ -199,9 +199,17 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         socket
       ) do
     %{cart: %Cart{} = cart} = socket.assigns
-    %Cart{} = cart = Checkout.remove_order_item(cart, order_item_temp_id)
 
-    {:noreply, assign_cart(socket, cart)}
+    case Checkout.remove_order_item(cart, order_item_temp_id) do
+      %Cart{order: %Order{order_items: []}} = cart ->
+        LiveView.push_patch(assign_cart(socket, cart),
+          to: socket.assigns.return_to
+        )
+
+      %Cart{order: %Order{order_items: _order_items}} = cart ->
+        assign_cart(socket, cart)
+    end
+    |> then(fn socket -> {:noreply, socket} end)
   end
 
   # ----------------------------------------------------------------------------
