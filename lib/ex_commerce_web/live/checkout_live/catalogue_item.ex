@@ -12,7 +12,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   alias ExCommerce.Checkout
   alias ExCommerce.Checkout.Cart
-  alias ExCommerce.Checkout.OrderItem
+  alias ExCommerce.Checkout.{Order, OrderItem}
 
   alias ExCommerce.Offerings.{
     CatalogueItem,
@@ -22,6 +22,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   }
 
   alias Phoenix.LiveView
+
+  import ExCommerceWeb.Utils
 
   @impl true
   def mount(params, session, socket) do
@@ -190,6 +192,26 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     {:noreply, socket}
   end
 
+  @impl true
+  def handle_event(
+        "remove_order_item",
+        %{"remove" => order_item_temp_id},
+        socket
+      ) do
+    %{cart: %Cart{} = cart} = socket.assigns
+
+    case Checkout.remove_order_item(cart, order_item_temp_id) do
+      %Cart{order: %Order{order_items: []}} = cart ->
+        LiveView.push_patch(assign_cart(socket, cart),
+          to: socket.assigns.return_to
+        )
+
+      %Cart{order: %Order{order_items: _order_items}} = cart ->
+        assign_cart(socket, cart)
+    end
+    |> then(fn socket -> {:noreply, socket} end)
+  end
+
   # ----------------------------------------------------------------------------
   # Render functions
   #
@@ -355,7 +377,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
                 multiple_selection: multiple_selection
               }
             end)
-        }
+        },
+        temp_id: get_temp_id()
       }
 
     socket
@@ -436,6 +459,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     do: assign_catalogue_item_by_id_or_redirect(socket, catalogue_item_id)
 
   defp assign_nav_title(socket), do: assign(socket, :nav_title, gettext("Back"))
+
+  defp assign_cart(socket, %Cart{} = cart), do: assign(socket, :cart, cart)
 
   # ----------------------------------------------------------------------------
   # Price Getters and Formatters

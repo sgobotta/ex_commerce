@@ -29,6 +29,14 @@ defmodule ExCommerce.Checkout do
   end
 
   @doc """
+  Given a #{Cart} and an id, removes an #{OrderItem} from the cart order, if
+  exists.
+  """
+  @spec remove_order_item(Cart.t(), String.t()) :: Cart.t()
+  def remove_order_item(%Cart{} = cart, order_item_temp_id),
+    do: Cart.remove_from_order(cart, order_item_temp_id)
+
+  @doc """
   Given a #{Cart} validates the are order items in the #{Order} to checkout.
   """
   @spec valid_checkout?(Cart.t()) :: boolean()

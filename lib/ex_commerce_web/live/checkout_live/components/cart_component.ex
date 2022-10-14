@@ -53,7 +53,8 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
            catalogue_item: %CatalogueItem{name: name, photos: photos},
            quantity: quantity,
            price: price,
-           variant: %CatalogueItemVariant{type: type}
+           variant: %CatalogueItemVariant{type: type},
+           temp_id: temp_id
          },
          assigns
        ) do
@@ -111,7 +112,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
           col-span-6 lg:col-span-5 row-span-1
           justify-self-end self-center
         ">
-          <.link class="rounded-xl">
+          <.link class="rounded-xl" phx-click="remove_order_item" phx-value-remove={temp_id}>
             <.pill bgcolor={"bg-white"} textcolor="text-sky-600"
               outlined
               class="

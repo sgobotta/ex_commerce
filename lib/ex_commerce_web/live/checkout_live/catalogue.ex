@@ -10,7 +10,8 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
-  alias ExCommerce.Checkout.Cart
+  alias ExCommerce.Checkout
+  alias ExCommerce.Checkout.{Cart, Order}
 
   alias ExCommerce.Offerings
 
@@ -21,6 +22,8 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
   }
 
   alias ExCommerceWeb.CheckoutLive.Components
+
+  alias Phoenix.LiveView
 
   @impl true
   def mount(params, session, socket) do
@@ -38,6 +41,32 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
   @impl true
   def handle_params(params, _session, socket),
     do: {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+
+  @impl true
+  def handle_event("checkout_order", _params, socket) do
+    %{cart: %Cart{} = cart} = socket.assigns
+
+    {:noreply, assign_cart(socket, cart)}
+  end
+
+  def handle_event(
+        "remove_order_item",
+        %{"remove" => order_item_temp_id},
+        socket
+      ) do
+    %{cart: %Cart{} = cart} = socket.assigns
+
+    case Checkout.remove_order_item(cart, order_item_temp_id) do
+      %Cart{order: %Order{order_items: []}} = cart ->
+        LiveView.push_patch(assign_cart(socket, cart),
+          to: socket.assigns.return_to
+        )
+
+      %Cart{order: %Order{order_items: _order_items}} = cart ->
+        assign_cart(socket, cart)
+    end
+    |> then(fn socket -> {:noreply, socket} end)
+  end
 
   defp apply_action(socket, :index, %{
          "brand" => brand_slug,
@@ -81,13 +110,6 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
     |> assign_nav_title()
   end
 
-  @impl true
-  def handle_event("checkout_order", _params, socket) do
-    %{cart: %Cart{} = cart} = socket.assigns
-
-    {:noreply, assign(socket, :cart, cart)}
-  end
-
   defp assign_catalogue(socket, catalogue_id),
     do: assign_catalogue_by_id_or_redirect(socket, catalogue_id)
 
@@ -108,6 +130,8 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
     socket
     |> assign(:nav_title, gettext("Back"))
   end
+
+  defp assign_cart(socket, %Cart{} = cart), do: assign(socket, :cart, cart)
 
   defp get_item_price([]), do: gettext("Price not available")
 

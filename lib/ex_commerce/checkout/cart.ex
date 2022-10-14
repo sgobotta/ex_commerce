@@ -124,6 +124,41 @@ defmodule ExCommerce.Checkout.Cart do
     %Cart{cart | order: order}
   end
 
+  @doc """
+  Given a #{__MODULE__} and an id, removes an #{OrderItem} from the #{Order} if
+  it exists.
+
+  ### Examples:
+
+      iex> remove_from_order(%Cart{order: %{Order{order_items: [%OrderItem{temp_id: "123"}]}}}, "123")
+      %Cart{order: %Order{order_items: []}}
+      iex> remove_from_order(%Cart{order: %{Order{order_items: [%OrderItem{temp_id: "123"}]}}}, "456")
+      %Cart{order: %Order{order_items: [%OrderItem{temp_id: "123"}]}}
+
+  """
+  @spec remove_from_order(t(), String.t()) :: t()
+  def remove_from_order(
+        %Cart{order: %Order{order_items: order_items} = order} = cart,
+        temp_id
+      ) do
+    %Cart{server: server} = cart = maybe_start_server(cart)
+
+    order_items =
+      Enum.filter(
+        order_items,
+        fn
+          %OrderItem{temp_id: ^temp_id} -> false
+          %OrderItem{} -> true
+        end
+      )
+
+    %Order{} = order = %Order{order | order_items: order_items}
+
+    :ok = CartServer.set_order(server, order)
+
+    %Cart{cart | order: order}
+  end
+
   defp maybe_start_server(%Cart{id: id} = cart) do
     case maybe_get_server(cart) do
       %Cart{server: nil} ->
@@ -132,6 +167,7 @@ defmodule ExCommerce.Checkout.Cart do
         %Cart{cart | server: server_pid}
 
       %Cart{} = cart ->
+        # TODO: ping the server
         cart
     end
   end
