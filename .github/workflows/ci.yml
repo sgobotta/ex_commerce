@@ -1,7 +1,13 @@
-name: 36 - Local Action
+name: CI
 
 on:
-  workflow_dispatch:
+  # This action is triggered on any branch that opens a pull request.
+  pull_request:
+    branches:
+      - "*"
+    # This action is not triggered when markdown files are modified.
+    paths-ignore:
+      - '**.md'
 
 jobs:
   job1:
