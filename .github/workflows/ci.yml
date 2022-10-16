@@ -10,4 +10,4 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: My first step
-        uses: ./../actions/my-action
+      - uses: ./../actions/my-action
