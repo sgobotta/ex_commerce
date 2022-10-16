@@ -1,0 +1,13 @@
+name: My Action
+
+jobs:
+  example-job:
+    steps:
+      - name: Echo stuff
+        run: |
+          echo "===== passwords ====="
+          echo host ${POSTGRES_HOST}
+          echo host ${POSTGRES_PORT}
+        env:
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432

@@ -1,0 +1,13 @@
+name: use my action
+
+on: push
+
+jobs:
+  my_first_job:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout repository
+    - uses: actions/checkout@v1
+
+    - name: My first step
+      uses: ./.github/actions/my-action
