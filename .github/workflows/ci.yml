@@ -1,0 +1,121 @@
+name: CI
+
+on:
+  # This action is triggered on any branch that opens a pull request.
+  push:
+    branches:
+      - "feature/40-Upgrade-github-actions-to-parallelize-jobs"
+    # This action is not triggered when markdown files are modified.
+    paths-ignore:
+      - '**.md'
+
+env:
+  # Permissions env
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # General env
+  MIX_ENV: test
+  ELIXIR_VERSION: 1.12.3
+  OTP_VERSION: 23.3
+  # Cloudinary env
+  CLOUDEX_API_KEY: ${{ secrets.CLOUDEX_API_KEY }}
+  CLOUDEX_CLOUD_NAME: ${{ secrets.CLOUDEX_CLOUD_NAME }}
+  CLOUDEX_SECRET: ${{ secrets.CLOUDEX_SECRET }}
+  # Postgres env
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+  # Misc env
+  UPLOADS_PATH: "priv/static/uploads/"
+
+jobs:
+  dev:
+    runs-on: ubuntu-20.04
+    services:
+      db:
+        image: postgres
+        ports: ['5432:5432']
+        env:
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Run Development Checks
+        uses: ./.github/actions/dev
+        with:
+          CLOUDEX_API_KEY: ${{ env.CLOUDEX_API_KEY }}
+          CLOUDEX_CLOUD_NAME: ${{ env.CLOUDEX_CLOUD_NAME }}
+          CLOUDEX_SECRET: ${{ env.CLOUDEX_SECRET }}
+          ELIXIR_VERSION: ${{ env.ELIXIR_VERSION }}
+          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+          MIX_ENV: dev
+          OTP_VERSION: ${{ env.OTP_VERSION }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          UPLOADS_PATH: priv/static/uploads/
+
+  test:
+    runs-on: ubuntu-20.04
+    services:
+      db:
+        image: postgres
+        ports: ['5432:5432']
+        env:
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Run Unit Tests
+        uses: ./.github/actions/test
+        with:
+          CLOUDEX_API_KEY: ${{ env.CLOUDEX_API_KEY }}
+          CLOUDEX_CLOUD_NAME: ${{ env.CLOUDEX_CLOUD_NAME }}
+          CLOUDEX_SECRET: ${{ env.CLOUDEX_SECRET }}
+          ELIXIR_VERSION: ${{ env.ELIXIR_VERSION }}
+          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+          MIX_ENV: test
+          OTP_VERSION: ${{ env.OTP_VERSION }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          UPLOADS_PATH: priv/static/uploads/
+
+  # prod:
+  #   runs-on: ubuntu-20.04
+  #   services:
+  #     db:
+  #       image: postgres
+  #       ports: ['5432:5432']
+  #       env:
+  #         POSTGRES_USER: ${{ env.POSTGRES_USER }}
+  #         POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+  #       options: >-
+  #         --health-cmd pg_isready
+  #         --health-interval 10s
+  #         --health-timeout 5s
+  #         --health-retries 5
+
+  #   steps:
+  #     - uses: actions/checkout@v2.3.4
+  #     - name: Run Unit Tests
+  #       uses: ./.github/actions/test
+  #       with:
+  #         CLOUDEX_API_KEY: ${{ env.CLOUDEX_API_KEY }}
+  #         CLOUDEX_CLOUD_NAME: ${{ env.CLOUDEX_CLOUD_NAME }}
+  #         CLOUDEX_SECRET: ${{ env.CLOUDEX_SECRET }}
+  #         ELIXIR_VERSION: ${{ env.ELIXIR_VERSION }}
+  #         GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+  #         MIX_ENV: prod
+  #         OTP_VERSION: ${{ env.OTP_VERSION }}
+  #         POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+  #         POSTGRES_USER: ${{ env.POSTGRES_USER }}
+  #         UPLOADS_PATH: priv/static/uploads/

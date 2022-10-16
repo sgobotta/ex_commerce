@@ -1,0 +1,144 @@
+name: Dev
+
+description: Run development checks
+
+inputs:
+  CLOUDEX_API_KEY:
+    required: true
+    description: Cloudex api key
+  CLOUDEX_CLOUD_NAME:
+    required: true
+    description: Cloudex cloud name
+  CLOUDEX_SECRET:
+    required: true
+    description: Cloudex secret
+  ELIXIR_VERSION:
+    required: true
+    description: Elixir version
+  GITHUB_TOKEN:
+    required: true
+    description: A github token
+  MIX_ENV:
+    default: dev
+    required: false
+    description: The current elixir env
+  OTP_VERSION:
+    required: true
+    description: OTP version
+  POSTGRES_PASSWORD:
+    required: true
+    description: Postgres database password
+  POSTGRES_USER:
+    required: true
+    description: Postgres database user
+  UPLOADS_PATH:
+    required: true
+    description: The uploads path
+
+runs:
+  using: "composite"
+  steps:
+    # Checkout code ------------------------------------------------------------
+    - name: Check out code
+      uses: actions/checkout@v2.3.4
+
+    # Setup Elixir/OTP versions ------------------------------------------------
+    - name: Set up Elixir
+      uses: erlef/setup-elixir@v1
+      with:
+        elixir-version: ${{ inputs.ELIXIR_VERSION }}
+        otp-version: ${{ inputs.OTP_VERSION }}
+
+    # Print version names ------------------------------------------------------
+    - name: Output Elixir version
+      shell: bash
+      run: elixir --version
+    - name: Output PostgreSQL version
+      shell: bash
+      run: psql --version
+    - name: Output Node.js version
+      shell: bash
+      run: node --version
+
+    # Set vars for the cache step ----------------------------------------------
+    - name: Set mix file hash
+      id: set_vars
+      shell: bash
+      run: |
+        mix_hash="${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}"
+        echo "::set-output name=mix_hash::$mix_hash"
+
+    # Restores PLT cache -------------------------------------------------------
+    - name: Cache files
+      id: dev-cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          deps
+          _build
+        key: ${{ runner.os }}-dev-mix-${{ steps.set_vars.outputs.mix_hash }}
+        restore-keys: |
+          ${{ runner.os }}-dev-mix-
+
+    # Get and build all the deps -----------------------------------------------
+    - name: Install Dependencies
+      shell: bash
+      run: |
+        mix do deps.get, deps.compile, compile
+      env:
+        MIX_ENV: ${{ inputs.MIX_ENV }}
+
+    # Setup Postgres -----------------------------------------------------------
+    - name: Setup Database
+      shell: bash
+      run: |
+        mix reset.ecto
+      env:
+        MIX_ENV: ${{ inputs.MIX_ENV }}
+
+    # Setup the Phoenix Client -------------------------------------------------
+    - name: Setup web client
+      shell: bash
+      run: |
+        mix setup.web
+
+    # Run formatter ------------------------------------------------------------
+    - name: Run formatter
+      shell: bash
+      env:
+        # General env
+        MIX_ENV: ${{ inputs.MIX_ENV }}
+        # Cloudinary env
+        CLOUDEX_API_KEY: ${{ inputs.CLOUDEX_API_KEY }}
+        CLOUDEX_SECRET: ${{ inputs.CLOUDEX_SECRET }}
+        CLOUDEX_CLOUD_NAME: ${{ inputs.CLOUDEX_CLOUD_NAME }}
+      run: |
+          mix check.format
+    # Run credo ----------------------------------------------------------------
+    - name: Run static code analysis
+      shell: bash
+      env:
+        # General env
+        MIX_ENV: ${{ inputs.MIX_ENV }}
+        # Cloudinary env
+        CLOUDEX_API_KEY: ${{ inputs.CLOUDEX_API_KEY }}
+        CLOUDEX_SECRET: ${{ inputs.CLOUDEX_SECRET }}
+        CLOUDEX_CLOUD_NAME: ${{ inputs.CLOUDEX_CLOUD_NAME }}
+        # Misc env
+        UPLOADS_PATH: ${{ inputs.UPLOADS_PATH }}
+      run: |
+          mix check.credo
+    # Run dialyxir -------------------------------------------------------------
+    - name: Run the discrepancy analyzer
+      shell: bash
+      env:
+        # General env
+        MIX_ENV: ${{ inputs.MIX_ENV }}
+        # Cloudinary env
+        CLOUDEX_API_KEY: ${{ inputs.CLOUDEX_API_KEY }}
+        CLOUDEX_SECRET: ${{ inputs.CLOUDEX_SECRET }}
+        CLOUDEX_CLOUD_NAME: ${{ inputs.CLOUDEX_CLOUD_NAME }}
+        # Misc env
+        UPLOADS_PATH: ${{ inputs.UPLOADS_PATH }}
+      run: |
+          mix check.credo
