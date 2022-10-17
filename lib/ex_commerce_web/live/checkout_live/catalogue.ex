@@ -176,4 +176,10 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
       item_id
     )
   end
+
+  defp valid_checkout?(%Cart{} = cart), do: Checkout.valid_checkout?(cart)
+
+  defp get_order_items(%Cart{} = cart), do: Checkout.get_order_items(cart)
+
+  defp get_order_price(%Cart{} = cart), do: "$#{Checkout.get_order_price(cart)}"
 end
