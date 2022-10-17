@@ -23,6 +23,7 @@ env:
   # Postgres env
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+  POSTGRES_HOSTNAME: localhost
   # Misc env
   UPLOADS_PATH: "priv/static/uploads/"
 
@@ -116,6 +117,7 @@ jobs:
           GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
           MIX_ENV: prod
           OTP_VERSION: ${{ env.OTP_VERSION }}
+          POSTGRES_HOSTNAME: ${{ env.POSTGRES_HOSTNAME }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           UPLOADS_PATH: priv/static/uploads/

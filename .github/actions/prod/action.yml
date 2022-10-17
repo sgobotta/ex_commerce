@@ -25,6 +25,9 @@ inputs:
   OTP_VERSION:
     description: OTP version
     required: true
+  POSTGRES_HOSTNAME:
+    description: Postgres database hostname
+    required: true
   POSTGRES_PASSWORD:
     description: Postgres database password
     required: true
@@ -156,7 +159,7 @@ runs:
         CLOUDEX_CLOUD_NAME: ${{ inputs.CLOUDEX_CLOUD_NAME }}0
         # Postgres env
         DB_DATABASE: ex_commerce_prod_local
-        DB_HOSTNAME: db
+        DB_HOSTNAME: ${{ inputs.POSTGRES_HOSTNAME }}
         DB_PASSWORD: ${{ inputs.POSTGRES_PASSWORD }}
         DB_USERNAME: ${{ inputs.POSTGRES_USER }}
         # Sendgrid env
