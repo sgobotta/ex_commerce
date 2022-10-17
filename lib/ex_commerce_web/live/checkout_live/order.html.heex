@@ -1,0 +1,88 @@
+<div class="flex flex-col h-full">
+  <div class="
+    basis-1/4 flex flex-col w-full justify-center items-center shrink-0
+  " />
+  <div class="flex items-end basis-3/4">
+    <LiveMotion.motion
+      id="item-content"
+      initial={[y: [1000]]}
+      animate={[y: [0]]}
+      transition={[]}
+      exit={[y: [1000]]}
+      class="h-full w-full"
+    >
+      <div class={"z-50 bg-transparent h-full"}>
+        <div class={"
+          bg-white
+          border-t-4 border-gray-200
+          rounded-t-5xl shadow-button
+          h-full
+        "}>
+          <div class="flex justify-center py-2">
+            <div class="rounded-sm self-center shadow-inner bg-gray-300 h-1 w-16" />
+          </div>
+
+          <div class="pt-6 px-8">
+            <div class="grid grid-cols-6">
+              <div class="col-span-4 sm:col-span-5">
+                <div class="mb-4">
+                  <p class="mt-1 text-xl text-black font-bold">
+                    <%= gettext("Complete your order") %>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="basis-full bg-gray-100 h-full px-6 pb-40">
+            <%= form_for @changeset, "#", [
+              id: "order-form",
+              phx_change: "validate",
+              phx_submit: "save",
+              class: "mb-0"
+            ], fn f -> %>
+
+              <%= label f, :buyer_name, gettext("Name"), class: "p-2 text-sky-600 text-xl" %>
+              <%= text_input f, :buyer_name,
+                style: "background-color: white;",
+                class: "input shadow-button",
+                placeholder: gettext("Enter your name") %>
+              <%= error_tag f, :buyer_name %>
+
+              <%= label f, :address, gettext("Address"), class: "p-2 text-sky-600 text-xl" %>
+              <%= text_input f, :address,
+                style: "background-color: white;",
+                class: "input shadow-button",
+                placeholder: gettext("Enter your address") %>
+              <%= error_tag f, :address %>
+
+              <%= label f, :note, class: "p-2 text-sky-600 text-xl" %>
+              <%= textarea f, :note,
+                style: "background-color: white;",
+                class: "input",
+                placeholder: gettext("Enter notes for the market") %>
+              <%= error_tag f, :note %>
+
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </LiveMotion.motion>
+  </div>  
+</div>
+
+<LiveMotion.motion
+  id="checkout-button"
+  initial={[y: [400]]}
+  animate={[y: [0]]}
+  transition={[]}
+  exit={[y: [400]]}
+  class="
+    fixed bottom-4 flex justify-center px-4
+    max-w-7xl w-full z-50
+  "
+>
+
+  <button>Click</button>
+
+</LiveMotion.motion>
