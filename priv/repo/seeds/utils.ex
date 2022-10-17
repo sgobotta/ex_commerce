@@ -3,6 +3,8 @@ defmodule ExCommerce.Seeds.Utils do
   Utils for the ExCommerce seeds
   """
 
+  require Logger
+
   @doc """
   Given a stringified date, casts it to a naive date time type.
   """
@@ -22,6 +24,30 @@ defmodule ExCommerce.Seeds.Utils do
     Enum.reduce(keys, %{}, fn (key, acc) ->
       Map.put(acc, key, date_to_naive_datetime(Map.get(map, key)))
     end)
+  end
+
+  @doc """
+  Handles errors on seeds creation.
+  """
+  @spec handle_error(any(), String.t()) :: :ok | any()
+  def handle_error(%Postgrex.Error{postgres: %{code: code, constraint: constraint, detail: detail}} = error, resource) do
+    log_key_violations(resource, code, constraint, detail, error)
+  end
+
+  def handle_error(error, resource) do
+    :ok = Logger.error("Unhandled error while creating seeds for resource=#{resource} error=#{inspect(error)}")
+
+    error
+  end
+
+  defp log_key_violations(resource, code, constraint, detail, _error) when code in [:unique_violation, :foreign_key_violation] do
+    :ok = Logger.warn("❌ The #{resource} resource already exists, skipping creation. constraint=#{inspect(constraint)} detail=#{inspect(detail)}")
+  end
+
+  defp log_key_violations(resource, code, constraint, detail, error) do
+    :ok = Logger.error("Unhandled Postgres error while creating seeds for resource=#{resource} code=#{inspect(code)} constraint=#{inspect(constraint)} detail=#{inspect(detail)}")
+
+    error
   end
 
   defmacro __using__(opts) do
@@ -64,6 +90,9 @@ defmodule ExCommerce.Seeds.Utils do
 
           :ok
         end
+      rescue
+        error ->
+          Utils.handle_error(error, @plural_element)
       end
     end
   end
