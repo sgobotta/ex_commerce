@@ -106,7 +106,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2.3.4
-      - name: Run Unit Tests
+      - name: Assemble release
         uses: ./.github/actions/prod
         with:
           CLOUDEX_API_KEY: ${{ env.CLOUDEX_API_KEY }}
