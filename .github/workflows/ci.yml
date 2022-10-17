@@ -2,9 +2,9 @@ name: CI
 
 on:
   # This action is triggered on any branch that opens a pull request.
-  push:
+  pull_request:
     branches:
-      - "feature/40-Upgrade-github-actions-to-parallelize-jobs"
+      - "*"
     # This action is not triggered when markdown files are modified.
     paths-ignore:
       - '**.md'
