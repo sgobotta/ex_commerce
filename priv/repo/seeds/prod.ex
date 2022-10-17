@@ -37,7 +37,7 @@ defmodule ExCommerce.Seeds.Prod do
     :ok = CatalogueItemOptionGroups.populate()
     :ok = CatalogueItemOptions.populate()
 
-    :ok = Logger.info("🌱 Succesfully created prod seeds.")
+    :ok = Logger.info("🌱 Finished seeds creation for prod environment.")
 
     :ok
   end
