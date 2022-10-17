@@ -51,8 +51,10 @@ defmodule ExCommerceWeb.Router do
       ] do
       scope "/checkout" do
         live "/:brand/:shop", CheckoutLive.Shop, :index
+
         live "/:brand/:shop/:catalogue", CheckoutLive.Catalogue, :index
         live "/:brand/:shop/:catalogue/cart", CheckoutLive.Catalogue, :cart
+        live "/:brand/:shop/:catalogue/order", CheckoutLive.Order, :new
 
         live "/:brand/:shop/:catalogue/:item",
              CheckoutLive.CatalogueItem,
