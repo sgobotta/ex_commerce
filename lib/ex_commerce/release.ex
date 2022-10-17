@@ -8,7 +8,7 @@ defmodule ExCommerce.Release do
   @app :ex_commerce
 
   def create_db do
-    load_app()
+    :ok = load_app()
 
     for repo <- repos() do
       Application.fetch_env!(@app, repo)
@@ -43,17 +43,50 @@ defmodule ExCommerce.Release do
   end
 
   def rollback(repo, version) do
-    load_app()
+    :ok = load_app()
 
     {:ok, _res, _apps} =
       Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
   end
 
-  defp repos do
-    Application.fetch_env!(@app, :ecto_repos)
+  @doc """
+  Load seeds from file.
+  """
+  def seed(filename \\ "seeds.exs") do
+    :ok = load_app()
+
+    for repo <- repos() do
+      {:ok, _a, _b} =
+        Ecto.Migrator.with_repo(
+          repo,
+          &eval_seed(&1, filename, @app)
+        )
+    end
   end
 
-  defp load_app do
-    Application.load(@app)
+  defp repos, do: Application.fetch_env!(@app, :ecto_repos)
+
+  defp load_app, do: Application.load(@app)
+
+  defp eval_seed(repo, filename, app) do
+    seeds_file = get_path(repo, filename, app)
+
+    if File.regular?(seeds_file) do
+      {:ok, Code.eval_file(seeds_file)}
+    else
+      {:error, "Seeds file not found."}
+    end
+  end
+
+  defp get_path(repo, filename, app) do
+    priv_dir = "#{:code.priv_dir(app)}"
+
+    repo_underscore =
+      repo
+      |> Module.split()
+      |> List.last()
+      |> Macro.underscore()
+
+    Path.join([priv_dir, repo_underscore, filename])
   end
 end
