@@ -4,36 +4,36 @@ description: Run unit tests
 
 inputs:
   CLOUDEX_API_KEY:
-    required: true
     description: Cloudex api key
+    required: true
   CLOUDEX_CLOUD_NAME:
-    required: true
     description: Cloudex cloud name
+    required: true
   CLOUDEX_SECRET:
-    required: true
     description: Cloudex secret
+    required: true
   ELIXIR_VERSION:
-    required: true
     description: Elixir version
-  GITHUB_TOKEN:
     required: true
+  GITHUB_TOKEN:
     description: A github token
+    required: true
   MIX_ENV:
     default: test
-    required: false
     description: The current elixir env
+    required: false
   OTP_VERSION:
-    required: true
     description: OTP version
+    required: true
   POSTGRES_PASSWORD:
-    required: true
     description: Postgres database password
+    required: true
   POSTGRES_USER:
-    required: true
     description: Postgres database user
-  UPLOADS_PATH:
     required: true
+  UPLOADS_PATH:
     description: The uploads path
+    required: true
 
 runs:
   using: "composite"

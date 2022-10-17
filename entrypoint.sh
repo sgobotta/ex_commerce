@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bin="/app/bin/ex_commerce"
+bin="bin/ex_commerce"
 
 # Create db if not exists
 # echo "Attempting to create db..."

@@ -36,7 +36,7 @@ if config_env() == :prod do
           port: port,
           transport_options: [socket_opts: [:inet6]]
         ],
-        url: [host: host, port: port]
+        url: [host: host, port: 80]
 
     _stage ->
       :ok = Logger.info("Using DATABASE_URL as Postgrex connection protocol.")
@@ -54,7 +54,7 @@ if config_env() == :prod do
           # ip: {0, 0, 0, 0, 0, 0, 0, 0},
           port: {:system, "PORT"}
         ],
-        url: [scheme: "https", host: host, port: 443]
+        url: [scheme: "https", host: host, port: port]
   end
 
   # ----------------------------------------------------------------------------
