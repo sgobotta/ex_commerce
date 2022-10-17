@@ -44,9 +44,26 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
 
   @impl true
   def handle_event("checkout_order", _params, socket) do
-    %{cart: %Cart{} = cart} = socket.assigns
+    %{
+      brand_slug: brand_slug,
+      cart: %Cart{} = cart,
+      catalogue: catalogue,
+      shop_slug: shop_slug
+    } = socket.assigns
 
-    {:noreply, assign_cart(socket, cart)}
+    socket = assign_cart(socket, cart)
+
+    LiveView.redirect(socket,
+      to:
+        Routes.checkout_order_path(
+          socket,
+          :new,
+          brand_slug,
+          shop_slug,
+          catalogue
+        )
+    )
+    |> then(fn socket -> {:noreply, socket} end)
   end
 
   def handle_event(
