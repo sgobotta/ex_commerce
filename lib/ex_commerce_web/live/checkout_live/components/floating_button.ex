@@ -1,4 +1,4 @@
-defmodule ExCommerceWeb.CheckoutLive.Components.CheckoutButton do
+defmodule ExCommerceWeb.CheckoutLive.Components.FloatingButton do
   @moduledoc """
   Component to display the Checkout button
   """
