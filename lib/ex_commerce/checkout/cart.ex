@@ -102,6 +102,15 @@ defmodule ExCommerce.Checkout.Cart do
   end
 
   @doc """
+  Given a #{Cart} returns the current #{Order}.
+  """
+  @spec get_order(Cart.t()) :: Order.t()
+  def get_order(%Cart{} = cart) do
+    %Cart{server: server} = maybe_start_server(cart)
+    CartServer.get_order(server)
+  end
+
+  @doc """
   Given a #{__MODULE__} struct and an OrderItem, updates the Cart order with the
   order item to return a new #{__MODULE__} struct.
 
