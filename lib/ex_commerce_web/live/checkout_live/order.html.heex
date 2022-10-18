@@ -53,7 +53,6 @@
             <%= form_for @changeset, "#", [
               id: "order-form",
               phx_change: "validate",
-              phx_submit: "save",
               class: "mb-0"
             ], fn f -> %>
 
@@ -100,7 +99,7 @@
   <.live_component
     module={Components.FloatingButton}
     id="checkout-button"
-    enabled={valid_checkout?(@cart)}
+    enabled={valid_checkout?(@changeset, @cart)}
     on_click_event="complete_order"
   >
     <:enabled_content>
@@ -133,7 +132,7 @@
       <div class="flex flex-row">
         <div class="px-2">
           <p class="font-medium text-white text-center">
-            <%= gettext("Add products to your order") %>
+            <%= gettext("Complete the missing fields") %>
           </p>
         </div>
         <div class="pt-1 self-center">

@@ -43,10 +43,6 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     {:noreply, assign_changeset(socket, order_params)}
   end
 
-  def handle_event("save", _params, socket) do
-    {:noreply, socket}
-  end
-
   def handle_event("complete_order", _params, socket) do
     {:noreply, socket}
   end
@@ -180,7 +176,10 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     |> assign(:nav_title, gettext("Back"))
   end
 
-  defp valid_checkout?(%Cart{} = cart), do: Checkout.valid_checkout?(cart)
+  defp valid_checkout?(%Ecto.Changeset{valid?: false}, %Cart{}), do: false
+
+  defp valid_checkout?(%Ecto.Changeset{valid?: true}, %Cart{} = cart),
+    do: Checkout.valid_checkout?(cart)
 
   defp get_order_items(%Cart{} = cart), do: Checkout.get_order_items(cart)
 
