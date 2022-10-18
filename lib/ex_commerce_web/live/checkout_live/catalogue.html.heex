@@ -138,11 +138,11 @@
     max-w-7xl w-full z-50
   "
 >
-
   <.live_component
     module={Components.FloatingButton}
     id="checkout-button"
     enabled={valid_checkout?(@cart)}
+    on_click_event="checkout_order"
   >
     <:enabled_content>
       <div class="flex flex-row">
@@ -187,5 +187,4 @@
       </div>
     </:disabled_content>
   </.live_component>
-
 </LiveMotion.motion>

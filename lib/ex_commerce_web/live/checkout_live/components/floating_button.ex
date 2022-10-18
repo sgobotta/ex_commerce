@@ -34,7 +34,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.FloatingButton do
       hover:bg-green-300
     "
       tabindex="0"
-      phx-click="checkout_order"
+      phx-click={@on_click_event}
     >
       <%= render_slot(@enabled_content) %>
     </button>
