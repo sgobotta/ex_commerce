@@ -73,22 +73,33 @@ defmodule ExCommerce.Checkout.Cart do
   def set_server(%Cart{} = cart, pid), do: %Cart{cart | server: pid}
 
   @doc """
-  Given a #{__MODULE__} struct and a state, returns a new #{__MODULE__} with
-  `state`.
+  Given a #{__MODULE__} struct and an #{Order}, returns a new #{__MODULE__}
+  with an updated order.
 
   ## Examples:
 
-      iex> set_state(%Cart{}, %{some: "value"})
+      iex> update_order(%Cart{}, %Order{buyer_name: "Some name"})
       %ExCommerce.Checkout.Cart{
         id: "caf6c585d9ba724539d27b301a5ebd22e904fa5023cc1f888adc13529898e5ea",
-        order: nil,
+        order: %Order{buyer_name: "Some name"},
         server: nil,
-        state: %{some: "value"}
+        state: nil
       }
 
   """
-  @spec set_state(t(), state()) :: t()
-  def set_state(%Cart{} = cart, state), do: %Cart{cart | state: state}
+  @spec set_order(t(), Order.t()) :: t()
+  def set_order(%Cart{} = cart, %Order{} = order) do
+    %Cart{server: server} = cart = maybe_start_server(cart)
+
+    %Order{} =
+      order =
+      CartServer.get_order(server)
+      |> Map.merge(order)
+
+    :ok = CartServer.set_order(server, order)
+
+    %Cart{cart | order: order}
+  end
 
   @doc """
   Given a #{__MODULE__} struct and an OrderItem, updates the Cart order with the
@@ -106,7 +117,8 @@ defmodule ExCommerce.Checkout.Cart do
 
     %Order{order_items: order_items} = order = CartServer.get_order(server)
 
-    order =
+    %Order{} =
+      order =
       Map.put(
         order,
         :order_items,

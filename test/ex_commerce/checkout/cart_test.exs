@@ -43,12 +43,15 @@ defmodule ExCommerce.Checkout.CartTest do
         |> Cart.set_server(self)
     end
 
-    test "set_state/2 returns a new Cart struct with a state" do
+    test "set_order/2 returns a new Cart struct with a new order" do
       id = generate_id()
+      name = "Some name"
 
-      %Cart{state: %{some: "value"}} =
+      order = %Order{buyer_name: name}
+
+      %Cart{order: %Order{buyer_name: ^name}} =
         new(id)
-        |> Cart.set_state(%{some: "value"})
+        |> Cart.set_order(order)
     end
 
     test "add_to_order/2 returns a new Cart struct with an updated order" do
