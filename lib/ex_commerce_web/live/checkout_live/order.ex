@@ -19,6 +19,8 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
 
   alias ExCommerceWeb.CheckoutLive.Components
 
+  alias Phoenix.LiveView
+
   @impl true
   def mount(params, session, socket) do
     {
@@ -47,6 +49,38 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
 
   def handle_event("complete_order", _params, socket) do
     {:noreply, socket}
+  end
+
+  def handle_event(
+        "remove_order_item",
+        %{"remove" => order_item_temp_id},
+        socket
+      ) do
+    %{cart: %Cart{} = cart} = socket.assigns
+
+    case Checkout.remove_order_item(cart, order_item_temp_id) do
+      %Cart{order: %Order{order_items: []}} = cart ->
+        %{
+          brand_slug: brand_slug,
+          shop_slug: shop_slug,
+          catalogue: %Catalogue{id: catalogue_id}
+        } = socket.assigns
+
+        LiveView.redirect(assign_cart(socket, cart),
+          to:
+            Routes.checkout_catalogue_path(
+              socket,
+              :index,
+              brand_slug,
+              shop_slug,
+              catalogue_id
+            )
+        )
+
+      %Cart{order: %Order{order_items: _order_items}} = cart ->
+        assign_cart(socket, cart)
+    end
+    |> then(fn socket -> {:noreply, socket} end)
   end
 
   defp apply_action(socket, :new, %{
@@ -94,6 +128,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
       )
     )
     |> assign_catalogue(catalogue_id)
+    |> assign_changeset()
     |> assign(:cart_path, "#")
     |> assign_nav_title()
   end
@@ -119,11 +154,13 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
 
     socket
     |> assign(:changeset, changeset)
-    |> assign(:cart, cart)
+    |> assign_cart(cart)
   end
 
   defp assign_catalogue(socket, catalogue_id),
     do: assign_catalogue_by_id_or_redirect(socket, catalogue_id)
+
+  defp assign_cart(socket, %Cart{} = cart), do: assign(socket, :cart, cart)
 
   defp assign_cart_path(socket, brand_slug, shop_slug, catalogue_id) do
     cart_path =
