@@ -1,3 +1,18 @@
+<%= if @live_action in [:cart] do %>
+  <%= live_modal @socket, ExCommerceWeb.CheckoutLive.Components.CartComponent,
+    id: Ecto.UUID.generate(),
+    title: @page_title,
+    action: @live_action,
+    return_to: @return_to,
+    patch_to: @return_to,
+    redirect_to: @redirect_to,
+    current_route: @return_to,
+    opts: %{
+      cart: @cart
+    }
+  %>
+<% end %>
+
 <div class="flex flex-col h-full">
   <div class="
     basis-1/4 flex flex-col w-full justify-center items-center shrink-0
@@ -82,7 +97,53 @@
     max-w-7xl w-full z-50
   "
 >
+  <.live_component
+    module={Components.FloatingButton}
+    id="checkout-button"
+    enabled={valid_checkout?(@cart)}
+    on_click_event="complete_order"
+  >
+    <:enabled_content>
+      <div class="flex flex-row">
+        <div class="px-2">
+          <p class="font-medium text-white">
+            (<%= get_order_items(@cart) %>)
+          </p>
+        </div>
+        <div class="px-2">
+          <p class="font-medium text-white">
+            <%= get_order_price(@cart) %>
+          </p>
+        </div>
+        <div class="px-2">
+          <p class="font-medium text-white">
+            <%= gettext("Complete Order") %>
+          </p>
+        </div>
+        <div class="pt-1">
+          <.icon name={:shopping_bag} outlined class="
+            text-white
+            flex-shrink-0 h-7 w-7
+          "/>
+        </div>
+      </div>
+    </:enabled_content>
 
-  <button>Click</button>
-
+    <:disabled_content>
+      <div class="flex flex-row">
+        <div class="px-2">
+          <p class="font-medium text-white text-center">
+            <%= gettext("Add products to your order") %>
+          </p>
+        </div>
+        <div class="pt-1 self-center">
+          <.icon name={:shopping_bag} outlined class="
+            pr-2
+            text-white
+            flex-shrink-0 h-7 w-7
+          "/>
+        </div>
+      </div>
+    </:disabled_content>
+  </.live_component>
 </LiveMotion.motion>
