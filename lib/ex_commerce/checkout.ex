@@ -15,14 +15,24 @@ defmodule ExCommerce.Checkout do
   #
 
   @doc """
-  Given a #{Cart} and an #{OrderItem}, adds the `order_item` to return a new
+  Given a #{Cart} and a changeset, return a new `cart` with it's `order`
+  updated.
+  """
+  @spec update_cart_order(Cart.t(), Ecto.Changeset.t()) :: Cart.t()
+  def update_cart_order(%Cart{} = cart, %Ecto.Changeset{} = changeset) do
+    %Order{} = order = Order.apply(changeset)
+    Cart.set_order(cart, order)
+  end
+
+  @doc """
+  Given a #{Cart} and a changeset, adds the `order_item` to return a new
   #{Cart}.
   """
   @spec add_to_order(Cart.t(), Ecto.Changeset.t()) :: Cart.t()
-  def add_to_order(%Cart{} = cart, %Ecto.Changeset{} = order_item) do
-    with price <- OrderItem.get_total_price(order_item),
+  def add_to_order(%Cart{} = cart, %Ecto.Changeset{} = order_item_cs) do
+    with price <- OrderItem.get_total_price(order_item_cs),
          %Ecto.Changeset{changes: changes, data: data} <-
-           __MODULE__.change_order_item(order_item, %{price: price}),
+           __MODULE__.change_order_item(order_item_cs, %{price: price}),
          %OrderItem{} = order_item <- Map.merge(data, changes) do
       Cart.add_to_order(cart, order_item)
     end
