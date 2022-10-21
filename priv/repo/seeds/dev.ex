@@ -43,7 +43,7 @@ defmodule ExCommerce.Seeds.Dev do
     :ok = Relations.CataloguesCategoriesItems.populate()
     :ok = Relations.CatalogueItemOptionGroupsItems.populate()
 
-    :ok = Logger.info("🌱 Succesfully created development seeds.")
+    :ok = Logger.info("🌱 Finished seeds creation for dev environment.")
 
     :ok
   end

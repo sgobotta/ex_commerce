@@ -107,4 +107,4 @@ COPY --from=builder --chown=nobody:root app/_build/prod/rel/ex_commerce .
 
 USER nobody
 
-CMD ["/app/entrypoint.sh"]
+CMD /app/entrypoint.sh start
