@@ -41,7 +41,7 @@ defmodule ExCommerceNotification do
           """
       end)
 
-    text = """
+    """
     ```
     PEDIDO: *#{Ecto.UUID.generate()}*%0A
     %0A
@@ -51,10 +51,7 @@ defmodule ExCommerceNotification do
 
     🏠 Dirección: *#{address}*%0A
     📝 Notas: _#{note}_
-    ```
     """
-
-    text
   end
 
   defp get_option_groups_message(:whatsapp, %OrderItem{
