@@ -103,29 +103,31 @@
     on_click_event="complete_order"
   >
     <:enabled_content>
-      <div class="flex flex-row">
-        <div class="px-2">
-          <p class="font-medium text-white">
-            (<%= get_order_items(@cart) %>)
-          </p>
+      <a href={@href} target="_blank">
+        <div class="flex flex-row">
+          <div class="px-2">
+            <p class="font-medium text-white">
+              (<%= get_order_items(@cart) %>)
+            </p>
+          </div>
+          <div class="px-2">
+            <p class="font-medium text-white">
+              <%= get_order_price(@cart) %>
+            </p>
+          </div>
+          <div class="px-2">
+            <p class="font-medium text-white">
+              <%= gettext("Complete Order") %>
+            </p>
+          </div>
+          <div class="pt-1">
+            <.icon name={:shopping_bag} outlined class="
+              text-white
+              flex-shrink-0 h-7 w-7
+            "/>
+          </div>
         </div>
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= get_order_price(@cart) %>
-          </p>
-        </div>
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= gettext("Complete Order") %>
-          </p>
-        </div>
-        <div class="pt-1">
-          <.icon name={:shopping_bag} outlined class="
-            text-white
-            flex-shrink-0 h-7 w-7
-          "/>
-        </div>
-      </div>
+      </a>
     </:enabled_content>
 
     <:disabled_content>

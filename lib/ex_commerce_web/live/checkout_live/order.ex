@@ -31,6 +31,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
       |> assign(:cart_visible, true)
       |> assign(:brand_slug, params["brand"])
       |> assign(:shop_slug, params["shop"])
+      |> assign_href(false)
     }
   end
 
@@ -144,13 +145,15 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
       }
       |> Map.merge(params)
 
-    %Ecto.Changeset{} = changeset = Checkout.change_order(order, params)
+    %Ecto.Changeset{valid?: valid?} =
+      changeset = Checkout.change_order(order, params)
 
     %Cart{} = cart = Checkout.update_cart_order(cart, changeset)
 
     socket
     |> assign(:changeset, changeset)
     |> assign_cart(cart)
+    |> assign_href(valid?)
   end
 
   defp assign_catalogue(socket, catalogue_id),
@@ -169,6 +172,26 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
       )
 
     assign(socket, :cart_path, cart_path)
+  end
+
+  def assign_href(socket, true) do
+    %{
+      cart: %Cart{} = cart,
+      shop: %Shop{telephone: telephone}
+    } = socket.assigns
+
+    message = Checkout.get_order_message(cart)
+
+    telephone = String.replace(telephone, " ", "")
+
+    url =
+      "https://web.whatsapp.com/send/?phone=#{telephone}&text=#{message}&type=phone_number&app_absent=0"
+
+    assign(socket, :href, url)
+  end
+
+  def assign_href(socket, false) do
+    assign(socket, :href, nil)
   end
 
   defp assign_nav_title(socket) do
