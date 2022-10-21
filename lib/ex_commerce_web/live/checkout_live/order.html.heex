@@ -17,7 +17,7 @@
   <div class="
     basis-1/4 flex flex-col w-full justify-center items-center shrink-0
   " />
-  <div class="flex items-end basis-3/4">
+  <div class="flex items-end basis-2/4 self-center w-full sm:w-full md:w-10/12 lg:w-10/12 xl:w-2/3">
     <LiveMotion.motion
       id="item-content"
       initial={[y: [1000]]}
@@ -83,66 +83,68 @@
       </div>
     </LiveMotion.motion>
   </div>  
-</div>
 
-<LiveMotion.motion
-  id="checkout-button"
-  initial={[y: [400]]}
-  animate={[y: [0]]}
-  transition={[]}
-  exit={[y: [400]]}
-  class="
-    fixed bottom-4 flex justify-center px-4
-    max-w-7xl w-full z-50
-  "
->
-  <.live_component
-    module={Components.FloatingButton}
+  <LiveMotion.motion
     id="checkout-button"
-    enabled={valid_checkout?(@changeset, @cart)}
-    on_click_event="complete_order"
+    initial={[y: [400]]}
+    animate={[y: [0]]}
+    transition={[]}
+    exit={[y: [400]]}
+    class="
+      fixed bottom-4 flex justify-center px-4
+      max-w-7xl w-full z-50
+    "
   >
-    <:enabled_content>
-      <div class="flex flex-row">
-        <div class="px-2">
-          <p class="font-medium text-white">
-            (<%= get_order_items(@cart) %>)
-          </p>
-        </div>
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= get_order_price(@cart) %>
-          </p>
-        </div>
-        <div class="px-2">
-          <p class="font-medium text-white">
-            <%= gettext("Complete Order") %>
-          </p>
-        </div>
-        <div class="pt-1">
-          <.icon name={:shopping_bag} outlined class="
-            text-white
-            flex-shrink-0 h-7 w-7
-          "/>
-        </div>
-      </div>
-    </:enabled_content>
+    <.live_component
+      module={Components.FloatingButton}
+      id="checkout-button"
+      enabled={valid_checkout?(@changeset, @cart)}
+      on_click_event="complete_order"
+    >
+      <:enabled_content>
+        <a href={@href} target="_blank">
+          <div class="flex flex-row">
+            <div class="px-2">
+              <p class="font-medium text-white">
+                (<%= get_order_items(@cart) %>)
+              </p>
+            </div>
+            <div class="px-2">
+              <p class="font-medium text-white">
+                <%= get_order_price(@cart) %>
+              </p>
+            </div>
+            <div class="px-2">
+              <p class="font-medium text-white">
+                <%= get_button_text(@changeset, @cart) %>
+              </p>
+            </div>
+            <div class="pt-1">
+              <.icon name={:shopping_bag} outlined class="
+                text-white
+                flex-shrink-0 h-7 w-7
+              "/>
+            </div>
+          </div>
+        </a>
+      </:enabled_content>
 
-    <:disabled_content>
-      <div class="flex flex-row">
-        <div class="px-2">
-          <p class="font-medium text-white text-center">
-            <%= gettext("Complete the missing fields") %>
-          </p>
+      <:disabled_content>
+        <div class="flex flex-row">
+          <div class="px-2">
+            <p class="font-medium text-white text-center">
+              <%= get_button_text(@changeset, @cart) %>
+            </p>
+          </div>
+          <div class="pt-1 self-center">
+            <.icon name={:shopping_bag} outlined class="
+              pr-2
+              text-white
+              flex-shrink-0 h-7 w-7
+            "/>
+          </div>
         </div>
-        <div class="pt-1 self-center">
-          <.icon name={:shopping_bag} outlined class="
-            pr-2
-            text-white
-            flex-shrink-0 h-7 w-7
-          "/>
-        </div>
-      </div>
-    </:disabled_content>
-  </.live_component>
-</LiveMotion.motion>
+      </:disabled_content>
+    </.live_component>
+  </LiveMotion.motion>
+</div>

@@ -38,7 +38,7 @@ defmodule ExCommerceNumeric do
       #Decimal<100.000>
 
   """
-  @spec format_price(binary() | integer() | float() | %Decimal{},
+  @spec format_price(binary() | integer() | float() | Decimal.t(),
           round_places: integer()
         ) ::
           %Decimal{}

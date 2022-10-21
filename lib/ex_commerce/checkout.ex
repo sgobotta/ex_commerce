@@ -76,6 +76,11 @@ defmodule ExCommerce.Checkout do
     end)
   end
 
+  def get_order_message(%Cart{} = cart) do
+    price = get_order_price(cart)
+    ExCommerceNotification.get_order_message(:whatsapp, cart, price)
+  end
+
   # ---------------------------------------------------------------------------
   # Data Access layer
   #
