@@ -204,6 +204,18 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
   defp valid_checkout?(%Ecto.Changeset{valid?: true}, %Cart{} = cart),
     do: Checkout.valid_checkout?(cart)
 
+  defp get_button_text(%Ecto.Changeset{valid?: valid?}, %Cart{} = cart) do
+    case Checkout.valid_checkout?(cart) do
+      true ->
+        if valid?,
+          do: gettext("Complete Order"),
+          else: gettext("Complete the missing fields")
+
+      false ->
+        gettext("Add products to your order")
+    end
+  end
+
   defp get_order_items(%Cart{} = cart), do: Checkout.get_order_items(cart)
 
   defp get_order_price(%Cart{} = cart), do: "$#{Checkout.get_order_price(cart)}"

@@ -117,7 +117,7 @@
           </div>
           <div class="px-2">
             <p class="font-medium text-white">
-              <%= gettext("Complete Order") %>
+              <%= get_button_text(@changeset, @cart) %>
             </p>
           </div>
           <div class="pt-1">
@@ -134,7 +134,7 @@
       <div class="flex flex-row">
         <div class="px-2">
           <p class="font-medium text-white text-center">
-            <%= gettext("Complete the missing fields") %>
+            <%= get_button_text(@changeset, @cart) %>
           </p>
         </div>
         <div class="pt-1 self-center">
