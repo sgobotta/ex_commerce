@@ -42,19 +42,16 @@ defmodule ExCommerce.Checkout.Order do
       :shop_id,
       :catalogue_id,
       :buyer_name,
-      :address,
-      :note
+      :address
     ])
   end
 
-  # def changeset_pre_order(order, attrs) do
-  #   order
-  #   |> cast(attrs, [:brand_id, :shop_id, :catalogue_id, :order_items])
-  #   |> validate_required([
-  #     :brand_id,
-  #     :shop_id,
-  #     :catalogue_id,
-  #     :order_items
-  #   ])
-  # end
+  @doc """
+  Given an #{Ecto.Changeset} struct, applies changes to return an updated
+  #{__MODULE__}.
+  """
+  @spec apply(Ecto.Changeset.t()) :: t()
+  def apply(%Ecto.Changeset{} = changeset) do
+    apply_changes(changeset)
+  end
 end
