@@ -30,19 +30,19 @@ defmodule ExCommerce.Checkout.Order do
   def changeset(order, attrs) do
     order
     |> cast(attrs, [
-      :brand_id,
-      :shop_id,
-      :catalogue_id,
-      :buyer_name,
       :address,
-      :note
+      :brand_id,
+      :buyer_name,
+      :catalogue_id,
+      :note,
+      :shop_id
     ])
     |> validate_required([
+      :address,
       :brand_id,
-      :shop_id,
-      :catalogue_id,
       :buyer_name,
-      :address
+      :catalogue_id,
+      :shop_id
     ])
   end
 
