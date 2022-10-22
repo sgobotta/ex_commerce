@@ -34,6 +34,9 @@ defmodule ExCommerceNotification do
                                       acc ->
         option_groups_message = get_option_groups_message(:whatsapp, order_item)
 
+        order_item_price = format_price(order_item_price)
+        variant_price = format_price(variant_price)
+
         acc <>
           """
           ▪ (*#{quantity}*) #{name}, #{type} ... _$#{variant_price}_ (u) *$#{order_item_price}*%0A
@@ -51,6 +54,7 @@ defmodule ExCommerceNotification do
 
     🏠 Dirección: *#{address}*%0A
     📝 Notas: _#{note}_
+    ```
     """
   end
 
@@ -103,6 +107,8 @@ defmodule ExCommerceNotification do
                                        price_modifier: price_modifier
                                      },
                                      acc ->
+          variant_price = format_price(variant_price)
+
           discount_price =
             format_price(
               Decimal.sub(
@@ -157,6 +163,8 @@ defmodule ExCommerceNotification do
               )
             )
           )
+
+        variant_price = format_price(variant_price)
 
         acc <>
           """
