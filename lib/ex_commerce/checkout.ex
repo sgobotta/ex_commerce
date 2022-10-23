@@ -78,7 +78,7 @@ defmodule ExCommerce.Checkout do
 
   def get_order_message(%Cart{} = cart) do
     price = get_order_price(cart)
-    ExCommerceNotification.get_order_message(:whatsapp, cart, price)
+    ExCommerceNotifications.get_order_message(:whatsapp, cart, price)
   end
 
   # ---------------------------------------------------------------------------
