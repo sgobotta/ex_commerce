@@ -1,7 +1,7 @@
-defmodule ExCommerceNotification do
+defmodule ExCommerceNotifications do
   @moduledoc """
-  `ExCommerceNumeric` is a convenience modules group to handle different ways
-  of sending a message or notifications.
+  `ExCommerceNotifications` is a convenience modules group to handle different
+  ways of parsing and sending messages or notifications.
   """
 
   alias ExCommerce.Offerings.{
