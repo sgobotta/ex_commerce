@@ -14,6 +14,8 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
 
   import ExCommerceNumeric
 
+  @type t :: %__MODULE__{}
+
   @fields [:price_modifier, :is_visible]
   @foreign_fields [:brand_id, :catalogue_item_id, :catalogue_item_variant_id]
   @virtual_fields [:delete, :price_preview]
@@ -57,11 +59,33 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
 
   @doc """
   Given a `:price` and a `:price_modifier`, returns the applied price.
+
+  TODO: refactor for get_discount_price and deprecate.
   """
   @spec apply_discount(Decimal.t(), Decimal.t()) :: Decimal.t()
   def apply_discount(price, price_modifier) do
     format_price(
       Decimal.sub(price, Decimal.mult(price, Decimal.div(price_modifier, 100)))
+    )
+  end
+
+  @doc """
+  Given a #{__MODULE__} returns the price with discount. If the discount is `0`,
+  the variant price is returned.
+  """
+  @spec get_discount_price(__MODULE__.t()) :: Decimal.t()
+  def get_discount_price(%__MODULE__{
+        catalogue_item_variant: %CatalogueItemVariant{
+          price: variant_price
+        },
+        price_modifier: price_modifier
+      }) do
+    Decimal.sub(
+      variant_price,
+      Decimal.mult(
+        variant_price,
+        Decimal.div(price_modifier, 100)
+      )
     )
   end
 
