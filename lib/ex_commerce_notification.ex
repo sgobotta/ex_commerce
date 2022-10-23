@@ -32,15 +32,24 @@ defmodule ExCommerceNotification do
                                         }
                                       } = order_item,
                                       acc ->
-        option_groups_message = get_option_groups_message(:whatsapp, order_item)
+        option_groups = get_option_groups_message(:whatsapp, order_item)
 
         order_item_price = format_price(order_item_price)
         variant_price = format_price(variant_price)
 
+        item =
+          render_item(%{
+            quantity: quantity,
+            name: name,
+            variant: type,
+            variant_price: variant_price,
+            total_price: order_item_price
+          })
+
         acc <>
           """
-          ▪ (*#{quantity}*) #{name}, #{type} ... _$#{variant_price}_ (u) *$#{order_item_price}*%0A
-          #{option_groups_message}
+          #{item}
+          #{option_groups}
           """
       end)
 
@@ -77,7 +86,6 @@ defmodule ExCommerceNotification do
           name: group_name,
           options: options
         } =
-          _catalogue_item_option_group =
           Enum.find(available_option_groups, fn %CatalogueItemOptionGroup{
                                                   id: id
                                                 } ->
@@ -89,42 +97,9 @@ defmodule ExCommerceNotification do
             id in values
           end)
 
-        acc =
-          acc <>
-            """
-            %20%20*#{group_name}*:%0A
-            """
+        options = parse_catalogue_item_options(options)
 
-        Enum.reduce(options, acc, fn %CatalogueItemOption{
-                                       catalogue_item_variant:
-                                         %CatalogueItemVariant{
-                                           catalogue_item: %CatalogueItem{
-                                             name: catalogue_item_name
-                                           },
-                                           price: variant_price,
-                                           type: variant_type
-                                         },
-                                       price_modifier: price_modifier
-                                     },
-                                     acc ->
-          variant_price = format_price(variant_price)
-
-          discount_price =
-            format_price(
-              Decimal.sub(
-                variant_price,
-                Decimal.mult(
-                  variant_price,
-                  Decimal.div(price_modifier, 100)
-                )
-              )
-            )
-
-          acc <>
-            """
-            %20%20%20%20▫ #{catalogue_item_name}, #{variant_type} ... ~$#{variant_price}~ $#{discount_price}%0A
-            """
-        end)
+        acc <> render_group(%{name: group_name, options: options})
 
       {catalogue_option_group, %{"value" => value}}, acc
       when is_binary(value) ->
@@ -132,45 +107,117 @@ defmodule ExCommerceNotification do
           name: group_name,
           options: options
         } =
-          _catalogue_item_option_group =
           Enum.find(available_option_groups, fn %CatalogueItemOptionGroup{
                                                   id: id
                                                 } ->
             id == catalogue_option_group
           end)
 
-        %CatalogueItemOption{
-          catalogue_item_variant: %CatalogueItemVariant{
-            catalogue_item: %CatalogueItem{
-              name: catalogue_item_name
-            },
-            price: variant_price,
-            type: variant_type
-          },
-          price_modifier: price_modifier
-        } =
+        %CatalogueItemOption{} =
+          cio =
           Enum.find(options, fn %CatalogueItemOption{id: id} ->
             id == value
           end)
 
-        discount_price =
-          format_price(
-            Decimal.sub(
-              variant_price,
-              Decimal.mult(
-                variant_price,
-                Decimal.div(price_modifier, 100)
-              )
-            )
-          )
+        options = parse_catalogue_item_options([cio])
 
-        variant_price = format_price(variant_price)
-
-        acc <>
-          """
-          %20%20*#{group_name}*:%0A
-          %20%20%20%20▫ #{catalogue_item_name}, #{variant_type} ... ~$#{variant_price}~ $#{discount_price}%0A
-          """
+        acc <> render_group(%{name: group_name, options: options})
     end)
+  end
+
+  defp parse_catalogue_item_options(options) do
+    Enum.map(options, fn %CatalogueItemOption{} = cio ->
+      parse_catalogue_item_option(cio)
+    end)
+  end
+
+  defp parse_catalogue_item_option(%CatalogueItemOption{
+         catalogue_item_variant: %CatalogueItemVariant{
+           catalogue_item: %CatalogueItem{
+             name: catalogue_item_name
+           },
+           price: variant_price,
+           type: variant_type
+         },
+         price_modifier: %Decimal{coef: 0}
+       }) do
+    variant_price = format_price(variant_price)
+
+    %{
+      item_name: catalogue_item_name,
+      variant_name: variant_type,
+      variant_price: variant_price
+    }
+  end
+
+  defp parse_catalogue_item_option(
+         %CatalogueItemOption{
+           catalogue_item_variant: %CatalogueItemVariant{
+             catalogue_item: %CatalogueItem{
+               name: catalogue_item_name
+             },
+             price: variant_price,
+             type: variant_type
+           },
+           price_modifier: %Decimal{}
+         } = cio
+       ) do
+    variant_price = format_price(variant_price)
+
+    discount_price =
+      CatalogueItemOption.get_discount_price(cio)
+      |> format_price()
+
+    %{
+      item_name: catalogue_item_name,
+      variant_name: variant_type,
+      variant_price: variant_price,
+      discount_price: discount_price
+    }
+  end
+
+  defp render_item(%{
+         quantity: quantity,
+         name: name,
+         variant: type,
+         variant_price: variant_price,
+         total_price: order_item_price
+       }) do
+    """
+    ▪ (*#{quantity}*) #{name}, #{type} ... _$#{variant_price}_ (u) *$#{order_item_price}*%0A
+    """
+  end
+
+  defp render_group(%{name: group_name, options: options}) do
+    options =
+      Enum.reduce(options, "", fn parsed_option, acc ->
+        acc <> render_option(parsed_option)
+      end)
+
+    """
+    %20%20*#{group_name}*:%0A
+    #{options}
+    """
+  end
+
+  defp render_option(%{
+         item_name: item_name,
+         variant_name: variant_name,
+         variant_price: variant_price,
+         discount_price: discount_price
+       }) do
+    """
+    %20%20%20%20▫ #{item_name}, #{variant_name} ... ~$#{variant_price}~ $#{discount_price}%0A
+    """
+  end
+
+  defp render_option(%{
+         item_name: item_name,
+         variant_name: variant_name,
+         variant_price: variant_price
+       }) do
+    """
+    %20%20%20%20▫ #{item_name}, #{variant_name} ... $#{variant_price}%0A
+    """
   end
 end
