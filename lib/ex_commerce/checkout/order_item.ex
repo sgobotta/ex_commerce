@@ -43,6 +43,7 @@ defmodule ExCommerce.Checkout.OrderItem do
     |> cast(attrs, [
       :catalogue_item_id,
       :option_groups,
+      :order_id,
       :price,
       :quantity,
       :variant_id
