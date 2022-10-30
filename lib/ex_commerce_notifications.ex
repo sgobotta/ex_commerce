@@ -13,11 +13,18 @@ defmodule ExCommerceNotifications do
 
   alias ExCommerce.Checkout.{Cart, Order, OrderItem}
 
+  alias ExCommerceNotifications.Parsers
+
   import ExCommerceNumeric
 
   def get_order_message(:whatsapp, %Cart{} = cart, price) do
-    %Order{address: address, note: note, order_items: order_items} =
-      _order = Cart.get_order(cart)
+    %Order{order_items: order_items} = order = Cart.get_order(cart)
+
+    %{
+      address: address,
+      note: note,
+      items: _order_items
+    } = Parsers.Order.parse(order)
 
     order_items =
       Enum.reduce(order_items, "", fn %OrderItem{
