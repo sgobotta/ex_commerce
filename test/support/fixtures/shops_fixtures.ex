@@ -38,11 +38,6 @@ defmodule ExCommerce.ShopsFixtures do
   def valid_attrs(attrs \\ %{}) do
     unique_name = unique_shop_name()
 
-    unique_slug =
-      unique_name
-      |> String.downcase()
-      |> String.replace(" ", "-")
-
     Enum.into(
       attrs,
       Map.merge(

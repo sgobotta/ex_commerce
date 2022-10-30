@@ -106,9 +106,10 @@ defmodule ExCommerce.CheckoutTest do
 
     alias ExCommerce.Marketplaces.Brand
 
-    alias ExCommerce.BrandsFixtures
-
-    import ExCommerce.CheckoutFixtures
+    alias ExCommerce.{
+      BrandsFixtures,
+      OrderItemFixtures
+    }
 
     @invalid_attrs %{
       catalogue_item_id: nil,
@@ -118,12 +119,12 @@ defmodule ExCommerce.CheckoutTest do
     }
 
     test "list_order_items/0 returns all order_items" do
-      order_item = order_item_fixture()
+      order_item = OrderItemFixtures.create()
       assert Checkout.list_order_items() == [order_item]
     end
 
     test "get_order_item!/1 returns the order_item with given id" do
-      order_item = order_item_fixture()
+      order_item = OrderItemFixtures.create()
       assert Checkout.get_order_item!(order_item.id) == order_item
     end
 
@@ -131,7 +132,7 @@ defmodule ExCommerce.CheckoutTest do
       %OrderItem{
         catalogue_item_id: catalogue_item_id,
         variant_id: variant_id
-      } = order_item_fixture()
+      } = OrderItemFixtures.create()
 
       valid_attrs = %{
         catalogue_item_id: catalogue_item_id,
@@ -153,12 +154,12 @@ defmodule ExCommerce.CheckoutTest do
     end
 
     test "update_order_item/2 with valid data updates the order_item" do
-      %OrderItem{} = order_item = order_item_fixture()
+      %OrderItem{} = order_item = OrderItemFixtures.create()
 
       %OrderItem{
         catalogue_item_id: catalogue_item_id,
         variant_id: variant_id
-      } = order_item_fixture()
+      } = OrderItemFixtures.create()
 
       update_attrs = %{
         catalogue_item_id: catalogue_item_id,
@@ -174,7 +175,7 @@ defmodule ExCommerce.CheckoutTest do
     end
 
     test "update_order_item/2 with invalid data returns error changeset" do
-      order_item = order_item_fixture()
+      order_item = OrderItemFixtures.create()
 
       assert {:error, %Ecto.Changeset{}} =
                Checkout.update_order_item(order_item, @invalid_attrs)
@@ -183,7 +184,7 @@ defmodule ExCommerce.CheckoutTest do
     end
 
     test "delete_order_item/1 deletes the order_item" do
-      order_item = order_item_fixture()
+      order_item = OrderItemFixtures.create()
       assert {:ok, %OrderItem{}} = Checkout.delete_order_item(order_item)
 
       assert_raise Ecto.NoResultsError, fn ->
@@ -192,7 +193,7 @@ defmodule ExCommerce.CheckoutTest do
     end
 
     test "change_order_item/1 returns a order_item changeset" do
-      order_item = order_item_fixture()
+      order_item = OrderItemFixtures.create()
       assert %Ecto.Changeset{} = Checkout.change_order_item(order_item)
     end
 
@@ -200,7 +201,7 @@ defmodule ExCommerce.CheckoutTest do
     alias ExCommerce.Offerings.CatalogueItemVariant
 
     test "preload_order_item/2 returns a preloadad order_item" do
-      %OrderItem{} = order_item = order_item_fixture()
+      %OrderItem{} = order_item = OrderItemFixtures.create()
 
       %OrderItem{
         catalogue_item: %CatalogueItem{} = catalogue_item,
@@ -213,12 +214,16 @@ defmodule ExCommerce.CheckoutTest do
   end
 
   describe "orders" do
-    alias ExCommerce.{BrandsFixtures, CataloguesFixtures, ShopsFixtures}
+    alias ExCommerce.{
+      BrandsFixtures,
+      CataloguesFixtures,
+      OrderFixtures,
+      ShopsFixtures
+    }
+
     alias ExCommerce.Checkout.Order
     alias ExCommerce.Marketplaces.{Brand, Shop}
     alias ExCommerce.Offerings.Catalogue
-
-    import ExCommerce.CheckoutFixtures
 
     @valid_attrs %{
       buyer_name: "some buyer name",
@@ -243,12 +248,12 @@ defmodule ExCommerce.CheckoutTest do
     end
 
     test "list_orders/0 returns all orders" do
-      %Order{} = order = order_fixture()
+      %Order{} = order = OrderFixtures.create()
       assert Checkout.list_orders() == [order]
     end
 
     test "get_order!/1 returns the order with given id" do
-      %Order{id: order_id} = order = order_fixture()
+      %Order{id: order_id} = order = OrderFixtures.create()
       assert Checkout.get_order!(order_id) == order
     end
 
@@ -277,14 +282,14 @@ defmodule ExCommerce.CheckoutTest do
     end
 
     test "update_order/2 with valid data updates the order" do
-      %Order{} = order = order_fixture()
+      %Order{} = order = OrderFixtures.create()
       update_attrs = %{}
 
       assert {:ok, %Order{}} = Checkout.update_order(order, update_attrs)
     end
 
     test "update_order/2 with invalid data returns error changeset" do
-      %Order{id: order_id} = order = order_fixture()
+      %Order{id: order_id} = order = OrderFixtures.create()
 
       assert {:error, %Ecto.Changeset{}} =
                Checkout.update_order(order, @invalid_attrs)
@@ -293,18 +298,18 @@ defmodule ExCommerce.CheckoutTest do
     end
 
     test "delete_order/1 deletes the order" do
-      %Order{id: order_id} = order = order_fixture()
+      %Order{id: order_id} = order = OrderFixtures.create()
       assert {:ok, %Order{}} = Checkout.delete_order(order)
       assert_raise Ecto.NoResultsError, fn -> Checkout.get_order!(order_id) end
     end
 
     test "change_order/1 returns a order changeset" do
-      %Order{} = order = order_fixture()
+      %Order{} = order = OrderFixtures.create()
       assert %Ecto.Changeset{} = Checkout.change_order(order)
     end
 
     test "preload_order/2 returns a preloadad order" do
-      %Order{} = order = order_fixture()
+      %Order{} = order = OrderFixtures.create()
 
       %Order{order_items: order_items} =
         Checkout.preload_order(order, [:order_items])

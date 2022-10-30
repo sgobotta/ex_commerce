@@ -10,8 +10,11 @@ defmodule ExCommerce.FixtureHelpers do
     CatalogueItemsFixtures,
     CatalogueItemVariantsFixtures,
     CataloguesFixtures,
+    OrderFixtures,
     ShopsFixtures
   }
+
+  alias ExCommerce.Checkout.Order
 
   alias ExCommerce.Marketplaces.{Brand, Shop}
 
@@ -90,12 +93,12 @@ defmodule ExCommerce.FixtureHelpers do
   Convenience function to assign #{CatalogueItemVariant} attributes through the
   #{CatalogueItemVariantsFixtures} module.
   """
-  @spec maybe_assign_catalogue_item_variant(map()) :: map()
-  def maybe_assign_catalogue_item_variant(attrs),
+  @spec maybe_assign_catalogue_item_variant(map(), keyword()) :: map()
+  def maybe_assign_catalogue_item_variant(attrs, opts \\ []),
     do:
       maybe_assign(
         attrs,
-        :catalogue_item_variant_id,
+        Keyword.get(opts, :attr, :catalogue_item_variant_id),
         CatalogueItemVariant,
         CatalogueItemVariantsFixtures
       )
@@ -112,5 +115,19 @@ defmodule ExCommerce.FixtureHelpers do
         :catalogue_item_option_group_id,
         CatalogueItemOptionGroup,
         CatalogueItemOptionGroupsFixtures
+      )
+
+  @doc """
+  Convenience function to assign #{Order} attributes through the
+  #{OrderFixtures} module.
+  """
+  @spec maybe_assign_order(map()) :: map()
+  def maybe_assign_order(attrs),
+    do:
+      maybe_assign(
+        attrs,
+        :order_id,
+        Order,
+        OrderFixtures
       )
 end
