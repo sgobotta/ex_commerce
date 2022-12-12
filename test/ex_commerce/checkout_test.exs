@@ -63,7 +63,10 @@ defmodule ExCommerce.CheckoutTest do
       %Cart{} = cart = Cart.new(cart_id)
 
       catalogue_item_option_group =
-        ExCommerce.Repo.preload(catalogue_item_option_group, [:options])
+        ExCommerce.Repo.preload(
+          catalogue_item_option_group,
+          options: [:catalogue_item_variant]
+        )
 
       %Ecto.Changeset{} =
         order_item =
