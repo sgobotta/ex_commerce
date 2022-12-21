@@ -17,7 +17,17 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
   @type t :: %__MODULE__{}
 
   @fields [:price_modifier, :is_visible]
-  @foreign_fields [:brand_id, :catalogue_item_id, :catalogue_item_variant_id]
+  @foreign_fields [
+    :brand_id,
+    :catalogue_item_id,
+    :catalogue_item_variant_id,
+    :catalogue_item_option_group_id
+  ]
+  @required_foreign_fields [
+    :brand_id,
+    :catalogue_item_id,
+    :catalogue_item_variant_id
+  ]
   @virtual_fields [:delete, :price_preview]
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -51,7 +61,7 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
       catalogue_item_option.temp_id || attrs["temp_id"]
     )
     |> cast(attrs, @fields ++ @foreign_fields ++ @virtual_fields)
-    |> validate_required(@fields ++ @foreign_fields)
+    |> validate_required(@fields ++ @required_foreign_fields)
     |> validate_number(:price_modifier, greater_than_or_equal_to: 0)
     |> maybe_mark_for_deletion()
     |> maybe_build_price_preview(attrs)
