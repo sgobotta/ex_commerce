@@ -39,11 +39,11 @@ defmodule ExCommerce.FixtureHelpers do
       %{shop_id: "some new id"}
 
   """
-  @spec maybe_assign(map(), atom(), module(), module()) :: map()
-  def maybe_assign(attrs, attr, struct_type, fixtures_module) do
+  @spec maybe_assign(map(), atom(), module(), module(), atom()) :: map()
+  def maybe_assign(attrs, attr, struct_type, fixtures_module, action \\ :create) do
     case Map.has_key?(attrs, attr) do
       false ->
-        %^struct_type{id: id} = fixtures_module.create(attrs)
+        %^struct_type{id: id} = apply(fixtures_module, action, [attrs])
         Map.merge(attrs, %{attr => id})
 
       true ->
@@ -122,12 +122,13 @@ defmodule ExCommerce.FixtureHelpers do
   #{OrderFixtures} module.
   """
   @spec maybe_assign_order(map()) :: map()
-  def maybe_assign_order(attrs),
+  def maybe_assign_order(attrs, action \\ :create),
     do:
       maybe_assign(
         attrs,
         :order_id,
         Order,
-        OrderFixtures
+        OrderFixtures,
+        action
       )
 end

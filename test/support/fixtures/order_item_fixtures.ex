@@ -40,4 +40,15 @@ defmodule ExCommerce.OrderItemFixtures do
 
     order_item
   end
+
+  def build(attrs \\ %{}) do
+    attrs =
+      attrs
+      |> maybe_assign_catalogue_item()
+      |> maybe_assign_catalogue_item_variant(attr: :variant_id)
+      |> maybe_assign_order(:build)
+      |> Enum.into(valid_attrs(attrs))
+
+    %OrderItem{} = Map.merge(%OrderItem{}, attrs)
+  end
 end

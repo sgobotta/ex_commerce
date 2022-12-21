@@ -43,4 +43,15 @@ defmodule ExCommerce.OrderFixtures do
 
     order
   end
+
+  def build(attrs \\ %{}) do
+    attrs =
+      attrs
+      |> maybe_assign_brand()
+      |> maybe_assign_shop()
+      |> maybe_assign_catalogue()
+      |> Enum.into(valid_attrs(attrs))
+
+    Map.merge(%Order{}, attrs)
+  end
 end
