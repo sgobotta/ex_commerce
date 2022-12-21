@@ -21,6 +21,8 @@ defmodule ExCommerce.Checkout.Order do
     field :address, :string
     field :note, :string
 
+    field :price, :decimal
+
     has_many :order_items, OrderItem, on_delete: :delete_all
 
     timestamps()
@@ -35,6 +37,7 @@ defmodule ExCommerce.Checkout.Order do
       :buyer_name,
       :catalogue_id,
       :note,
+      :price,
       :shop_id
     ])
     |> validate_required([
@@ -42,6 +45,7 @@ defmodule ExCommerce.Checkout.Order do
       :brand_id,
       :buyer_name,
       :catalogue_id,
+      :price,
       :shop_id
     ])
   end

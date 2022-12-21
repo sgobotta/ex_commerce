@@ -228,17 +228,9 @@ defmodule ExCommerce.CheckoutTest do
     alias ExCommerce.Marketplaces.{Brand, Shop}
     alias ExCommerce.Offerings.Catalogue
 
-    @valid_attrs %{
-      buyer_name: "some buyer name",
-      address: "some address",
-      note: "some note"
-    }
+    @valid_attrs OrderFixtures.valid_attrs()
 
-    @invalid_attrs %{
-      buyer_name: nil,
-      address: nil,
-      note: nil
-    }
+    @invalid_attrs OrderFixtures.invalid_attrs()
 
     setup do
       %Brand{id: brand_id} = brand = BrandsFixtures.create()

@@ -12,17 +12,20 @@ defmodule ExCommerce.OrderFixtures do
   @valid_attrs %{
     buyer_name: "some buyer name",
     address: "some address",
-    note: "some note"
+    note: "some note",
+    price: ExCommerceNumeric.format_price(84.0)
   }
   @update_attrs %{
     buyer_name: "some updated buyer name",
     address: "some updated address",
-    note: "some updated note"
+    note: "some updated note",
+    price: ExCommerceNumeric.format_price(84.0)
   }
   @invalid_attrs %{
     buyer_name: nil,
     address: nil,
-    note: nil
+    note: nil,
+    price: nil
   }
 
   def valid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@valid_attrs)
