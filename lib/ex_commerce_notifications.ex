@@ -62,7 +62,7 @@ defmodule ExCommerceNotifications do
 
     """
     ```
-    PEDIDO: *#{Ecto.UUID.generate()}*%0A
+    🛒 PEDIDO: *#{Ecto.UUID.generate()}*%0A
     %0A
     #{order_items}
     %0A
