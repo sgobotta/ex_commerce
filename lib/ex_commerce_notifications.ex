@@ -17,13 +17,19 @@ defmodule ExCommerceNotifications do
 
   import ExCommerceNumeric
 
-  def get_order_message(:whatsapp, %Cart{} = cart, price) do
+  @doc """
+  Given a message type and a `#{Cart}` struct returns a message that rerpesents
+  an order.
+  """
+  @spec get_order_message(atom(), Cart.t()) :: String.t()
+  def get_order_message(:whatsapp, %Cart{} = cart) do
     %Order{order_items: order_items} = order = Cart.get_order(cart)
 
     %{
       address: address,
       note: note,
-      items: _order_items
+      items: _order_items,
+      price: price
     } = Parsers.Order.parse(order)
 
     order_items =

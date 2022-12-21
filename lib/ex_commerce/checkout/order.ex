@@ -10,6 +10,8 @@ defmodule ExCommerce.Checkout.Order do
 
   @type t :: %__MODULE__{}
 
+  @details_fields [:address, :buyer_name, :note]
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "orders" do
@@ -31,15 +33,15 @@ defmodule ExCommerce.Checkout.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [
-      :address,
-      :brand_id,
-      :buyer_name,
-      :catalogue_id,
-      :note,
-      :price,
-      :shop_id
-    ])
+    |> cast(
+      attrs,
+      [
+        :brand_id,
+        :catalogue_id,
+        :price,
+        :shop_id
+      ] ++ @details_fields
+    )
     |> validate_required([
       :address,
       :brand_id,
@@ -50,6 +52,13 @@ defmodule ExCommerce.Checkout.Order do
     ])
   end
 
+  @doc false
+  def change_details(order, attrs) do
+    order
+    |> cast(attrs, @details_fields)
+    |> validate_required([:address, :buyer_name])
+  end
+
   @doc """
   Given an #{Ecto.Changeset} struct, applies changes to return an updated
   #{__MODULE__}.
@@ -57,5 +66,19 @@ defmodule ExCommerce.Checkout.Order do
   @spec apply(Ecto.Changeset.t()) :: t()
   def apply(%Ecto.Changeset{} = changeset) do
     apply_changes(changeset)
+  end
+
+  @doc """
+  Given an #{Ecto.Changeset} struct, applies a new price to return an updated
+  #{__MODULE__}.
+  """
+  @spec apply_price(t(), Decimal.t()) :: t()
+  def apply_price(order, price) do
+    attrs = %{price: price}
+
+    order
+    |> cast(attrs, [:price])
+    |> validate_required([:price])
+    |> apply()
   end
 end

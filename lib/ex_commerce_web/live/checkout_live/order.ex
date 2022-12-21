@@ -146,7 +146,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
       |> Map.merge(params)
 
     %Ecto.Changeset{valid?: valid?} =
-      changeset = Checkout.change_order(order, params)
+      changeset = Checkout.change_order_details(order, params)
 
     %Cart{} = cart = Checkout.update_cart_order(cart, changeset)
 

@@ -76,9 +76,14 @@ defmodule ExCommerce.Checkout do
     end)
   end
 
-  def get_order_message(%Cart{} = cart) do
-    price = get_order_price(cart)
-    ExCommerceNotifications.get_order_message(:whatsapp, cart, price)
+  @doc """
+  Given a `#{Cart}` struct returns a message that represents an order.
+  """
+  @spec get_order_message(Cart.t()) :: String.t()
+  def get_order_message(%Cart{order: %Order{} = order} = cart) do
+    %Order{} = order = Order.apply_price(order, get_order_price(cart))
+    %Cart{} = cart = Cart.set_order(cart, order)
+    ExCommerceNotifications.get_order_message(:whatsapp, cart)
   end
 
   # ---------------------------------------------------------------------------
@@ -310,6 +315,20 @@ defmodule ExCommerce.Checkout do
   @spec change_order(Order.t(), map()) :: Ecto.Changeset.t()
   def change_order(%Order{} = order, attrs \\ %{}) do
     Order.changeset(order, attrs)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking order changes.
+
+  ## Examples
+
+      iex> change_order_details(order)
+      %Ecto.Changeset{data: %Order{}}
+
+  """
+  @spec change_order_details(Order.t(), map()) :: Ecto.Changeset.t()
+  def change_order_details(%Order{} = order, attrs \\ %{}) do
+    Order.change_details(order, attrs)
   end
 
   @doc """

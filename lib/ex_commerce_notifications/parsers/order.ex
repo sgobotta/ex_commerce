@@ -15,17 +15,23 @@ defmodule ExCommerceNotifications.Parsers.Order do
 
   import ExCommerceNumeric
 
+  @doc """
+  Given an `#{Order} struct returns a map with relevant order fields.
+  """
+  @spec parse(Order.t()) :: map()
   def parse(%Order{
         address: address,
         buyer_name: buyer_name,
         note: note,
-        order_items: order_items
+        order_items: order_items,
+        price: price
       }) do
     %{
       address: address,
       buyer_name: buyer_name,
       items: parse_order_items(order_items),
-      note: note
+      note: note,
+      price: price
     }
   end
 
