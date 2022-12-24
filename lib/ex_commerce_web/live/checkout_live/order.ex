@@ -208,7 +208,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     case Checkout.valid_checkout?(cart) do
       true ->
         if valid?,
-          do: gettext("Complete Order"),
+          do: gettext("Continue Checkout"),
           else: gettext("Complete the missing fields")
 
       false ->
