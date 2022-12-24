@@ -1,6 +1,10 @@
 @layer components {
   .input {
-    @apply rounded-lg border-gray-300 transition duration-200 focus:border-blue-300 text-xl h-auto #{!important};
+    @apply rounded-lg border-gray-300 transition duration-200 focus:border-blue-300 h-auto #{!important};
+  }
+
+  .disabled-input {
+    @apply rounded-lg border-gray-300 bg-gray-200 h-auto #{!important};
   }
 }
 
