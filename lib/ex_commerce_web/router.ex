@@ -54,6 +54,12 @@ defmodule ExCommerceWeb.Router do
 
         live "/:brand/:shop/:catalogue", CheckoutLive.Catalogue, :index
         live "/:brand/:shop/:catalogue/cart", CheckoutLive.Catalogue, :cart
+        live "/:brand/:shop/:catalogue/details", CheckoutLive.OrderDetails, :new
+
+        live "/:brand/:shop/:catalogue/details/cart",
+             CheckoutLive.OrderDetails,
+             :cart
+
         live "/:brand/:shop/:catalogue/order", CheckoutLive.Order, :new
         live "/:brand/:shop/:catalogue/order/cart", CheckoutLive.Order, :cart
 

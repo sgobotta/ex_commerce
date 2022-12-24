@@ -1,6 +1,6 @@
 defmodule ExCommerceWeb.CheckoutLive.Order do
   @moduledoc """
-  Live Checkout: order section
+  Live Checkout: complete order section
   """
 
   use ExCommerceWeb, {
@@ -44,7 +44,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     {:noreply, assign_changeset(socket, order_params)}
   end
 
-  def handle_event("complete_order", _params, socket) do
+  def handle_event("confirm_order", _params, socket) do
     {:noreply, socket}
   end
 
@@ -86,12 +86,12 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
          "catalogue" => catalogue_id
        }) do
     socket
-    |> assign(:page_title, gettext("[Create Order]"))
+    |> assign(:page_title, gettext("Confirm Order"))
     |> assign(
       :return_to,
-      Routes.checkout_catalogue_path(
+      Routes.checkout_order_details_path(
         socket,
-        :index,
+        :new,
         brand_slug,
         shop_slug,
         catalogue_id
@@ -113,7 +113,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
          }
        ) do
     socket
-    |> assign(:page_title, gettext("[Cart]"))
+    |> assign(:page_title, gettext("Cart"))
     |> assign(
       :return_to,
       Routes.checkout_order_path(
@@ -208,7 +208,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     case Checkout.valid_checkout?(cart) do
       true ->
         if valid?,
-          do: gettext("Continue Checkout"),
+          do: gettext("Confirm"),
           else: gettext("Complete the missing fields")
 
       false ->
