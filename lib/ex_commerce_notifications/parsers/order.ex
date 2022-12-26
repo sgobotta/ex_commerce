@@ -1,10 +1,10 @@
 defmodule ExCommerceNotifications.Parsers.Order do
   @moduledoc """
-  Convenience module to break down an #{ExCommerce.Checkout.Embeds.Order} struct
+  Convenience module to break down an #{ExCommerce.Checkout.Cart.Order} struct
   in order to render messages for notifications.
   """
 
-  alias ExCommerce.Checkout.Embeds
+  alias ExCommerce.Checkout.Cart
 
   alias ExCommerce.Offerings.{
     CatalogueItem,
@@ -18,8 +18,8 @@ defmodule ExCommerceNotifications.Parsers.Order do
   @doc """
   Given an `#{Order} struct returns a map with relevant order fields.
   """
-  @spec parse(Embeds.Order.t()) :: map()
-  def parse(%Embeds.Order{
+  @spec parse(Cart.Order.t()) :: map()
+  def parse(%Cart.Order{
         address: address,
         buyer_name: buyer_name,
         note: note,
@@ -36,7 +36,7 @@ defmodule ExCommerceNotifications.Parsers.Order do
   end
 
   defp parse_order_items(order_items) do
-    Enum.map(order_items, fn %Embeds.OrderItem{
+    Enum.map(order_items, fn %Cart.OrderItem{
                                catalogue_item: %CatalogueItem{
                                  name: name
                                },
@@ -61,7 +61,7 @@ defmodule ExCommerceNotifications.Parsers.Order do
     end)
   end
 
-  defp parse_option_groups(%Embeds.OrderItem{
+  defp parse_option_groups(%Cart.OrderItem{
          available_option_groups: %{
            values: available_option_groups
          },

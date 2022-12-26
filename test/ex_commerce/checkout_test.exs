@@ -7,7 +7,7 @@ defmodule ExCommerce.CheckoutTest do
   require Decimal
 
   describe "checkout" do
-    alias ExCommerce.Checkout.{Cart, CartServer, Embeds}
+    alias ExCommerce.Checkout.{Cart, CartServer}
 
     alias ExCommerce.Offerings.{
       Catalogue,
@@ -70,8 +70,8 @@ defmodule ExCommerce.CheckoutTest do
 
       %Ecto.Changeset{} =
         order_item =
-        Embeds.OrderItem.changeset(
-          %Embeds.OrderItem{
+        Cart.OrderItem.changeset(
+          %Cart.OrderItem{
             variants: [variant],
             available_option_groups: %{
               values: [catalogue_item_option_group],
@@ -93,10 +93,10 @@ defmodule ExCommerce.CheckoutTest do
 
       %Cart{server: server} = Checkout.add_to_order(cart, order_item)
 
-      %Embeds.Order{order_items: order_items} = CartServer.get_order(server)
+      %Cart.Order{order_items: order_items} = CartServer.get_order(server)
 
       assert length(order_items) == 1
-      %Embeds.OrderItem{} = order_item = Enum.at(order_items, 0)
+      %Cart.OrderItem{} = order_item = Enum.at(order_items, 0)
       assert order_item.quantity == 2
       assert order_item.catalogue_item_id == catalogue_item_id
       assert Decimal.is_decimal(order_item.price)

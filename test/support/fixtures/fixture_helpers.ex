@@ -13,7 +13,7 @@ defmodule ExCommerce.FixtureHelpers do
     ShopsFixtures
   }
 
-  alias ExCommerce.Checkout.Embeds
+  alias ExCommerce.Checkout.Cart
 
   alias ExCommerce.Marketplaces.{Brand, Shop}
 
@@ -117,8 +117,8 @@ defmodule ExCommerce.FixtureHelpers do
       )
 
   @doc """
-  Convenience function to assign #{Embeds.Order} attributes through the
-  #{Embeds.OrderFixtures} module.
+  Convenience function to assign #{Cart.Order} attributes through the
+  #{Cart.OrderFixtures} module.
   """
   @spec maybe_assign_order(map()) :: map()
   def maybe_assign_order(attrs, action \\ :create),
@@ -126,8 +126,8 @@ defmodule ExCommerce.FixtureHelpers do
       maybe_assign(
         attrs,
         :order_id,
-        Embeds.Order,
-        Embeds.OrderFixtures,
+        Cart.Order,
+        Cart.OrderFixtures,
         action
       )
 end

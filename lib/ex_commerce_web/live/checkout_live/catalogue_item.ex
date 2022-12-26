@@ -11,7 +11,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
   alias ExCommerce.Checkout
-  alias ExCommerce.Checkout.{Cart, Embeds}
+  alias ExCommerce.Checkout.Cart
 
   alias ExCommerce.Offerings.{
     CatalogueItem,
@@ -59,7 +59,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
             changeset: %Ecto.Changeset{
               changes: %{quantity: quantity} = changes
             },
-            order_item: %Embeds.OrderItem{} = order_item
+            order_item: %Cart.OrderItem{} = order_item
           }
         } = socket
       ),
@@ -83,7 +83,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
             changeset: %Ecto.Changeset{
               changes: %{quantity: quantity} = changes
             },
-            order_item: %Embeds.OrderItem{} = order_item
+            order_item: %Cart.OrderItem{} = order_item
           }
         } = socket
       ) do
@@ -175,7 +175,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         true ->
           %{cart: %Cart{} = cart} = socket.assigns
 
-          price = Embeds.OrderItem.get_total_price(changeset)
+          price = Cart.OrderItem.get_total_price(changeset)
           order_item = Checkout.change_order_item(changeset, %{price: price})
 
           %Cart{} = cart = Checkout.add_to_order(cart, order_item)
@@ -200,12 +200,12 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     %{cart: %Cart{} = cart} = socket.assigns
 
     case Checkout.remove_order_item(cart, order_item_temp_id) do
-      %Cart{order: %Embeds.Order{order_items: []}} = cart ->
+      %Cart{order: %Cart.Order{order_items: []}} = cart ->
         LiveView.push_patch(assign_cart(socket, cart),
           to: socket.assigns.return_to
         )
 
-      %Cart{order: %Embeds.Order{order_items: _order_items}} = cart ->
+      %Cart{order: %Cart.Order{order_items: _order_items}} = cart ->
         assign_cart(socket, cart)
     end
     |> then(fn socket -> {:noreply, socket} end)
@@ -350,8 +350,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
       }
     } = socket.assigns
 
-    %Embeds.OrderItem{} =
-      order_item = %Embeds.OrderItem{
+    %Cart.OrderItem{} =
+      order_item = %Cart.OrderItem{
         catalogue_item_id: catalogue_item_id,
         variant_id: nil,
         variants: variants,
@@ -481,8 +481,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   defp prepend_currency(price), do: "$#{price}"
 
-  defp get_total_price(%Ecto.Changeset{data: %Embeds.OrderItem{}} = changeset) do
-    Embeds.OrderItem.get_total_price(changeset)
+  defp get_total_price(%Ecto.Changeset{data: %Cart.OrderItem{}} = changeset) do
+    Cart.OrderItem.get_total_price(changeset)
     |> prepend_currency()
   end
 
@@ -621,7 +621,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   defp maybe_select_variant(socket, variant_id) do
     %{
       changeset: %Ecto.Changeset{changes: changes} = changeset,
-      order_item: %Embeds.OrderItem{variants: variants} = order_item
+      order_item: %Cart.OrderItem{variants: variants} = order_item
     } = socket.assigns
 
     case Enum.member?(Enum.map(variants, & &1.id), variant_id) do
@@ -647,7 +647,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
        ) do
     %{
       changeset: %Ecto.Changeset{changes: changes} = changeset,
-      order_item: %Embeds.OrderItem{} = order_item
+      order_item: %Cart.OrderItem{} = order_item
     } = socket.assigns
 
     with {:ok, rules} <- get_option_group_rules(changeset, option_group_id),

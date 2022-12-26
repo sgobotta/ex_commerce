@@ -11,7 +11,7 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
   alias ExCommerce.Checkout
-  alias ExCommerce.Checkout.{Cart, Embeds}
+  alias ExCommerce.Checkout.Cart
 
   alias ExCommerce.Offerings
 
@@ -74,12 +74,12 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
     %{cart: %Cart{} = cart} = socket.assigns
 
     case Checkout.remove_order_item(cart, order_item_temp_id) do
-      %Cart{order: %Embeds.Order{order_items: []}} = cart ->
+      %Cart{order: %Cart.Order{order_items: []}} = cart ->
         LiveView.push_patch(assign_cart(socket, cart),
           to: socket.assigns.return_to
         )
 
-      %Cart{order: %Embeds.Order{order_items: _order_items}} = cart ->
+      %Cart{order: %Cart.Order{order_items: _order_items}} = cart ->
         assign_cart(socket, cart)
     end
     |> then(fn socket -> {:noreply, socket} end)

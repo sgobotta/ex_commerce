@@ -42,14 +42,14 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
 
   defp render_order_items(order_items, assigns) do
     ~H"""
-    <%= for %Embeds.OrderItem{} = order_item <- order_items do %>
+    <%= for %Cart.OrderItem{} = order_item <- order_items do %>
       <%= render_order_item(order_item, assigns) %>
     <% end %>
     """
   end
 
   defp render_order_item(
-         %Embeds.OrderItem{
+         %Cart.OrderItem{
            catalogue_item: %CatalogueItem{name: name, photos: photos},
            quantity: quantity,
            price: price,
@@ -131,7 +131,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
   end
 
   defp get_order_items(%{
-         cart: %Cart{order: %Embeds.Order{order_items: order_items}}
+         cart: %Cart{order: %Cart.Order{order_items: order_items}}
        }),
        do: order_items
 end

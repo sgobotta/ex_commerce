@@ -5,7 +5,7 @@ defmodule ExCommerce.Checkout do
 
   import Ecto.Query, warn: false
 
-  alias ExCommerce.Checkout.{Cart, Embeds, Supervisor}
+  alias ExCommerce.Checkout.{Cart, Supervisor}
   alias ExCommerce.Repo
 
   defdelegate child_spec(init_arg), to: Supervisor
@@ -20,7 +20,7 @@ defmodule ExCommerce.Checkout do
   """
   @spec update_cart_order(Cart.t(), Ecto.Changeset.t()) :: Cart.t()
   def update_cart_order(%Cart{} = cart, %Ecto.Changeset{} = changeset) do
-    %Embeds.Order{} = order = Embeds.Order.apply(changeset)
+    %Cart.Order{} = order = Cart.Order.apply(changeset)
     Cart.set_order(cart, order)
   end
 
@@ -30,16 +30,16 @@ defmodule ExCommerce.Checkout do
   """
   @spec add_to_order(Cart.t(), Ecto.Changeset.t()) :: Cart.t()
   def add_to_order(%Cart{} = cart, %Ecto.Changeset{} = order_item_cs) do
-    with price <- Embeds.OrderItem.get_total_price(order_item_cs),
+    with price <- Cart.OrderItem.get_total_price(order_item_cs),
          %Ecto.Changeset{changes: changes, data: data} <-
            __MODULE__.change_order_item(order_item_cs, %{price: price}),
-         %Embeds.OrderItem{} = order_item <- Map.merge(data, changes) do
+         %Cart.OrderItem{} = order_item <- Map.merge(data, changes) do
       Cart.add_to_order(cart, order_item)
     end
   end
 
   @doc """
-  Given a #{Cart} and an id, removes an #{Embeds.OrderItem} from the cart order,
+  Given a #{Cart} and an id, removes an #{Cart.OrderItem} from the cart order,
   if exists.
   """
   @spec remove_order_item(Cart.t(), String.t()) :: Cart.t()
@@ -47,33 +47,33 @@ defmodule ExCommerce.Checkout do
     do: Cart.remove_from_order(cart, order_item_temp_id)
 
   @doc """
-  Given a #{Cart} validates the are order items in the #{Embeds.Order} to
+  Given a #{Cart} validates the are order items in the #{Cart.Order} to
   checkout.
   """
   @spec valid_checkout?(Cart.t()) :: boolean()
-  def valid_checkout?(%Cart{order: %Embeds.Order{order_items: order_items}}) do
+  def valid_checkout?(%Cart{order: %Cart.Order{order_items: order_items}}) do
     length(order_items) > 0
   end
 
   @doc """
   Given a #{Cart} returns the amount of totals items in the current
-  #{Embeds.Order}.
+  #{Cart.Order}.
   """
   @spec get_order_items(Cart.t()) :: non_neg_integer()
-  def get_order_items(%Cart{order: %Embeds.Order{order_items: order_items}}) do
+  def get_order_items(%Cart{order: %Cart.Order{order_items: order_items}}) do
     order_items
-    |> Enum.reduce(0, fn %Embeds.OrderItem{quantity: quantity}, acc ->
+    |> Enum.reduce(0, fn %Cart.OrderItem{quantity: quantity}, acc ->
       acc + quantity
     end)
   end
 
   @doc """
-  Given a #{Cart} returns the total price of the current #{Embeds.Order}.
+  Given a #{Cart} returns the total price of the current #{Cart.Order}.
   """
   @spec get_order_price(Cart.t()) :: ExCommerceNumeric.t()
-  def get_order_price(%Cart{order: %Embeds.Order{order_items: order_items}}) do
+  def get_order_price(%Cart{order: %Cart.Order{order_items: order_items}}) do
     order_items
-    |> Enum.reduce(0, fn %Embeds.OrderItem{price: price}, acc ->
+    |> Enum.reduce(0, fn %Cart.OrderItem{price: price}, acc ->
       ExCommerceNumeric.add(acc, price)
     end)
   end
@@ -82,9 +82,8 @@ defmodule ExCommerce.Checkout do
   Given a `#{Cart}` struct returns a message that represents an order.
   """
   @spec get_order_message(Cart.t()) :: String.t()
-  def get_order_message(%Cart{order: %Embeds.Order{} = order} = cart) do
-    %Embeds.Order{} =
-      order = Embeds.Order.apply_price(order, get_order_price(cart))
+  def get_order_message(%Cart{order: %Cart.Order{} = order} = cart) do
+    %Cart.Order{} = order = Cart.Order.apply_price(order, get_order_price(cart))
 
     %Cart{} = cart = Cart.set_order(cart, order)
     ExCommerceNotifications.get_order_message(:whatsapp, cart)
@@ -104,7 +103,7 @@ defmodule ExCommerce.Checkout do
 
   """
 
-  # @spec list_order_items() :: [Embeds.OrderItem.t()]
+  # @spec list_order_items() :: [Cart.OrderItem.t()]
   # def list_order_items do
   #   Repo.all(OrderItem)
   # end
@@ -197,10 +196,10 @@ defmodule ExCommerce.Checkout do
       %Ecto.Changeset{data: %OrderItem{}}
 
   """
-  @spec change_order_item(Embeds.OrderItem.t() | Ecto.Changeset.t(), map()) ::
+  @spec change_order_item(Cart.OrderItem.t() | Ecto.Changeset.t(), map()) ::
           Ecto.Changeset.t()
   def change_order_item(order_item, attrs \\ %{}) do
-    Embeds.OrderItem.changeset(order_item, attrs)
+    Cart.OrderItem.changeset(order_item, attrs)
   end
 
   @doc """
@@ -216,11 +215,11 @@ defmodule ExCommerce.Checkout do
   }
 
   """
-  @spec preload_order_item(Embeds.OrderItem.t(), [atom()] | keyword()) ::
-          Embeds.OrderItem.t()
-  def preload_order_item(%Embeds.OrderItem{} = order_item, []), do: order_item
+  @spec preload_order_item(Cart.OrderItem.t(), [atom()] | keyword()) ::
+          Cart.OrderItem.t()
+  def preload_order_item(%Cart.OrderItem{} = order_item, []), do: order_item
 
-  def preload_order_item(%Embeds.OrderItem{} = order_item, fields),
+  def preload_order_item(%Cart.OrderItem{} = order_item, fields),
     do: Repo.preload(order_item, fields)
 
   @doc """
@@ -322,12 +321,12 @@ defmodule ExCommerce.Checkout do
   ## Examples
 
       iex> change_order(order)
-      %Ecto.Changeset{data: %Embeds.Order{}}
+      %Ecto.Changeset{data: %Cart.Order{}}
 
   """
-  @spec change_order(Embeds.Order.t(), map()) :: Ecto.Changeset.t()
-  def change_order(%Embeds.Order{} = order, attrs \\ %{}) do
-    Embeds.Order.changeset(order, attrs)
+  @spec change_order(Cart.Order.t(), map()) :: Ecto.Changeset.t()
+  def change_order(%Cart.Order{} = order, attrs \\ %{}) do
+    Cart.Order.changeset(order, attrs)
   end
 
   @doc """
@@ -336,26 +335,26 @@ defmodule ExCommerce.Checkout do
   ## Examples
 
       iex> change_order_details(order)
-      %Ecto.Changeset{data: %Embeds.Order{}}
+      %Ecto.Changeset{data: %Cart.Order{}}
 
   """
-  @spec change_order_details(Embeds.Order.t(), map()) :: Ecto.Changeset.t()
-  def change_order_details(%Embeds.Order{} = order, attrs \\ %{}) do
-    Embeds.Order.change_details(order, attrs)
+  @spec change_order_details(Cart.Order.t(), map()) :: Ecto.Changeset.t()
+  def change_order_details(%Cart.Order{} = order, attrs \\ %{}) do
+    Cart.Order.change_details(order, attrs)
   end
 
   @doc """
-  Returns an #{Embeds.Order} with the given fields preloaded.
+  Returns an #{Cart.Order} with the given fields preloaded.
 
   ## Examples
 
-      iex> preload_order(%Embeds.Order{}, [:order_items])
-      %Embeds.Order{order_items: []}
+      iex> preload_order(%Cart.Order{}, [:order_items])
+      %Cart.Order{order_items: []}
 
   """
-  @spec preload_order(Embeds.Order.t(), [atom()]) :: Embeds.Order.t()
-  def preload_order(%Embeds.Order{} = order, []), do: order
+  @spec preload_order(Cart.Order.t(), [atom()]) :: Cart.Order.t()
+  def preload_order(%Cart.Order{} = order, []), do: order
 
-  def preload_order(%Embeds.Order{} = order, fields),
+  def preload_order(%Cart.Order{} = order, fields),
     do: Repo.preload(order, fields)
 end

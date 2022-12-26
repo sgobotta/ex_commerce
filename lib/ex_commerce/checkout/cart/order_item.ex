@@ -1,4 +1,4 @@
-defmodule ExCommerce.Checkout.Embeds.OrderItem do
+defmodule ExCommerce.Checkout.Cart.OrderItem do
   @moduledoc """
   The OrderItem schema
   """
@@ -13,7 +13,7 @@ defmodule ExCommerce.Checkout.Embeds.OrderItem do
     CatalogueItemVariant
   }
 
-  alias ExCommerce.Checkout.Embeds
+  alias ExCommerce.Checkout.Cart
 
   @type t :: %__MODULE__{}
 
@@ -32,7 +32,7 @@ defmodule ExCommerce.Checkout.Embeds.OrderItem do
 
     belongs_to :catalogue_item, CatalogueItem, type: :binary_id
     belongs_to :variant, CatalogueItemVariant, type: :binary_id
-    belongs_to :order, Embeds.Order, type: :binary_id
+    belongs_to :order, Cart.Order, type: :binary_id
 
     timestamps()
   end

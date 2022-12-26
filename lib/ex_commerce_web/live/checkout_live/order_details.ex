@@ -75,7 +75,7 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
     %{cart: %Cart{} = cart} = socket.assigns
 
     case Checkout.remove_order_item(cart, order_item_temp_id) do
-      %Cart{order: %Embeds.Order{order_items: []}} = cart ->
+      %Cart{order: %Cart.Order{order_items: []}} = cart ->
         %{
           brand_slug: brand_slug,
           shop_slug: shop_slug,
@@ -93,7 +93,7 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
             )
         )
 
-      %Cart{order: %Embeds.Order{order_items: _order_items}} = cart ->
+      %Cart{order: %Cart.Order{order_items: _order_items}} = cart ->
         assign_cart(socket, cart)
     end
     |> then(fn socket -> {:noreply, socket} end)
@@ -151,7 +151,7 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
 
   defp assign_changeset(socket, params \\ %{}) do
     %{
-      cart: %Cart{order: %Embeds.Order{} = order} = cart,
+      cart: %Cart{order: %Cart.Order{} = order} = cart,
       catalogue: %Catalogue{id: catalogue_id},
       shop: %Shop{id: shop_id, brand_id: brand_id}
     } = socket.assigns

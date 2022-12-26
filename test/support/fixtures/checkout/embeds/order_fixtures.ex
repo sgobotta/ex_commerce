@@ -1,10 +1,10 @@
-defmodule ExCommerce.Checkout.Embeds.OrderFixtures do
+defmodule ExCommerce.Checkout.Cart.OrderFixtures do
   @moduledoc """
   This module defines test helpers for creating entities via the
   `#{ExCommerce.Checkout}` context.
   """
 
-  alias ExCommerce.Checkout.Embeds.Order
+  alias ExCommerce.Checkout.Cart.Order
 
   import ExCommerce.FixtureHelpers
 
