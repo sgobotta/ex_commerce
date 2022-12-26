@@ -13,7 +13,7 @@ defmodule ExCommerce.Checkout.Embeds.OrderItem do
     CatalogueItemVariant
   }
 
-  alias ExCommerce.Checkout.Order
+  alias ExCommerce.Checkout.Embeds
 
   @type t :: %__MODULE__{}
 
@@ -32,7 +32,7 @@ defmodule ExCommerce.Checkout.Embeds.OrderItem do
 
     belongs_to :catalogue_item, CatalogueItem, type: :binary_id
     belongs_to :variant, CatalogueItemVariant, type: :binary_id
-    belongs_to :order, Order, type: :binary_id
+    belongs_to :order, Embeds.Order, type: :binary_id
 
     timestamps()
   end
