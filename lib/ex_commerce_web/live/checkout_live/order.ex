@@ -40,10 +40,6 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     do: {:noreply, apply_action(socket, socket.assigns.live_action, params)}
 
   @impl true
-  def handle_event("validate", %{"order" => order_params}, socket) do
-    {:noreply, assign_changeset(socket, order_params)}
-  end
-
   def handle_event("confirm_order", _params, socket) do
     {:noreply, socket}
   end
