@@ -6,7 +6,6 @@ defmodule ExCommerce.Checkout.CartTest do
   use ExUnit.Case
 
   describe "cart" do
-    alias ExCommerce.Checkout
     alias ExCommerce.Checkout.{Cart, CartSupervisor, Order, OrderItem}
 
     test "generate_id/2 returns an encoded id" do
@@ -27,7 +26,7 @@ defmodule ExCommerce.Checkout.CartTest do
 
     test "new/1 returns a new Cart struct with an existent server" do
       id = generate_id()
-      order = Checkout.preload_order(%Order{}, [:order_items])
+      order = %Order{}
       args = [id: id, order: order]
       {:ok, server_pid} = CartSupervisor.start_child(CartSupervisor, args)
 

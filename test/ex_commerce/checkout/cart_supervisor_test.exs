@@ -6,14 +6,13 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
   use ExUnit.Case
 
   describe "cart_supervisor" do
-    alias ExCommerce.Checkout
     alias ExCommerce.Checkout.{CartSupervisor, Order}
 
     @supervisor_name :cart_supervisor_test
 
     setup do
       pid = start_supervised!({CartSupervisor, [name: @supervisor_name]})
-      order = Checkout.preload_order(%Order{}, [:order_items])
+      order = %Order{}
 
       %{pid: pid, order: order}
     end
