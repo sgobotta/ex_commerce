@@ -19,7 +19,7 @@ defmodule ExCommerce.Checkout.OrderItem do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  schema "order_items" do
+  embedded_schema do
     field :quantity, :integer
     field :price, :decimal
     field :variants, {:array, :map}, virtual: true, default: []

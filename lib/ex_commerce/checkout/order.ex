@@ -25,7 +25,7 @@ defmodule ExCommerce.Checkout.Order do
 
     field :price, :decimal
 
-    has_many :order_items, OrderItem, on_delete: :delete_all
+    embeds_many :order_items, OrderItem
 
     timestamps()
   end

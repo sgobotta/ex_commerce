@@ -205,5 +205,5 @@ defmodule ExCommerce.Checkout.Cart do
     end
   end
 
-  def create_initial_order, do: Checkout.preload_order(%Order{}, [:order_items])
+  def create_initial_order, do: %Order{}
 end
