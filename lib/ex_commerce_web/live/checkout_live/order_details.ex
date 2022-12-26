@@ -11,7 +11,7 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
   alias ExCommerce.Checkout
-  alias ExCommerce.Checkout.{Cart, Embeds}
+  alias ExCommerce.Checkout.Cart
 
   alias ExCommerce.Marketplaces.Shop
 

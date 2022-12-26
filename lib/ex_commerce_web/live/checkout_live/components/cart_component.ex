@@ -7,8 +7,8 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
+  alias ExCommerce.Checkout.Cart
   alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemVariant}
-  alias ExCommerce.Checkout.{Cart, Embeds}
 
   @impl true
   def update(%{} = assigns, socket) do
