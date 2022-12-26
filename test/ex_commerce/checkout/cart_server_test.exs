@@ -6,7 +6,7 @@ defmodule ExCommerce.Checkout.CartServerTest do
   use ExCommerce.RuntimeCase, ratio: 1 / 32
   use ExUnit.Case
 
-  alias ExCommerce.Checkout.{CartServer, Order}
+  alias ExCommerce.Checkout.{CartServer, Embeds}
 
   describe "cart_server lifecycle" do
     test "a server automatically terminates after a certain period" do
@@ -55,7 +55,7 @@ defmodule ExCommerce.Checkout.CartServerTest do
     defp start_server(timeout) do
       cart_id = "some id"
       on_start = fn _state -> :ok end
-      order = %Order{}
+      order = %Embeds.Order{}
       args = [on_start: on_start, id: cart_id, timeout: timeout, order: order]
 
       start_supervised!({CartServer, args})
@@ -65,7 +65,7 @@ defmodule ExCommerce.Checkout.CartServerTest do
   describe "cart_server client interface" do
     setup do
       cart_id = "some id"
-      order = %Order{}
+      order = %Embeds.Order{}
       on_start = fn _state -> :ok end
       args = [on_start: on_start, id: cart_id, order: order]
       pid = start_supervised!({CartServer, args})
@@ -75,7 +75,7 @@ defmodule ExCommerce.Checkout.CartServerTest do
 
     test "get_order/2 returns an order from the current state", %{pid: pid} do
       response = do_get_order(pid)
-      assert response == %Order{order_items: []}
+      assert response == %Embeds.Order{order_items: []}
     end
 
     test "set_order/2 returns :ok", %{pid: pid} do
@@ -92,7 +92,7 @@ defmodule ExCommerce.Checkout.CartServerTest do
     setup do
       on_start = fn _state -> :ok end
       cart_id = "some id"
-      order = %Order{}
+      order = %Embeds.Order{}
       args = [on_start: on_start, id: cart_id, order: order]
       state = CartServer.initial_state(args)
 

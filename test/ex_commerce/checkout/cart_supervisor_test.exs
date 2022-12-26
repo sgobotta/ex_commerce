@@ -6,13 +6,13 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
   use ExUnit.Case
 
   describe "cart_supervisor" do
-    alias ExCommerce.Checkout.{CartSupervisor, Order}
+    alias ExCommerce.Checkout.{CartSupervisor, Embeds}
 
     @supervisor_name :cart_supervisor_test
 
     setup do
       pid = start_supervised!({CartSupervisor, [name: @supervisor_name]})
-      order = %Order{}
+      order = %Embeds.Order{}
 
       %{pid: pid, order: order}
     end
@@ -23,7 +23,7 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
 
     test "start_child/2 starts a cart server with args", %{
       pid: pid,
-      order: %Order{} = order
+      order: %Embeds.Order{} = order
     } do
       {:ok, pid} = start_child(pid, id: "some cart id", order: order)
 
@@ -32,7 +32,7 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
 
     test "list_children/1 returns a list of pids", %{
       pid: pid,
-      order: %Order{} = order
+      order: %Embeds.Order{} = order
     } do
       {:ok, child_pid} = start_child(pid, id: "some cart id", order: order)
 
@@ -41,7 +41,7 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
 
     test "get_child/1 returns a pid and state", %{
       pid: pid,
-      order: %Order{} = order
+      order: %Embeds.Order{} = order
     } do
       cart_id = "some cart id"
 
@@ -55,7 +55,7 @@ defmodule ExCommerce.Checkout.CartSupervisorTest do
 
     test "terminate_child/2 shuts down a pid", %{
       pid: pid,
-      order: %Order{} = order
+      order: %Embeds.Order{} = order
     } do
       cart_id = "some cart id"
 

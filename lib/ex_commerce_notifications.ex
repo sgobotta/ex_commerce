@@ -4,7 +4,7 @@ defmodule ExCommerceNotifications do
   ways of parsing and sending messages or notifications.
   """
 
-  alias ExCommerce.Checkout.{Cart, Order}
+  alias ExCommerce.Checkout.{Cart, Embeds}
 
   alias ExCommerceNotifications.Parsers
 
@@ -14,7 +14,7 @@ defmodule ExCommerceNotifications do
   """
   @spec get_order_message(atom(), Cart.t()) :: String.t()
   def get_order_message(:whatsapp, %Cart{} = cart) do
-    %Order{} = order = Cart.get_order(cart)
+    %Embeds.Order{} = order = Cart.get_order(cart)
 
     %{
       address: address,

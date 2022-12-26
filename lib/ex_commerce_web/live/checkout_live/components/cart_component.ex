@@ -8,7 +8,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
   alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemVariant}
-  alias ExCommerce.Checkout.{Cart, Order, OrderItem}
+  alias ExCommerce.Checkout.{Cart, Embeds}
 
   @impl true
   def update(%{} = assigns, socket) do
@@ -42,14 +42,14 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
 
   defp render_order_items(order_items, assigns) do
     ~H"""
-    <%= for %OrderItem{} = order_item <- order_items do %>
+    <%= for %Embeds.OrderItem{} = order_item <- order_items do %>
       <%= render_order_item(order_item, assigns) %>
     <% end %>
     """
   end
 
   defp render_order_item(
-         %OrderItem{
+         %Embeds.OrderItem{
            catalogue_item: %CatalogueItem{name: name, photos: photos},
            quantity: quantity,
            price: price,
@@ -130,6 +130,8 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
     """
   end
 
-  defp get_order_items(%{cart: %Cart{order: %Order{order_items: order_items}}}),
-    do: order_items
+  defp get_order_items(%{
+         cart: %Cart{order: %Embeds.Order{order_items: order_items}}
+       }),
+       do: order_items
 end

@@ -4,13 +4,13 @@ defmodule ExCommerce.Checkout.CartServer do
   """
   use GenServer, restart: :transient
 
-  alias ExCommerce.Checkout.Order
+  alias ExCommerce.Checkout.Embeds
 
   require Logger
 
   @timeout :timer.seconds(3600)
 
-  @type order :: Order.t()
+  @type order :: Embeds.Order.t()
   @type state :: %{
           :id => binary(),
           :order => order(),

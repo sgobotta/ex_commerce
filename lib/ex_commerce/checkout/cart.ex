@@ -3,13 +3,13 @@ defmodule ExCommerce.Checkout.Cart do
 
   alias __MODULE__
   alias ExCommerce.Checkout
-  alias ExCommerce.Checkout.{CartServer, CartSupervisor, Order, OrderItem}
+  alias ExCommerce.Checkout.{CartServer, CartSupervisor, Embeds}
 
   @type state :: map() | nil
 
   @type t :: %__MODULE__{
           id: binary(),
-          order: Order.t() | nil,
+          order: Embeds.Order.t() | nil,
           server: pid() | nil,
           state: state()
         }
@@ -73,25 +73,25 @@ defmodule ExCommerce.Checkout.Cart do
   def set_server(%Cart{} = cart, pid), do: %Cart{cart | server: pid}
 
   @doc """
-  Given a #{__MODULE__} struct and an #{Order}, returns a new #{__MODULE__}
-  with an updated order.
+  Given a #{__MODULE__} struct and an #{Embeds.Order}, returns a new
+  #{__MODULE__} with an updated order.
 
   ## Examples:
 
-      iex> update_order(%Cart{}, %Order{buyer_name: "Some name"})
+      iex> update_order(%Cart{}, %Embeds.Order{buyer_name: "Some name"})
       %ExCommerce.Checkout.Cart{
         id: "caf6c585d9ba724539d27b301a5ebd22e904fa5023cc1f888adc13529898e5ea",
-        order: %Order{buyer_name: "Some name"},
+        order: %Embeds.Order{buyer_name: "Some name"},
         server: nil,
         state: nil
       }
 
   """
-  @spec set_order(t(), Order.t()) :: t()
-  def set_order(%Cart{} = cart, %Order{} = order) do
+  @spec set_order(t(), Embeds.Order.t()) :: t()
+  def set_order(%Cart{} = cart, %Embeds.Order{} = order) do
     %Cart{server: server} = cart = maybe_start_server(cart)
 
-    %Order{} =
+    %Embeds.Order{} =
       order =
       CartServer.get_order(server)
       |> Map.merge(order)
@@ -102,31 +102,32 @@ defmodule ExCommerce.Checkout.Cart do
   end
 
   @doc """
-  Given a #{Cart} returns the current #{Order}.
+  Given a #{Cart} returns the current #{Embeds.Order}.
   """
-  @spec get_order(Cart.t()) :: Order.t()
+  @spec get_order(Cart.t()) :: Embeds.Order.t()
   def get_order(%Cart{} = cart) do
     %Cart{server: server} = maybe_start_server(cart)
     CartServer.get_order(server)
   end
 
   @doc """
-  Given a #{__MODULE__} struct and an OrderItem, updates the Cart order with the
-  order item to return a new #{__MODULE__} struct.
+  Given a #{__MODULE__} struct and an Embeds.OrderItem, updates the Cart order
+  with the order item to return a new #{__MODULE__} struct.
 
   ## Examples:
 
       iex> add_to_order(%Cart{}, %{id: "some id})
-      %Cart{order: %Order{order_items: [%{id: "some id}]]}
+      %Cart{order: %Embeds.Order{order_items: [%{id: "some id}]]}
 
   """
-  @spec add_to_order(t(), OrderItem.t()) :: t()
-  def add_to_order(%Cart{} = cart, %OrderItem{} = order_item) do
+  @spec add_to_order(t(), Embeds.OrderItem.t()) :: t()
+  def add_to_order(%Cart{} = cart, %Embeds.OrderItem{} = order_item) do
     %Cart{server: server} = cart = maybe_start_server(cart)
 
-    %Order{order_items: order_items} = order = CartServer.get_order(server)
+    %Embeds.Order{order_items: order_items} =
+      order = CartServer.get_order(server)
 
-    %Order{} =
+    %Embeds.Order{} =
       order =
       Map.put(
         order,
@@ -146,20 +147,20 @@ defmodule ExCommerce.Checkout.Cart do
   end
 
   @doc """
-  Given a #{__MODULE__} and an id, removes an #{OrderItem} from the #{Order} if
-  it exists.
+  Given a #{__MODULE__} and an id, removes an #{Embeds.OrderItem} from the
+  #{Embeds.Order} if it exists.
 
   ### Examples:
 
-      iex> remove_from_order(%Cart{order: %{Order{order_items: [%OrderItem{temp_id: "123"}]}}}, "123")
-      %Cart{order: %Order{order_items: []}}
-      iex> remove_from_order(%Cart{order: %{Order{order_items: [%OrderItem{temp_id: "123"}]}}}, "456")
-      %Cart{order: %Order{order_items: [%OrderItem{temp_id: "123"}]}}
+      iex> remove_from_order(%Cart{order: %{Embeds.Order{order_items: [%Embeds.OrderItem{temp_id: "123"}]}}}, "123")
+      %Cart{order: %Embeds.Order{order_items: []}}
+      iex> remove_from_order(%Cart{order: %{Embeds.Order{order_items: [%Embeds.OrderItem{temp_id: "123"}]}}}, "456")
+      %Cart{order: %Embeds.Order{order_items: [%Embeds.OrderItem{temp_id: "123"}]}}
 
   """
   @spec remove_from_order(t(), String.t()) :: t()
   def remove_from_order(
-        %Cart{order: %Order{order_items: order_items} = order} = cart,
+        %Cart{order: %Embeds.Order{order_items: order_items} = order} = cart,
         temp_id
       ) do
     %Cart{server: server} = cart = maybe_start_server(cart)
@@ -168,12 +169,12 @@ defmodule ExCommerce.Checkout.Cart do
       Enum.filter(
         order_items,
         fn
-          %OrderItem{temp_id: ^temp_id} -> false
-          %OrderItem{} -> true
+          %Embeds.OrderItem{temp_id: ^temp_id} -> false
+          %Embeds.OrderItem{} -> true
         end
       )
 
-    %Order{} = order = %Order{order | order_items: order_items}
+    %Embeds.Order{} = order = %Embeds.Order{order | order_items: order_items}
 
     :ok = CartServer.set_order(server, order)
 
@@ -200,10 +201,10 @@ defmodule ExCommerce.Checkout.Cart do
 
       {pid, state} ->
         # Send tick to pid
-        %Order{} = order = CartServer.get_order(pid)
+        %Embeds.Order{} = order = CartServer.get_order(pid)
         %Cart{cart | server: pid, state: state, order: order}
     end
   end
 
-  def create_initial_order, do: %Order{}
+  def create_initial_order, do: %Embeds.Order{}
 end

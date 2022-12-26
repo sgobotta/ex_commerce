@@ -17,12 +17,10 @@ defmodule ExCommerceNotifications.Parsers.OrderTest do
     CatalogueItemsFixtures,
     CatalogueItemVariantsFixtures,
     CataloguesFixtures,
-    Offerings,
-    OrderFixtures,
-    OrderItemFixtures
+    Offerings
   }
 
-  alias ExCommerce.Checkout.Order
+  alias ExCommerce.Checkout.Embeds
 
   alias ExCommerceNotifications.Parsers
 
@@ -119,7 +117,7 @@ defmodule ExCommerceNotifications.Parsers.OrderTest do
       order_items =
         for _n <- 1..3,
             do:
-              OrderItemFixtures.build(%{
+              Embeds.OrderItemFixtures.build(%{
                 catalogue_item_id: catalogue_item_id,
                 variants: [variant],
                 available_option_groups: %{
@@ -149,9 +147,9 @@ defmodule ExCommerceNotifications.Parsers.OrderTest do
                 :variant
               ])
 
-      %Order{} =
+      %Embeds.Order{} =
         order =
-        OrderFixtures.build(%{
+        Embeds.OrderFixtures.build(%{
           address: "Some address",
           buyer_name: "Some buyer name",
           note: "Some notes",
@@ -162,7 +160,7 @@ defmodule ExCommerceNotifications.Parsers.OrderTest do
     end
 
     test "parse_order/1 returns a map that represents a parsed order", %{
-      order: %Order{} = order
+      order: %Embeds.Order{} = order
     } do
       %{
         address: "Some address",
@@ -206,7 +204,7 @@ defmodule ExCommerceNotifications.Parsers.OrderTest do
       assert option.variant_price == Decimal.new("120.50")
     end
 
-    defp do_parse_order(%Order{} = order),
+    defp do_parse_order(%Embeds.Order{} = order),
       do: Parsers.Order.parse(order)
   end
 end

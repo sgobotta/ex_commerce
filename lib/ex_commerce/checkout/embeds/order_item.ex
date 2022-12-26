@@ -1,4 +1,4 @@
-defmodule ExCommerce.Checkout.OrderItem do
+defmodule ExCommerce.Checkout.Embeds.OrderItem do
   @moduledoc """
   The OrderItem schema
   """

@@ -1,11 +1,10 @@
-defmodule ExCommerce.OrderFixtures do
+defmodule ExCommerce.Checkout.Embeds.OrderFixtures do
   @moduledoc """
   This module defines test helpers for creating entities via the
   `#{ExCommerce.Checkout}` context.
   """
 
-  alias ExCommerce.Checkout
-  alias ExCommerce.Checkout.Order
+  alias ExCommerce.Checkout.Embeds.Order
 
   import ExCommerce.FixtureHelpers
 
@@ -32,20 +31,20 @@ defmodule ExCommerce.OrderFixtures do
   def update_attrs(attrs \\ %{}), do: attrs |> Enum.into(@update_attrs)
   def invalid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@invalid_attrs)
 
-  def create(attrs \\ %{}) do
-    attrs =
-      attrs
-      |> maybe_assign_brand()
-      |> maybe_assign_shop()
-      |> maybe_assign_catalogue()
+  # def create(attrs \\ %{}) do
+  #   attrs =
+  #     attrs
+  #     |> maybe_assign_brand()
+  #     |> maybe_assign_shop()
+  #     |> maybe_assign_catalogue()
 
-    {:ok, %Order{} = order} =
-      attrs
-      |> Enum.into(valid_attrs(attrs))
-      |> Checkout.create_order()
+  #   {:ok, %Order{} = order} =
+  #     attrs
+  #     |> Enum.into(valid_attrs(attrs))
+  #     |> Checkout.create_order()
 
-    order
-  end
+  #   order
+  # end
 
   def build(attrs \\ %{}) do
     attrs =
