@@ -14,7 +14,7 @@ defmodule ExCommerce.Checkout.Order do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  schema "orders" do
+  embedded_schema do
     field :brand_id, :binary_id
     field :shop_id, :binary_id
     field :catalogue_id, :binary_id
