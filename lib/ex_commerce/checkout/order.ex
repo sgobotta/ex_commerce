@@ -55,6 +55,7 @@ defmodule ExCommerce.Checkout.Order do
       @details_fields ++
         @marketplace_fields ++
         [
+          :order_items,
           :price,
           :status
         ]
@@ -80,12 +81,43 @@ defmodule ExCommerce.Checkout.OrderItem do
 
   embedded_schema do
     field :quantity, :integer
-    field :prie, :decimal
-
+    field :price, :decimal
     field :variant_id, :binary_id
     field :variant_name, :string
-
     field :catalogue_item_id, :binary_id
     field :catalogue_item_name, :string
+  end
+end
+
+defmodule ExCommerce.Checkout.OrderItemOptionGroup do
+  @moduledoc """
+  The embedded OrderItemOptionGroup for the OrderItem embedded shema.
+  """
+  use Ecto.Schema
+
+  alias ExCommerce.Checkout.OrderItemOption
+
+  embedded_schema do
+    field :catalogue_item_option_group_id, :binary_id
+    field :catalogue_item_option_group_name, :string
+
+    embeds_many :options, OrderItemOption
+  end
+end
+
+defmodule ExCommerce.Checkout.OrderItemOption do
+  @moduledoc """
+  The embedded OrderitemOption for the OrderItemOptionGroup embedded schema.
+  """
+  use Ecto.Schema
+
+  embedded_schema do
+    field :catalogue_item_id, :binary_id
+    field :catalogue_item_name, :string
+
+    field :catalogue_item_variant_id, :binary_id
+    field :catalogue_item_variant_name, :string
+
+    field :price, :decimal
   end
 end
