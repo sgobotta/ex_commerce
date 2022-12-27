@@ -4,21 +4,25 @@ defmodule ExCommerce.Repo.Migrations.CreateOrders do
   def change do
     create table(:orders, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :brand_id, references(:brands, on_delete: :nothing, type: :binary_id)
-      add :shop_id, references(:shops, on_delete: :nothing, type: :binary_id)
 
-      add :catalogue_id,
-          references(:catalogues, on_delete: :nothing, type: :binary_id)
+      add :brand_id, :binary_id
+      add :brand_name, :string
+
+      add :shop_id, :binary_id
+      add :shop_name, :string
+
+      add :catalogue_id, :binary_id
+      add :catalogue_name, :string
 
       add :buyer_name, :string
       add :address, :string
       add :note, :string
 
-      add :order_items,
-          references(:order_items,
-            on_delete: :nothing,
-            type: :binary_id
-          )
+      add :price, :decimal
+
+      add :status, :string
+
+      add :order_items, {:array, :map}, null: false, default: []
 
       timestamps()
     end
