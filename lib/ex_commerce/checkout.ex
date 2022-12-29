@@ -188,6 +188,15 @@ defmodule ExCommerce.Checkout do
   # end
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for tracking cart_order changes.
+  """
+  @spec change_cart_order(Cart.Order.t() | Cart.Changeset.t(), map()) ::
+          Ecto.Changeset.t()
+  def change_cart_order(cart_order, attrs \\ %{}) do
+    Cart.Order.changeset(cart_order, attrs)
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for tracking order_item changes.
 
   ## Examples
