@@ -55,11 +55,11 @@ defmodule ExCommerce.Checkout.Order do
       @details_fields ++
         @marketplace_fields ++
         [
-          :order_items,
           :price,
           :status
         ]
     )
+    |> cast_embed(:order_items)
     |> validate_required(
       @marketplace_fields ++
         [
