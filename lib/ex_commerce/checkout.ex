@@ -5,7 +5,7 @@ defmodule ExCommerce.Checkout do
 
   import Ecto.Query, warn: false
 
-  alias ExCommerce.Checkout.{Cart, Supervisor}
+  alias ExCommerce.Checkout.{Cart, Order, Supervisor}
   alias ExCommerce.Repo
 
   defdelegate child_spec(init_arg), to: Supervisor
@@ -93,51 +93,51 @@ defmodule ExCommerce.Checkout do
   # Data Access layer
   #
 
-  @doc """
-  Returns the list of order_items.
+  # @doc """
+  # Returns the list of order_items.
 
-  ## Examples
+  # ## Examples
 
-      iex> list_order_items()
-      [%OrderItem{}, ...]
+  #     iex> list_order_items()
+  #     [%OrderItem{}, ...]
 
-  """
+  # """
 
   # @spec list_order_items() :: [Cart.OrderItem.t()]
   # def list_order_items do
   #   Repo.all(OrderItem)
   # end
 
-  @doc """
-  Gets a single order_item.
+  # @doc """
+  # Gets a single order_item.
 
-  Raises `Ecto.NoResultsError` if the Order item does not exist.
+  # Raises `Ecto.NoResultsError` if the Order item does not exist.
 
-  ## Examples
+  # ## Examples
 
-      iex> get_order_item!(123)
-      %OrderItem{}
+  #     iex> get_order_item!(123)
+  #     %OrderItem{}
 
-      iex> get_order_item!(456)
-      ** (Ecto.NoResultsError)
+  #     iex> get_order_item!(456)
+  #     ** (Ecto.NoResultsError)
 
-  """
+  # """
 
   # @spec get_order_item!(binary()) :: OrderItem.t()
   # def get_order_item!(id), do: Repo.get!(OrderItem, id)
 
-  @doc """
-  Creates a order_item.
+  # @doc """
+  # Creates a order_item.
 
-  ## Examples
+  # ## Examples
 
-      iex> create_order_item(%{field: value})
-      {:ok, %OrderItem{}}
+  #     iex> create_order_item(%{field: value})
+  #     {:ok, %OrderItem{}}
 
-      iex> create_order_item(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+  #     iex> create_order_item(%{field: bad_value})
+  #     {:error, %Ecto.Changeset{}}
 
-  """
+  # """
 
   # @spec create_order_item(map()) ::
   #         {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
@@ -147,18 +147,18 @@ defmodule ExCommerce.Checkout do
   #   |> Repo.insert()
   # end
 
-  @doc """
-  Updates a order_item.
+  # @doc """
+  # Updates a order_item.
 
-  ## Examples
+  # ## Examples
 
-      iex> update_order_item(order_item, %{field: new_value})
-      {:ok, %OrderItem{}}
+  #     iex> update_order_item(order_item, %{field: new_value})
+  #     {:ok, %OrderItem{}}
 
-      iex> update_order_item(order_item, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+  #     iex> update_order_item(order_item, %{field: bad_value})
+  #     {:error, %Ecto.Changeset{}}
 
-  """
+  # """
 
   # @spec update_order_item(OrderItem.t(), map()) ::
   #         {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
@@ -168,18 +168,18 @@ defmodule ExCommerce.Checkout do
   #   |> Repo.update()
   # end
 
-  @doc """
-  Deletes a order_item.
+  # @doc """
+  # Deletes a order_item.
 
-  ## Examples
+  # ## Examples
 
-      iex> delete_order_item(order_item)
-      {:ok, %OrderItem{}}
+  #     iex> delete_order_item(order_item)
+  #     {:ok, %OrderItem{}}
 
-      iex> delete_order_item(order_item)
-      {:error, %Ecto.Changeset{}}
+  #     iex> delete_order_item(order_item)
+  #     {:error, %Ecto.Changeset{}}
 
-  """
+  # """
 
   # @spec delete_order_item(OrderItem.t()) ::
   #         {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
@@ -231,11 +231,10 @@ defmodule ExCommerce.Checkout do
       [%Order{}, ...]
 
   """
-
-  # @spec list_orders() :: [Order.t()]
-  # def list_orders do
-  #   Repo.all(Order)
-  # end
+  @spec list_orders() :: [Order.t()]
+  def list_orders do
+    Repo.all(Order)
+  end
 
   @doc """
   Gets a single order.
@@ -251,9 +250,8 @@ defmodule ExCommerce.Checkout do
       ** (Ecto.NoResultsError)
 
   """
-
-  # @spec get_order!(Ecto.UUID.t()) :: Order.t()
-  # def get_order!(id), do: Repo.get!(Order, id)
+  @spec get_order!(Ecto.UUID.t()) :: Order.t()
+  def get_order!(id), do: Repo.get!(Order, id)
 
   @doc """
   Creates a order.
@@ -267,13 +265,12 @@ defmodule ExCommerce.Checkout do
       {:error, %Ecto.Changeset{}}
 
   """
-
-  # @spec create_order(map()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
-  # def create_order(attrs \\ %{}) do
-  #   %Order{}
-  #   |> Order.changeset(attrs)
-  #   |> Repo.insert()
-  # end
+  @spec create_order(map()) :: {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  def create_order(attrs \\ %{}) do
+    %Order{}
+    |> Order.changeset(attrs)
+    |> Repo.insert()
+  end
 
   @doc """
   Updates a order.
@@ -287,14 +284,13 @@ defmodule ExCommerce.Checkout do
       {:error, %Ecto.Changeset{}}
 
   """
-
-  # @spec update_order(Order.t(), map()) ::
-  #         {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
-  # def update_order(%Order{} = order, attrs) do
-  #   order
-  #   |> Order.changeset(attrs)
-  #   |> Repo.update()
-  # end
+  @spec update_order(Order.t(), map()) ::
+          {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  def update_order(%Order{} = order, attrs) do
+    order
+    |> Order.changeset(attrs)
+    |> Repo.update()
+  end
 
   @doc """
   Deletes a order.
@@ -308,12 +304,11 @@ defmodule ExCommerce.Checkout do
       {:error, %Ecto.Changeset{}}
 
   """
-
-  # @spec delete_order(Order.t()) ::
-  #         {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
-  # def delete_order(%Order{} = order) do
-  #   Repo.delete(order)
-  # end
+  @spec delete_order(Order.t()) ::
+          {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  def delete_order(%Order{} = order) do
+    Repo.delete(order)
+  end
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking order changes.
@@ -321,12 +316,12 @@ defmodule ExCommerce.Checkout do
   ## Examples
 
       iex> change_order(order)
-      %Ecto.Changeset{data: %Cart.Order{}}
+      %Ecto.Changeset{data: %Order{}}
 
   """
-  @spec change_order(Cart.Order.t(), map()) :: Ecto.Changeset.t()
-  def change_order(%Cart.Order{} = order, attrs \\ %{}) do
-    Cart.Order.changeset(order, attrs)
+  @spec change_order(Order.t(), map()) :: Ecto.Changeset.t()
+  def change_order(%Order{} = order, attrs \\ %{}) do
+    Order.changeset(order, attrs)
   end
 
   @doc """
@@ -344,17 +339,17 @@ defmodule ExCommerce.Checkout do
   end
 
   @doc """
-  Returns an #{Cart.Order} with the given fields preloaded.
+  Returns an #{Order} with the given fields preloaded.
 
   ## Examples
 
-      iex> preload_order(%Cart.Order{}, [:order_items])
-      %Cart.Order{order_items: []}
+      iex> preload_order(%Order{}, [:order_items])
+      %Order{order_items: []}
 
   """
-  @spec preload_order(Cart.Order.t(), [atom()]) :: Cart.Order.t()
-  def preload_order(%Cart.Order{} = order, []), do: order
+  @spec preload_order(Order.t(), [atom()]) :: Order.t()
+  def preload_order(%Order{} = order, []), do: order
 
-  def preload_order(%Cart.Order{} = order, fields),
+  def preload_order(%Order{} = order, fields),
     do: Repo.preload(order, fields)
 end
