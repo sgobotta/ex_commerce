@@ -4,9 +4,8 @@ defmodule ExCommerce.ShopsFixtures do
   `ExCommerce.Marketplaces.Brand` context.
   """
 
-  alias ExCommerce.BrandsFixtures
   alias ExCommerce.Marketplaces
-  alias ExCommerce.Marketplaces.{Brand, Shop}
+  alias ExCommerce.Marketplaces.Shop
 
   import ExCommerce.FixtureHelpers
 
