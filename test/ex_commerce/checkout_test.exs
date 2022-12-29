@@ -3,7 +3,8 @@ defmodule ExCommerce.CheckoutTest do
   use ExCommerce.DataCase
 
   alias ExCommerce.Checkout
-  alias ExCommerce.Checkout.OrderItem
+  alias ExCommerce.Checkout.Order
+  alias ExCommerce.Marketplaces
 
   require Decimal
 
@@ -25,7 +26,8 @@ defmodule ExCommerce.CheckoutTest do
       CatalogueItemsFixtures,
       CatalogueItemVariantsFixtures,
       CataloguesFixtures,
-      Offerings
+      Offerings,
+      ShopsFixtures
     }
 
     setup do
@@ -33,6 +35,25 @@ defmodule ExCommerce.CheckoutTest do
         id: catalogue_id,
         brand_id: brand_id
       } = CataloguesFixtures.create()
+
+      %Marketplaces.Brand{} = brand = Marketplaces.get_brand!(brand_id)
+
+      %Marketplaces.Shop{id: shop_id} =
+        shop =
+        ShopsFixtures.create(%{
+          brand_id: brand_id
+        })
+
+      # Relate Marketplaces.Shop with Offerings.Catalogue
+      {:ok, %Relations.ShopCatalogue{}} =
+        Relations.create_shop_catalogue(%{
+          shop_id: shop_id,
+          catalogue_id: catalogue_id
+        })
+
+      %Catalogue{
+        id: catalogue_id
+      } = catalogue = Offerings.get_catalogue!(catalogue_id)
 
       %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} =
         catalogue_item_option_group =
@@ -92,11 +113,53 @@ defmodule ExCommerce.CheckoutTest do
           }
         )
 
-      %{cart: cart, order_item: order_item}
+      %Cart.Order{} = order = Cart.get_order(cart)
+
+      %Ecto.Changeset{} =
+        cart_order_changeset =
+        Cart.Order.changeset(order, %{
+          brand_id: brand_id,
+          catalogue_id: catalogue_id,
+          shop_id: shop_id
+        })
+
+      %{
+        brand: brand,
+        cart: cart,
+        catalogue: catalogue,
+        cart_order_changeset: cart_order_changeset,
+        order_item: order_item,
+        shop: shop
+      }
     end
 
-    @tag :wip
-    test "add_to_order/2 adds an order item to a new order", %{
+    test "update_cart_order/2 returns a #{Cart} with an updated #{Cart.Order}",
+         %{
+           cart: %Cart{} = cart,
+           cart_order_changeset: %Ecto.Changeset{} = cart_order_changeset
+         } do
+      %Ecto.Changeset{
+        changes: %{
+          brand_id: brand_id,
+          catalogue_id: catalogue_id,
+          shop_id: shop_id
+        }
+      } = cart_order_changeset
+
+      # Exercise
+      %Cart{} = cart = Checkout.update_cart_order(cart, cart_order_changeset)
+
+      # Verify
+      %Cart{
+        order: %Cart.Order{
+          brand_id: ^brand_id,
+          catalogue_id: ^catalogue_id,
+          shop_id: ^shop_id
+        }
+      } = cart
+    end
+
+    test "add_to_order/2 adds an #{Cart.OrderItem} to a new #{Cart.Order}", %{
       cart: %Cart{} = cart,
       order_item: %Ecto.Changeset{} = order_item
     } do
@@ -110,13 +173,10 @@ defmodule ExCommerce.CheckoutTest do
       assert length(order_items) == 1
 
       %Cart.OrderItem{quantity: quantity, price: price} =
-        ^order_item = Enum.at(order_items, 0)
+        Enum.at(order_items, 0)
 
       assert quantity == 2
       assert Decimal.is_decimal(price)
-    end
-
-    test "from_cart_order/1 returns an #{Order} struct" do
     end
   end
 
@@ -127,7 +187,7 @@ defmodule ExCommerce.CheckoutTest do
       ShopsFixtures
     }
 
-    alias ExCommerce.Checkout.{Order, OrderFixtures, OrderItemFixtures}
+    alias ExCommerce.Checkout.{Order, OrderFixtures}
     alias ExCommerce.Marketplaces.{Brand, Shop}
     alias ExCommerce.Offerings.Catalogue
 
@@ -145,19 +205,16 @@ defmodule ExCommerce.CheckoutTest do
       }
     end
 
-    @tag :wip
     test "list_orders/0 returns all orders" do
       %Order{} = order = OrderFixtures.create()
       assert Checkout.list_orders() == [order]
     end
 
-    @tag :wip
     test "get_order!/1 returns the order with given id" do
       %Order{id: order_id} = order = OrderFixtures.create()
       assert Checkout.get_order!(order_id) == order
     end
 
-    @tag :wip
     test "create_order/1 with valid data creates an order", %{
       brand: %Brand{id: brand_id},
       catalogue: %Catalogue{id: catalogue_id},
@@ -178,7 +235,6 @@ defmodule ExCommerce.CheckoutTest do
               }} = Checkout.create_order(valid_attrs)
     end
 
-    @tag :wip
     test "create_order/1 with order_items creates an order", %{
       brand: %Brand{id: brand_id},
       catalogue: %Catalogue{id: catalogue_id},
@@ -199,19 +255,16 @@ defmodule ExCommerce.CheckoutTest do
               }} = Checkout.create_order(valid_attrs)
     end
 
-    @tag :wip
     test "create_order/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Checkout.create_order(@invalid_attrs)
     end
 
-    @tag :wip
     test "update_order/2 with valid data updates the order" do
       %Order{} = order = OrderFixtures.create()
 
       assert {:ok, %Order{}} = Checkout.update_order(order, @update_attrs)
     end
 
-    @tag :wip
     test "update_order/2 with invalid data returns error changeset" do
       %Order{id: order_id} = order = OrderFixtures.create()
 
@@ -221,14 +274,12 @@ defmodule ExCommerce.CheckoutTest do
       assert order == Checkout.get_order!(order_id)
     end
 
-    @tag :wip
     test "delete_order/1 deletes the order" do
       %Order{id: order_id} = order = OrderFixtures.create()
       assert {:ok, %Order{}} = Checkout.delete_order(order)
       assert_raise Ecto.NoResultsError, fn -> Checkout.get_order!(order_id) end
     end
 
-    @tag :wip
     test "change_order/1 returns an order changeset" do
       %Order{} = order = OrderFixtures.create()
       assert %Ecto.Changeset{} = Checkout.change_order(order)
