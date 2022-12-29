@@ -20,6 +20,8 @@ defmodule ExCommerce.Checkout.OrderFixtures do
     status: :pending
   }
 
+  @update_attrs %{}
+
   @invalid_attrs %{
     brand_name: nil,
     shop_name: nil,
@@ -32,6 +34,7 @@ defmodule ExCommerce.Checkout.OrderFixtures do
   }
 
   def valid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@valid_attrs)
+  def update_attrs(attrs \\ %{}), do: attrs |> Enum.into(@update_attrs)
   def invalid_attrs(attrs \\ %{}), do: attrs |> Enum.into(@invalid_attrs)
 
   def create(attrs \\ %{}) do
@@ -87,7 +90,7 @@ defmodule ExCommerce.Checkout.OrderItemFixtures do
   end
 end
 
-defmodule ExCommerce.Checkout.OrderItemFixtures do
+defmodule ExCommerce.Checkout.OrderItemOptionGroupFixtures do
   @moduledoc false
 
   alias ExCommerce.Checkout.OrderItemOptionGroup
