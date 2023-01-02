@@ -1,5 +1,6 @@
 defmodule ExCommerce.CheckoutTest do
   @moduledoc false
+  use ExCommerce.ContextCases.CheckoutCase
   use ExCommerce.DataCase
 
   alias ExCommerce.Checkout
@@ -9,7 +10,7 @@ defmodule ExCommerce.CheckoutTest do
   require Decimal
 
   describe "checkout" do
-    alias ExCommerce.Checkout.{Cart, CartServer, Order}
+    alias ExCommerce.Checkout.{Cart, CartServer}
 
     alias ExCommerce.Offerings.{
       Catalogue,
@@ -30,108 +31,19 @@ defmodule ExCommerce.CheckoutTest do
       ShopsFixtures
     }
 
-    setup do
-      %Catalogue{
-        id: catalogue_id,
-        brand_id: brand_id
-      } = CataloguesFixtures.create()
-
-      %Marketplaces.Brand{} = brand = Marketplaces.get_brand!(brand_id)
-
-      %Marketplaces.Shop{id: shop_id} =
-        shop =
-        ShopsFixtures.create(%{
-          brand_id: brand_id
-        })
-
-      # Relate Marketplaces.Shop with Offerings.Catalogue
-      {:ok, %Relations.ShopCatalogue{}} =
-        Relations.create_shop_catalogue(%{
-          shop_id: shop_id,
-          catalogue_id: catalogue_id
-        })
-
-      %Catalogue{
-        id: catalogue_id
-      } = catalogue = Offerings.get_catalogue!(catalogue_id)
-
-      %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} =
-        catalogue_item_option_group =
-        CatalogueItemOptionGroupsFixtures.create(%{brand_id: brand_id})
-
-      %CatalogueItemOption{id: catalogue_item_option_id} =
-        CatalogueItemOptionsFixtures.create(%{
-          brand_id: brand_id,
-          catalogue_item_option_group_id: catalogue_item_option_group_id
-        })
-
-      %CatalogueItem{id: catalogue_item_id} =
-        CatalogueItemsFixtures.create(%{brand_id: brand_id})
-
-      # Relate CatalogueItem with CatalogueItemOptionGroup
-      %Relations.CatalogueItemOptionGroupItem{} =
-        Offerings.RelationsFixtures.catalogue_item_option_group_item_fixture(%{
-          catalogue_item_option_group_id: catalogue_item_option_group_id,
-          catalogue_item_id: catalogue_item_id
-        })
-
-      %CatalogueItemVariant{id: variant_id} =
-        variant =
-        CatalogueItemVariantsFixtures.create(%{
-          catalogue_item_id: catalogue_item_id
-        })
-
-      cart_id = Cart.generate_id("some session id", catalogue_id)
-      %Cart{} = cart = Cart.new(cart_id)
-
-      catalogue_item_option_group =
-        ExCommerce.Repo.preload(
-          catalogue_item_option_group,
-          options: [:catalogue_item_variant]
-        )
-
-      %Ecto.Changeset{} =
-        order_item =
-        Cart.OrderItem.changeset(
-          %Cart.OrderItem{
-            variants: [variant],
-            available_option_groups: %{
-              values: [catalogue_item_option_group],
-              rules: []
-            }
-          },
-          %{
-            catalogue_item_id: catalogue_item_id,
-            option_groups: %{
-              catalogue_item_option_group_id => %{
-                "valid?" => true,
-                "value" => [catalogue_item_option_id]
-              }
-            },
-            quantity: 2,
-            variant_id: variant_id
-          }
-        )
-
-      %Cart.Order{} = order = Cart.get_order(cart)
-
-      %Ecto.Changeset{} =
-        cart_order_changeset =
-        Cart.Order.changeset(order, %{
-          brand_id: brand_id,
-          catalogue_id: catalogue_id,
-          shop_id: shop_id
-        })
-
-      %{
-        brand: brand,
-        cart: cart,
-        catalogue: catalogue,
-        cart_order_changeset: cart_order_changeset,
-        order_item: order_item,
-        shop: shop
-      }
-    end
+    setup [
+      :create_catalogue,
+      :create_shop,
+      :relate_shop_catalogue,
+      :create_catalogue_item_option_groups,
+      :create_catalogue_item_options,
+      :create_catalogue_items,
+      :relate_catalogue_item_option_groups_items,
+      :create_catalogue_item_variants,
+      :create_cart,
+      :create_order,
+      :create_order_changeset
+    ]
 
     test "update_cart_order/2 returns a #{Cart} with an updated #{Cart.Order}",
          %{
