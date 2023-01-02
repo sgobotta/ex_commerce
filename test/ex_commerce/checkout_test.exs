@@ -9,7 +9,7 @@ defmodule ExCommerce.CheckoutTest do
   require Decimal
 
   describe "checkout" do
-    alias ExCommerce.Checkout.{Cart, CartServer}
+    alias ExCommerce.Checkout.{Cart, CartServer, Order}
 
     alias ExCommerce.Offerings.{
       Catalogue,
@@ -177,6 +177,39 @@ defmodule ExCommerce.CheckoutTest do
 
       assert quantity == 2
       assert Decimal.is_decimal(price)
+    end
+
+    @tag :wip
+    test "from_cart_order/1 for a cart order with invalid args returns an invalid #{Order} changeset",
+         %{
+           brand: %Marketplaces.Brand{name: brand_name},
+           cart: %Cart{} = cart,
+           cart_order_changeset: %Ecto.Changeset{} = cart_order_changeset,
+           catalogue: %Offerings.Catalogue{name: catalogue_name},
+           shop: %Marketplaces.Shop{name: shop_name}
+         } do
+      # Setup
+      cart_order_changeset =
+        Cart.Order.changeset(
+          cart_order_changeset,
+          Cart.OrderFixtures.invalid_attrs()
+        )
+
+      %Cart{order: %Cart.Order{} = cart_order} =
+        Checkout.update_cart_order(cart, cart_order_changeset)
+
+      from_cart_order_params = %{
+        brand_name: brand_name,
+        catalogue_name: catalogue_name,
+        shop_name: shop_name
+      }
+
+      # Exercise
+      {:error, %Ecto.Changeset{valid?: valid?, errors: _errors}} =
+        Checkout.from_cart_order(cart_order, from_cart_order_params)
+
+      # Verify
+      refute valid?
     end
   end
 

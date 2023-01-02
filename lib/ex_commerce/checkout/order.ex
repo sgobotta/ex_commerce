@@ -31,6 +31,7 @@ defmodule ExCommerce.Checkout.Order do
     field :shop_id, :binary_id
     field :shop_name, :string
 
+    field :catalogue_code, :string
     field :catalogue_id, :binary_id
     field :catalogue_name, :string
 
@@ -70,22 +71,58 @@ defmodule ExCommerce.Checkout.Order do
         ]
     )
   end
+
+  @doc """
+  Given an #{Ecto.Changeset} struct, applies changes to return an updated
+  #{__MODULE__}.
+  """
+  @spec apply(Ecto.Changeset.t()) :: t()
+  def apply(%Ecto.Changeset{} = changeset) do
+    apply_changes(changeset)
+  end
 end
 
 defmodule ExCommerce.Checkout.OrderItem do
   @moduledoc """
   The embedded OrderItem for the order shema
   """
+  alias ExCommerce.Offerings
+  alias ExCommerce.Checkout.{Cart, OrderItemOptionGroup}
 
   use Ecto.Schema
+
+  import Ecto.Changeset
+
+  @fields [
+    :quantity,
+    :price,
+    :catalogue_item_code,
+    :catalogue_item_id,
+    :catalogue_item_name,
+    :variant_code,
+    :variant_id,
+    :variant_name
+  ]
 
   embedded_schema do
     field :quantity, :integer
     field :price, :decimal
+
+    field :variant_code, :string
     field :variant_id, :binary_id
     field :variant_name, :string
+
+    field :catalogue_item_code, :string
     field :catalogue_item_id, :binary_id
     field :catalogue_item_name, :string
+
+    embeds_many :option_groups, OrderItemOptionGroup
+  end
+
+  def changeset(order_item, attrs) do
+    order_item
+    |> cast(attrs, @fields)
+    |> validate_required(@fields)
   end
 end
 

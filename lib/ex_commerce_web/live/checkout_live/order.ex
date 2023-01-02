@@ -13,7 +13,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
   alias ExCommerce.Checkout
   alias ExCommerce.Checkout.Cart
 
-  alias ExCommerce.Marketplaces.Shop
+  alias ExCommerce.Marketplaces.{Brand, Shop}
 
   alias ExCommerce.Offerings.Catalogue
 
@@ -129,8 +129,19 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
   defp assign_changeset(socket, params \\ %{}) do
     %{
       cart: %Cart{order: %Cart.Order{} = order} = cart,
-      catalogue: %Catalogue{id: catalogue_id},
-      shop: %Shop{id: shop_id, brand_id: brand_id}
+      catalogue:
+        %Catalogue{
+          code: catalogue_code,
+          id: catalogue_id,
+          name: catalogue_name
+        } = _catalogue,
+      shop:
+        %Shop{
+          brand: %Brand{name: brand_name},
+          brand_id: brand_id,
+          id: shop_id,
+          name: shop_name
+        } = _shop
     } = socket.assigns
 
     params =
@@ -144,9 +155,18 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     %Ecto.Changeset{valid?: valid?} =
       changeset = Checkout.change_cart_order(order, params)
 
-    %Cart{} = cart = Checkout.update_cart_order(cart, changeset)
+    %Cart{order: order} = cart = Checkout.update_cart_order(cart, changeset)
 
-    # _order_changeset = Order.from_cart_order(order)
+    # IO.inspect(shop, label: "\n\n\n>>> [Live] Shop")
+    # IO.inspect(catalogue, label: "\n\n\n>>> [Live] Catalogue")
+
+    _order_changeset =
+      Checkout.from_cart_order(order, %{
+        brand_name: brand_name,
+        catalogue_code: catalogue_code,
+        catalogue_name: catalogue_name,
+        shop_name: shop_name
+      })
 
     socket
     |> assign(:changeset, changeset)

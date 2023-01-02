@@ -11,6 +11,7 @@ defmodule ExCommerce.Repo.Migrations.CreateOrders do
       add :shop_id, :binary_id
       add :shop_name, :string
 
+      add :catalogue_code, :string
       add :catalogue_id, :binary_id
       add :catalogue_name, :string
 

@@ -6,7 +6,7 @@ defmodule ExCommerce.Checkout.Cart.Order do
 
   import Ecto.Changeset
 
-  alias ExCommerce.Checkout.OrderItem
+  alias ExCommerce.Checkout.Cart
 
   @type t :: %__MODULE__{}
 
@@ -25,7 +25,7 @@ defmodule ExCommerce.Checkout.Cart.Order do
 
     field :price, :decimal
 
-    embeds_many :order_items, OrderItem
+    embeds_many :order_items, Cart.OrderItem
 
     timestamps()
   end
@@ -80,5 +80,30 @@ defmodule ExCommerce.Checkout.Cart.Order do
     |> cast(attrs, [:price])
     |> validate_required([:price])
     |> apply()
+  end
+
+  @doc """
+  Given a `#{__MODULE__}` struct returns a map that represents a cart order.
+  This function is commonly used to convert `#{__MODULE__}` structs to maps that
+  can be used for creating #{ExCommerce.Checkout.Order} changesets.
+  """
+  @spec marshal(t()) :: map()
+  def marshal(%__MODULE__{order_items: cart_order_items} = cart_order) do
+    cart_order_items =
+      Enum.map(cart_order_items, fn %Cart.OrderItem{} = coi ->
+        Cart.OrderItem.marshal(coi)
+      end)
+
+    Map.from_struct(cart_order)
+    |> Map.take([
+      :address,
+      :brand_id,
+      :buyer_name,
+      :catalogue_id,
+      :note,
+      :price,
+      :shop_id
+    ])
+    |> Map.put(:order_items, cart_order_items)
   end
 end

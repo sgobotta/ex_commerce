@@ -89,6 +89,45 @@ defmodule ExCommerce.Checkout do
     ExCommerceNotifications.get_order_message(:whatsapp, cart)
   end
 
+  @doc """
+  Given a `#{Cart.Order}` struct and some `#{Order}` params, returns a tuple
+  with an order or a changeset if the order couldn't be created.
+
+  ## Examples
+
+      iex> Checkout.from_cart_order(%Cart.Order{}, %{
+      ...>   brand_name: "some brand name",
+      ...>   catalogue_name: "some catalogue name",
+      ...>   shop_name: "some shop name"
+      ...>  }
+      ...> )
+      %Order{}
+
+      iex> Checkout.from_cart_order(%Cart.Order{}, %{
+      ...>   brand_name: nil,
+      ...>   catalogue_name: nil,
+      ...>   shop_name: nil
+      ...>  }
+      ...> )
+      %Ecto.Changeset{}
+
+  """
+  @spec from_cart_order(Cart.Order.t(), map()) ::
+          {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  def from_cart_order(%Cart.Order{} = cart_order, params \\ %{}) do
+    params =
+      params
+      |> Map.merge(Cart.Order.marshal(cart_order))
+
+    case Order.changeset(%Order{}, params) do
+      %Ecto.Changeset{valid?: false} = cs ->
+        {:error, cs}
+
+      %Ecto.Changeset{valid?: true} = cs ->
+        {:ok, Order.apply(cs)}
+    end
+  end
+
   # ---------------------------------------------------------------------------
   # Data Access layer
   #
@@ -190,7 +229,7 @@ defmodule ExCommerce.Checkout do
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking cart_order changes.
   """
-  @spec change_cart_order(Cart.Order.t() | Cart.Changeset.t(), map()) ::
+  @spec change_cart_order(Cart.Order.t() | Ecto.Changeset.t(), map()) ::
           Ecto.Changeset.t()
   def change_cart_order(cart_order, attrs \\ %{}) do
     Cart.Order.changeset(cart_order, attrs)

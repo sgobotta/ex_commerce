@@ -56,6 +56,10 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
     ])
   end
 
+  def marshal(%__MODULE__{} = cart_order_item) do
+    Map.from_struct(cart_order_item)
+  end
+
   @doc """
   Given an #{__MODULE__} changeset, returns the total price, that includues the
   sum of the variant price and the total `option_groups` price.
