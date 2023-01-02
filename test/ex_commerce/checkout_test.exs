@@ -109,7 +109,7 @@ defmodule ExCommerce.CheckoutTest do
     ]
 
     @tag :wip
-    test "with invalid attributes returns an invalid #{Order} changeset",
+    test "with invalid Order attributes returns an invalid #{Order} changeset",
          %{
            brand: %Marketplaces.Brand{name: brand_name},
            cart: %Cart{} = cart,
@@ -131,6 +131,36 @@ defmodule ExCommerce.CheckoutTest do
         brand_name: brand_name,
         catalogue_name: catalogue_name,
         shop_name: shop_name
+      }
+
+      # Exercise
+      {:error, %Ecto.Changeset{valid?: valid?, errors: _errors}} =
+        do_from_cart_order(cart_order, from_cart_order_params)
+
+      # Verify
+      refute valid?
+    end
+
+    @tag :wip
+    test "with invalid params returns an invalid #{Order} changeset",
+         %{
+           cart: %Cart{} = cart,
+           cart_order_changeset: %Ecto.Changeset{} = cart_order_changeset
+         } do
+      # Setup
+      cart_order_changeset =
+        Cart.Order.changeset(
+          cart_order_changeset,
+          Cart.OrderFixtures.valid_attrs()
+        )
+
+      %Cart{order: %Cart.Order{} = cart_order} =
+        do_update_cart_order(cart, cart_order_changeset)
+
+      from_cart_order_params = %{
+        brand_name: nil,
+        catalogue_name: nil,
+        shop_name: nil
       }
 
       # Exercise
