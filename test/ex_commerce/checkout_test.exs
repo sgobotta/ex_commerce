@@ -9,27 +9,9 @@ defmodule ExCommerce.CheckoutTest do
 
   require Decimal
 
-  describe "checkout" do
-    alias ExCommerce.Checkout.{Cart, CartServer}
-
-    alias ExCommerce.Offerings.{
-      Catalogue,
-      CatalogueItem,
-      CatalogueItemOption,
-      CatalogueItemOptionGroup,
-      CatalogueItemVariant,
-      Relations
-    }
-
-    alias ExCommerce.{
-      CatalogueItemOptionGroupsFixtures,
-      CatalogueItemOptionsFixtures,
-      CatalogueItemsFixtures,
-      CatalogueItemVariantsFixtures,
-      CataloguesFixtures,
-      Offerings,
-      ShopsFixtures
-    }
+  describe "update_cart_order/2" do
+    alias ExCommerce.Checkout.Cart
+    alias ExCommerce.Checkout.Cart.Order
 
     setup [
       :create_catalogue,
@@ -45,11 +27,12 @@ defmodule ExCommerce.CheckoutTest do
       :create_order_changeset
     ]
 
-    test "update_cart_order/2 returns a #{Cart} with an updated #{Cart.Order}",
+    test "returns a #{Cart} with an updated #{Cart.Order}",
          %{
            cart: %Cart{} = cart,
            cart_order_changeset: %Ecto.Changeset{} = cart_order_changeset
          } do
+      # Setup
       %Ecto.Changeset{
         changes: %{
           brand_id: brand_id,
@@ -70,13 +53,31 @@ defmodule ExCommerce.CheckoutTest do
         }
       } = cart
     end
+  end
 
-    test "add_to_order/2 adds an #{Cart.OrderItem} to a new #{Cart.Order}", %{
+  describe "add_to_order/2" do
+    alias ExCommerce.Checkout.{Cart, CartServer}
+
+    setup [
+      :create_catalogue,
+      :create_shop,
+      :relate_shop_catalogue,
+      :create_catalogue_item_option_groups,
+      :create_catalogue_item_options,
+      :create_catalogue_items,
+      :relate_catalogue_item_option_groups_items,
+      :create_catalogue_item_variants,
+      :create_cart,
+      :create_order,
+      :create_order_changeset
+    ]
+
+    test "adds an #{Cart.OrderItem} to a new #{Cart.Order}", %{
       cart: %Cart{} = cart,
       order_item: %Ecto.Changeset{} = order_item
     } do
       # Setup
-      %Cart{server: server} = Checkout.add_to_order(cart, order_item)
+      %Cart{server: server} = do_add_to_order(cart, order_item)
 
       # Exercise
       %Cart.Order{order_items: order_items} = CartServer.get_order(server)
@@ -90,9 +91,25 @@ defmodule ExCommerce.CheckoutTest do
       assert quantity == 2
       assert Decimal.is_decimal(price)
     end
+  end
+
+  describe "from_cart_order/2" do
+    setup [
+      :create_catalogue,
+      :create_shop,
+      :relate_shop_catalogue,
+      :create_catalogue_item_option_groups,
+      :create_catalogue_item_options,
+      :create_catalogue_items,
+      :relate_catalogue_item_option_groups_items,
+      :create_catalogue_item_variants,
+      :create_cart,
+      :create_order,
+      :create_order_changeset
+    ]
 
     @tag :wip
-    test "from_cart_order/1 for a cart order with invalid args returns an invalid #{Order} changeset",
+    test "with invalid attributes returns an invalid #{Order} changeset",
          %{
            brand: %Marketplaces.Brand{name: brand_name},
            cart: %Cart{} = cart,
@@ -108,7 +125,7 @@ defmodule ExCommerce.CheckoutTest do
         )
 
       %Cart{order: %Cart.Order{} = cart_order} =
-        Checkout.update_cart_order(cart, cart_order_changeset)
+        do_update_cart_order(cart, cart_order_changeset)
 
       from_cart_order_params = %{
         brand_name: brand_name,
@@ -118,12 +135,21 @@ defmodule ExCommerce.CheckoutTest do
 
       # Exercise
       {:error, %Ecto.Changeset{valid?: valid?, errors: _errors}} =
-        Checkout.from_cart_order(cart_order, from_cart_order_params)
+        do_from_cart_order(cart_order, from_cart_order_params)
 
       # Verify
       refute valid?
     end
   end
+
+  defp do_update_cart_order(%Cart{} = cart, %Ecto.Changeset{} = changeset),
+    do: Checkout.update_cart_order(cart, changeset)
+
+  defp do_add_to_order(%Cart{} = cart, %Ecto.Changeset{} = changeset),
+    do: Checkout.add_to_order(cart, changeset)
+
+  defp do_from_cart_order(%Cart.Order{} = cart_order, params),
+    do: Checkout.from_cart_order(cart_order, params)
 
   describe "orders" do
     alias ExCommerce.{
