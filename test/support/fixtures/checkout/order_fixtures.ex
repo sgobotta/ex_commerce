@@ -62,7 +62,7 @@ defmodule ExCommerce.Checkout.OrderItemFixtures do
 
   @valid_attrs %{
     quantity: 1,
-    price: ExCommerceNumeric.format_price(2.0),
+    price: ExCommerceNumeric.format_price(21.0),
     variant_code: "SOME VARIANT CODE",
     variant_name: "some variant name",
     catalogue_item_code: "SOME CATALOGUE ITEM CODE",
@@ -75,6 +75,8 @@ defmodule ExCommerce.Checkout.OrderItemFixtures do
     price: nil,
     variant_code: nil,
     variant_name: nil,
+    catalogue_item_code: nil,
+    catalogue_item_description: nil,
     catalogue_item_name: nil
   }
 

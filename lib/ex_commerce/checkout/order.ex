@@ -103,6 +103,7 @@ defmodule ExCommerce.Checkout.OrderItem do
     :quantity,
     :price,
     :catalogue_item_code,
+    :catalogue_item_description,
     :catalogue_item_id,
     :catalogue_item_name,
     :variant_code,
