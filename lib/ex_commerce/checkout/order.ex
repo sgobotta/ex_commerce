@@ -61,6 +61,7 @@ defmodule ExCommerce.Checkout.Order do
         ]
     )
     |> cast_embed(:order_items)
+    |> validate_change(:order_items, &validator/2)
     |> validate_required(
       @marketplace_fields ++
         [
@@ -80,14 +81,19 @@ defmodule ExCommerce.Checkout.Order do
   def apply(%Ecto.Changeset{} = changeset) do
     apply_changes(changeset)
   end
+
+  defp validator(:order_items, []), do: [order_items: "Cannot be empty"]
+  defp validator(:order_items, value) when is_list(value), do: []
+
+  defp validator(:order_items, _value),
+    do: [order_items: "Must be a list of #{OrderItem}"]
 end
 
 defmodule ExCommerce.Checkout.OrderItem do
   @moduledoc """
   The embedded OrderItem for the order shema
   """
-  alias ExCommerce.Offerings
-  alias ExCommerce.Checkout.{Cart, OrderItemOptionGroup}
+  alias ExCommerce.Checkout.OrderItemOptionGroup
 
   use Ecto.Schema
 
@@ -113,6 +119,7 @@ defmodule ExCommerce.Checkout.OrderItem do
     field :variant_name, :string
 
     field :catalogue_item_code, :string
+    field :catalogue_item_description, :string
     field :catalogue_item_id, :binary_id
     field :catalogue_item_name, :string
 

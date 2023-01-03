@@ -56,8 +56,40 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
     ])
   end
 
+  @doc """
+  Given a `#{__MODULE__}` struct returns a map that represents a cart order
+  item.
+  This function is commonly used to convert `#{__MODULE__}` structs to maps that
+  can be used for creating #{ExCommerce.Checkout.OrderItem} changesets.
+  """
+  @spec marshal(t()) :: map()
   def marshal(%__MODULE__{} = cart_order_item) do
+    option_groups = []
+
+    %__MODULE__{
+      catalogue_item: %CatalogueItem{
+        code: catalogue_item_code,
+        description: catalogue_item_description,
+        id: catalogue_item_id,
+        name: catalogue_item_name
+      },
+      variant: %CatalogueItemVariant{
+        code: variant_code,
+        id: variant_id,
+        type: variant_name
+      }
+    } = cart_order_item
+
     Map.from_struct(cart_order_item)
+    |> Map.take([:price, :quantity])
+    |> Map.put(:variant_code, variant_code)
+    |> Map.put(:variant_id, variant_id)
+    |> Map.put(:variant_name, variant_name)
+    |> Map.put(:catalogue_item_code, catalogue_item_code)
+    |> Map.put(:catalogue_item_description, catalogue_item_description)
+    |> Map.put(:catalogue_item_id, catalogue_item_id)
+    |> Map.put(:catalogue_item_name, catalogue_item_name)
+    |> Map.put(:option_groups, option_groups)
   end
 
   @doc """
