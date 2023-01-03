@@ -12,7 +12,7 @@ defmodule ExCommerce.ContextCases.CheckoutCase do
   using do
     quote do
       alias ExCommerce.Checkout
-      alias ExCommerce.Checkout.{Cart, CartServer, Order}
+      alias ExCommerce.Checkout.{Cart, CartServer, Order, OrderItemFixtures}
       alias ExCommerce.Marketplaces
       alias ExCommerce.Marketplaces.{Brand, Shop}
 
@@ -180,6 +180,13 @@ defmodule ExCommerce.ContextCases.CheckoutCase do
           })
 
         %{cart_order_changeset: cart_order_changeset}
+      end
+
+      @spec order_item_attrs(map()) :: map()
+      defp order_item_attrs(attrs \\ %{}) do
+        order_item =
+          OrderItemFixtures.build(attrs)
+          |> Map.from_struct()
       end
     end
   end

@@ -60,7 +60,7 @@ defmodule ExCommerce.Checkout.Order do
           :status
         ]
     )
-    |> cast_embed(:order_items)
+    |> cast_embed(:order_items, required: true)
     |> validate_change(:order_items, &validator/2)
     |> validate_required(
       @marketplace_fields ++

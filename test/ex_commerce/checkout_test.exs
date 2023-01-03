@@ -169,7 +169,6 @@ defmodule ExCommerce.CheckoutTest do
       refute valid?
     end
 
-    @tag :wip
     test "returns an #{Order} struct",
          %{
            brand: %Marketplaces.Brand{name: brand_name},
@@ -238,29 +237,46 @@ defmodule ExCommerce.CheckoutTest do
       %{
         brand: brand,
         catalogue: CataloguesFixtures.create(%{brand_id: brand_id}),
+        order_item_attrs: order_item_attrs(),
         shop: ShopsFixtures.create(%{brand_id: brand_id})
       }
     end
 
-    test "list_orders/0 returns all orders" do
-      %Order{} = order = OrderFixtures.create()
+    test "list_orders/0 returns all orders", %{
+      order_item_attrs: order_item_attrs
+    } do
+      %Order{} =
+        order =
+        OrderFixtures.create(%{
+          order_items: [order_item_attrs]
+        })
+
       assert Checkout.list_orders() == [order]
     end
 
-    test "get_order!/1 returns the order with given id" do
-      %Order{id: order_id} = order = OrderFixtures.create()
+    test "get_order!/1 returns the order with given id", %{
+      order_item_attrs: order_item_attrs
+    } do
+      %Order{id: order_id} =
+        order =
+        OrderFixtures.create(%{
+          order_items: [order_item_attrs]
+        })
+
       assert Checkout.get_order!(order_id) == order
     end
 
     test "create_order/1 with valid data creates an order", %{
       brand: %Brand{id: brand_id},
       catalogue: %Catalogue{id: catalogue_id},
+      order_item_attrs: order_item_attrs,
       shop: %Shop{id: shop_id}
     } do
       valid_attrs =
         Map.merge(@valid_attrs, %{
           brand_id: brand_id,
           catalogue_id: catalogue_id,
+          order_items: [order_item_attrs],
           shop_id: shop_id
         })
 
@@ -275,12 +291,14 @@ defmodule ExCommerce.CheckoutTest do
     test "create_order/1 with order_items creates an order", %{
       brand: %Brand{id: brand_id},
       catalogue: %Catalogue{id: catalogue_id},
+      order_item_attrs: order_item_attrs,
       shop: %Shop{id: shop_id}
     } do
       valid_attrs =
         Map.merge(@valid_attrs, %{
           brand_id: brand_id,
           catalogue_id: catalogue_id,
+          order_items: [order_item_attrs],
           shop_id: shop_id
         })
 
@@ -296,14 +314,23 @@ defmodule ExCommerce.CheckoutTest do
       assert {:error, %Ecto.Changeset{}} = Checkout.create_order(@invalid_attrs)
     end
 
-    test "update_order/2 with valid data updates the order" do
-      %Order{} = order = OrderFixtures.create()
+    test "update_order/2 with valid data updates the order", %{
+      order_item_attrs: order_item_attrs
+    } do
+      %Order{} =
+        order =
+        OrderFixtures.create(%{
+          order_items: [order_item_attrs]
+        })
 
       assert {:ok, %Order{}} = Checkout.update_order(order, @update_attrs)
     end
 
-    test "update_order/2 with invalid data returns error changeset" do
-      %Order{id: order_id} = order = OrderFixtures.create()
+    test "update_order/2 with invalid data returns error changeset", %{
+      order_item_attrs: order_item_attrs
+    } do
+      %Order{id: order_id} =
+        order = OrderFixtures.create(%{order_items: [order_item_attrs]})
 
       assert {:error, %Ecto.Changeset{}} =
                Checkout.update_order(order, @invalid_attrs)
@@ -311,14 +338,22 @@ defmodule ExCommerce.CheckoutTest do
       assert order == Checkout.get_order!(order_id)
     end
 
-    test "delete_order/1 deletes the order" do
-      %Order{id: order_id} = order = OrderFixtures.create()
+    test "delete_order/1 deletes the order", %{
+      order_item_attrs: order_item_attrs
+    } do
+      %Order{id: order_id} =
+        order = OrderFixtures.create(%{order_items: [order_item_attrs]})
+
       assert {:ok, %Order{}} = Checkout.delete_order(order)
       assert_raise Ecto.NoResultsError, fn -> Checkout.get_order!(order_id) end
     end
 
-    test "change_order/1 returns an order changeset" do
-      %Order{} = order = OrderFixtures.create()
+    test "change_order/1 returns an order changeset", %{
+      order_item_attrs: order_item_attrs
+    } do
+      %Order{} =
+        order = OrderFixtures.create(%{order_items: [order_item_attrs]})
+
       assert %Ecto.Changeset{} = Checkout.change_order(order)
     end
   end

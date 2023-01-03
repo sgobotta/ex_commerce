@@ -63,13 +63,17 @@ defmodule ExCommerce.Checkout.OrderItemFixtures do
   @valid_attrs %{
     quantity: 1,
     price: ExCommerceNumeric.format_price(2.0),
+    variant_code: "SOME VARIANT CODE",
     variant_name: "some variant name",
+    catalogue_item_code: "SOME CATALOGUE ITEM CODE",
+    catalogue_item_description: "some catalogue item description",
     catalogue_item_name: "some catalogue item name"
   }
 
   @invalid_attrs %{
     quantity: nil,
     price: nil,
+    variant_code: nil,
     variant_name: nil,
     catalogue_item_name: nil
   }
@@ -81,7 +85,7 @@ defmodule ExCommerce.Checkout.OrderItemFixtures do
     attrs =
       attrs
       |> maybe_assign_catalogue_item()
-      |> maybe_assign_catalogue_item_variant()
+      |> maybe_assign_catalogue_item_variant(attr: :variant_id)
 
     Map.merge(
       %OrderItem{},
