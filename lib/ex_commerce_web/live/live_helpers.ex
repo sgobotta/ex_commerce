@@ -24,7 +24,7 @@ defmodule ExCommerceWeb.LiveHelpers do
   # Button helpers
   #
 
-  def selection_input(%{id: id} = assigns) do
+  def selection_input(%{type: "radio", id: id} = assigns) do
     attrs = assigns_to_attributes(assigns)
 
     ~H"""
@@ -42,6 +42,21 @@ defmodule ExCommerceWeb.LiveHelpers do
         />
       </label>
     </div>
+    """
+  end
+
+  def selection_input(%{type: "checkbox"} = assigns) do
+    attrs = assigns_to_attributes(assigns)
+
+    ~H"""
+    <input
+      class="
+        checkbox m-auto block w-6 h-6
+        ring-2 ring-gray-300 ring-offset-gray-300
+        focus:ring-1 focus:ring-gray-300 focus:ring-offset-gray-300
+      "
+      {attrs}
+    />
     """
   end
 

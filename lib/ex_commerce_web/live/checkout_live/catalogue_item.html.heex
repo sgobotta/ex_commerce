@@ -266,10 +266,9 @@
                         </div>
                         <div class="basis-1/2 mx-4 flex self-start">
                           <%= if multiple_selection do %>
-                            <input
+                            <.selection_input
                               type="checkbox"
                               name={"#{option_group_id}-option-selection"}
-                              class="checkbox m-auto block w-6 h-6 ring-2 ring-gray-300 focus:ring-1 focus:ring-gray-300 ring-offset-gray-300 focus:ring-offset-gray-300"
                               checked={option_checked?(:multiple, @changeset, option_group_id, option_id)}
                               phx-click="check_option"
                               phx-value-option_id={option_id}

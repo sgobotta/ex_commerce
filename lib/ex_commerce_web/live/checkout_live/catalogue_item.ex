@@ -108,8 +108,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         "check_option",
         %{
           "value" => _on_checked,
-          "option_group_id" => option_group_id,
-          "option_id" => option_id
+          "option-group-id" => option_group_id,
+          "option-id" => option_id
         },
         socket
       ) do
@@ -130,7 +130,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   def handle_event(
         "check_option",
-        %{"option_group_id" => option_group_id, "option_id" => option_id},
+        %{"option-group-id" => option_group_id, "option-id" => option_id},
         socket
       ) do
     changeset =
