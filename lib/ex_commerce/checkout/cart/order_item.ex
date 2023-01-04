@@ -5,6 +5,7 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
   use Ecto.Schema
 
   import Ecto.Changeset
+  import ExCommerceNumeric
 
   alias ExCommerce.Offerings.{
     CatalogueItem,
@@ -64,7 +65,7 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
   """
   @spec marshal(t()) :: map()
   def marshal(%__MODULE__{} = cart_order_item) do
-    option_groups = []
+    option_groups = marshal_option_groups(cart_order_item)
 
     %__MODULE__{
       catalogue_item: %CatalogueItem{
@@ -90,6 +91,163 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
     |> Map.put(:catalogue_item_id, catalogue_item_id)
     |> Map.put(:catalogue_item_name, catalogue_item_name)
     |> Map.put(:option_groups, option_groups)
+  end
+
+  defp marshal_option_groups(%__MODULE__{
+         available_option_groups: %{values: available_option_groups},
+         option_groups: option_groups
+       }) do
+    Enum.reduce(option_groups, [], fn option_group, acc ->
+      case marshal_option_group(option_group, available_option_groups) do
+        nil ->
+          acc
+
+        option_group ->
+          acc ++ [option_group]
+      end
+    end)
+  end
+
+  defp marshal_option_group(
+         {_catalogue_option_group_id, %{"value" => []}},
+         _available_option_groups
+       ),
+       do: nil
+
+  defp marshal_option_group(
+         {_catalogue_option_group_id, %{"value" => ""}},
+         _available_option_groups
+       ),
+       do: nil
+
+  defp marshal_option_group(
+         {catalogue_option_group_id, %{"value" => values}},
+         available_option_groups
+       )
+       when is_list(values) do
+    %CatalogueItemOptionGroup{
+      code: code,
+      id: id,
+      name: name,
+      options: options
+    } = find_group(available_option_groups, catalogue_option_group_id)
+
+    catalogue_item_options =
+      Enum.filter(options, fn %CatalogueItemOption{id: id} ->
+        id in values
+      end)
+
+    options = parse_catalogue_item_options(catalogue_item_options)
+
+    %{
+      catalogue_item_option_group_code: code,
+      catalogue_item_option_group_id: id,
+      catalogue_item_option_group_name: name,
+      options: options
+    }
+  end
+
+  defp marshal_option_group(
+         {catalogue_option_group_id, %{"value" => value}},
+         available_option_groups
+       )
+       when is_binary(value) do
+    %CatalogueItemOptionGroup{
+      code: code,
+      id: id,
+      name: name,
+      options: options
+    } = find_group(available_option_groups, catalogue_option_group_id)
+
+    %CatalogueItemOption{} =
+      catalogue_item_option =
+      Enum.find(options, fn %CatalogueItemOption{id: id} ->
+        id == value
+      end)
+
+    options = parse_catalogue_item_options([catalogue_item_option])
+
+    %{
+      catalogue_item_option_group_code: code,
+      catalogue_item_option_group_id: id,
+      catalogue_item_option_group_name: name,
+      options: options
+    }
+  end
+
+  defp find_group(available_option_groups, option_group_id) do
+    Enum.find(available_option_groups, fn %CatalogueItemOptionGroup{
+                                            id: id
+                                          } ->
+      id == option_group_id
+    end)
+  end
+
+  defp parse_catalogue_item_options(options) do
+    Enum.map(options, fn %CatalogueItemOption{} = cio ->
+      parse_catalogue_item_option(cio)
+    end)
+  end
+
+  defp parse_catalogue_item_option(%CatalogueItemOption{
+         catalogue_item_variant: %CatalogueItemVariant{
+           catalogue_item: %CatalogueItem{
+             code: catalogue_item_code,
+             description: catalogue_item_description,
+             id: catalogue_item_id,
+             name: catalogue_item_name
+           },
+           code: catalogue_item_variant_code,
+           id: catalogue_item_variant_id,
+           price: variant_price,
+           type: catalogue_item_variant_name
+         },
+         price_modifier: %Decimal{coef: 0}
+       }) do
+    %{
+      catalogue_item_code: catalogue_item_code,
+      catalogue_item_description: catalogue_item_description,
+      catalogue_item_id: catalogue_item_id,
+      catalogue_item_name: catalogue_item_name,
+      catalogue_item_variant_code: catalogue_item_variant_code,
+      catalogue_item_variant_id: catalogue_item_variant_id,
+      catalogue_item_variant_name: catalogue_item_variant_name,
+      price: format_price(variant_price)
+    }
+  end
+
+  defp parse_catalogue_item_option(
+         %CatalogueItemOption{
+           catalogue_item_variant: %CatalogueItemVariant{
+             catalogue_item: %CatalogueItem{
+               code: catalogue_item_code,
+               description: catalogue_item_description,
+               id: catalogue_item_id,
+               name: catalogue_item_name
+             },
+             code: catalogue_item_variant_code,
+             id: catalogue_item_variant_id,
+             price: variant_price,
+             type: catalogue_item_variant_name
+           },
+           price_modifier: %Decimal{}
+         } = cio
+       ) do
+    discount_price =
+      CatalogueItemOption.get_discount_price(cio)
+      |> format_price()
+
+    %{
+      catalogue_item_code: catalogue_item_code,
+      catalogue_item_description: catalogue_item_description,
+      catalogue_item_id: catalogue_item_id,
+      catalogue_item_name: catalogue_item_name,
+      catalogue_item_variant_code: catalogue_item_variant_code,
+      catalogue_item_variant_id: catalogue_item_variant_id,
+      catalogue_item_variant_name: catalogue_item_variant_name,
+      discount_price: discount_price,
+      price: format_price(variant_price)
+    }
   end
 
   @doc """

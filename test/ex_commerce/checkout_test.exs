@@ -94,6 +94,8 @@ defmodule ExCommerce.CheckoutTest do
   end
 
   describe "from_cart_order/2" do
+    alias ExCommerce.Checkout.OrderItem
+
     setup [
       :create_catalogue,
       :create_shop,
@@ -169,6 +171,7 @@ defmodule ExCommerce.CheckoutTest do
       refute valid?
     end
 
+    @tag :wip
     test "returns an #{Order} struct",
          %{
            brand: %Marketplaces.Brand{name: brand_name},
@@ -204,6 +207,10 @@ defmodule ExCommerce.CheckoutTest do
 
       # Verify
       assert length(order_items) == 1
+
+      %OrderItem{option_groups: option_groups} = order_items |> hd
+
+      assert length(option_groups) == 2
     end
   end
 

@@ -93,11 +93,11 @@ defmodule ExCommerce.Checkout.OrderItem do
   @moduledoc """
   The embedded OrderItem for the order shema
   """
-  alias ExCommerce.Checkout.OrderItemOptionGroup
-
   use Ecto.Schema
 
   import Ecto.Changeset
+
+  alias ExCommerce.Checkout.OrderItemOptionGroup
 
   @fields [
     :quantity,
@@ -130,6 +130,7 @@ defmodule ExCommerce.Checkout.OrderItem do
   def changeset(order_item, attrs) do
     order_item
     |> cast(attrs, @fields)
+    |> cast_embed(:option_groups)
     |> validate_required(@fields)
   end
 end
@@ -140,13 +141,28 @@ defmodule ExCommerce.Checkout.OrderItemOptionGroup do
   """
   use Ecto.Schema
 
+  import Ecto.Changeset
+
   alias ExCommerce.Checkout.OrderItemOption
 
+  @fields [
+    :catalogue_item_option_group_code,
+    :catalogue_item_option_group_id,
+    :catalogue_item_option_group_name
+  ]
+
   embedded_schema do
+    field :catalogue_item_option_group_code, :string
     field :catalogue_item_option_group_id, :binary_id
     field :catalogue_item_option_group_name, :string
 
     embeds_many :options, OrderItemOption
+  end
+
+  def changeset(order_item_option_group, attrs) do
+    order_item_option_group
+    |> cast(attrs, @fields)
+    |> validate_required(@fields)
   end
 end
 
@@ -157,12 +173,16 @@ defmodule ExCommerce.Checkout.OrderItemOption do
   use Ecto.Schema
 
   embedded_schema do
+    field :catalogue_item_code, :string
+    field :catalogue_item_description, :string
     field :catalogue_item_id, :binary_id
     field :catalogue_item_name, :string
 
+    field :catalogue_item_variant_code, :string
     field :catalogue_item_variant_id, :binary_id
     field :catalogue_item_variant_name, :string
 
+    field :discount_price, :decimal
     field :price, :decimal
   end
 end
