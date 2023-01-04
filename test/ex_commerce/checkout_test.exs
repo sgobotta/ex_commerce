@@ -202,7 +202,7 @@ defmodule ExCommerce.CheckoutTest do
 
       # Exercise
       {:ok, %Order{order_items: order_items}} =
-        order = do_from_cart_order(cart_order, from_cart_order_params)
+        _order = do_from_cart_order(cart_order, from_cart_order_params)
 
       # Verify
       assert length(order_items) == 1
