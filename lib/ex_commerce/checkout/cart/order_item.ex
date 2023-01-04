@@ -7,6 +7,8 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
   import Ecto.Changeset
   import ExCommerceNumeric
 
+  alias ExCommerceWeb.CheckoutLive.CatalogueItem
+
   alias ExCommerce.Offerings.{
     CatalogueItem,
     CatalogueItemOption,
@@ -93,6 +95,7 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
     |> Map.put(:option_groups, option_groups)
   end
 
+  @spec marshal_option_groups(t()) :: [map()]
   defp marshal_option_groups(%__MODULE__{
          available_option_groups: %{values: available_option_groups},
          option_groups: option_groups
@@ -108,6 +111,9 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
     end)
   end
 
+  @spec marshal_option_group({Ecto.UUID.t(), map()}, [
+          CatalogueItemOptionGroup.t()
+        ]) :: map() | nil
   defp marshal_option_group(
          {_catalogue_option_group_id, %{"value" => []}},
          _available_option_groups
@@ -175,6 +181,8 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
     }
   end
 
+  @spec find_group([CatalogueItemOptionGroup.t()], Ecto.UUID.t()) ::
+          CatalogueItemOptionGroup.t()
   defp find_group(available_option_groups, option_group_id) do
     Enum.find(available_option_groups, fn %CatalogueItemOptionGroup{
                                             id: id
@@ -183,12 +191,14 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
     end)
   end
 
+  @spec parse_catalogue_item_options([CatalogueItemOption.t()]) :: [map()]
   defp parse_catalogue_item_options(options) do
     Enum.map(options, fn %CatalogueItemOption{} = cio ->
       parse_catalogue_item_option(cio)
     end)
   end
 
+  @spec parse_catalogue_item_option(CatalogueItemOption.t()) :: map()
   defp parse_catalogue_item_option(%CatalogueItemOption{
          catalogue_item_variant: %CatalogueItemVariant{
            catalogue_item: %CatalogueItem{

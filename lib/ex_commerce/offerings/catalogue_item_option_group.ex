@@ -27,6 +27,8 @@ defmodule ExCommerce.Offerings.CatalogueItemOptionGroup do
   ]
   @foreign_fields [:brand_id]
 
+  @type t :: %__MODULE__{}
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "catalogue_item_option_groups" do
