@@ -14,8 +14,10 @@
       <%= label f, :password, "Enter your password", class: "my-2" %>
       <%= password_input f, :password, required: true, placeholder: "Password", class: "input" %>
 
-      <%= label f, :remember_me, "Keep me logged in for 60 days", class: "mt-2 text-xl font-normal" %>
-      <%= checkbox f, :remember_me %>
+      <div class="flex items-center my-2">
+        <%= label f, :remember_me, "Keep me logged in for 60 days", class: "mt-2 text-xl font-normal" %>
+        <%= checkbox f, :remember_me, class: "checkbox" %>
+      </div>
 
       <p>
         <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "link" %> |
