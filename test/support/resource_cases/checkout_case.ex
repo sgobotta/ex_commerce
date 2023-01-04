@@ -91,7 +91,14 @@ defmodule ExCommerce.ContextCases.CheckoutCase do
                CatalogueItemOptionsFixtures.create(%{
                  brand_id: brand_id,
                  catalogue_item_option_group_id:
-                   catalogue_item_option_group_2_id
+                   catalogue_item_option_group_2_id,
+                 price_modifier: 0
+               }),
+             catalogue_item_option_3:
+               CatalogueItemOptionsFixtures.create(%{
+                 brand_id: brand_id,
+                 catalogue_item_option_group_id:
+                   catalogue_item_option_group_1_id
                })
            }
 
@@ -166,6 +173,9 @@ defmodule ExCommerce.ContextCases.CheckoutCase do
              catalogue_item_option_2: %CatalogueItemOption{
                id: catalogue_item_option_2_id
              },
+             catalogue_item_option_3: %CatalogueItemOption{
+               id: catalogue_item_option_3_id
+             },
              catalogue_item_option_group_1:
                %CatalogueItemOptionGroup{id: catalogue_item_option_group_1_id} =
                  catalogue_item_option_group_1,
@@ -203,7 +213,10 @@ defmodule ExCommerce.ContextCases.CheckoutCase do
               option_groups: %{
                 catalogue_item_option_group_1_id => %{
                   "valid?" => true,
-                  "value" => [catalogue_item_option_1_id]
+                  "value" => [
+                    catalogue_item_option_1_id,
+                    catalogue_item_option_3_id
+                  ]
                 },
                 catalogue_item_option_group_2_id => %{
                   "valid?" => true,

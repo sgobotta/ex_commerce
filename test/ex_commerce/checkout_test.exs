@@ -94,7 +94,7 @@ defmodule ExCommerce.CheckoutTest do
   end
 
   describe "from_cart_order/2" do
-    alias ExCommerce.Checkout.OrderItem
+    alias ExCommerce.Checkout.{OrderItem, OrderItemOption, OrderItemOptionGroup}
 
     setup [
       :create_catalogue,
@@ -203,7 +203,7 @@ defmodule ExCommerce.CheckoutTest do
 
       # Exercise
       {:ok, %Order{order_items: order_items}} =
-        do_from_cart_order(cart_order, from_cart_order_params)
+        order = do_from_cart_order(cart_order, from_cart_order_params)
 
       # Verify
       assert length(order_items) == 1
@@ -211,6 +211,10 @@ defmodule ExCommerce.CheckoutTest do
       %OrderItem{option_groups: option_groups} = order_items |> hd
 
       assert length(option_groups) == 2
+
+      for %OrderItemOptionGroup{options: options} <- option_groups do
+        for %OrderItemOption{} <- options, do: :ok
+      end
     end
   end
 

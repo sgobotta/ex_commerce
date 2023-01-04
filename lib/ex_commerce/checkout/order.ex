@@ -162,6 +162,7 @@ defmodule ExCommerce.Checkout.OrderItemOptionGroup do
   def changeset(order_item_option_group, attrs) do
     order_item_option_group
     |> cast(attrs, @fields)
+    |> cast_embed(:options)
     |> validate_required(@fields)
   end
 end
@@ -171,6 +172,22 @@ defmodule ExCommerce.Checkout.OrderItemOption do
   The embedded OrderitemOption for the OrderItemOptionGroup embedded schema.
   """
   use Ecto.Schema
+
+  import Ecto.Changeset
+
+  @fields [
+    :catalogue_item_code,
+    :catalogue_item_description,
+    :catalogue_item_id,
+    :catalogue_item_name,
+    :catalogue_item_variant_code,
+    :catalogue_item_variant_id,
+    :catalogue_item_variant_name,
+    :discount_price,
+    :price
+  ]
+
+  @required @fields -- [:discount_price]
 
   embedded_schema do
     field :catalogue_item_code, :string
@@ -184,5 +201,11 @@ defmodule ExCommerce.Checkout.OrderItemOption do
 
     field :discount_price, :decimal
     field :price, :decimal
+  end
+
+  def changeset(order_item_option, attrs) do
+    order_item_option
+    |> cast(attrs, @fields)
+    |> validate_required(@required)
   end
 end
