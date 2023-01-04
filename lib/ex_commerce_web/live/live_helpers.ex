@@ -21,6 +21,42 @@ defmodule ExCommerceWeb.LiveHelpers do
   end
 
   # ----------------------------------------------------------------------------
+  # Button helpers
+  #
+
+  def radio_input(
+        %{
+          checked: checked,
+          id: id,
+          name: name,
+          on_click: on_click,
+          value: value
+        } = assigns
+      ) do
+    ~H"""
+    <div class="flex justify-center p-2">
+      <input
+        id={id}
+        type="radio"
+        name={name}
+        class="hidden"
+        value={value}
+        phx-click={on_click}
+        checked={checked}
+      />
+      <label for={id} class="flex items-center cursor-pointer">
+        <span
+          class="
+            w-6 h-6 inline-block mr-2 rounded-full
+            border border-gray-200 flex-no-shrink
+          "
+        />
+      </label>
+    </div>
+    """
+  end
+
+  # ----------------------------------------------------------------------------
   # Data display helpers
   #
 
