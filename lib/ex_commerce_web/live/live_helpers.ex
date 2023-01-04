@@ -25,10 +25,12 @@ defmodule ExCommerceWeb.LiveHelpers do
   #
 
   def selection_input(%{id: id} = assigns) do
+    attrs = assigns_to_attributes(assigns)
+
     ~H"""
     <div class="flex justify-center p-2">
       <input
-        {assigns}
+        {attrs}
         class="hidden"
       />
       <label for={id} class="flex items-center cursor-pointer">
