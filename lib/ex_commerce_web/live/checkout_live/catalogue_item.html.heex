@@ -188,7 +188,7 @@
                         type="radio"
                         name="variant-selection-radio"
                         value={variant_id}
-                        on_click="select_variant"
+                        phx-click="select_variant"
                         checked={variant_selected?(@changeset, variant_id)}
                       />
                     </div>
@@ -269,7 +269,7 @@
                             <input
                               type="checkbox"
                               name={"#{option_group_id}-option-selection"}
-                              class="checkbox m-auto block checked:bg-black outline-black"
+                              class="checkbox m-auto block w-6 h-6 ring-2 ring-gray-300 focus:ring-1 focus:ring-gray-300 ring-offset-gray-300 focus:ring-offset-gray-300"
                               checked={option_checked?(:multiple, @changeset, option_group_id, option_id)}
                               phx-click="check_option"
                               phx-value-option_id={option_id}
@@ -277,14 +277,14 @@
                               disabled={multiple_select_disabled?(@changeset, option_group_id, option_id)}
                             />
                           <% else %>
-                            <input
-                              name={"#{option_group_id}-option-selection"}
-                              type="radio"
-                              class="radio m-auto block checked:bg-black outline-black"
-                              value={option_id}
+                            <.selection_input
+                              checked={option_checked?(:single, @changeset, option_group_id, option_id)}
+                              id={"option-group-#{option_group_id}-radio-#{option_id}"}
+                              name={"option-group-#{option_group_id}-selection-#{option_id}"}
                               phx-click="choose_option"
                               phx-value-option_group_id={option_group_id}
-                              checked={option_checked?(:single, @changeset, option_group_id, option_id)}
+                              type="radio"
+                              value={option_id}
                             />
                           <% end %>
                         </div>
