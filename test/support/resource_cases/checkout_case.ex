@@ -63,39 +63,68 @@ defmodule ExCommerce.ContextCases.CheckoutCase do
       defp create_catalogue_item_option_groups(%{brand: %Brand{id: brand_id}}),
         do: %{
           catalogue_item_option_group_1:
-            CatalogueItemOptionGroupsFixtures.create(%{brand_id: brand_id})
+            CatalogueItemOptionGroupsFixtures.create(%{brand_id: brand_id}),
+          catalogue_item_option_group_2:
+            CatalogueItemOptionGroupsFixtures.create(%{
+              brand_id: brand_id,
+              multiple_selection: false
+            })
         }
 
       defp create_catalogue_item_options(%{
              brand: %Brand{id: brand_id},
              catalogue_item_option_group_1: %CatalogueItemOptionGroup{
-               id: catalogue_item_option_group_id
+               id: catalogue_item_option_group_1_id
+             },
+             catalogue_item_option_group_2: %CatalogueItemOptionGroup{
+               id: catalogue_item_option_group_2_id
              }
            }),
            do: %{
              catalogue_item_option_1:
                CatalogueItemOptionsFixtures.create(%{
                  brand_id: brand_id,
-                 catalogue_item_option_group_id: catalogue_item_option_group_id
+                 catalogue_item_option_group_id:
+                   catalogue_item_option_group_1_id
+               }),
+             catalogue_item_option_2:
+               CatalogueItemOptionsFixtures.create(%{
+                 brand_id: brand_id,
+                 catalogue_item_option_group_id:
+                   catalogue_item_option_group_2_id
                })
            }
 
       defp create_catalogue_items(%{brand: %Brand{id: brand_id}}),
         do: %{
-          catalogue_item_1: CatalogueItemsFixtures.create(%{brand_id: brand_id})
+          catalogue_item_1:
+            CatalogueItemsFixtures.create(%{brand_id: brand_id}),
+          catalogue_item_2: CatalogueItemsFixtures.create(%{brand_id: brand_id})
         }
 
       defp relate_catalogue_item_option_groups_items(%{
              catalogue_item_option_group_1: %CatalogueItemOptionGroup{
-               id: catalogue_item_option_group_id
+               id: catalogue_item_option_group_1_id
              },
-             catalogue_item_1: %CatalogueItem{id: catalogue_item_id}
+             catalogue_item_option_group_2: %CatalogueItemOptionGroup{
+               id: catalogue_item_option_group_2_id
+             },
+             catalogue_item_1: %CatalogueItem{id: catalogue_item_1_id},
+             catalogue_item_2: %CatalogueItem{id: catalogue_item_2_id}
            }) do
         %Relations.CatalogueItemOptionGroupItem{} =
           Offerings.RelationsFixtures.catalogue_item_option_group_item_fixture(
             %{
-              catalogue_item_option_group_id: catalogue_item_option_group_id,
-              catalogue_item_id: catalogue_item_id
+              catalogue_item_option_group_id: catalogue_item_option_group_1_id,
+              catalogue_item_id: catalogue_item_1_id
+            }
+          )
+
+        %Relations.CatalogueItemOptionGroupItem{} =
+          Offerings.RelationsFixtures.catalogue_item_option_group_item_fixture(
+            %{
+              catalogue_item_option_group_id: catalogue_item_option_group_2_id,
+              catalogue_item_id: catalogue_item_2_id
             }
           )
 
@@ -103,12 +132,17 @@ defmodule ExCommerce.ContextCases.CheckoutCase do
       end
 
       defp create_catalogue_item_variants(%{
-             catalogue_item_1: %CatalogueItem{id: catalogue_item_id}
+             catalogue_item_1: %CatalogueItem{id: catalogue_item_1_id},
+             catalogue_item_2: %CatalogueItem{id: catalogue_item_2_id}
            }) do
         %{
           catalogue_item_variant_1:
             CatalogueItemVariantsFixtures.create(%{
-              catalogue_item_id: catalogue_item_id
+              catalogue_item_id: catalogue_item_1_id
+            }),
+          catalogue_item_variant_2:
+            CatalogueItemVariantsFixtures.create(%{
+              catalogue_item_id: catalogue_item_2_id
             })
         }
       end
@@ -124,26 +158,43 @@ defmodule ExCommerce.ContextCases.CheckoutCase do
              catalogue_item_1: %CatalogueItem{id: catalogue_item_1_id},
              catalogue_item_variant_1:
                %CatalogueItemVariant{id: variant_1_id} = variant_1,
+             catalogue_item_variant_2:
+               %CatalogueItemVariant{id: variant_2_id} = variant_2,
              catalogue_item_option_1: %CatalogueItemOption{
                id: catalogue_item_option_1_id
              },
+             catalogue_item_option_2: %CatalogueItemOption{
+               id: catalogue_item_option_2_id
+             },
              catalogue_item_option_group_1:
                %CatalogueItemOptionGroup{id: catalogue_item_option_group_1_id} =
-                 catalogue_item_option_group_1
+                 catalogue_item_option_group_1,
+             catalogue_item_option_group_2:
+               %CatalogueItemOptionGroup{id: catalogue_item_option_group_2_id} =
+                 catalogue_item_option_group_2
            }) do
         catalogue_item_option_group_1 =
           ExCommerce.Repo.preload(
             catalogue_item_option_group_1,
-            options: [:catalogue_item_variant]
+            options: [catalogue_item_variant: [:catalogue_item]]
+          )
+
+        catalogue_item_option_group_2 =
+          ExCommerce.Repo.preload(
+            catalogue_item_option_group_2,
+            options: [catalogue_item_variant: [:catalogue_item]]
           )
 
         %Ecto.Changeset{} =
           order_item =
           Cart.OrderItem.changeset(
             %Cart.OrderItem{
-              variants: [variant_1],
+              variants: [variant_1, variant_2],
               available_option_groups: %{
-                values: [catalogue_item_option_group_1],
+                values: [
+                  catalogue_item_option_group_1,
+                  catalogue_item_option_group_2
+                ],
                 rules: []
               }
             },
@@ -153,10 +204,14 @@ defmodule ExCommerce.ContextCases.CheckoutCase do
                 catalogue_item_option_group_1_id => %{
                   "valid?" => true,
                   "value" => [catalogue_item_option_1_id]
+                },
+                catalogue_item_option_group_2_id => %{
+                  "valid?" => true,
+                  "value" => catalogue_item_option_2_id
                 }
               },
               quantity: 2,
-              variant_id: variant_1_id
+              variant_id: variant_2_id
             }
           )
 
