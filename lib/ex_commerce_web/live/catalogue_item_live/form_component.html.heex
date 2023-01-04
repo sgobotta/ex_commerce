@@ -12,14 +12,24 @@
         class: "mb-0"
       ], fn f -> %>
 
-      <div class="my-6">
-        <%= label f, :photos, class: "my-2" %>
-        <p>
+      <div class="mb-4">
+        <%= label f, :photos, gettext("Item photo"), class: "my-2" %>
+        <p class="pb-2 form-field-description">
           <%= gettext("Upload an image for your item.") %>
         </p>
-        <p class="italic my-1">
-          <%= gettext("File size can be up to 2 MB. Preferably use squared images.") %>
-        </p>
+        <div class="flex flex-row">
+          <div class="pt-1">
+            <.icon name={:information_circle} outlined class="
+              text-gray-500
+              flex-shrink-0 h-4 w-4
+            "/>
+          </div>
+          <div class="">
+            <p class="form-field-hint">
+              <%= gettext("File size can be up to 2 MB. Preferably use squared images.") %>
+            </p>
+          </div>
+        </div>
 
         <div class="divide-y-1 divide-solid my-2">
           <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.photos.entries do %>
@@ -56,50 +66,61 @@
         %>
       </div>
 
-      <%= label f, :code, class: "my-2" %>
-      <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: BEER-000 / CONSULTING-000") %>
+      <%= label f, :code, gettext("Code"), class: "my-2" %>
+      <%= text_input f, :code, class: "input light-bg", placeholder: gettext("An internal code: BEER-000 / CONSULTING-000") %>
       <%= error_tag f, :code %>
 
-      <%= label f, :name, class: "my-2" %>
-      <%= text_input f, :name, class: "input", placeholder: gettext("Pale Ale") %>
+      <%= label f, :name, gettext("Name"), class: "my-2" %>
+      <%= text_input f, :name, class: "input light-bg", placeholder: gettext("Pale Ale") %>
       <%= error_tag f, :name %>
 
-      <%= label f, :description, class: "my-2" %>
-      <%= text_input f, :description, class: "input", placeholder: gettext("Characterized by floral, fruity, citrus-like, piney, resinous American hops") %>
+      <%= label f, :description, gettext("Description"), class: "my-2" %>
+      <%= text_input f, :description, class: "input light-bg", placeholder: gettext("Characterized by floral, fruity, citrus-like, piney, resinous American hops") %>
       <%= error_tag f, :description %>
 
       <div class="border-b-1 border-gray-300 my-3">
-        <p class="mt-4 mb-2 font-bold"><%= gettext("Variants") %> (<%= gettext("Optional") %>)</p>
-        <p class="pb-2">
+        <p class="mt-4 mb-2 section-subtitle"><%= gettext("Variants") %> (<%= gettext("Optional") %>)</p>
+        <p class="pb-2 form-field-description">
           <%= gettext("Create at least one or more variants to your item. For example: a hamburguer can be offered in different sizes and prices might vary. Variants can be added as an optional to accompany other items.") %>
         </p>
       </div>
 
-      <div class="mx-8">
+      <div class="">
+        <div class="flex flex-wrap mx-1 overflow-hidden">
+          <div class="px-1 w-2/6">
+            <label class="my-2"><%= gettext("Code") %></label>
+          </div>
+          <div class="px-1 w-2/6">
+            <label class="my-2"><%= gettext("Type") %></label>
+          </div>
+          <div class="px-1 w-1/6">
+            <label class="my-2"><%= gettext("Price") %></label>
+          </div>
+          <div class="px-1 w-1/6 text-center">
+            <label class="my-2"><%= gettext("Delete") %></label>
+          </div>
+        </div>
+
         <%= inputs_for f, :variants, fn v -> %>
-          <div class="flex flex-wrap -mx-1 overflow-hidden">
+          <div class="flex flex-wrap mx-1 py-2 overflow-hidden">
             <div class="px-1 w-2/6">
-              <%= label v, :code, class: "my-2" %>
-              <%= text_input v, :code, class: "input", placeholder: gettext("An internal code: BEER-000-PINT / CONSULTING-000-WITH-TAX") %>
+              <%= text_input v, :code, class: "input light-bg", placeholder: gettext("An internal code: BEER-000-PINT / CONSULTING-000-WITH-TAX") %>
               <%= error_tag v, :code %>
             </div>
 
             <div class="px-1 w-2/6">
-              <%= label v, :type, class: "my-2" %>
-              <%= text_input v, :type, class: "input", placeholder: gettext("Product size, weight or kind: 125gr") %>
+              <%= text_input v, :type, class: "input light-bg", placeholder: gettext("Product size, weight or kind: 125gr") %>
               <%= error_tag v, :type %>
             </div>
 
             <div class="px-1 w-1/6">
-              <%= label v, :price, class: "my-2" %>
-              <%= number_input v, :price, class: "input" %>
+              <%= number_input v, :price, class: "input light-bg" %>
               <%= error_tag v, :price %>
             </div>
 
-            <div class="px-1 w-1/6 text-center">
-              <%= label v, :delete %><br>
+            <div class="px-1 w-1/6 flex self-center justify-center">
               <%= if is_nil(v.data.temp_id) do %>
-                <%= checkbox v, :delete, class: "align-top px-4" %>
+                <%= checkbox v, :delete, class: "checkbox" %>
               <% else %>
                 <%= hidden_input v, :temp_id %>
                 <a
@@ -129,13 +150,26 @@
       </div>
 
       <div class="border-b-1 border-gray-300 my-3">
-        <p class="mt-4 mb-2 font-bold"><%= gettext("Option Groups") %> (<%= gettext("Optional") %>)</p>
-        <p class="pb-2">
-          <%= gettext("Assign option groups to accompany your item. These can be mandatory or optional. For example, a hamburguer must be accompanied by a single drink and the buyer must select which one.") %>
+        <p class="mt-4 mb-2 section-subtitle"><%= gettext("Option Groups") %> (<%= gettext("Optional") %>)</p>
+        <p class="pb-2 form-field-description">
+          <%= gettext("Assign option groups to accompany your item") %>
         </p>
+        <div class="flex flex-row py-2">
+          <div class="pt-1">
+            <.icon name={:information_circle} outlined class="
+              text-gray-500
+              flex-shrink-0 h-4 w-4
+            "/>
+          </div>
+          <div class="">
+            <p class="form-field-hint">
+              <%= gettext("These can be mandatory or optional. For example, a hamburguer must be accompanied by a single drink and the buyer must select which one.") %>
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div class="mx-8">
+      <div class="">
         <div>
           <%= label f, "Select option groups", class: "my-2" %>
           <%=
@@ -163,13 +197,26 @@
       </div>
 
       <div class="border-b-1 border-gray-300 my-3">
-        <p class="mt-4 mb-2 font-bold"><%= gettext("Categories") %> (<%= gettext("Optional") %>)</p>
-        <p class="pb-2">
-          <%= gettext("Assign one or more categories to your item. Categories can then be assigned to your catalogues/menus.") %>
+        <p class="mt-4 mb-2 section-subtitle"><%= gettext("Categories") %> (<%= gettext("Optional") %>)</p>
+        <p class="pb-2 form-field-description">
+          <%= gettext("Assign one or more categories to your item.") %>
         </p>
+        <div class="flex flex-row py-2">
+          <div class="pt-1">
+            <.icon name={:information_circle} outlined class="
+              text-gray-500
+              flex-shrink-0 h-4 w-4
+            "/>
+          </div>
+          <div class="">
+            <p class="form-field-hint">
+              <%= gettext("Categories can then be assigned to your catalogues/menus.") %>
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div class="mx-8">
+      <div class="">
         <div>
           <%= label f, gettext("Select categories"), class: "my-2" %>
           <%=

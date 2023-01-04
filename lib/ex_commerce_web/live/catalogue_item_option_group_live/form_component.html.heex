@@ -13,15 +13,15 @@
       ],
       fn f -> %>
 
-      <%= label f, :code, class: "my-2" %>
+      <%= label f, :code, gettext("Code"), class: "my-2" %>
       <%= text_input f, :code, class: "input light-bg", placeholder: gettext("An internal code: SNACKS-00 / DRINKS-00") %>
       <%= error_tag f, :code %>
 
-      <%= label f, :name, class: "my-2" %>
+      <%= label f, :name, gettext("Name"), class: "my-2" %>
       <%= text_input f, :name, class: "input light-bg", placeholder: gettext("Accompanying sauces | Budget requirements") %>
       <%= error_tag f, :name %>
 
-      <%= label f, :description, class: "my-2" %>
+      <%= label f, :description, gettext("Description"), class: "my-2" %>
       <%= text_input f, :description, class: "input light-bg", placeholder: gettext("Select one or more of the following") %>
       <%= error_tag f, :description %>
 
@@ -69,7 +69,7 @@
         </div>
       </div>
 
-      <div class="mx-0">
+      <div class="">
         <div class="flex flex-wrap mx-1 overflow-hidden">
           <div class="px-3 w-1/12 text-center">
             <label class="my-2"><%= gettext("Visible?") %></label>
