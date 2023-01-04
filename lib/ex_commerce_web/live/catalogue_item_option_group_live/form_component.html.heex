@@ -14,15 +14,15 @@
       fn f -> %>
 
       <%= label f, :code, class: "my-2" %>
-      <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: SNACKS-00 / DRINKS-00") %>
+      <%= text_input f, :code, class: "input light-bg", placeholder: gettext("An internal code: SNACKS-00 / DRINKS-00") %>
       <%= error_tag f, :code %>
 
       <%= label f, :name, class: "my-2" %>
-      <%= text_input f, :name, class: "input", placeholder: gettext("Accompanying sauces | Budget requirements") %>
+      <%= text_input f, :name, class: "input light-bg", placeholder: gettext("Accompanying sauces | Budget requirements") %>
       <%= error_tag f, :name %>
 
       <%= label f, :description, class: "my-2" %>
-      <%= text_input f, :description, class: "input", placeholder: gettext("Select one or more of the following") %>
+      <%= text_input f, :description, class: "input light-bg", placeholder: gettext("Select one or more of the following") %>
       <%= error_tag f, :description %>
 
       <div class="flex flex-wrap -mx-1 overflow-hidden">
@@ -43,8 +43,8 @@
         </div>
 
         <div class="px-1 w-2/6 self-center">
-          <%= label f, gettext("Maximum selection"), :max_selection, class: "my-2" %>
-          <%= number_input f, :max_selection, class: "input", placeholder: gettext("How many options can be selected.") %>
+          <%= label f, :max_selection, gettext("Maximum selection"), class: "my-2" %>
+          <%= number_input f, :max_selection, class: "input light-bg", placeholder: gettext("How many options can be selected.") %>
           <%= error_tag f, :max_selection %>
         </div>
       </div>
@@ -74,7 +74,7 @@
           <div class="flex flex-wrap -mx-1 overflow-hidden">
             <div class="px-3 w-1/12">
               <%= label o, :is_visible, class: "my-2" %>
-              <%= checkbox o, :is_visible, class: "input" %>
+              <%= checkbox o, :is_visible, class: "checkbox" %>
               <%= error_tag o, :is_visible %>
             </div>
 
@@ -86,7 +86,7 @@
                     step: 1,
                     min: 0,
                     max: 100,
-                    class: "input"
+                    class: "input light-bg"
               %>
               <%= error_tag o, :price_modifier %>
             </div>
@@ -105,7 +105,7 @@
                   prompt: get_catalogue_items_prompt(options, o),
                   selected: get_selected_catalogue_item(options),
                   disabled: is_catalogue_item_disabled(options),
-                  class: "w-full input px-4"
+                  class: "w-full input px-4 light-bg"
               %>
               <%= error_tag o, :catalogue_item_id %>
             </div>
@@ -122,7 +122,7 @@
                   prompt: get_catalogue_item_variant_prompt(options, o),
                   selected: nil,
                   disabled: is_catalogue_item_variant_disabled(options, o),
-                  class: "w-full input px-4"
+                  class: "w-full input light-bg px-4"
               %>
               <%= error_tag o, :catalogue_item_variant_id %>
             </div>

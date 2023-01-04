@@ -3,6 +3,10 @@
     @apply rounded-lg border-gray-300 transition duration-200 focus:border-blue-300 h-auto #{!important};
   }
 
+  .input.light-bg {
+    @apply bg-gray-100;
+  }
+
   .disabled-input {
     @apply rounded-lg border-gray-300 bg-gray-200 h-auto #{!important};
   }
