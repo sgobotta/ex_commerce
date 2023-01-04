@@ -256,12 +256,7 @@
    border-width: 0;
    padding: 0
  }
- 
- input[type='checkbox'],
- input[type='radio'] {
-   display: block
- }
- 
+
  .label-inline {
    display: inline-block;
    font-weight: normal;

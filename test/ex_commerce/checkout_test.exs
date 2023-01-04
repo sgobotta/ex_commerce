@@ -171,7 +171,6 @@ defmodule ExCommerce.CheckoutTest do
       refute valid?
     end
 
-    @tag :wip
     test "returns an #{Order} struct",
          %{
            brand: %Marketplaces.Brand{name: brand_name},

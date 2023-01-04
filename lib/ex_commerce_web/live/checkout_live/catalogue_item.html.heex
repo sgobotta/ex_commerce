@@ -183,14 +183,20 @@
                       </p>
                     </div>
                     <div class="basis-1/6">
-                      <input
-                        name="variant-selection"
-                        type="radio"
-                        class="radio m-auto block checked:bg-black outline-black"
-                        value={variant_id}
-                        phx-click="select_variant"
-                        checked={variant_selected?(@changeset, variant_id)}
-                      />
+                     <div class="flex justify-center p-2">
+                        <input
+                          id={"variant-radio-#{variant_id}"}
+                          type="radio"
+                          name="variant-selection-radio"
+                          class="hidden"
+                          value={variant_id}
+                          phx-click="select_variant"
+                          checked={variant_selected?(@changeset, variant_id)}
+                        />
+                        <label for={"variant-radio-#{variant_id}"} class="flex items-center cursor-pointer">
+                          <span class="w-6 h-6 inline-block mr-2 rounded-full border border-gray-200 flex-no-shrink"></span>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 <% end %>
