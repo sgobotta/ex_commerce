@@ -12,25 +12,35 @@
         class: "mb-0"
       ], fn f -> %>
 
-      <%= label f, :code, class: "my-2" %>
-      <%= text_input f, :code, class: "input", placeholder: gettext("An internal code: SALOON-00-YORK / TAKE-00-YORK") %>
+      <%= label f, :code, gettext("Code"), class: "my-2" %>
+      <%= text_input f, :code, class: "input light-bg", placeholder: gettext("An internal code: SALOON-00-YORK / TAKE-00-YORK") %>
       <%= error_tag f, :code %>
 
-      <%= label f, :name, class: "my-2" %>
-      <%= text_input f, :name, class: "input", placeholder: gettext("Saloon Menu / Delivery Menu / Take away Menu, ...") %>
+      <%= label f, :name, gettext("Name"), class: "my-2" %>
+      <%= text_input f, :name, class: "input light-bg", placeholder: gettext("Saloon Menu / Delivery Menu / Take away Menu, ...") %>
       <%= error_tag f, :name %>
 
       <div class="border-b-1 border-gray-300 my-3">
-        <p class="mt-4 mb-2 font-bold"><%= gettext("Assign Categories") %> (<%= gettext("Optional") %>)</p>
-        <p class="pb-2">
+        <p class="mt-4 mb-2 section-subtitle"><%= gettext("Assign Categories") %> (<%= gettext("Optional") %>)</p>
+        <p class="pb-2 text-lg form-field-description">
           <%= gettext("Assign one or more categories to this catalogue.") %>
         </p>
-        <p class="pb-2 italic">
-          <%= gettext("Catalogues can also be assigned when creating a Category.") %>
-        </p>
+        <div class="flex flex-row pb-2">
+          <div class="pt-1">
+            <.icon name={:information_circle} outlined class="
+              text-gray-500
+              flex-shrink-0 h-4 w-4
+            "/>
+          </div>
+          <div class="">
+            <p class="form-field-hint">
+              <%= gettext("Catalogues can also be assigned when creating a Category.") %>
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div class="mx-8">
+      <div class="">
         <div>
           <%= label f, gettext("Select categories"), class: "my-2" %>
           <%=
@@ -55,13 +65,13 @@
       </div>
 
       <div class="border-b-1 border-gray-300 my-3">
-        <p class="mt-4 mb-2 font-bold"><%= gettext("Assign Shops") %> (<%= gettext("Optional") %>)</p>
-        <p class="pb-2">
+        <p class="mt-4 mb-2 section-subtitle"><%= gettext("Assign Shops") %> (<%= gettext("Optional") %>)</p>
+        <p class="pb-2 text-lg form-field-description">
           <%= gettext("Assign this catalogue to one or more shops.") %>
         </p>
       </div>
 
-      <div class="mx-8">
+      <div class="">
         <div>
           <%= label f, gettext("Select shops"), class: "my-2" %>
           <%=
