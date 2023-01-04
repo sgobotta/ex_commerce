@@ -11,7 +11,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
   alias ExCommerce.Checkout
-  alias ExCommerce.Checkout.Cart
+  alias ExCommerce.Checkout.{Cart, Order}
 
   alias ExCommerce.Marketplaces.{Brand, Shop}
 
@@ -157,7 +157,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
 
     %Cart{order: order} = cart = Checkout.update_cart_order(cart, changeset)
 
-    _order_changeset =
+    {:ok, %Order{} = order} =
       Checkout.from_cart_order(order, %{
         brand_name: brand_name,
         catalogue_code: catalogue_code,
@@ -167,6 +167,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
 
     socket
     |> assign(:changeset, changeset)
+    |> assign(:order, order)
     |> assign_cart(cart)
     |> assign_href(valid?)
   end
