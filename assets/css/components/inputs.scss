@@ -1,6 +1,6 @@
 @layer components {
   .input {
-    @apply rounded-lg border-gray-300 transition duration-200 focus:border-blue-300 h-auto #{!important};
+    @apply rounded-lg border-gray-300 transition duration-200 focus:ring-sky-600 focus:border-sky-600 h-auto #{!important};
   }
 
   .input.light-bg {

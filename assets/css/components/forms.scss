@@ -2,4 +2,16 @@
   .submit-button-container {
     @apply flex justify-end mt-6 border-t-1 border-gray-300 pt-6;
   }
+
+  .form-field-description {
+    @apply text-lg font-normal text-gray-500;
+  }
+
+  .form-field-hint {
+    @apply text-base text-gray-500 italic;
+  }
+
+  .section-subtitle {
+    @apply text-sky-600 font-bold text-xl;
+  }
 }
