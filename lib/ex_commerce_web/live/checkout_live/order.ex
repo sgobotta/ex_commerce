@@ -157,9 +157,6 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
 
     %Cart{order: order} = cart = Checkout.update_cart_order(cart, changeset)
 
-    # IO.inspect(shop, label: "\n\n\n>>> [Live] Shop")
-    # IO.inspect(catalogue, label: "\n\n\n>>> [Live] Catalogue")
-
     _order_changeset =
       Checkout.from_cart_order(order, %{
         brand_name: brand_name,
