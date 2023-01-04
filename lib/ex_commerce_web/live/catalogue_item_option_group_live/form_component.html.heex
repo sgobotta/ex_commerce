@@ -26,33 +26,47 @@
       <%= error_tag f, :description %>
 
       <div class="flex flex-wrap -mx-1 overflow-hidden">
-        <div class="px-1 w-2/6">
-          <%= label f, :mandatory, class: "my-2" %>
-          <%= checkbox f, :mandatory, class: "input" %>
+        <div class="px-1 w-2/6 self-center">
+          <div class="flex items-center p-2">
+            <%= checkbox f, :mandatory, class: "checkbox mx-2" %>
+            <%= label f, :mandatory, gettext("Required"), class: "my-2" %>
+          </div>
           <%= error_tag f, :mandatory %>
         </div>
 
-        <div class="px-1 w-2/6">
-          <%= label f, :multiple_selection, class: "my-2" %>
-          <%= checkbox f, :multiple_selection, class: "input" %>
+        <div class="px-1 w-2/6 self-center">
+          <div class="flex items-center p-2">
+            <%= checkbox f, :multiple_selection, class: "checkbox mx-2" %>
+            <%= label f, :multiple_selection, gettext("Multiple selection"), class: "my-2" %>
+          </div>
           <%= error_tag f, :multiple_selection %>
         </div>
 
-        <div class="px-1 w-2/6">
-          <%= label f, :max_selection, class: "my-2" %>
+        <div class="px-1 w-2/6 self-center">
+          <%= label f, gettext("Maximum selection"), :max_selection, class: "my-2" %>
           <%= number_input f, :max_selection, class: "input", placeholder: gettext("How many options can be selected.") %>
           <%= error_tag f, :max_selection %>
         </div>
       </div>
 
       <div class="border-b-1 border-gray-300 my-3">
-        <p class="mt-4 mb-2 font-bold"><%= gettext("Options") %></p>
-        <p class="pb-2">
+        <p class="mt-4 mb-2 text-sky-600 font-bold text-xl"><%= gettext("Options") %></p>
+        <p class="pb-2 text-lg font-normal text-gray-500">
           <%= gettext("Create one or more options to your options group. For example: a Group of drink options that can then be assigned to accompany any other Item.") %>
         </p>
-        <p class="pb-2 italic">
-          <%= gettext("An Option Groups can be assigned to multiple items so that you don't have to recreate options for each of your offered Items.") %>
-        </p>
+        <div class="flex flex-row">
+          <div class="pt-1">
+            <.icon name={:information_circle} outlined class="
+              text-gray-500
+              flex-shrink-0 h-4 w-4
+            "/>
+          </div>
+          <div class="">
+            <p class="text-base text-gray-500 italic">
+              <%= gettext("An Option Group can be assigned to multiple items so that you don't have to recreate options for each of your offered Items.") %>
+            </p>
+          </div>
+        </div>
       </div>
 
       <div class="mx-8">
@@ -146,10 +160,20 @@
       </div>
 
       <div class="border-b-1 border-gray-300 my-3">
-        <p class="mt-4 mb-2 font-bold"><%= gettext("Assign to Items") %> (<%= gettext("Optional") %>)</p>
-        <p class="pb-2 italic">
-          <%= gettext("An Option Groups can be assigned to multiple items so that you don't have to recreate options for each of your offered Items.") %>
-        </p>
+        <p class="mt-4 mb-2 text-sky-600 font-bold text-xl"><%= gettext("Assign to Items") %> (<%= gettext("Optional") %>)</p>
+        <div class="flex flex-row">
+          <div class="pt-1">
+            <.icon name={:information_circle} outlined class="
+              text-gray-500
+              flex-shrink-0 h-4 w-4
+            "/>
+          </div>
+          <div class="">
+            <p class="text-base text-gray-500 italic">
+              <%= gettext("An Option Group can be assigned to multiple items so that you don't have to recreate options for each of the Items you offer.") %>
+            </p>
+          </div>
+        </div>
       </div>
 
       <div class="mx-8">
