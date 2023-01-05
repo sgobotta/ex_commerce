@@ -4,7 +4,9 @@
 
   <div class="absolute inset-1/4">
 
-    <h1 class="text-5xl my-20">Start for free today</h1>
+    <h1 class="user-form section-title my-20">
+      <%= gettext("Start for free today") %>
+    </h1>
 
     <%= form_for @changeset, Routes.user_registration_path(@conn, :create), fn f -> %>
       <%= if @changeset.action do %>
@@ -14,11 +16,11 @@
       <% end %>
 
       <%= label f, :email, "Enter your email", class: "my-2" %>
-      <%= email_input f, :email, required: true, placeholder: "Email", class: "input" %>
+      <%= email_input f, :email, required: true, placeholder: "Email", class: "user-form input" %>
       <%= error_tag f, :email %>
 
       <%= label f, :password, "Enter your password", class: "my-2" %>
-      <%= password_input f, :password, required: true, placeholder: "Password", class: "input" %>
+      <%= password_input f, :password, required: true, placeholder: "Password", class: "user-form input" %>
       <%= error_tag f, :password %>
 
       <div class="flex justify-end mt-6">

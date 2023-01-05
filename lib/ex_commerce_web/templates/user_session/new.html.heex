@@ -9,14 +9,14 @@
       <% end %>
 
       <%= label f, :email, gettext("Enter your email"), class: "my-2" %>
-      <%= email_input f, :email, required: true, placeholder: gettext("Email"), class: "input" %>
+      <%= email_input f, :email, required: true, placeholder: gettext("Email"), class: "user-form input" %>
 
       <%= label f, :password, gettext("Enter your password"), class: "my-2" %>
-      <%= password_input f, :password, required: true, placeholder: gettext("Password"), class: "input" %>
+      <%= password_input f, :password, required: true, placeholder: gettext("Password"), class: "user-form input" %>
 
-      <div class="flex items-center my-2">
+      <div class="flex items-center justify-between my-2">
         <%= label f, :remember_me, gettext("Keep me logged in for 60 days"), class: "mt-2 text-xl font-normal" %>
-        <%= checkbox f, :remember_me, class: "checkbox" %>
+        <%= checkbox f, :remember_me, class: "checkbox mx-2" %>
       </div>
 
       <p>
