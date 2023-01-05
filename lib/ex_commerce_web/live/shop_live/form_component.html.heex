@@ -134,12 +134,7 @@
           ">
             <%= URI.parse(ExCommerceWeb.Endpoint.url()).host %>/
           </span>
-          <%= text_input f, :slug,
-            class: "
-              rounded-l-none rounded-r-lg h-auto
-              input light-bg
-            "
-          %>
+          <%= text_input f, :slug, class: "input-slug light-bg"%>
           <%= error_tag f, :slug %>
         </div>
       </div>

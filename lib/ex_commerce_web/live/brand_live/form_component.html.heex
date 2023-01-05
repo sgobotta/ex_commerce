@@ -14,31 +14,23 @@
       ],
       fn f -> %>
 
-      <%= label f, :name, class: "my-2" %>
-      <%= text_input f, :name, class: "input", placeholder: gettext("My brand name")  %>
+      <%= label f, :name, gettext("Name"), class: "my-2" %>
+      <%= text_input f, :name, class: "input light-bg", placeholder: gettext("My brand name")  %>
       <%= error_tag f, :name %>
 
       <div class="">
-        <%= label f, :slug, class: "my-2" %>
+        <%= label f, :slug, gettext("Slug"), class: "my-2" %>
         <div class="mt-1 flex rounded-lg shadow-sm">
           <span class="
             inline-flex items-center
             px-3 rounded-l-lg
             border border-r-0 border-gray-300
             bg-gray-50
-            text-gray-500 text-xl 
+            text-gray-500 text-lg
           ">
             <%= URI.parse(ExCommerceWeb.Endpoint.url()).host %>/
           </span>
-          <%= text_input f, :slug,
-            class: "
-              rounded-l-none rounded-r-lg h-auto
-              border-gray-300
-              text-xl
-              transition duration-200
-              focus:border-blue-300
-            "
-          %>
+          <%= text_input f, :slug, class: "input-slug light-bg" %>
           <%= error_tag f, :slug %>
         </div>
       </div>
