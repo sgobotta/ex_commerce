@@ -29,17 +29,19 @@ defmodule ExCommerceWeb.Helpers.CheckboxHelper do
     class = Keyword.get(opts, :class, "")
 
     for {value, key} <- options, into: [] do
+      id = input_id(form, field, key)
+
       content_tag(:div, class: "flex justify-start p-2") do
         [
           tag(:input,
             checked: Enum.member?(selected_as_strings, "#{key}"),
             class: "checkbox mx-2",
-            id: input_id(form, field, key),
+            id: id,
             name: input_name(form, field) <> "[]",
             type: "checkbox",
             value: key
           ),
-          content_tag(:label, class: "checkbox-inline #{class}") do
+          content_tag(:label, for: id, class: "checkbox-inline #{class}") do
             value
           end
         ]
