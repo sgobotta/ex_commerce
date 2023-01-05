@@ -26,4 +26,8 @@
   .user-form.section-subtitle {
     @apply text-sky-600 font-bold text-xl;
   }
+
+  .user-form.link {
+    @apply text-lg text-blue-500 hover:text-blue-300 transition duration-200;
+  }
 }
