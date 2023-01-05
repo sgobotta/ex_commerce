@@ -1,5 +1,4 @@
 <div class="l-centered h-screen bg-gray-200">
-
   <div class="card">
     <%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user, class: "m-0"], fn f -> %>
       <%= if @error_message do %>
@@ -24,8 +23,8 @@
       </div>
 
       <div class="flex content-center justify-evenly">
-        <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new), class: "link text-lg" %>
-        <%= link gettext("Forgot your password?"), to: Routes.user_reset_password_path(@conn, :new), class: "link text-lg" %>
+        <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new), class: "user-form link" %>
+        <%= link gettext("Forgot your password?"), to: Routes.user_reset_password_path(@conn, :new), class: "user-form link" %>
       </div>
     <% end %>
   </div>

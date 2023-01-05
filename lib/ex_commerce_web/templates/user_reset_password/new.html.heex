@@ -7,13 +7,13 @@
       <%= email_input f, :email, required: true, placeholder: gettext("Email"), class: "user-form input" %>
 
       <div class="flex justify-end mt-6">
-        <%= submit gettext("Send instructions to reset password"), class: "button" %>
+        <%= submit gettext("Send instructions"), class: "button" %>
       </div>
     <% end %>
 
     <div class="flex content-center justify-evenly">
-      <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new), class: "link" %>
-      <%= link gettext("Log in"), to: Routes.user_session_path(@conn, :new), class: "link" %>
+      <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new), class: "user-form link" %>
+      <%= link gettext("Log in"), to: Routes.user_session_path(@conn, :new), class: "user-form link" %>
     </div>
   </div>
 </div>

@@ -9,12 +9,12 @@
         </div>
       <% end %>
 
-      <%= label f, :password, gettext("New password") %>
-      <%= password_input f, :password, required: true, class: "user-form input" %>
+      <%= label f, :password, gettext("New password"), class: "my-2" %>
+      <%= password_input f, :password, required: true, placeholder: gettext("Enter a new password"), class: "user-form input" %>
       <%= error_tag f, :password %>
 
-      <%= label f, :password_confirmation, gettext("Enter your email"), class: "my-2" %>
-      <%= email_input f, :password_confirmation, required: true, placeholder: gettext("Password confirmation"), class: "user-form input" %>
+      <%= label f, :password_confirmation, gettext("Confirm new password"), class: "my-2" %>
+      <%= password_input f, :password_confirmation, required: true, placeholder: gettext("Password confirmation"), class: "user-form input" %>
       <%= error_tag f, :password_confirmation %>
 
       <div class="flex justify-end mt-6">
@@ -22,9 +22,9 @@
       </div>
     <% end %>
 
-    <div class="flex content-center justify-center">
-      <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new), class: "link" %> |
-      <%= link gettext("Log in"), to: Routes.user_session_path(@conn, :new), class: "link" %>
+    <div class="flex content-center justify-evenly">
+      <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new), class: "user-form link" %>
+      <%= link gettext("Log in"), to: Routes.user_session_path(@conn, :new), class: "user-form link" %>
     </div>
   </div>
 </div>
