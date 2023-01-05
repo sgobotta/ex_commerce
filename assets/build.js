@@ -36,7 +36,7 @@ const plugins = [
 
 let opts = {
   bundle: true,
-  entryPoints: ['js/app.js', 'css/app.scss'],
+  entryPoints: ['js/app.js', 'css/app.css'],
   loader,
   logLevel: 'info',
   outdir: '../priv/static/',
