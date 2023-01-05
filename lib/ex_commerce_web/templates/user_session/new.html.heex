@@ -19,13 +19,13 @@
         <%= checkbox f, :remember_me, class: "checkbox mx-2" %>
       </div>
 
-      <p>
-        <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new), class: "link" %> |
-        <%= link gettext("Forgot your password?"), to: Routes.user_reset_password_path(@conn, :new), class: "link" %>
-      </p>
-
-      <div class="flex justify-end mt-6">
+      <div class="flex justify-end my-6">
         <%= submit gettext("Log in"), class: "button" %>
+      </div>
+
+      <div class="flex content-center justify-evenly">
+        <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new), class: "link text-lg" %>
+        <%= link gettext("Forgot your password?"), to: Routes.user_reset_password_path(@conn, :new), class: "link text-lg" %>
       </div>
     <% end %>
   </div>

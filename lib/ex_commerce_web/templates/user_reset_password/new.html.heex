@@ -4,16 +4,16 @@
 
     <%= form_for :user, Routes.user_reset_password_path(@conn, :create), fn f -> %>
       <%= label f, :email, gettext("Enter your email"), class: "my-2" %>
-      <%= email_input f, :email, required: true, placeholder: "Email", class: "user-form input" %>
+      <%= email_input f, :email, required: true, placeholder: gettext("Email"), class: "user-form input" %>
 
       <div class="flex justify-end mt-6">
         <%= submit gettext("Send instructions to reset password"), class: "button" %>
       </div>
     <% end %>
 
-    <p>
-      <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new), class: "link" %> |
+    <div class="flex content-center justify-evenly">
+      <%= link gettext("Register"), to: Routes.user_registration_path(@conn, :new), class: "link" %>
       <%= link gettext("Log in"), to: Routes.user_session_path(@conn, :new), class: "link" %>
-    </p>
+    </div>
   </div>
 </div>
