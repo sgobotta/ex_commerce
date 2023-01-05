@@ -1,4 +1,6 @@
 defmodule ExCommerceWeb.UserRegistrationControllerTest do
+  @moduledoc false
+
   use ExCommerceWeb.ConnCase, async: true
 
   import ExCommerce.AccountsFixtures
@@ -7,7 +9,7 @@ defmodule ExCommerceWeb.UserRegistrationControllerTest do
     test "renders registration page", %{conn: conn} do
       conn = get(conn, Routes.user_registration_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "Start for free today</h1>"
+      assert response =~ "Start for free today"
       assert response =~ "Log in</a>"
       assert response =~ "Register</button>"
     end
@@ -50,7 +52,7 @@ defmodule ExCommerceWeb.UserRegistrationControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "Start for free today</h1>"
+      assert response =~ "Start for free today"
       assert response =~ "must have the @ sign and no spaces"
       assert response =~ "should be at least 12 character"
     end
