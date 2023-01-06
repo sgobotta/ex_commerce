@@ -30,12 +30,12 @@
     %>
   <% end %>
 
-  <div class="p-12">
-
-    <h1><%= gettext("Show Catalogue category") %></h1>
+  <div class="dashboard-container">
+    <h1 class="user-form section-title-lg">
+      <h1><%= gettext("Show Catalogue category") %></h1>
+    </h1>
 
     <ul>
-
       <li>
         <strong><%= gettext("Code") %>:</strong>
         <%= @catalogue_category.code %>
@@ -50,12 +50,10 @@
         <strong><%= gettext("Description") %>:</strong>
         <%= @catalogue_category.description %>
       </li>
-
     </ul>
 
     <span><%= live_patch gettext("Edit"), to: Routes.catalogue_category_show_path(@socket, :edit, @brand.id, @catalogue_category.id), class: "button" %></span>
     <span><%= live_redirect gettext("Back"), to: Routes.catalogue_category_index_path(@socket, :index, @brand.id), class: "link" %></span>
 
   </div>
-
 <% end %>
