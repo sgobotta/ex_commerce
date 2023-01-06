@@ -14,7 +14,7 @@ defmodule ExCommerceWeb.Router do
         :cookie
       ],
       gettext: ExCommerceWeb.Gettext,
-      cldr: ExCommerce.Cldr
+      cldr: ExCommerceWeb.Cldr
 
     plug :put_session_locale
 
