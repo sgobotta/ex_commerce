@@ -11,21 +11,26 @@
     %>
   <% end %>
 
-  <ul>
+    <div class="dashboard-container">
+      <h1 class="user-form section-title-lg">
+        <h1><%= gettext("Show Catalogue category") %></h1>
+      </h1>
+    <ul>
 
-    <li>
-      <strong><%= gettext("Name") %>:</strong>
-      <%= @brand.name %>
-    </li>
+      <li>
+        <strong><%= gettext("Name") %>:</strong>
+        <%= @brand.name %>
+      </li>
 
-    <li>
-      <strong><%= gettext("Slug") %>:</strong>
-      <%= @brand.slug %>
-    </li>
+      <li>
+        <strong><%= gettext("Slug") %>:</strong>
+        <%= @brand.slug %>
+      </li>
 
-  </ul>
+    </ul>
 
-  <span><%= live_patch gettext("Edit"), to: Routes.brand_show_path(@socket, :edit, @brand), class: "button" %></span>
-  <span><%= live_redirect gettext("Back"), to: Routes.brand_index_path(@socket, :index) %></span>
+    <span><%= live_patch gettext("Edit"), to: Routes.brand_show_path(@socket, :edit, @brand), class: "button" %></span>
+    <span><%= live_redirect gettext("Back"), to: Routes.brand_index_path(@socket, :index) %></span>
+  </div>
 
 <% end %>
