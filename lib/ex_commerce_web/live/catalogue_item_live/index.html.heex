@@ -21,13 +21,26 @@
     %>
   <% end %>
 
-  <div class="p-12">
-
-    <h1><%= gettext("My Catalogue items") %></h1>
-
-    <p>
-      <%= gettext("Create items for your catalogue/menu. Items can be grouped up in catalogue categories.") %>
+  <div class="dashboard-container">
+    <h1 class="user-form section-title-lg">
+      <%= gettext("Items") %>
+    </h1>
+    <p class="pb-2 text-lg form-field-description">
+      <%= gettext("Create items for your catalogue/menu.") %>
     </p>
+    <div class="flex flex-row pb-2">
+      <div class="pt-1">
+        <.icon name={:information_circle} outlined class="
+          text-gray-500
+          flex-shrink-0 h-4 w-4
+        "/>
+      </div>
+      <div class="">
+        <p class="form-field-hint">
+          <%= gettext("Items can be grouped up in catalogue categories.") %>
+        </p>
+      </div>
+    </div>
 
     <table>
       <thead>
@@ -67,6 +80,5 @@
     </table>
 
     <span><%= live_patch "+", to: Routes.catalogue_item_index_path(@socket, :new, @brand.id), class: "button" %></span>
-
   </div>
 <% end %>
