@@ -28,6 +28,18 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
 # Configures Phoenix Inline Svg
 config :phoenix_inline_svg, default_collection: ""
 
+# Configure Tailwind
+config :tailwind,
+  version: "3.1.6",
+  default: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
