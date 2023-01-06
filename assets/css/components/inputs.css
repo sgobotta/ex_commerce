@@ -19,7 +19,7 @@
     @apply block w-6 h-6 ring-2 ring-gray-300 ring-offset-gray-300 focus:ring-1 focus:ring-gray-300 focus:ring-offset-gray-300 cursor-pointer !important;
   }
 
-  .checkbox label {
+  .checkbox + label {
     @apply cursor-pointer;
   }
 }
