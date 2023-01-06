@@ -17,30 +17,39 @@
       <%= gettext("My Shops") %>
     </h1>
 
-    <table>
-      <thead>
-        <tr>
-          <th><%= gettext("Name") %></th>
-          <th><%= gettext("Address") %></th>
-
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="shops">
-        <%= for %Shop{id: shop_id} = shop <- @shops do %>
-          <tr id={"shop-#{shop_id}"}>
-            <td><%= shop.name %></td>
-            <td><%= shop.address %></td>
-
-            <td>
-              <span><%= live_redirect gettext("Show"), to: Routes.shop_show_path(@socket, :show, @brand.id, shop_id) %></span>
-              <span><%= live_patch gettext("Edit"), to: Routes.shop_index_path(@socket, :edit, @brand.id, shop_id) %></span>
-              <span><%= link gettext("Delete"), to: "#", phx_click: "delete", phx_value_id: shop_id, data: [confirm: gettext("Are you sure?")] %></span>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <div id="shops">
+      <%= for %Shop{id: shop_id} = shop <- @shops do %>
+        <div
+          id={"shop-#{shop_id}"}
+          class="
+            card
+            flex flex-col sm:flex-row md:sm:flex-row lg:sm:flex-row
+            justify-between m-4
+            transition duration-150 scale-300 active:scale-95 hover:scale-95
+          "
+        >
+          <div class="flex flex-col">
+            <p class="
+              text-base sm:text-lg text-black font-medium
+              text-ellipsis overflow-hidden whitespace-nowrap
+            ">
+              <%= shop.name %>
+            </p>
+            <p class="
+              text-base sm:text-base text-black font-normal
+              text-ellipsis overflow-hidden whitespace-nowrap
+            ">
+              <%= shop.address %>
+            </p>
+          </div>
+          <div class="flex flex-row">
+            <span class="px-1"><%= live_redirect gettext("Show"), to: Routes.shop_show_path(@socket, :show, @brand.id, shop_id) %></span>
+            <span class="px-1"><%= live_patch gettext("Edit"), to: Routes.shop_index_path(@socket, :edit, @brand.id, shop_id) %></span>
+            <span class="px-1"><%= link gettext("Delete"), to: "#", phx_click: "delete", phx_value_id: shop_id, data: [confirm: gettext("Are you sure?")] %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
 
     <span>
       <%= live_patch "+", to: Routes.shop_index_path(@socket, :new, @brand.id), class: "button" %>
