@@ -81,7 +81,7 @@ defmodule ExCommerce.MixProject do
       {:phoenix_inline_svg, "~> 1.4"},
       {:heroicons, "~> 0.2.2"},
       {:live_motion, "~> 0.1.1"},
-      {:tailwind, "~> 0.1.9"},
+      {:tailwind, "~> 0.1.9", runtime: Mix.env() == :dev},
       # Assets handling deps
       {:cloudex,
        git: "https://github.com/sgobotta/cloudex.git", branch: "main"},
