@@ -12,52 +12,58 @@
     %>
   <% end %>
 
-  <div class="dashboard-container">
-    <h1 class="user-form section-title-lg">
-      <h1><%= gettext("Show Shop") %></h1>
-    </h1>
+  <LiveMotion.motion
+    id="show-shop"
+    initial={[y: [-1000]]}
+    animate={[y: [0]]}
+    transition={[]}
+    exit={[y: [-1000]]}
+    class="flex justify-center sm:absolute sm:inset-1/4"
+  >
 
-    <ul>
-
-      <li>
-        <strong>Name:</strong>
+    <div class="dashboard-container m-4 card  flex flex-col justify-between">
+      <h1 class="user-form section-title-lg">
         <%= @shop.name %>
-      </li>
+      </h1>
 
-      <li>
-        <strong>Slug:</strong>
-        <%= @shop.slug %>
-      </li>
+      <div>
+        <p class="
+          text-base sm:text-lg text-black font-normal
+          text-ellipsis overflow-hidden whitespace-nowrap
+        ">
+          <span class="font-semibold">Slug:</span> <%= @shop.slug %>
+        </p>
+        <p class="
+          text-base sm:text-lg text-black font-normal
+        ">
+          <span class="font-semibold">Description:</span> <%= @shop.description %>
+        </p>
+        <p class="
+          text-base sm:text-lg text-black font-normal
+        ">
+          <span class="font-semibold">Telephone:</span> <%= @shop.telephone %>
+        </p>
+        <p class="
+          text-base sm:text-lg text-black font-normal
+        ">
+          <span class="font-semibold">Banner message:</span> <%= @shop.banner_message %>
+        </p>
+        <p class="
+          text-base sm:text-lg text-black font-normal
+        ">
+          <span class="font-semibold">Address:</span> <%= @shop.address %>
+        </p>
+      </div>
 
-      <li>
-        <strong>Description:</strong>
-        <%= @shop.description %>
-      </li>
+      <div class="">
+        <span>
+          <%= live_redirect gettext("Back"), to: Routes.shop_index_path(@socket, :index, @brand.id), class: "link" %>
+        </span>
+        <span>
+          <%= live_patch gettext("Edit"), to: Routes.shop_show_path(@socket, :edit, @brand.id, @shop.id), class: "button" %>
+        </span>
+      </div>
+    </div>
 
-      <li>
-        <strong>Telephone:</strong>
-        <%= @shop.telephone %>
-      </li>
-
-      <li>
-        <strong>Banner message:</strong>
-        <%= @shop.banner_message %>
-      </li>
-
-      <li>
-        <strong>Address:</strong>
-        <%= @shop.address %>
-      </li>
-
-    </ul>
-
-    <span>
-      <%= live_patch gettext("Edit"), to: Routes.shop_show_path(@socket, :edit, @brand.id, @shop.id), class: "button" %>
-    </span>
-    <span>
-      <%= live_redirect gettext("Back"), to: Routes.shop_index_path(@socket, :index, @brand.id), class: "link" %>
-    </span>
-
-  </div>
-
+  </LiveMotion.motion>
 <% end %>
