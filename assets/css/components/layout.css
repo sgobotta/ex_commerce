@@ -1,4 +1,8 @@
 @layer components {
+  .dashboard-container {
+    @apply p-2;
+  }
+
   .l-centered {
     @apply flex justify-center items-center;
   }
