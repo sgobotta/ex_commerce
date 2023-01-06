@@ -7,7 +7,7 @@ defmodule ExCommerce.MixProject do
       version: "0.1.0",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:gettext] ++ Mix.compilers(),
+      compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
@@ -75,12 +75,13 @@ defmodule ExCommerce.MixProject do
       # Email apps
       {:bamboo, "~> 2.2.0"},
       # i18n and l10n
-      {:ex_cldr, "~> 2.25"},
-      {:ex_cldr_numbers, "~> 2.24"},
+      {:ex_cldr, "~> 2.34"},
+      {:ex_cldr_plugs, "~> 1.2"},
       # Web Helpers
       {:phoenix_inline_svg, "~> 1.4"},
       {:heroicons, "~> 0.2.2"},
       {:live_motion, "~> 0.1.1"},
+      {:tailwind, "~> 0.1.9"},
       # Assets handling deps
       {:cloudex,
        git: "https://github.com/sgobotta/cloudex.git", branch: "main"},

@@ -7,11 +7,16 @@ defmodule ExCommerceWeb.Router do
     plug :accepts, ["html"]
     plug :fetch_session
 
-    plug Cldr.Plug.SetLocale,
+    plug Cldr.Plug.PutLocale,
       apps: [:cldr, :gettext],
-      from: [:accept_language, :cookie, :session, :path, :query],
+      from: [
+        :accept_language,
+        :cookie
+      ],
       gettext: ExCommerceWeb.Gettext,
-      cldr: ExCommerceWeb.Cldr
+      cldr: ExCommerce.Cldr
+
+    plug :put_session_locale
 
     plug :fetch_live_flash
     plug :put_root_layout, {ExCommerceWeb.LayoutView, :root}

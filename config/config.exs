@@ -35,6 +35,10 @@ config :phoenix, :json_library, Jason
 # i18n and l10n configuration
 #
 
+config :ex_commerce, ExCommerceWeb.Cldr,
+  # a single locale, for fast compilation in dev / tes
+  locales: ["en"]
+
 config :ex_cldr,
   default_backend: ExCommerceWeb.Cldr,
   json_library: Jason
