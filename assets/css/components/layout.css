@@ -1,6 +1,6 @@
 @layer components {
   .dashboard-container {
-    @apply p-2;
+    @apply p-4;
   }
 
   .l-centered {
