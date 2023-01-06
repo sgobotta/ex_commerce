@@ -19,7 +19,6 @@ defmodule ExCommerceWeb.ModalComponent do
         phx-modal-content p-0 card relative
         w-full sm:w-10/12 md:w-8/12 lg:w-8/12
         sm:px-0
-        rounded-md md:rounded-2xl
       ">
         <div class="absolute right-0 p-2">
           <%= live_close(@opts) %>
