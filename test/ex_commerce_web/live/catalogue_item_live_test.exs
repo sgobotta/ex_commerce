@@ -39,7 +39,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
       {:ok, _index_live, html} =
         live(conn, Routes.catalogue_item_index_path(conn, :index, brand_id))
 
-      assert html =~ "My Catalogue items"
+      assert html =~ "Items"
       assert html =~ catalogue_item.code
     end
 
@@ -273,7 +273,8 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
       brand: %Brand{id: brand_id},
       catalogue_item: %CatalogueItem{
         id: catalogue_item_id,
-        code: catalogue_item_code
+        code: catalogue_item_code,
+        name: name
       },
       conn: conn
     } do
@@ -288,7 +289,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
           )
         )
 
-      assert html =~ "Show Catalogue item"
+      assert html =~ name
       assert html =~ catalogue_item_code
     end
 

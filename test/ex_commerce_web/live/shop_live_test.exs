@@ -240,7 +240,6 @@ defmodule ExCommerceWeb.ShopLiveTest do
       {:ok, _show_live, html} =
         live(conn, Routes.shop_show_path(conn, :show, brand_id, shop_id))
 
-      assert html =~ "Show Shop"
       assert html =~ shop_name
     end
 

@@ -11,26 +11,31 @@
     %>
   <% end %>
 
-    <div class="dashboard-container">
+  <LiveMotion.motion
+    id="show-shop"
+    initial={[y: [-1000]]}
+    animate={[y: [0]]}
+    transition={[]}
+    exit={[y: [-1000]]}
+    class="flex justify-center"
+  >
+    <div class="dashboard-container m-4 card flex flex-col justify-between w-full sm:w-1/4">
       <h1 class="user-form section-title-lg">
-        <h1><%= gettext("Show Catalogue category") %></h1>
-      </h1>
-    <ul>
-
-      <li>
-        <strong><%= gettext("Name") %>:</strong>
         <%= @brand.name %>
-      </li>
+      </h1>
 
-      <li>
-        <strong><%= gettext("Slug") %>:</strong>
-        <%= @brand.slug %>
-      </li>
-
-    </ul>
-
-    <span><%= live_patch gettext("Edit"), to: Routes.brand_show_path(@socket, :edit, @brand), class: "button" %></span>
-    <span><%= live_redirect gettext("Back"), to: Routes.brand_index_path(@socket, :index) %></span>
-  </div>
-
+      <div>
+        <p class="
+          text-base sm:text-lg text-black font-normal
+          text-ellipsis overflow-hidden whitespace-nowrap
+        ">
+          <span class="font-semibold">Slug:</span> <%= @brand.slug %>
+        </p>
+      </div>
+      <div class="">
+        <span><%= live_patch gettext("Edit"), to: Routes.brand_show_path(@socket, :edit, @brand), class: "button" %></span>
+        <span><%= live_redirect gettext("Back"), to: Routes.brand_index_path(@socket, :index) %></span>
+      </div>
+    </div>
+  </LiveMotion.motion>
 <% end %>
