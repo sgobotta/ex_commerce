@@ -72,7 +72,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
         live(conn, Routes.catalogue_category_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element("a", "+")
+             |> element("a#new")
              |> render_click() =~
                "New Catalogue category"
 
