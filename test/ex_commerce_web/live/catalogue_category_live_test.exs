@@ -109,10 +109,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
         live(conn, Routes.catalogue_category_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element(
-               "#catalogue_category-#{catalogue_category_id} a",
-               "Edit"
-             )
+             |> element("#catalogue_category-#{catalogue_category_id} a#update")
              |> render_click() =~
                "Edit Catalogue category"
 
@@ -202,10 +199,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
         live(conn, Routes.catalogue_category_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element(
-               "#catalogue_category-#{catalogue_category_id} a",
-               "Delete"
-             )
+             |> element("#catalogue_category-#{catalogue_category_id} a#delete")
              |> render_click()
 
       refute has_element?(
