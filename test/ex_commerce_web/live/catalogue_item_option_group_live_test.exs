@@ -226,8 +226,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
       assert index_live
              |> element(
-               "#catalogue_item_option_group-#{catalogue_item_option_group_id} a",
-               "Edit"
+               "#catalogue_item_option_group-#{catalogue_item_option_group_id} a#update"
              )
              |> render_click() =~
                "Edit Catalogue item option group"
@@ -295,8 +294,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
       assert index_live
              |> element(
-               "#catalogue_item_option_group-#{catalogue_item_option_group_id} a",
-               "Delete"
+               "#catalogue_item_option_group-#{catalogue_item_option_group_id} a#delete"
              )
              |> render_click()
 
