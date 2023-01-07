@@ -22,13 +22,11 @@
         <div
           id={"shop-#{shop_id}"}
           class="
-            card cursor-pointer
+            card p-4 md:p-8
             flex flex-col sm:flex-row md:sm:flex-row lg:sm:flex-row
             justify-between m-4
-            transition duration-300 scale-100 active:scale-[0.98] hover:bg-gray-300 active:shadow-none
+            transition duration-300 hover:bg-gray-300 hover:shadow-lg
           "
-          phx-click="navigate_shop"
-          phx-value-shop={shop_id}
         >
           <div class="flex flex-col">
             <p class="
@@ -44,17 +42,41 @@
               <%= shop.address %>
             </p>
           </div>
-          <div class="flex flex-row items-center">
-            <span class="px-1"><%= live_patch gettext("Edit"), to: Routes.shop_index_path(@socket, :edit, @brand.id, shop_id) %></span>
-            <span class="px-1"><%= link gettext("Delete"), to: "#", phx_click: "delete", phx_value_id: shop_id, data: [confirm: gettext("Are you sure?")] %></span>
+          <div class="flex flex-row items-center self-end">
+            <span class="px-2">
+              <%= live_redirect to: Routes.shop_show_path(@socket, :show, @brand.id, shop_id), class: "shadow-lg transition duration-300 scale-100 active:scale-[0.98] active:shadow-none" do %>
+                <.icon outlined={true} name={:eye} class="base-alert-icon text-sky-500 font-normal"/>
+              <% end %>
+            </span>
+            <span class="px-2">
+              <%= live_patch to: Routes.shop_index_path(@socket, :edit, @brand.id, shop_id) do %>
+                <.icon outlined={true} name={:"pencil"} class="base-alert-icon text-green-500"/>
+              <% end %>
+            </span>
+            <span class="px-2">
+              <%= link to: "#", phx_click: "delete", phx_value_id: shop_id, data: [confirm: gettext("Are you sure?")] do %>
+                <.icon outlined={true} name={:trash} class="base-alert-icon text-rose-500"/>
+              <% end %>
+            </span>
           </div>
         </div>
       <% end %>
     </div>
 
-    <span>
-      <%= live_patch "+", to: Routes.shop_index_path(@socket, :new, @brand.id), class: "button" %>
-    </span>
+    <div class="
+      absolute bottom-8 right-8 rounded-lg w-20 h-20
+      bg-gray-300
+      flex justify-center items-center
+      shadow-button-sm scale-100
+      transition duration-300
+      hover:translate-x-0 hover:translate-y-0
+      focus:shadow-button-sm
+      active:translate-x-1 active:translate-y-1 active:shadow-button-xs
+    ">
+      <%= live_patch to: Routes.shop_index_path(@socket, :new, @brand.id), class: "" do %>
+        <.icon outlined={true} name={:plus} class="base-alert-icon text-gray-500 w-16 h-16"/>
+      <% end %>
+    </div>
   </div>
 
 <% end %>
