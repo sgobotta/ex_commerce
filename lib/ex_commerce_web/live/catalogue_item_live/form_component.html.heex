@@ -120,7 +120,7 @@
 
             <div class="px-1 w-1/6 flex self-center justify-center">
               <%= if is_nil(v.data.temp_id) do %>
-                <%= checkbox v, :delete, class: "checkbox" %>
+                <%= checkbox v, :delete, class: "checkbox warn" %>
               <% else %>
                 <%= hidden_input v, :temp_id %>
                 <a
