@@ -41,7 +41,10 @@ defmodule ExCommerceWeb.CatalogueItemLive.Show do
     end
   end
 
-  defp get_item_price(variants), do: ExCommerceNumeric.format_price(420.0)
+  defp get_item_price(variants) do
+    ExCommerce.Offerings.get_cheapest_variant_price(variants)
+    |> ExCommerceNumeric.format_price()
+  end
 
   defp page_title(:show), do: gettext("Show Catalogue item")
   defp page_title(:edit), do: gettext("Edit Catalogue item")
