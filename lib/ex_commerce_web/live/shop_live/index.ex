@@ -57,18 +57,6 @@ defmodule ExCommerceWeb.ShopLive.Index do
   end
 
   @impl true
-  def handle_event(
-        "navigate_shop",
-        %{"shop" => shop_id},
-        %{assigns: %{brand: %Brand{id: brand_id}}} = socket
-      ) do
-    {:noreply,
-     redirect(socket,
-       to: Routes.shop_show_path(socket, :show, brand_id, shop_id)
-     )}
-  end
-
-  @impl true
   def handle_event("delete", %{"id" => shop_id}, socket) do
     %{assigns: %{brand: %Brand{id: brand_id}}} = socket
 
