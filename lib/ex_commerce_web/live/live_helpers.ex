@@ -615,6 +615,29 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
+  def floating_button(%{to: to} = assigns) do
+    ~H"""
+    <div class="
+      absolute bottom-8 right-8 rounded-lg w-20 h-20
+      bg-gray-300
+      flex justify-center items-center
+      shadow-button-sm scale-100
+      transition duration-300
+      hover:translate-x-0 hover:translate-y-0
+      focus:shadow-button-sm
+      active:translate-x-1 active:translate-y-1 active:shadow-button-xs
+    ">
+      <%= live_patch to: to  do %>
+        <.icon
+          class="base-alert-icon text-gray-500 w-16 h-16"
+          name={:plus}
+          outlined={true}
+        />
+      <% end %>
+    </div>
+    """
+  end
+
   def flash(%{kind: :error} = assigns) do
     ~H"""
     <%= if live_flash(@flash, @kind) do %>
