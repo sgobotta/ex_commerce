@@ -618,7 +618,7 @@ defmodule ExCommerceWeb.LiveHelpers do
   def floating_button(%{to: to} = assigns) do
     ~H"""
     <div class="
-      absolute bottom-8 right-8 rounded-lg w-20 h-20
+      fixed bottom-8 right-8 rounded-lg w-20 h-20
       bg-gray-300
       flex justify-center items-center
       shadow-button-sm scale-100
