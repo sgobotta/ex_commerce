@@ -22,6 +22,10 @@
   .checkbox + label {
     @apply cursor-pointer;
   }
+
+  input[type=checkbox]:checked.checkbox.warn {
+    @apply bg-rose-500;
+  }
 }
 
 input[type=checkbox] {
