@@ -16,6 +16,24 @@
       <%= gettext("My Shops") %>
     </h1>
 
+    <p class="pb-2 text-lg form-field-description">
+      <%= gettext("Create shops to let customers know your address, phone and other details.") %>
+    </p>
+
+    <div class="flex flex-row pb-2">
+      <div class="pt-1">
+        <.icon name={:information_circle} outlined class="
+          text-gray-500
+          flex-shrink-0 h-4 w-4
+        "/>
+      </div>
+      <div class="">
+        <p class="form-field-hint">
+          <%= gettext("A shop allows you to create catalogues/menus and even share them between shops.") %>
+        </p>
+      </div>
+    </div>
+
     <div id="shops">
       <%= for %Shop{id: shop_id} = shop <- @shops do %>
         <div

@@ -1,5 +1,4 @@
 <%= if connected?(@socket) do %>
-
   <%= if @live_action in [:new, :edit] do %>
     <%= live_modal @socket, ExCommerceWeb.CatalogueLive.FormComponent,
       id: @catalogue.id || :new,
@@ -20,15 +19,28 @@
     %>
   <% end %>
 
-  <div class="p-12">
-
-    <h1>
+  <div class="dashboard-container">
+    <h1 class="user-form section-title-lg">
       <%= gettext("My Catalogues") %>
     </h1>
 
-    <p>
-      <%= gettext("Create catalogues/menus to offer your products. Use categories to group up products of similar nature. A Catalogue can be published in one or more shops.") %>
+    <p class="pb-2 text-lg form-field-description">
+      <%= gettext("Create catalogues/menus to offer your products") %>
     </p>
+
+    <div class="flex flex-row pb-2">
+      <div class="pt-1">
+        <.icon name={:information_circle} outlined class="
+          text-gray-500
+          flex-shrink-0 h-4 w-4
+        "/>
+      </div>
+      <div class="">
+        <p class="form-field-hint">
+          <%= gettext("Use categories to group up products of similar nature. A Catalogue can be published in one or more shops.") %>
+        </p>
+      </div>
+    </div>
 
     <table>
       <thead>
@@ -58,5 +70,4 @@
     <span><%= live_patch "+", to: Routes.catalogue_index_path(@socket, :new, @brand.id), class: "button" %></span>
 
   </div>
-
 <% end %>
