@@ -65,7 +65,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
     end
 
     defp navigate_new_catalogue_item(conn, view, brand_id) do
-      assert view |> element("a", "+") |> render_click() =~
+      assert view |> element("a#new") |> render_click() =~
                "New Catalogue item"
 
       assert_patch(
