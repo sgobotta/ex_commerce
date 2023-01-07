@@ -42,30 +42,43 @@
       </div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th><%= gettext("Code") %></th>
-          <th><%= gettext("Name") %></th>
-
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="catalogues">
-        <%= for %Catalogue{id: catalogue_id} = catalogue <- @catalogues do %>
-          <tr id={"catalogue-#{catalogue_id}"}>
-            <td><%= catalogue.code %></td>
-            <td><%= catalogue.name %></td>
-
-            <td>
-              <span><%= live_redirect gettext("Show"), to: Routes.catalogue_show_path(@socket, :show, @brand.id, catalogue_id) %></span>
-              <span><%= live_patch gettext("Edit"), to: Routes.catalogue_index_path(@socket, :edit, @brand.id, catalogue_id) %></span>
-              <span><%= link gettext("Delete"), to: "#", phx_click: "delete", phx_value_id: catalogue_id, data: [confirm: gettext("Are you sure?")] %></span>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <div id="catalogues">
+      <%= for %Catalogue{id: catalogue_id} = catalogue <- @catalogues do %>
+        <.list_card id={"catalogue-#{catalogue_id}"}>
+          <:info>
+            <p class="
+              text-base sm:text-lg text-black font-medium
+              text-ellipsis overflow-hidden whitespace-nowrap
+            ">
+              <%= catalogue.name %>
+            </p>
+            <p class="
+              text-base sm:text-base text-black font-normal
+              text-ellipsis overflow-hidden whitespace-nowrap
+            ">
+              <%= catalogue.code %>
+            </p>
+          </:info>
+          <:actions>
+            <span class="px-2">
+              <%= live_redirect to: Routes.catalogue_show_path(@socket, :show, @brand.id, catalogue_id), class: "shadow-lg transition duration-300 scale-100 active:scale-[0.98] active:shadow-none" do %>
+                <.icon outlined={true} name={:eye} class="base-alert-icon text-sky-500 font-normal"/>
+              <% end %>
+            </span>
+            <span class="px-2">
+              <%= live_patch to: Routes.catalogue_index_path(@socket, :edit, @brand.id, catalogue_id), id: "update" do %>
+                <.icon outlined={true} name={:pencil} class="base-alert-icon text-green-500"/>
+              <% end %>
+            </span>
+            <span class="px-2">
+              <%= link to: "#", id: "delete", phx_click: "delete", phx_value_id: catalogue_id, data: [confirm: gettext("Are you sure?")] do %>
+                <.icon outlined={true} name={:trash} class="base-alert-icon text-rose-500"/>
+              <% end %>
+            </span>
+          </:actions>
+        </.list_card>
+      <% end %>
+    </div>
 
     <.floating_button to={Routes.catalogue_index_path(@socket, :new, @brand.id)} />
   </div>
