@@ -627,7 +627,7 @@ defmodule ExCommerceWeb.LiveHelpers do
       focus:shadow-button-sm
       active:translate-x-1 active:translate-y-1 active:shadow-button-xs
     ">
-      <%= live_patch to: to  do %>
+      <%= live_patch to: to, id: "new" do %>
         <.icon
           class="base-alert-icon text-gray-500 w-16 h-16"
           name={:plus}

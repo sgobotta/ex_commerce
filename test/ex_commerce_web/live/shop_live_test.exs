@@ -47,7 +47,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
     ]
 
     defp navigate_new_shop(conn, view, brand_id) do
-      assert view |> element("a", "+") |> render_click() =~
+      assert view |> element("a#new") |> render_click() =~
                "New Shop"
 
       assert_patch(view, Routes.shop_index_path(conn, :new, brand_id))
@@ -109,6 +109,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
       )
     end
 
+    @tag :wip
     test "[Success] saves new shop", %{brand: %Brand{id: brand_id}, conn: conn} do
       {:ok, index_live, _html} =
         live(conn, Routes.shop_index_path(conn, :index, brand_id))
@@ -137,6 +138,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
       :ok = submit_new_shop(conn, index_live, brand_id, @create_attrs)
     end
 
+    @tag :wip
     test "[Success] updates shop in listing", %{
       brand: %Brand{id: brand_id},
       conn: conn,
@@ -146,7 +148,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         live(conn, Routes.shop_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element("#shop-#{shop_id} a", "Edit")
+             |> element("#shop-#{shop_id} a#update")
              |> render_click() =~
                "Edit Shop"
 
@@ -207,6 +209,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
       )
     end
 
+    @tag :wip
     test "[Success] deletes shop in listing", %{
       brand: %Brand{id: brand_id},
       conn: conn,
@@ -216,7 +219,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         live(conn, Routes.shop_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element("#shop-#{shop_id} a", "Delete")
+             |> element("#shop-#{shop_id} a#delete")
              |> render_click()
 
       refute has_element?(index_live, "#shop-#{shop_id}")
