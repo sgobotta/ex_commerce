@@ -20,7 +20,7 @@
   }
 
   .user-form.section-title-lg {
-    @apply text-sky-600 text-3xl;
+    @apply text-sky-600 text-3xl font-medium;
   }
 
   .user-form.section-subtitle {
