@@ -41,6 +41,8 @@ defmodule ExCommerceWeb.CatalogueItemLive.Show do
     end
   end
 
+  defp get_item_price([]), do: ""
+
   defp get_item_price(variants) do
     ExCommerce.Offerings.get_cheapest_variant_price(variants)
     |> ExCommerceNumeric.format_price()

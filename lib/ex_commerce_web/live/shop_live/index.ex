@@ -56,6 +56,28 @@ defmodule ExCommerceWeb.ShopLive.Index do
      |> redirect(to: Routes.brand_index_path(socket, :index))}
   end
 
+  @impl true
+  def handle_event(
+        "navigate_shop",
+        %{"shop" => shop_id},
+        %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+      ) do
+    {:noreply,
+     redirect(socket,
+       to: Routes.shop_show_path(socket, :show, brand_id, shop_id)
+     )}
+  end
+
+  @impl true
+  def handle_event("delete", %{"id" => shop_id}, socket) do
+    %{assigns: %{brand: %Brand{id: brand_id}}} = socket
+
+    %Shop{} = shop = Marketplaces.get_shop!(shop_id)
+    {:ok, _} = Marketplaces.delete_shop(shop)
+
+    {:noreply, assign(socket, :shops, list_shops(brand_id))}
+  end
+
   defp apply_action(socket, :edit, %{"shop_id" => _shop_id} = params) do
     socket
     |> assign(:page_title, gettext("Edit Shop"))
@@ -72,16 +94,6 @@ defmodule ExCommerceWeb.ShopLive.Index do
     socket
     |> assign(:page_title, gettext("Listing Shops"))
     |> assign(:shop, nil)
-  end
-
-  @impl true
-  def handle_event("delete", %{"id" => shop_id}, socket) do
-    %{assigns: %{brand: %Brand{id: brand_id}}} = socket
-
-    %Shop{} = shop = Marketplaces.get_shop!(shop_id)
-    {:ok, _} = Marketplaces.delete_shop(shop)
-
-    {:noreply, assign(socket, :shops, list_shops(brand_id))}
   end
 
   defp prepare_new_shop(%{brand: %Brand{id: brand_id}}) do
