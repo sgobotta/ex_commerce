@@ -228,7 +228,8 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
       brand: %Brand{id: brand_id},
       catalogue_category: %CatalogueCategory{
         id: catalogue_category_id,
-        code: catalogue_category_code
+        code: catalogue_category_code,
+        name: catalogue_category_name
       },
       conn: conn
     } do
@@ -243,7 +244,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
           )
         )
 
-      assert html =~ "Show Catalogue category"
+      assert html =~ catalogue_category_name
       assert html =~ catalogue_category_code
     end
 

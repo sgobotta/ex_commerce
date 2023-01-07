@@ -320,7 +320,8 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       brand: %Brand{id: brand_id},
       conn: conn,
       catalogue_item_option_group: %CatalogueItemOptionGroup{
-        id: catalogue_item_option_group_id
+        id: catalogue_item_option_group_id,
+        name: catalogue_item_option_group_name
       }
     } do
       {:ok, _show_live, html} =
@@ -334,7 +335,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
           )
         )
 
-      assert html =~ "Show Catalogue item option group"
+      assert html =~ catalogue_item_option_group_name
     end
 
     test "[Failure] displays catalogue item option group - redirects to brands when invalid brand id is provided",

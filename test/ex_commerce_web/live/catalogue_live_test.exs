@@ -209,7 +209,6 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
           Routes.catalogue_show_path(conn, :show, brand_id, catalogue_id)
         )
 
-      assert html =~ "Show Catalogue"
       assert html =~ catalogue_name
     end
 
