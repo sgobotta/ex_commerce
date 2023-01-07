@@ -70,6 +70,10 @@ module.exports = {
         'default': '1',
         'mirror': '-1'
       },
+      screens: {
+        '2xl': {'max': '1920px', 'min': '1536px'},
+        '3xl': {'raw': '(min-width: 1920px)'}
+      },
       top: {},
       transitionDuration: {
         '1500': '1500ms',
