@@ -109,7 +109,6 @@ defmodule ExCommerceWeb.ShopLiveTest do
       )
     end
 
-    @tag :wip
     test "[Success] saves new shop", %{brand: %Brand{id: brand_id}, conn: conn} do
       {:ok, index_live, _html} =
         live(conn, Routes.shop_index_path(conn, :index, brand_id))
@@ -138,7 +137,6 @@ defmodule ExCommerceWeb.ShopLiveTest do
       :ok = submit_new_shop(conn, index_live, brand_id, @create_attrs)
     end
 
-    @tag :wip
     test "[Success] updates shop in listing", %{
       brand: %Brand{id: brand_id},
       conn: conn,
@@ -209,7 +207,6 @@ defmodule ExCommerceWeb.ShopLiveTest do
       )
     end
 
-    @tag :wip
     test "[Success] deletes shop in listing", %{
       brand: %Brand{id: brand_id},
       conn: conn,

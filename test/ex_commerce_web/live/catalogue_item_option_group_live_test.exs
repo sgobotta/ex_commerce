@@ -38,7 +38,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
           Routes.catalogue_item_option_group_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "Listing Catalogue item option groups"
+      assert html =~ "My Option Groups"
     end
 
     test "[Failure] lists all catalogue_item_option_groups for a brand - redirects to brands when invalid brand id is provided",
@@ -64,7 +64,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
     defp navigate_new_catalogue_item_option_group(conn, view, brand_id) do
       assert view
-             |> element("a", "+")
+             |> element("a#new")
              |> render_click() =~
                "New Catalogue item option group"
 
