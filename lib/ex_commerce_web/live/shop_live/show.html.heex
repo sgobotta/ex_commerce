@@ -18,11 +18,11 @@
     animate={[y: [0]]}
     transition={[]}
     exit={[y: [-1000]]}
-    class="flex justify-center sm:absolute sm:inset-1/4"
+    class="flex justify-center"
   >
 
-    <div class="dashboard-container m-4 card flex flex-col justify-between">
-      <h1 class="user-form section-title-lg">
+    <div class="dashboard-container m-4 card flex flex-col justify-between w-full">
+      <h1 class="user-form section-title-lg py-1">
         <%= @shop.name %>
       </h1>
 
@@ -31,31 +31,31 @@
           text-base sm:text-lg text-black font-normal
           text-ellipsis overflow-hidden whitespace-nowrap
         ">
-          <span class="font-semibold">Slug:</span> <%= @shop.slug %>
+          <span class="font-semibold"><%= gettext("Slug") %>:</span> <%= @shop.slug %>
         </p>
         <p class="
           text-base sm:text-lg text-black font-normal
         ">
-          <span class="font-semibold">Description:</span> <%= @shop.description %>
+          <span class="font-semibold"><%= gettext("Description") %>:</span> <%= @shop.description %>
         </p>
         <p class="
           text-base sm:text-lg text-black font-normal
         ">
-          <span class="font-semibold">Telephone:</span> <%= @shop.telephone %>
+          <span class="font-semibold"><%= gettext("Telephone") %>:</span> <%= @shop.telephone %>
         </p>
         <p class="
           text-base sm:text-lg text-black font-normal
         ">
-          <span class="font-semibold">Banner message:</span> <%= @shop.banner_message %>
+          <span class="font-semibold"><%= gettext("Banner message") %>:</span> <%= @shop.banner_message %>
         </p>
         <p class="
           text-base sm:text-lg text-black font-normal
         ">
-          <span class="font-semibold">Address:</span> <%= @shop.address %>
+          <span class="font-semibold"><%= gettext("Address") %>:</span> <%= @shop.address %>
         </p>
       </div>
 
-      <div class="">
+      <div class="flex flex-row items-center justify-between">
         <span>
           <%= live_redirect gettext("Back"), to: Routes.shop_index_path(@socket, :index, @brand.id), class: "link" %>
         </span>
