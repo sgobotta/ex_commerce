@@ -1,5 +1,4 @@
 <%= if connected?(@socket) do %>
-
   <%= if @live_action in [:new, :edit] do %>
     <%= live_modal @socket, ExCommerceWeb.BrandLive.FormComponent,
       id: @brand.id || :new,
@@ -59,8 +58,6 @@
       </tbody>
     </table>
 
-    <span><%= live_patch "+", to: Routes.brand_index_path(@socket, :new), class: "button" %></span>
-
+    <.floating_button to={Routes.brand_index_path(@socket, :new)} />
   </div>
-
 <% end %>
