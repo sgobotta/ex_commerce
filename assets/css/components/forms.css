@@ -1,6 +1,6 @@
 @layer components {
   .submit-button-container {
-    @apply flex justify-end mt-6 border-t-1 border-gray-300 pt-6;
+    @apply flex justify-end mt-6 border-t-1 border-gray-300 pt-6 mb-2;
   }
 
   .form-field-description {
