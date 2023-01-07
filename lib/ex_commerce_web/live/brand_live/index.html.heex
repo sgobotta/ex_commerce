@@ -34,29 +34,37 @@
       </div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th><%= gettext("Name") %></th>
-
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="brands">
-        <%= for brand <- @brands do %>
-          <tr id={"brand-#{brand.id}"}>
-            <td><%= brand.name %></td>
-
-            <td>
-              <span><%= live_redirect gettext("Manage"), to: Routes.overview_index_path(@socket, :index, brand.id) %></span>
-              <span><%= live_redirect gettext("Show"), to: Routes.brand_show_path(@socket, :show, brand.id) %></span>
-              <span><%= live_patch gettext("Edit"), to: Routes.brand_index_path(@socket, :edit, brand.id) %></span>
-              <!-- <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: brand.id, data: [confirm: "Are you sure?"] %></span> -->
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <div id="brands">
+      <%= for %Brand{name: brand_name, id: brand_id} = brand <- @brands do %>
+        <.list_card id={"brand-#{brand_id}"}>
+          <:info>
+            <p class="
+              text-base sm:text-lg text-black font-medium
+              text-ellipsis overflow-hidden whitespace-nowrap
+            ">
+              <%= brand_name %>
+            </p>
+          </:info>
+          <:actions>
+            <span class="px-2">
+              <%= live_redirect to: Routes.overview_index_path(@socket, :index, brand.id), class: "shadow-lg transition duration-300 scale-100 active:scale-[0.98] active:shadow-none" do %>
+                <.icon outlined={true} name={:cog} class="base-alert-icon text-orange-500 font-normal"/>
+              <% end %>
+            </span>
+            <span class="px-2">
+              <%= live_redirect to: Routes.brand_show_path(@socket, :show, brand.id), class: "shadow-lg transition duration-300 scale-100 active:scale-[0.98] active:shadow-none" do %>
+                <.icon outlined={true} name={:eye} class="base-alert-icon text-sky-500 font-normal"/>
+              <% end %>
+            </span>
+            <span class="px-2">
+              <%= live_patch to: Routes.brand_index_path(@socket, :edit, brand.id), id: "update" do %>
+                <.icon outlined={true} name={:pencil} class="base-alert-icon text-green-500"/>
+              <% end %>
+            </span>
+          </:actions>
+        </.list_card>
+      <% end %>
+    </div>
 
     <.floating_button to={Routes.brand_index_path(@socket, :new)} />
   </div>

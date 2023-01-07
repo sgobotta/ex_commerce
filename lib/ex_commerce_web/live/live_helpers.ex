@@ -615,6 +615,27 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
+  def list_card(%{id: id} = assigns) do
+    ~H"""
+    <div
+      id={id}
+      class="
+        card p-4 md:p-8
+        flex flex-col sm:flex-row md:sm:flex-row lg:sm:flex-row
+        justify-between m-4
+        transition duration-300 hover:bg-gray-300 hover:shadow-lg
+      "
+    >
+      <div class="flex flex-col">
+        <%= render_slot(@info) %>
+      </div>
+      <div class="flex flex-row items-center self-end">
+        <%= render_slot(@actions) %>
+      </div>
+    </div>
+    """
+  end
+
   def floating_button(%{to: to} = assigns) do
     ~H"""
     <div class="
