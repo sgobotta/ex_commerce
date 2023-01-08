@@ -42,42 +42,67 @@
       </div>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th><%= gettext("Photo") %></th>
-          <th><%= gettext("Code") %></th>
-          <th><%= gettext("Name") %></th>
-
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="catalogue_items">
-        <%= for %CatalogueItem{id: catalogue_item_id} = catalogue_item <- @catalogue_items do %>
-          <tr id={"catalogue_item-#{catalogue_item_id}"}>
-            <td>
-              <%= for photo <- get_photos(catalogue_item.photos, [
-                use_placeholder: true,
-                type: :avatar
-              ]) do %>
-                <%= render_image([
-                  source: get_photo_source(@socket, photo),
-                  size_classes: "h-28 w-28"
-                ]) %>
-              <% end %>
-            </td>
-            <td><%= catalogue_item.code %></td>
-            <td><%= catalogue_item.name %></td>
-
-            <td>
-              <span><%= live_redirect gettext("Show"), to: Routes.catalogue_item_show_path(@socket, :show, @brand.id, catalogue_item_id) %></span>
-              <span><%= live_patch gettext("Edit"), to: Routes.catalogue_item_index_path(@socket, :edit, @brand.id, catalogue_item_id) %></span>
-              <span><%= link gettext("Delete"), to: "#", phx_click: "delete", phx_value_id: catalogue_item.id, data: [confirm: gettext("Are you sure?")] %></span>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <div id="catalogue_items">
+      <%= for %CatalogueItem{id: catalogue_item_id} = catalogue_item <- @catalogue_items do %>
+        <div
+          id={"catalogue_item-#{catalogue_item_id}"}
+          class="
+            card p-1 md:p-2 my-3
+            flex flex-row sm:flex-row md:sm:flex-row lg:sm:flex-row
+            transition duration-300 hover:bg-gray-300 hover:shadow-lg
+          "
+        >
+          <div class="place-content-stretch">
+            <%= for photo <- get_photos(catalogue_item.photos, [
+              use_placeholder: true,
+              type: :avatar
+            ]) do %>
+              <%= render_image([
+                source: get_photo_source(@socket, photo),
+                size_classes: "h-28 w-28"
+              ]) %>
+            <% end %>
+          </div>
+          <div class="
+            pl-3 text-ellipsis
+            flex flex-col basis-full place-content-between
+            overflow-hidden whitespace-nowrap
+          ">
+            <div class="flex flex-col">
+              <p class="
+                text-base sm:text-lg text-black font-medium
+                text-ellipsis overflow-hidden whitespace-nowrap
+              ">
+                <%= catalogue_item.name %>
+              </p>
+              <p class="
+                text-base sm:text-base text-black font-normal
+                text-ellipsis overflow-hidden whitespace-nowrap
+              ">
+                <%= catalogue_item.code %>
+              </p>
+            </div>
+            <div class="flex flex-row items-center self-end">
+              <span class="px-2">
+                <%= live_redirect to: Routes.catalogue_item_show_path(@socket, :show, @brand.id, catalogue_item_id), class: "shadow-lg transition duration-300 scale-100 active:scale-[0.98] active:shadow-none" do %>
+                  <.icon outlined={true} name={:eye} class="base-alert-icon text-sky-500 font-normal"/>
+                <% end %>
+              </span>
+              <span class="px-2">
+                <%= live_patch to: Routes.catalogue_item_index_path(@socket, :edit, @brand.id, catalogue_item_id), id: "update" do %>
+                  <.icon outlined={true} name={:pencil} class="base-alert-icon text-green-500"/>
+                <% end %>
+              </span>
+              <span class="px-2">
+                <%= link to: "#", id: "delete", phx_click: "delete", phx_value_id: catalogue_item_id, data: [confirm: gettext("Are you sure?")] do %>
+                  <.icon outlined={true} name={:trash} class="base-alert-icon text-rose-500"/>
+                <% end %>
+              </span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
 
     <.floating_button to={Routes.catalogue_item_index_path(@socket, :new, @brand.id)} />
   </div>
