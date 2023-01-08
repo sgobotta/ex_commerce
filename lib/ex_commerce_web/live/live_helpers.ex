@@ -185,6 +185,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     return_to_path = Keyword.fetch!(opts, :return_to)
     patch_to_path = Keyword.fetch!(opts, :patch_to)
     redirect_to = Keyword.get(opts, :redirect_to, nil)
+    opts = Keyword.put_new(opts, :opts, %{})
 
     modal_opts = [
       id: :modal,
@@ -266,7 +267,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     ">
       <div class="flex-1 min-w-0">
         <h1 class="
-          text-2xl font-medium
+          text-2xl font-medium text-sky-600
           leading-6 text-gray-900
           sm:truncate focus:outline-none
         ">
