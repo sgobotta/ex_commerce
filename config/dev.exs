@@ -31,8 +31,7 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
   secret_key_base:
     "d4VqBGN5Pol0OR4hijP7BM9lcCsmsZiXov9vaDpLe14cTcJTZ53onXAgzQMpYYmW",
   watchers: [
-    npm: ["run", "watch:tailwind", cd: Path.expand("../assets", __DIR__)],
-    npm: ["run", "watch", cd: Path.expand("../assets", __DIR__)]
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -63,7 +62,8 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
 config :ex_commerce, ExCommerceWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/[^uploads].*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/[^uploads].*(png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/ex_commerce_web/(live|views)/.*(ex)$",
       ~r"lib/ex_commerce_web/templates/.*(eex)$"

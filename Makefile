@@ -166,7 +166,7 @@ test:
 test.cover: MIX_ENV=test
 test.cover: SHELL:=/bin/bash
 test.cover:
-	@source ${LOCAL_ENV_FILE} && mix coveralls.html --umbrella
+	@source ${LOCAL_ENV_FILE} && mix coveralls.html
 
 #🧪 test.watch: @ Runs and watches all test suites
 test.watch: SHELL:=/bin/bash

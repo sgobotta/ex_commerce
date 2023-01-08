@@ -29,7 +29,8 @@
       @catalogue_item.id
     ),
     opts: %{
-      cart: @cart
+      cart: @cart,
+      content_classes: "sm:mt-12"
     }
   %>
 <% end %>
@@ -183,10 +184,10 @@
                       </p>
                     </div>
                     <div class="basis-1/6">
-                      <input
-                        name="variant-selection"
+                      <.selection_input
+                        id={"variant-radio-#{variant_id}"}
                         type="radio"
-                        class="radio m-auto block checked:bg-black outline-black"
+                        name="variant-selection-radio"
                         value={variant_id}
                         phx-click="select_variant"
                         checked={variant_selected?(@changeset, variant_id)}
@@ -266,10 +267,9 @@
                         </div>
                         <div class="basis-1/2 mx-4 flex self-start">
                           <%= if multiple_selection do %>
-                            <input
+                            <.selection_input
                               type="checkbox"
                               name={"#{option_group_id}-option-selection"}
-                              class="checkbox m-auto block checked:bg-black outline-black"
                               checked={option_checked?(:multiple, @changeset, option_group_id, option_id)}
                               phx-click="check_option"
                               phx-value-option_id={option_id}
@@ -277,14 +277,14 @@
                               disabled={multiple_select_disabled?(@changeset, option_group_id, option_id)}
                             />
                           <% else %>
-                            <input
-                              name={"#{option_group_id}-option-selection"}
-                              type="radio"
-                              class="radio m-auto block checked:bg-black outline-black"
-                              value={option_id}
+                            <.selection_input
+                              checked={option_checked?(:single, @changeset, option_group_id, option_id)}
+                              id={"option-group-#{option_group_id}-radio-#{option_id}"}
+                              name={"option-group-#{option_group_id}-selection-#{option_id}"}
                               phx-click="choose_option"
                               phx-value-option_group_id={option_group_id}
-                              checked={option_checked?(:single, @changeset, option_group_id, option_id)}
+                              type="radio"
+                              value={option_id}
                             />
                           <% end %>
                         </div>

@@ -1,11 +1,12 @@
-const { sassPlugin } = require('esbuild-sass-plugin')
-const autoprefixer = require('autoprefixer')
+// const { sassPlugin } = require('esbuild-sass-plugin')
+// const autoprefixer = require('autoprefixer')
 const copyStaticFiles = require('esbuild-copy-static-files')
 const esbuild = require('esbuild')
-const path = require('path')
-const postcss = require('postcss')
-const postcssPresetEnv = require('postcss-preset-env')
-const tailwindcss = require('tailwindcss')
+// const path = require('path')
+// const postcss = require('postcss')
+// const postcssPresetEnv = require('postcss-preset-env')
+// const tailwindcss = require('tailwindcss')
+// const postCssPlugin = require('esbuild-style-plugin')
 
 const args = process.argv.slice(2)
 const watch = args.includes('--watch')
@@ -18,28 +19,36 @@ const loader = {
 }
 
 const plugins = [
+  // postCssPlugin({
+  //   postcss: {
+  //     plugins: [
+  //       autoprefixer,
+  //       tailwindcss(path.resolve(__dirname, "./tailwind.config.js"))
+  //     ]
+  //   }
+  // }),
   // Add and configure plugins here
-  sassPlugin({
-    async transform(source) {
-      const { css } = await postcss(
-        [
-          autoprefixer,
-          postcssPresetEnv({stage: 0}),
-          tailwindcss(path.resolve(__dirname, "./tailwind.config.js"))
-        ]
-      ).process(source)
-      return css
-    }
-  }),
+  // sassPlugin({
+  //   async transform(source) {
+  //     const { css } = await postcss(
+  //       [
+  //         autoprefixer,
+  //         postcssPresetEnv({stage: 0}),
+  //         tailwindcss(path.resolve(__dirname, "./tailwind.config.js"))
+  //       ]
+  //     ).process(source)
+  //     return css
+  //   }
+  // }),
   copyStaticFiles({dest: copyDest})
 ]
 
 let opts = {
   bundle: true,
-  entryPoints: ['js/app.js', 'css/app.scss'],
+  entryPoints: ['js/app.js'],
   loader,
   logLevel: 'info',
-  outdir: '../priv/static/',
+  outdir: '../priv/static/assets',
   plugins,
   target: 'es2017'
 }

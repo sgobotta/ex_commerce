@@ -133,6 +133,15 @@ defmodule ExCommerceWeb.UserAuth do
   end
 
   @doc """
+  Fetches the current locale and sets it in the current session.
+  """
+  @spec put_session_locale(Plug.Conn.t(), keyword()) :: Plug.Conn.t()
+  def put_session_locale(conn, _opts) do
+    conn
+    |> put_session(:locale, Gettext.get_locale())
+  end
+
+  @doc """
   Authenticates the user by looking into the session
   and remember me token.
   """

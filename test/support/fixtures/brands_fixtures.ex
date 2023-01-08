@@ -23,11 +23,6 @@ defmodule ExCommerce.BrandsFixtures do
   def valid_attrs(attrs \\ %{}) do
     unique_name = unique_brand_name()
 
-    unique_slug =
-      unique_name
-      |> String.downcase()
-      |> String.replace(" ", "-")
-
     Enum.into(
       attrs,
       Map.merge(
@@ -47,7 +42,7 @@ defmodule ExCommerce.BrandsFixtures do
     {:ok, %Brand{} = brand} =
       attrs
       |> Enum.into(valid_attrs())
-      |> ExCommerce.Marketplaces.create_brand()
+      |> Marketplaces.create_brand()
 
     brand
   end

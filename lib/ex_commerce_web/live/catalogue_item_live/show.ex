@@ -7,6 +7,8 @@ defmodule ExCommerceWeb.CatalogueItemLive.Show do
     layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
   }
 
+  use ExCommerceWeb.LiveFormHelpers, routes: Routes
+
   @impl true
   def mount(params, session, socket) do
     case connected?(socket) do
@@ -37,6 +39,13 @@ defmodule ExCommerceWeb.CatalogueItemLive.Show do
       false ->
         {:noreply, socket}
     end
+  end
+
+  defp get_item_price([]), do: ""
+
+  defp get_item_price(variants) do
+    ExCommerce.Offerings.get_cheapest_variant_price(variants)
+    |> ExCommerceNumeric.format_price()
   end
 
   defp page_title(:show), do: gettext("Show Catalogue item")

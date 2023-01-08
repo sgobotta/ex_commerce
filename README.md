@@ -95,7 +95,7 @@ Versions inside `.tool-versions` will be installed.
 + [*ESLint*](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) provides code consistency and beso practices for Javascript.
 + [*markdownlint*](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) brings consistency for writing documentation using markdown.
 
-*NOTE: this toold help us detect issues that are eventually checked via git hooks or CI.*
+*NOTE: this tool help us detect issues that are eventually checked via git hooks or CI.*
 
 ### Git hooks
 

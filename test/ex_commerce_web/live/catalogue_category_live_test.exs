@@ -72,7 +72,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
         live(conn, Routes.catalogue_category_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element("a", "+")
+             |> element("a#new")
              |> render_click() =~
                "New Catalogue category"
 
@@ -109,10 +109,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
         live(conn, Routes.catalogue_category_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element(
-               "#catalogue_category-#{catalogue_category_id} a",
-               "Edit"
-             )
+             |> element("#catalogue_category-#{catalogue_category_id} a#update")
              |> render_click() =~
                "Edit Catalogue category"
 
@@ -202,10 +199,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
         live(conn, Routes.catalogue_category_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element(
-               "#catalogue_category-#{catalogue_category_id} a",
-               "Delete"
-             )
+             |> element("#catalogue_category-#{catalogue_category_id} a#delete")
              |> render_click()
 
       refute has_element?(
@@ -228,7 +222,8 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
       brand: %Brand{id: brand_id},
       catalogue_category: %CatalogueCategory{
         id: catalogue_category_id,
-        code: catalogue_category_code
+        code: catalogue_category_code,
+        name: catalogue_category_name
       },
       conn: conn
     } do
@@ -243,7 +238,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
           )
         )
 
-      assert html =~ "Show Catalogue category"
+      assert html =~ catalogue_category_name
       assert html =~ catalogue_category_code
     end
 

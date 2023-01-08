@@ -1,11 +1,11 @@
 @layer base {
-  // @font-face {
-  // font-family: 'Roboto Flex';
-	// src: url('fonts/Montserrat-VariableFont_wght.ttf') format('truetype'),
-  //      url('fonts/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
-	// font-weight: 100 1000;
-	// font-stretch: 25% 151%;
-  // }
+  /* @font-face {
+  font-family: 'Roboto Flex';
+	src: url('fonts/Montserrat-VariableFont_wght.ttf') format('truetype'),
+       url('fonts/Montserrat-Italic-VariableFont_wght.ttf') format('truetype');
+	font-weight: 100 1000;
+	font-stretch: 25% 151%;
+  } */
   @font-face { 
     font-family: "Montserrat-Thin";
     /* Add other properties here, as needed. For example: */

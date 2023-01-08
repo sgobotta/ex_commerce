@@ -21,6 +21,46 @@ defmodule ExCommerceWeb.LiveHelpers do
   end
 
   # ----------------------------------------------------------------------------
+  # Button helpers
+  #
+
+  def selection_input(%{type: "radio", id: id} = assigns) do
+    attrs = assigns_to_attributes(assigns)
+
+    ~H"""
+    <div class="flex justify-center p-2">
+      <input
+        {attrs}
+        class="hidden"
+      />
+      <label for={id} class="flex items-center cursor-pointer">
+        <span
+          class="
+            w-6 h-6 inline-block mr-2 rounded-full
+            border border-gray-200 flex-no-shrink
+          "
+        />
+      </label>
+    </div>
+    """
+  end
+
+  def selection_input(%{type: "checkbox"} = assigns) do
+    attrs = assigns_to_attributes(assigns)
+
+    ~H"""
+    <input
+      class="
+        checkbox m-auto block w-6 h-6
+        ring-2 ring-gray-300 ring-offset-gray-300
+        focus:ring-1 focus:ring-gray-300 focus:ring-offset-gray-300
+      "
+      {attrs}
+    />
+    """
+  end
+
+  # ----------------------------------------------------------------------------
   # Data display helpers
   #
 
@@ -145,6 +185,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     return_to_path = Keyword.fetch!(opts, :return_to)
     patch_to_path = Keyword.fetch!(opts, :patch_to)
     redirect_to = Keyword.get(opts, :redirect_to, nil)
+    opts = Keyword.put_new(opts, :opts, %{})
 
     modal_opts = [
       id: :modal,
@@ -226,7 +267,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     ">
       <div class="flex-1 min-w-0">
         <h1 class="
-          text-2xl font-medium
+          text-2xl font-medium text-sky-600
           leading-6 text-gray-900
           sm:truncate focus:outline-none
         ">
@@ -572,6 +613,55 @@ defmodule ExCommerceWeb.LiveHelpers do
     "}>
       <%= render_slot(@inner_block) %>
     </p>
+    """
+  end
+
+  def list_card(%{id: id} = assigns) do
+    ~H"""
+    <div
+      id={id}
+      class="
+        card p-4 md:p-8
+        flex flex-col sm:flex-row md:sm:flex-row lg:sm:flex-row
+        justify-between m-4
+        transition duration-300 hover:bg-gray-300 hover:shadow-lg
+      "
+    >
+      <div class="flex flex-col">
+        <%= render_slot(@info) %>
+      </div>
+      <div class="flex flex-row items-center self-end">
+        <%= render_slot(@actions) %>
+      </div>
+    </div>
+    """
+  end
+
+  def floating_button(%{to: to} = assigns) do
+    ~H"""
+    <div class="
+      fixed bottom-8 right-8 rounded-lg w-20 h-20
+      bg-gray-300
+      bg-gray-800
+      flex justify-center items-center
+      shadow-button-md scale-100
+      transition duration-300
+      hover:translate-x-0 hover:translate-y-0
+      focus:shadow-button-sm
+      active:translate-x-1 active:translate-y-1 active:shadow-button-xs
+    ">
+      <%= live_patch to: to, id: "new" do %>
+        <.icon
+          class="
+            base-alert-icon w-16 h-16
+            text-gray-200
+            transition duration-300 scale-100 hover:scale-95 active:scale-85
+          "
+          name={:plus}
+          outlined={true}
+        />
+      <% end %>
+    </div>
     """
   end
 

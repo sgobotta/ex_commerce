@@ -47,7 +47,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
     ]
 
     defp navigate_new_shop(conn, view, brand_id) do
-      assert view |> element("a", "+") |> render_click() =~
+      assert view |> element("a#new") |> render_click() =~
                "New Shop"
 
       assert_patch(view, Routes.shop_index_path(conn, :new, brand_id))
@@ -146,7 +146,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         live(conn, Routes.shop_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element("#shop-#{shop_id} a", "Edit")
+             |> element("#shop-#{shop_id} a#update")
              |> render_click() =~
                "Edit Shop"
 
@@ -216,7 +216,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         live(conn, Routes.shop_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element("#shop-#{shop_id} a", "Delete")
+             |> element("#shop-#{shop_id} a#delete")
              |> render_click()
 
       refute has_element?(index_live, "#shop-#{shop_id}")
@@ -240,7 +240,6 @@ defmodule ExCommerceWeb.ShopLiveTest do
       {:ok, _show_live, html} =
         live(conn, Routes.shop_show_path(conn, :show, brand_id, shop_id))
 
-      assert html =~ "Show Shop"
       assert html =~ shop_name
     end
 

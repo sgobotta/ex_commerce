@@ -7,20 +7,28 @@ defmodule ExCommerceWeb.ModalComponent do
 
   @impl true
   def render(assigns) do
+    opts =
+      assigns_to_attributes(assigns)
+      |> Keyword.get(:opts)
+
+    modal_opts = Keyword.get(opts, :opts)
+    cart_opts = Keyword.get(modal_opts, :opts)
+    content_classes = Map.get(cart_opts, :content_classes, "")
+
     ~H"""
-    <div id={@id} class="phx-modal px-1" phx-remove={hide_modal()}
+    <div id={@id} class="phx-modal" phx-remove={hide_modal()}
       phx-capture-click="close"
       phx-window-keydown="close"
       phx-key="escape"
       phx-target={"##{@id}"}
       phx-page-loading>
 
-      <div class="
-        phx-modal-content p-0 card relative
+      <div class={"
+        phx-modal-content sm:rounded-lg p-0 relative
         w-full sm:w-10/12 md:w-8/12 lg:w-8/12
         sm:px-0
-        rounded-md md:rounded-2xl
-      ">
+        mt-0 sm:mx-auto mb-auto #{content_classes}
+      "}>
         <div class="absolute right-0 p-2">
           <%= live_close(@opts) %>
         </div>

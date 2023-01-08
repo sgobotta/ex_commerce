@@ -97,10 +97,20 @@ defmodule ExCommerceWeb.MountHelpers do
     end
   end
 
-  def assign_shop_by_slug_or_redirect(socket, %{
-        "brand" => brand_slug,
-        "shop" => shop_slug
-      }) do
+  @doc """
+  Given a socket, a map and an options keyword for ecto preloading, returns a
+  socket with a shop assign or redirects to the shop selection screen.
+  """
+  @spec assign_shop_by_slug_or_redirect(Phoenix.Socket.t(), map(), keyword()) ::
+          Phoenix.Socket.t()
+  def assign_shop_by_slug_or_redirect(
+        socket,
+        %{
+          "brand" => brand_slug,
+          "shop" => shop_slug
+        },
+        _preload_opts \\ []
+      ) do
     case Marketplaces.get_shop_by_brand_slug(brand_slug, shop_slug) do
       nil ->
         redirect_with_flash(
@@ -118,6 +128,7 @@ defmodule ExCommerceWeb.MountHelpers do
             shop,
             avatars: [],
             banners: [],
+            brand: [],
             catalogues: [
               categories: [
                 items: [

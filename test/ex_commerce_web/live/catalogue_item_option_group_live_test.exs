@@ -38,7 +38,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
           Routes.catalogue_item_option_group_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "Listing Catalogue item option groups"
+      assert html =~ "My Option Groups"
     end
 
     test "[Failure] lists all catalogue_item_option_groups for a brand - redirects to brands when invalid brand id is provided",
@@ -64,7 +64,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
     defp navigate_new_catalogue_item_option_group(conn, view, brand_id) do
       assert view
-             |> element("a", "+")
+             |> element("a#new")
              |> render_click() =~
                "New Catalogue item option group"
 
@@ -226,8 +226,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
       assert index_live
              |> element(
-               "#catalogue_item_option_group-#{catalogue_item_option_group_id} a",
-               "Edit"
+               "#catalogue_item_option_group-#{catalogue_item_option_group_id} a#update"
              )
              |> render_click() =~
                "Edit Catalogue item option group"
@@ -295,8 +294,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
 
       assert index_live
              |> element(
-               "#catalogue_item_option_group-#{catalogue_item_option_group_id} a",
-               "Delete"
+               "#catalogue_item_option_group-#{catalogue_item_option_group_id} a#delete"
              )
              |> render_click()
 
@@ -320,7 +318,8 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       brand: %Brand{id: brand_id},
       conn: conn,
       catalogue_item_option_group: %CatalogueItemOptionGroup{
-        id: catalogue_item_option_group_id
+        id: catalogue_item_option_group_id,
+        name: catalogue_item_option_group_name
       }
     } do
       {:ok, _show_live, html} =
@@ -334,7 +333,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
           )
         )
 
-      assert html =~ "Show Catalogue item option group"
+      assert html =~ catalogue_item_option_group_name
     end
 
     test "[Failure] displays catalogue item option group - redirects to brands when invalid brand id is provided",

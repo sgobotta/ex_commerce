@@ -24,6 +24,7 @@ module.exports = {
       },
       boxShadow: {
         'button': '5px 5px 7px 0px rgba(0, 0, 0, 0.3)',
+        'button-md': '6px 6px 2px 2px rgba(0, 0, 0, 0.3)',
         'button-sm': '4px 4px 2px 0px rgba(0, 0, 0, 0.3)',
         'button-xs': '2px 2px 2px 0px rgba(0, 0, 0, 0.3)'
       },
@@ -67,8 +68,14 @@ module.exports = {
       maxHeight: {},
       minHeight: {},
       scale: {
+        '80': '0.8',
+        '85': '0.85',
         'default': '1',
         'mirror': '-1'
+      },
+      screens: {
+        '2xl': {'max': '1920px', 'min': '1536px'},
+        '3xl': {'raw': '(min-width: 1920px)'}
       },
       top: {},
       transitionDuration: {

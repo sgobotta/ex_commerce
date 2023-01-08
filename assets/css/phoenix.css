@@ -212,7 +212,6 @@
    appearance: none;
    background-color: transparent;
    border: .1rem solid #d1d1d1;
-   box-shadow: none;
    box-sizing: inherit;
    /* height: 3.8rem; */
    padding: .6rem 1.0rem;
@@ -257,12 +256,7 @@
    border-width: 0;
    padding: 0
  }
- 
- input[type='checkbox'],
- input[type='radio'] {
-   display: block
- }
- 
+
  .label-inline {
    display: inline-block;
    font-weight: normal;
@@ -443,7 +437,6 @@
  
  a:focus,
  a:hover {
-   color: #93c5fd;
    background-color: transparent
  }
  

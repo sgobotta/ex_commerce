@@ -21,31 +21,84 @@
       %>
   <% end %>
 
-  <div class="p-12">
+  <LiveMotion.motion
+    id="show-catalogue-item"
+    initial={[y: [-1000]]}
+    animate={[y: [0]]}
+    transition={[]}
+    exit={[y: [-1000]]}
+    class="flex justify-center"
+  >
 
-    <h1><%= gettext("Show Catalogue item") %></h1>
-
-    <ul>
-
-      <li>
-        <strong><%= gettext("Code") %>:</strong>
-        <%= @catalogue_item.code %>
-      </li>
-
-      <li>
-        <strong><%= gettext("Name") %>:</strong>
+    <div class="dashboard-container m-4 card flex flex-col justify-between w-full">
+      <h1 class="user-form section-title-lg">
         <%= @catalogue_item.name %>
-      </li>
+      </h1>
 
-      <li>
-        <strong><%= gettext("Description") %>:</strong>
-        <%= @catalogue_item.description %>
-      </li>
+      <div class="
+        lg:col-span-1 flex my-2
+        sm:-ml-4 md:-ml-8 lg:-ml-24 xl:-ml-32 2xl:-ml-40 3xl:-ml-56
+      ">
+        <div class="basis-1/12 lg:basis-2/12 self-center">
+        </div>
+        <div class="
+          basis-11/12 lg:basis-10/12
+          grid grid-cols-12 grid-rows-3
+          bg-white rounded-md mb-2 p-2 sm:p-4
+        ">
+          <div class="
+            relative col-span-1 lg:col-span-2 row-span-3 self-center
+            w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32
+            h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32
+          ">
+            <div class="absolute -left-2/3">
+              <%= for photo <- get_photos(@catalogue_item.photos, [
+                use_placeholder: true,
+                type: :avatar
+              ]) do %>
+                <%= render_image([
+                  source: get_photo_source(@socket, photo),
+                  size_classes: "w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32"
+                ]) %>
+              <% end %>
+            </div>
+          </div>
+          <div class="
+            col-span-10 lg:col-span-9 row-span-3
+            -ml-0 sm:-ml-0 md:-ml-0 lg:-ml-16 xl:-ml-24 2xl:-ml-32 3xl:-ml-44
+            -mr-8 sm:-mr-12 md:-mr-12 lg:-mr-16 xl:-mr-20 2xl:-mr-6 3xl:-mr-28
+            flex flex-col justify-between
+          ">
+            <div class="">
+              <p class="
+                text-base sm:text-base text-black font-normal
+                text-ellipsis overflow-hidden whitespace-nowrap
+              ">
+                <%= @catalogue_item.code %>
+              </p>
+            </div>
+            <div class="">
+              <p class="
+                text-base text-gray-700
+              ">
+                <%= @catalogue_item.description %>
+              </p>
+            </div>
+            <div class="flex flex-row justify-between items-center">
+              <p class="
+                tracking-wider font-bold text-xl text-sky-600
+                text-ellipsis overflow-hidden whitespace-nowrap
+              ">
+                <%= get_item_price(@catalogue_item.variants) %>
+              </p>
+              <%= live_patch gettext("Edit"), to: Routes.catalogue_item_show_path(@socket, :edit, @brand.id, @catalogue_item.id), class: "button" %>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    </ul>
+      <span><%= live_redirect gettext("Back"), to: Routes.catalogue_item_index_path(@socket, :index, @brand.id), class: "link" %></span>
 
-    <span><%= live_patch gettext("Edit"), to: Routes.catalogue_item_show_path(@socket, :edit, @brand.id, @catalogue_item.id), class: "button" %></span>
-    <span><%= live_redirect gettext("Back"), to: Routes.catalogue_item_index_path(@socket, :index, @brand.id), class: "link" %></span>
-
-  </div>
+    </div>
+  </LiveMotion.motion>
 <% end %>

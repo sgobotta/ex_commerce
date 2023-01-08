@@ -73,6 +73,13 @@ config :ex_commerce, ExCommerce.Mailer,
 #
 
 # ------------------------------------------------------------------------------
+# i18n and l10n configuration
+#
+config :ex_commerce, ExCommerceWeb.Cldr,
+  # these will take a while to compile
+  locales: ["en", "es"]
+
+# ------------------------------------------------------------------------------
 # Misc configuration
 #
 

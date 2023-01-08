@@ -21,7 +21,7 @@
   }
 
   .nv-link-group-active {
-    @apply bg-gray-400 #{!important};
+    @apply bg-gray-400 !important;
   }
 }
 

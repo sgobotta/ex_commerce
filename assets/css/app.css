@@ -1,30 +1,26 @@
 /* This file is for your main application css. */
 @import "./phoenix.css";
-@import "./tailwind.css";
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import "./themes/colors.scss";
+@import "./widgets/collapsables.css";
+@import "./widgets/scrollbar.css";
 
-@import "./widgets/collapsables.scss";
-@import "./widgets/scrollbar.scss";
+@import "./base/fonts.css";
+@import "./base/forms.css";
+@import "./base/tables.css";
 
-@import "./base/fonts.scss";
-@import "./base/forms.scss";
-@import "./base/tables.scss";
-
-@import "./components/alerts.scss";
-@import "./components/buttons.scss";
-@import "./components/cards.scss";
-@import "./components/forms.scss";
-@import "./components/icons.scss";
-@import "./components/inputs.scss";
-@import "./components/layout.scss";
-@import "./components/links.scss";
-@import "./components/progress.scss";
-@import "./components/sidebars.scss";
+@import "./components/alerts.css";
+@import "./components/buttons.css";
+@import "./components/cards.css";
+@import "./components/forms.css";
+@import "./components/inputs.css";
+@import "./components/layout.css";
+@import "./components/links.css";
+@import "./components/progress.css";
+@import "./components/sidebars.css";
 
 /* General styles */
 
@@ -38,10 +34,6 @@
 
 select {
   width: auto;
-}
-
-input[type=checkbox] {
-  display: inline-block;
 }
 
 pre {
@@ -96,7 +88,7 @@ pre {
   animation-fill-mode: both;
 }
 
-// Keyframe animation
+/* Keyframe animation */
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -141,7 +133,6 @@ pre {
 
 .phx-modal-content {
   background-color: #fefefe;
-  margin: 10% auto;
   border: 1px solid #888;
 }
 

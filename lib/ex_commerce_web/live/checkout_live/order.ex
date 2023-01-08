@@ -1,6 +1,6 @@
 defmodule ExCommerceWeb.CheckoutLive.Order do
   @moduledoc """
-  Live Checkout: order section
+  Live Checkout: complete order section
   """
 
   use ExCommerceWeb, {
@@ -13,7 +13,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
   alias ExCommerce.Checkout
   alias ExCommerce.Checkout.{Cart, Order}
 
-  alias ExCommerce.Marketplaces.Shop
+  alias ExCommerce.Marketplaces.{Brand, Shop}
 
   alias ExCommerce.Offerings.Catalogue
 
@@ -40,11 +40,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     do: {:noreply, apply_action(socket, socket.assigns.live_action, params)}
 
   @impl true
-  def handle_event("validate", %{"order" => order_params}, socket) do
-    {:noreply, assign_changeset(socket, order_params)}
-  end
-
-  def handle_event("complete_order", _params, socket) do
+  def handle_event("confirm_order", _params, socket) do
     {:noreply, socket}
   end
 
@@ -56,7 +52,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     %{cart: %Cart{} = cart} = socket.assigns
 
     case Checkout.remove_order_item(cart, order_item_temp_id) do
-      %Cart{order: %Order{order_items: []}} = cart ->
+      %Cart{order: %Cart.Order{order_items: []}} = cart ->
         %{
           brand_slug: brand_slug,
           shop_slug: shop_slug,
@@ -74,7 +70,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
             )
         )
 
-      %Cart{order: %Order{order_items: _order_items}} = cart ->
+      %Cart{order: %Cart.Order{order_items: _order_items}} = cart ->
         assign_cart(socket, cart)
     end
     |> then(fn socket -> {:noreply, socket} end)
@@ -86,12 +82,12 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
          "catalogue" => catalogue_id
        }) do
     socket
-    |> assign(:page_title, gettext("[Create Order]"))
+    |> assign(:page_title, gettext("Confirm Order"))
     |> assign(
       :return_to,
-      Routes.checkout_catalogue_path(
+      Routes.checkout_order_details_path(
         socket,
-        :index,
+        :new,
         brand_slug,
         shop_slug,
         catalogue_id
@@ -113,7 +109,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
          }
        ) do
     socket
-    |> assign(:page_title, gettext("[Cart]"))
+    |> assign(:page_title, gettext("Cart"))
     |> assign(
       :return_to,
       Routes.checkout_order_path(
@@ -132,9 +128,20 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
 
   defp assign_changeset(socket, params \\ %{}) do
     %{
-      cart: %Cart{order: %Order{} = order} = cart,
-      catalogue: %Catalogue{id: catalogue_id},
-      shop: %Shop{id: shop_id, brand_id: brand_id}
+      cart: %Cart{order: %Cart.Order{} = order} = cart,
+      catalogue:
+        %Catalogue{
+          code: catalogue_code,
+          id: catalogue_id,
+          name: catalogue_name
+        } = _catalogue,
+      shop:
+        %Shop{
+          brand: %Brand{name: brand_name},
+          brand_id: brand_id,
+          id: shop_id,
+          name: shop_name
+        } = _shop
     } = socket.assigns
 
     params =
@@ -146,12 +153,21 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
       |> Map.merge(params)
 
     %Ecto.Changeset{valid?: valid?} =
-      changeset = Checkout.change_order(order, params)
+      changeset = Checkout.change_cart_order(order, params)
 
-    %Cart{} = cart = Checkout.update_cart_order(cart, changeset)
+    %Cart{order: order} = cart = Checkout.update_cart_order(cart, changeset)
+
+    {:ok, %Order{} = order} =
+      Checkout.from_cart_order(order, %{
+        brand_name: brand_name,
+        catalogue_code: catalogue_code,
+        catalogue_name: catalogue_name,
+        shop_name: shop_name
+      })
 
     socket
     |> assign(:changeset, changeset)
+    |> assign(:order, order)
     |> assign_cart(cart)
     |> assign_href(valid?)
   end
@@ -208,7 +224,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     case Checkout.valid_checkout?(cart) do
       true ->
         if valid?,
-          do: gettext("Complete Order"),
+          do: gettext("Confirm"),
           else: gettext("Complete the missing fields")
 
       false ->

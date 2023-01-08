@@ -14,14 +14,23 @@
       fn f -> %>
 
       <div class="my-6">
-
         <%= label f, :avatars, gettext("Shop logo"), class: "my-2" %>
-        <p>
+        <p class="pb-2 form-field-description">
           <%= gettext("Upload a logo for this shop.") %>
         </p>
-        <p class="italic my-1">
-          <%= gettext("File size can be up to 2 MB. Preferably use squared images.") %>
-        </p>
+        <div class="flex flex-row">
+          <div class="pt-1">
+            <.icon name={:information_circle} outlined class="
+              text-gray-500
+              flex-shrink-0 h-4 w-4
+            "/>
+          </div>
+          <div class="">
+            <p class="form-field-hint">
+              <%= gettext("File size can be up to 2 MB. Preferably use squared images.") %>
+            </p>
+          </div>
+        </div>
 
         <div class="divide-y-1 divide-solid my-2">
           <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.avatars.entries do %>
@@ -60,12 +69,22 @@
 
       <div class="my-6">
         <%= label f, :banners, gettext("Shop banner"), class: "my-2" %>
-        <p>
+        <p class="pb-2 form-field-description">
           <%= gettext("Upload a banner for the top of your catalogues/menus.") %>
         </p>
-        <p class="italic my-1">
-          <%= gettext("File size can be up to 2 MB. Use wide images.") %>
-        </p>
+        <div class="flex flex-row">
+          <div class="pt-1">
+            <.icon name={:information_circle} outlined class="
+              text-gray-500
+              flex-shrink-0 h-4 w-4
+            "/>
+          </div>
+          <div class="">
+            <p class="form-field-hint">
+              <%= gettext("File size can be up to 2 MB. Use wide images.") %>
+            </p>
+          </div>
+        </div>
 
         <div class="divide-y-1 divide-solid my-2">
           <%= for %Phoenix.LiveView.UploadEntry{} = entry <- @uploads.banners.entries do %>
@@ -99,49 +118,41 @@
         %>
       </div>
 
-      <%= label f, :name, class: "my-2" %>
-      <%= text_input f, :name, class: "input", placeholder: gettext("My online shop") %>
+      <%= label f, :name, gettext("Name"), class: "my-2" %>
+      <%= text_input f, :name, class: "input light-bg", placeholder: gettext("My online shop") %>
       <%= error_tag f, :name %>
 
       <div class="">
-        <%= label f, :slug, class: "my-2" %>
+        <%= label f, :slug, gettext("Slug"), class: "my-2" %>
         <div class="mt-1 flex rounded-lg shadow-sm">
           <span class="
             inline-flex items-center
             px-3 rounded-l-lg
             border border-r-0 border-gray-300
             bg-gray-50
-            text-gray-500 text-xl 
+            text-gray-500 text-lg 
           ">
             <%= URI.parse(ExCommerceWeb.Endpoint.url()).host %>/
           </span>
-          <%= text_input f, :slug,
-            class: "
-              rounded-l-none rounded-r-lg h-auto
-              border-gray-300
-              text-xl
-              transition duration-200
-              focus:border-blue-300
-            "
-          %>
+          <%= text_input f, :slug, class: "input-slug light-bg"%>
           <%= error_tag f, :slug %>
         </div>
       </div>
 
-      <%= label f, :description, class: "my-2" %>
-      <%= text_input f, :description, class: "input", placeholder: gettext("Order our organic products today and receive a free gift") %>
+      <%= label f, :description, gettext("Description"), class: "my-2" %>
+      <%= text_input f, :description, class: "input light-bg", placeholder: gettext("Order our organic products today and receive a free gift") %>
       <%= error_tag f, :description %>
 
-      <%= label f, :telephone, class: "my-2" %>
-      <%= text_input f, :telephone, class: "input", placeholder: gettext("+54 9 11 2345 6789") %>
+      <%= label f, :telephone, gettext("Celphone"), class: "my-2" %>
+      <%= text_input f, :telephone, class: "input light-bg", placeholder: gettext("+54 9 11 2345 6789") %>
       <%= error_tag f, :telephone %>
 
-      <%= label f, :banner_message, class: "my-2" %>
-      <%= text_input f, :banner_message, class: "input", placeholder: gettext("We deliver fresh products from Mondays to Sundays between 9:00 a.m. and 11:00 p.m.") %>
+      <%= label f, :banner_message, gettext("Banner message"), class: "my-2" %>
+      <%= text_input f, :banner_message, class: "input light-bg", placeholder: gettext("We deliver fresh products from Mondays to Sundays between 9:00 a.m. and 11:00 p.m.") %>
       <%= error_tag f, :banner_message %>
 
-      <%= label f, :address, class: "my-2" %>
-      <%= text_input f, :address, class: "input", placeholder: gettext("742 Evergreen Terrace, Springfield") %>
+      <%= label f, :address, gettext("Shop Address"), class: "my-2" %>
+      <%= text_input f, :address, class: "input light-bg", placeholder: gettext("742 Evergreen Terrace, Springfield") %>
       <%= error_tag f, :address %>
 
       <div class="flex justify-end mt-6">

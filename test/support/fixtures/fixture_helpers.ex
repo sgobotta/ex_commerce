@@ -13,6 +13,8 @@ defmodule ExCommerce.FixtureHelpers do
     ShopsFixtures
   }
 
+  alias ExCommerce.Checkout.Cart
+
   alias ExCommerce.Marketplaces.{Brand, Shop}
 
   alias ExCommerce.Offerings.{
@@ -36,11 +38,11 @@ defmodule ExCommerce.FixtureHelpers do
       %{shop_id: "some new id"}
 
   """
-  @spec maybe_assign(map(), atom(), module(), module()) :: map()
-  def maybe_assign(attrs, attr, struct_type, fixtures_module) do
+  @spec maybe_assign(map(), atom(), module(), module(), atom()) :: map()
+  def maybe_assign(attrs, attr, struct_type, fixtures_module, action \\ :create) do
     case Map.has_key?(attrs, attr) do
       false ->
-        %^struct_type{id: id} = fixtures_module.create(attrs)
+        %^struct_type{id: id} = apply(fixtures_module, action, [attrs])
         Map.merge(attrs, %{attr => id})
 
       true ->
@@ -90,12 +92,12 @@ defmodule ExCommerce.FixtureHelpers do
   Convenience function to assign #{CatalogueItemVariant} attributes through the
   #{CatalogueItemVariantsFixtures} module.
   """
-  @spec maybe_assign_catalogue_item_variant(map()) :: map()
-  def maybe_assign_catalogue_item_variant(attrs),
+  @spec maybe_assign_catalogue_item_variant(map(), keyword()) :: map()
+  def maybe_assign_catalogue_item_variant(attrs, opts \\ []),
     do:
       maybe_assign(
         attrs,
-        :catalogue_item_variant_id,
+        Keyword.get(opts, :attr, :catalogue_item_variant_id),
         CatalogueItemVariant,
         CatalogueItemVariantsFixtures
       )
@@ -112,5 +114,20 @@ defmodule ExCommerce.FixtureHelpers do
         :catalogue_item_option_group_id,
         CatalogueItemOptionGroup,
         CatalogueItemOptionGroupsFixtures
+      )
+
+  @doc """
+  Convenience function to assign #{Cart.Order} attributes through the
+  #{Cart.OrderFixtures} module.
+  """
+  @spec maybe_assign_order(map()) :: map()
+  def maybe_assign_order(attrs, action \\ :create),
+    do:
+      maybe_assign(
+        attrs,
+        :order_id,
+        Cart.Order,
+        Cart.OrderFixtures,
+        action
       )
 end

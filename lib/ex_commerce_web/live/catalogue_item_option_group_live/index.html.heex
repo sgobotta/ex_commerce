@@ -1,5 +1,4 @@
 <%= if connected?(@socket) do %>
-
   <%= if @live_action in [:new, :edit] do %>
     <%= live_modal @socket, ExCommerceWeb.CatalogueItemOptionGroupLive.FormComponent,
       id: @catalogue_item_option_group.id || :new,
@@ -13,47 +12,67 @@
     %>
   <% end %>
 
-  <div class="p-12">
+  <div class="dashboard-container">
+    <h1 class="user-form section-title-lg">
+      <%= gettext("My Option Groups") %>
+    </h1>
 
-    <h1><%= gettext("Listing Catalogue item option groups") %></h1>
-
-    <p>
-      <%= gettext("Create item option groups for your items. These can be selected as additionals to any item that has an option group.") %>
+    <p class="pb-2 text-lg form-field-description">
+      <%= gettext("Create item option groups to accompany your offered items.") %>
     </p>
 
-    <table>
-      <thead>
-        <tr>
-          <th><%= gettext("Code") %></th>
-          <th><%= gettext("Name") %></th>
-          <th><%= gettext("Multiple selection") %></th>
-          <th><%= gettext("Mandatory") %></th>
-          <th><%= gettext("Multiple selection") %></th>
-          <th><%= gettext("Max selection") %></th>
+    <div class="flex flex-row pb-2">
+      <div class="pt-1">
+        <.icon name={:information_circle} outlined class="
+          text-gray-500
+          flex-shrink-0 h-4 w-4
+        "/>
+      </div>
+      <div class="">
+        <p class="form-field-hint">
+          <%= gettext("These can be selected as additionals to any item that has an option group assigned to it.") %>
+        </p>
+      </div>
+    </div>
 
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="catalogue_item_option_groups">
-        <%= for %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} = catalogue_item_option_group <- @catalogue_item_option_groups do %>
-          <tr id={"catalogue_item_option_group-#{catalogue_item_option_group_id}"}>
-            <td><%= catalogue_item_option_group.code %></td>
-            <td><%= catalogue_item_option_group.name %></td>
-            <td><%= catalogue_item_option_group.mandatory %></td>
-            <td><%= catalogue_item_option_group.multiple_selection %></td>
-            <td><%= catalogue_item_option_group.max_selection %></td>
+    <div id="catalogue_item_option_groups">
+      <%= for %CatalogueItemOptionGroup{id: catalogue_item_option_group_id} = catalogue_item_option_group <- @catalogue_item_option_groups do %>
+        <.list_card id={"catalogue_item_option_group-#{catalogue_item_option_group_id}"}>
+          <:info>
+            <p class="
+              text-base sm:text-lg text-black font-medium
+              text-ellipsis overflow-hidden whitespace-nowrap
+            ">
+              <%= catalogue_item_option_group.name %>
+            </p>
+            <p class="
+              text-base sm:text-base text-black font-normal
+              text-ellipsis overflow-hidden whitespace-nowrap
+            ">
+              <%= catalogue_item_option_group.code %>
+            </p>
+          </:info>
+          <:actions>
+            <span class="px-2">
+              <%= live_redirect to: Routes.catalogue_item_option_group_show_path(@socket, :show, @brand.id, catalogue_item_option_group_id), class: "shadow-lg transition duration-300 scale-100 active:scale-[0.98] active:shadow-none" do %>
+                <.icon outlined={true} name={:eye} class="base-alert-icon text-sky-500 font-normal"/>
+              <% end %>
+            </span>
+            <span class="px-2">
+              <%= live_patch to: Routes.catalogue_item_option_group_index_path(@socket, :edit, @brand.id, catalogue_item_option_group_id), id: "update" do %>
+                <.icon outlined={true} name={:pencil} class="base-alert-icon text-green-500"/>
+              <% end %>
+            </span>
+            <span class="px-2">
+              <%= link to: "#", id: "delete", phx_click: "delete", phx_value_id: catalogue_item_option_group_id, data: [confirm: gettext("Are you sure?")] do %>
+                <.icon outlined={true} name={:trash} class="base-alert-icon text-rose-500"/>
+              <% end %>
+            </span>
+          </:actions>
+        </.list_card>
+      <% end %>
+    </div>
 
-            <td>
-              <span><%= live_redirect gettext("Show"), to: Routes.catalogue_item_option_group_show_path(@socket, :show, @brand.id, catalogue_item_option_group_id) %></span>
-              <span><%= live_patch gettext("Edit"), to: Routes.catalogue_item_option_group_index_path(@socket, :edit, @brand.id, catalogue_item_option_group_id) %></span>
-              <span><%= link gettext("Delete"), to: "#", phx_click: "delete", phx_value_id: catalogue_item_option_group.id, data: [confirm: gettext("Are you sure?")] %></span>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-
-    <span><%= live_patch "+", to: Routes.catalogue_item_option_group_index_path(@socket, :new, @brand.id), class: "button" %></span>
-
+    <.floating_button to={Routes.catalogue_item_option_group_index_path(@socket, :new, @brand.id)} />
   </div>
 <% end %>

@@ -1,0 +1,84 @@
+@layer components {
+  .input {
+    @apply rounded-lg border-gray-300 transition duration-200 focus:ring-sky-600 focus:border-sky-600 h-auto !important;
+  }
+
+  .input-slug {
+    @apply rounded-l-none rounded-r-lg border-gray-300 transition duration-200 focus:ring-sky-600 focus:border-sky-600 h-auto !important;
+  }
+
+  .input.light-bg {
+    @apply bg-gray-100;
+  }
+
+  .disabled-input {
+    @apply rounded-lg border-gray-300 bg-gray-200 h-auto !important;
+  }
+
+  .disabled-input.darker {
+    @apply bg-gray-300 !important;
+  }
+
+  .checkbox {
+    @apply block w-6 h-6 ring-2 ring-gray-300 ring-offset-gray-300 focus:ring-1 focus:ring-gray-300 focus:ring-offset-gray-300 cursor-pointer focus:outline focus:outline-4 !important;
+  }
+
+  .checkbox + label {
+    @apply cursor-pointer;
+  }
+
+  input[type=checkbox]:checked.checkbox.warn {
+    @apply bg-rose-500;
+  }
+}
+
+input[type=checkbox] {
+  background-color: #d1d5db;
+  border: none;
+  border-radius: 25%;
+  color: rgb(2 132 199);
+  outline: none;
+  transition: background .2s,
+    transform .2s;
+}
+
+input[type=checkbox]:hover {
+  transform: scale(1.2);
+}
+
+input[type=checkbox]:focus {
+  background-color: #d1d5db;
+  outline: none;
+  border: none;
+  border-radius: 25%;
+  outline: none;
+}
+
+input[type=checkbox]:checked {
+  background-color: rgb(2 132 199);
+  color: rgb(2 132 199);
+  border-radius: 25%;
+  outline: none;
+}
+
+input[type=radio] + label span,
+input[type=radio] + label span {
+  background-color: #d1d5db;
+  box-shadow: 0px 0px 0px 5px #d1d5db inset;
+  transition: background .2s,
+    transform .2s;
+}
+
+input[type=radio] + label span:hover,
+input[type=radio] + label:hover span {
+  transform: scale(1.2);
+} 
+
+input[type=radio]:checked + label span {
+  background-color: rgb(2 132 199 / var(--tw-text-opacity));
+  box-shadow: 0px 0px 0px 2px #d1d5db inset;
+}
+
+input[type=radio]:checked + label {
+  color: rgb(2 132 199 / var(--tw-text-opacity));
+}

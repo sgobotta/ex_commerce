@@ -4,8 +4,6 @@ defmodule ExCommerce.CatalogueItemsFixtures do
   `ExCommerce.Offerings.CatalogueItem` context.
   """
 
-  alias ExCommerce.BrandsFixtures
-  alias ExCommerce.Marketplaces.Brand
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.CatalogueItem
 

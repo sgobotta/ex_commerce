@@ -5,7 +5,7 @@ defmodule ExCommerce.Checkout do
 
   import Ecto.Query, warn: false
 
-  alias ExCommerce.Checkout.{Cart, Order, OrderItem, Supervisor}
+  alias ExCommerce.Checkout.{Cart, Order, Supervisor}
   alias ExCommerce.Repo
 
   defdelegate child_spec(init_arg), to: Supervisor
@@ -20,7 +20,7 @@ defmodule ExCommerce.Checkout do
   """
   @spec update_cart_order(Cart.t(), Ecto.Changeset.t()) :: Cart.t()
   def update_cart_order(%Cart{} = cart, %Ecto.Changeset{} = changeset) do
-    %Order{} = order = Order.apply(changeset)
+    %Cart.Order{} = order = Cart.Order.apply(changeset)
     Cart.set_order(cart, order)
   end
 
@@ -30,148 +30,209 @@ defmodule ExCommerce.Checkout do
   """
   @spec add_to_order(Cart.t(), Ecto.Changeset.t()) :: Cart.t()
   def add_to_order(%Cart{} = cart, %Ecto.Changeset{} = order_item_cs) do
-    with price <- OrderItem.get_total_price(order_item_cs),
+    with price <- Cart.OrderItem.get_total_price(order_item_cs),
          %Ecto.Changeset{changes: changes, data: data} <-
            __MODULE__.change_order_item(order_item_cs, %{price: price}),
-         %OrderItem{} = order_item <- Map.merge(data, changes) do
+         %Cart.OrderItem{} = order_item <- Map.merge(data, changes) do
       Cart.add_to_order(cart, order_item)
     end
   end
 
   @doc """
-  Given a #{Cart} and an id, removes an #{OrderItem} from the cart order, if
-  exists.
+  Given a #{Cart} and an id, removes an #{Cart.OrderItem} from the cart order,
+  if exists.
   """
   @spec remove_order_item(Cart.t(), String.t()) :: Cart.t()
   def remove_order_item(%Cart{} = cart, order_item_temp_id),
     do: Cart.remove_from_order(cart, order_item_temp_id)
 
   @doc """
-  Given a #{Cart} validates the are order items in the #{Order} to checkout.
+  Given a #{Cart} validates the are order items in the #{Cart.Order} to
+  checkout.
   """
   @spec valid_checkout?(Cart.t()) :: boolean()
-  def valid_checkout?(%Cart{order: %Order{order_items: order_items}}) do
+  def valid_checkout?(%Cart{order: %Cart.Order{order_items: order_items}}) do
     length(order_items) > 0
   end
 
   @doc """
-  Given a #{Cart} returns the amount of totals items in the current #{Order}.
+  Given a #{Cart} returns the amount of totals items in the current
+  #{Cart.Order}.
   """
   @spec get_order_items(Cart.t()) :: non_neg_integer()
-  def get_order_items(%Cart{order: %Order{order_items: order_items}}) do
+  def get_order_items(%Cart{order: %Cart.Order{order_items: order_items}}) do
     order_items
-    |> Enum.reduce(0, fn %OrderItem{quantity: quantity}, acc ->
+    |> Enum.reduce(0, fn %Cart.OrderItem{quantity: quantity}, acc ->
       acc + quantity
     end)
   end
 
   @doc """
-  Given a #{Cart} returns the total price of the current #{Order}.
+  Given a #{Cart} returns the total price of the current #{Cart.Order}.
   """
   @spec get_order_price(Cart.t()) :: ExCommerceNumeric.t()
-  def get_order_price(%Cart{order: %Order{order_items: order_items}}) do
+  def get_order_price(%Cart{order: %Cart.Order{order_items: order_items}}) do
     order_items
-    |> Enum.reduce(0, fn %OrderItem{price: price}, acc ->
+    |> Enum.reduce(0, fn %Cart.OrderItem{price: price}, acc ->
       ExCommerceNumeric.add(acc, price)
     end)
   end
 
-  def get_order_message(%Cart{} = cart) do
-    price = get_order_price(cart)
-    ExCommerceNotification.get_order_message(:whatsapp, cart, price)
+  @doc """
+  Given a `#{Cart}` struct returns a message that represents an order.
+  """
+  @spec get_order_message(Cart.t()) :: String.t()
+  def get_order_message(%Cart{order: %Cart.Order{} = order} = cart) do
+    %Cart.Order{} = order = Cart.Order.apply_price(order, get_order_price(cart))
+
+    %Cart{} = cart = Cart.set_order(cart, order)
+    ExCommerceNotifications.get_order_message(:whatsapp, cart)
+  end
+
+  @doc """
+  Given a `#{Cart.Order}` struct and some `#{Order}` params, returns a tuple
+  with an order or a changeset if the order couldn't be created.
+
+  ## Examples
+
+      iex> Checkout.from_cart_order(%Cart.Order{}, %{
+      ...>   brand_name: "some brand name",
+      ...>   catalogue_name: "some catalogue name",
+      ...>   shop_name: "some shop name"
+      ...>  }
+      ...> )
+      %Order{}
+
+      iex> Checkout.from_cart_order(%Cart.Order{}, %{
+      ...>   brand_name: nil,
+      ...>   catalogue_name: nil,
+      ...>   shop_name: nil
+      ...>  }
+      ...> )
+      %Ecto.Changeset{}
+
+  """
+  @spec from_cart_order(Cart.Order.t(), map()) ::
+          {:ok, Order.t()} | {:error, Ecto.Changeset.t()}
+  def from_cart_order(%Cart.Order{} = cart_order, params \\ %{}) do
+    params =
+      params
+      |> Map.merge(Cart.Order.marshal(cart_order))
+
+    case Order.changeset(%Order{}, params) do
+      %Ecto.Changeset{valid?: false} = cs ->
+        {:error, cs}
+
+      %Ecto.Changeset{valid?: true} = cs ->
+        {:ok, Order.apply(cs)}
+    end
   end
 
   # ---------------------------------------------------------------------------
   # Data Access layer
   #
 
+  # @doc """
+  # Returns the list of order_items.
+
+  # ## Examples
+
+  #     iex> list_order_items()
+  #     [%OrderItem{}, ...]
+
+  # """
+
+  # @spec list_order_items() :: [Cart.OrderItem.t()]
+  # def list_order_items do
+  #   Repo.all(OrderItem)
+  # end
+
+  # @doc """
+  # Gets a single order_item.
+
+  # Raises `Ecto.NoResultsError` if the Order item does not exist.
+
+  # ## Examples
+
+  #     iex> get_order_item!(123)
+  #     %OrderItem{}
+
+  #     iex> get_order_item!(456)
+  #     ** (Ecto.NoResultsError)
+
+  # """
+
+  # @spec get_order_item!(binary()) :: OrderItem.t()
+  # def get_order_item!(id), do: Repo.get!(OrderItem, id)
+
+  # @doc """
+  # Creates a order_item.
+
+  # ## Examples
+
+  #     iex> create_order_item(%{field: value})
+  #     {:ok, %OrderItem{}}
+
+  #     iex> create_order_item(%{field: bad_value})
+  #     {:error, %Ecto.Changeset{}}
+
+  # """
+
+  # @spec create_order_item(map()) ::
+  #         {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
+  # def create_order_item(attrs \\ %{}) do
+  #   %OrderItem{}
+  #   |> OrderItem.changeset(attrs)
+  #   |> Repo.insert()
+  # end
+
+  # @doc """
+  # Updates a order_item.
+
+  # ## Examples
+
+  #     iex> update_order_item(order_item, %{field: new_value})
+  #     {:ok, %OrderItem{}}
+
+  #     iex> update_order_item(order_item, %{field: bad_value})
+  #     {:error, %Ecto.Changeset{}}
+
+  # """
+
+  # @spec update_order_item(OrderItem.t(), map()) ::
+  #         {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
+  # def update_order_item(%OrderItem{} = order_item, attrs) do
+  #   order_item
+  #   |> OrderItem.changeset(attrs)
+  #   |> Repo.update()
+  # end
+
+  # @doc """
+  # Deletes a order_item.
+
+  # ## Examples
+
+  #     iex> delete_order_item(order_item)
+  #     {:ok, %OrderItem{}}
+
+  #     iex> delete_order_item(order_item)
+  #     {:error, %Ecto.Changeset{}}
+
+  # """
+
+  # @spec delete_order_item(OrderItem.t()) ::
+  #         {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
+  # def delete_order_item(%OrderItem{} = order_item) do
+  #   Repo.delete(order_item)
+  # end
+
   @doc """
-  Returns the list of order_items.
-
-  ## Examples
-
-      iex> list_order_items()
-      [%OrderItem{}, ...]
-
+  Returns an `%Ecto.Changeset{}` for tracking cart_order changes.
   """
-  @spec list_order_items() :: [OrderItem.t()]
-  def list_order_items do
-    Repo.all(OrderItem)
-  end
-
-  @doc """
-  Gets a single order_item.
-
-  Raises `Ecto.NoResultsError` if the Order item does not exist.
-
-  ## Examples
-
-      iex> get_order_item!(123)
-      %OrderItem{}
-
-      iex> get_order_item!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  @spec get_order_item!(binary()) :: OrderItem.t()
-  def get_order_item!(id), do: Repo.get!(OrderItem, id)
-
-  @doc """
-  Creates a order_item.
-
-  ## Examples
-
-      iex> create_order_item(%{field: value})
-      {:ok, %OrderItem{}}
-
-      iex> create_order_item(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec create_order_item(map()) ::
-          {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
-  def create_order_item(attrs \\ %{}) do
-    %OrderItem{}
-    |> OrderItem.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a order_item.
-
-  ## Examples
-
-      iex> update_order_item(order_item, %{field: new_value})
-      {:ok, %OrderItem{}}
-
-      iex> update_order_item(order_item, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec update_order_item(OrderItem.t(), map()) ::
-          {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
-  def update_order_item(%OrderItem{} = order_item, attrs) do
-    order_item
-    |> OrderItem.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a order_item.
-
-  ## Examples
-
-      iex> delete_order_item(order_item)
-      {:ok, %OrderItem{}}
-
-      iex> delete_order_item(order_item)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  @spec delete_order_item(OrderItem.t()) ::
-          {:ok, OrderItem.t()} | {:error, Ecto.Changeset.t()}
-  def delete_order_item(%OrderItem{} = order_item) do
-    Repo.delete(order_item)
+  @spec change_cart_order(Cart.Order.t() | Ecto.Changeset.t(), map()) ::
+          Ecto.Changeset.t()
+  def change_cart_order(cart_order, attrs \\ %{}) do
+    Cart.Order.changeset(cart_order, attrs)
   end
 
   @doc """
@@ -183,10 +244,10 @@ defmodule ExCommerce.Checkout do
       %Ecto.Changeset{data: %OrderItem{}}
 
   """
-  @spec change_order_item(OrderItem.t() | Ecto.Changeset.t(), map()) ::
+  @spec change_order_item(Cart.OrderItem.t() | Ecto.Changeset.t(), map()) ::
           Ecto.Changeset.t()
   def change_order_item(order_item, attrs \\ %{}) do
-    OrderItem.changeset(order_item, attrs)
+    Cart.OrderItem.changeset(order_item, attrs)
   end
 
   @doc """
@@ -202,13 +263,12 @@ defmodule ExCommerce.Checkout do
   }
 
   """
-  @spec preload_order_item(OrderItem.t(), [atom()] | keyword()) :: OrderItem.t()
-  def preload_order_item(%OrderItem{} = order_item, []), do: order_item
+  @spec preload_order_item(Cart.OrderItem.t(), [atom()] | keyword()) ::
+          Cart.OrderItem.t()
+  def preload_order_item(%Cart.OrderItem{} = order_item, []), do: order_item
 
-  def preload_order_item(%OrderItem{} = order_item, fields),
+  def preload_order_item(%Cart.OrderItem{} = order_item, fields),
     do: Repo.preload(order_item, fields)
-
-  alias ExCommerce.Checkout.Order
 
   @doc """
   Returns the list of orders.
@@ -313,6 +373,20 @@ defmodule ExCommerce.Checkout do
   end
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for tracking order changes.
+
+  ## Examples
+
+      iex> change_order_details(order)
+      %Ecto.Changeset{data: %Cart.Order{}}
+
+  """
+  @spec change_order_details(Cart.Order.t(), map()) :: Ecto.Changeset.t()
+  def change_order_details(%Cart.Order{} = order, attrs \\ %{}) do
+    Cart.Order.change_details(order, attrs)
+  end
+
+  @doc """
   Returns an #{Order} with the given fields preloaded.
 
   ## Examples
@@ -324,5 +398,6 @@ defmodule ExCommerce.Checkout do
   @spec preload_order(Order.t(), [atom()]) :: Order.t()
   def preload_order(%Order{} = order, []), do: order
 
-  def preload_order(%Order{} = order, fields), do: Repo.preload(order, fields)
+  def preload_order(%Order{} = order, fields),
+    do: Repo.preload(order, fields)
 end

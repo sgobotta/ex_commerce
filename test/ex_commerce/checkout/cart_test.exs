@@ -6,8 +6,7 @@ defmodule ExCommerce.Checkout.CartTest do
   use ExUnit.Case
 
   describe "cart" do
-    alias ExCommerce.Checkout
-    alias ExCommerce.Checkout.{Cart, CartSupervisor, Order, OrderItem}
+    alias ExCommerce.Checkout.{Cart, CartSupervisor}
 
     test "generate_id/2 returns an encoded id" do
       session_id = "123"
@@ -27,7 +26,7 @@ defmodule ExCommerce.Checkout.CartTest do
 
     test "new/1 returns a new Cart struct with an existent server" do
       id = generate_id()
-      order = Checkout.preload_order(%Order{}, [:order_items])
+      order = %Cart.Order{}
       args = [id: id, order: order]
       {:ok, server_pid} = CartSupervisor.start_child(CartSupervisor, args)
 
@@ -47,9 +46,9 @@ defmodule ExCommerce.Checkout.CartTest do
       id = generate_id()
       name = "Some name"
 
-      order = %Order{buyer_name: name}
+      order = %Cart.Order{buyer_name: name}
 
-      %Cart{order: %Order{buyer_name: ^name}} =
+      %Cart{order: %Cart.Order{buyer_name: ^name}} =
         new(id)
         |> Cart.set_order(order)
     end
@@ -58,22 +57,22 @@ defmodule ExCommerce.Checkout.CartTest do
       id = generate_id()
       name = "Some name"
 
-      order = %Order{buyer_name: name}
+      order = %Cart.Order{buyer_name: name}
 
-      %Cart{order: %Order{buyer_name: ^name}} =
+      %Cart{order: %Cart.Order{buyer_name: ^name}} =
         cart =
         new(id)
         |> Cart.set_order(order)
 
-      %Order{buyer_name: ^name} = Cart.get_order(cart)
+      %Cart.Order{buyer_name: ^name} = Cart.get_order(cart)
     end
 
     test "add_to_order/2 returns a new Cart struct with an updated order" do
       id = generate_id()
 
-      %Cart{order: %Order{order_items: [%OrderItem{}]}} =
+      %Cart{order: %Cart.Order{order_items: [%Cart.OrderItem{}]}} =
         new(id)
-        |> Cart.add_to_order(%OrderItem{})
+        |> Cart.add_to_order(%Cart.OrderItem{})
     end
 
     test "remove_from_order/2 returns a new Cart struct with an updated order" do
@@ -81,11 +80,11 @@ defmodule ExCommerce.Checkout.CartTest do
 
       %Cart{} =
         cart =
-        %Cart{order: %Order{order_items: [%OrderItem{}]}} =
+        %Cart{order: %Cart.Order{order_items: [%Cart.OrderItem{}]}} =
         new(id)
-        |> Cart.add_to_order(%OrderItem{temp_id: "123"})
+        |> Cart.add_to_order(%Cart.OrderItem{temp_id: "123"})
 
-      %Cart{order: %Order{order_items: []}} =
+      %Cart{order: %Cart.Order{order_items: []}} =
         Cart.remove_from_order(cart, "123")
     end
 
@@ -94,11 +93,11 @@ defmodule ExCommerce.Checkout.CartTest do
 
       %Cart{} =
         cart =
-        %Cart{order: %Order{order_items: [%OrderItem{}]}} =
+        %Cart{order: %Cart.Order{order_items: [%Cart.OrderItem{}]}} =
         new(id)
-        |> Cart.add_to_order(%OrderItem{temp_id: "123"})
+        |> Cart.add_to_order(%Cart.OrderItem{temp_id: "123"})
 
-      %Cart{order: %Order{order_items: [%OrderItem{}]}} =
+      %Cart{order: %Cart.Order{order_items: [%Cart.OrderItem{}]}} =
         Cart.remove_from_order(cart, "456")
     end
 

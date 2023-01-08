@@ -24,8 +24,8 @@ defmodule ExCommerceWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :ex_commerce,
-    gzip: true,
-    only: ~w(css fonts images js favicon.ico robots.txt uploads)
+    gzip: Mix.env() == :prod,
+    only: ~w(assets fonts images favicon.ico robots.txt uploads)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

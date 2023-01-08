@@ -26,7 +26,8 @@
       @catalogue.id
     ),
     opts: %{
-      cart: @cart
+      cart: @cart,
+      content_classes: "sm:mt-12"
     }
   %>
 <% end %>
@@ -67,7 +68,7 @@
               w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32
               h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32
             ">
-              <div class="absolute -left-10 lg:-left-16">
+              <div class="absolute -left-2/3">
                 <%= for photo <- get_photos(item_photos, [
                   use_placeholder: true,
                   type: :avatar
@@ -110,11 +111,7 @@
               <.link patch={get_item_route(@socket, @brand_slug, @shop_slug, @catalogue, item_id)} class="rounded-xl">
                 <.pill textcolor="text-sky-600"
                   outlined
-                  class="
-                    text-base shadow-button px-2
-                    transition-transform ease-in-out duration-100
-                    active:scale-90 active:shadow-lg
-                  "
+                  class="text-base px-2 pressable"
                 >
                   <%= gettext("Add to order") %>
                 </.pill>

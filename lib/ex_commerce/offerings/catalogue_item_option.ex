@@ -14,8 +14,20 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
 
   import ExCommerceNumeric
 
+  @type t :: %__MODULE__{}
+
   @fields [:price_modifier, :is_visible]
-  @foreign_fields [:brand_id, :catalogue_item_id, :catalogue_item_variant_id]
+  @foreign_fields [
+    :brand_id,
+    :catalogue_item_id,
+    :catalogue_item_variant_id,
+    :catalogue_item_option_group_id
+  ]
+  @required_foreign_fields [
+    :brand_id,
+    :catalogue_item_id,
+    :catalogue_item_variant_id
+  ]
   @virtual_fields [:delete, :price_preview]
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -49,7 +61,7 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
       catalogue_item_option.temp_id || attrs["temp_id"]
     )
     |> cast(attrs, @fields ++ @foreign_fields ++ @virtual_fields)
-    |> validate_required(@fields ++ @foreign_fields)
+    |> validate_required(@fields ++ @required_foreign_fields)
     |> validate_number(:price_modifier, greater_than_or_equal_to: 0)
     |> maybe_mark_for_deletion()
     |> maybe_build_price_preview(attrs)
@@ -57,11 +69,33 @@ defmodule ExCommerce.Offerings.CatalogueItemOption do
 
   @doc """
   Given a `:price` and a `:price_modifier`, returns the applied price.
+
+  TODO: refactor for get_discount_price and deprecate.
   """
   @spec apply_discount(Decimal.t(), Decimal.t()) :: Decimal.t()
   def apply_discount(price, price_modifier) do
     format_price(
       Decimal.sub(price, Decimal.mult(price, Decimal.div(price_modifier, 100)))
+    )
+  end
+
+  @doc """
+  Given a #{__MODULE__} returns the price with discount. If the discount is `0`,
+  the variant price is returned.
+  """
+  @spec get_discount_price(__MODULE__.t()) :: Decimal.t()
+  def get_discount_price(%__MODULE__{
+        catalogue_item_variant: %CatalogueItemVariant{
+          price: variant_price
+        },
+        price_modifier: price_modifier
+      }) do
+    Decimal.sub(
+      variant_price,
+      Decimal.mult(
+        variant_price,
+        Decimal.div(price_modifier, 100)
+      )
     )
   end
 

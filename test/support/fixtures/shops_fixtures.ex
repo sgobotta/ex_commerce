@@ -4,9 +4,8 @@ defmodule ExCommerce.ShopsFixtures do
   `ExCommerce.Marketplaces.Brand` context.
   """
 
-  alias ExCommerce.BrandsFixtures
   alias ExCommerce.Marketplaces
-  alias ExCommerce.Marketplaces.{Brand, Shop}
+  alias ExCommerce.Marketplaces.Shop
 
   import ExCommerce.FixtureHelpers
 
@@ -37,11 +36,6 @@ defmodule ExCommerce.ShopsFixtures do
 
   def valid_attrs(attrs \\ %{}) do
     unique_name = unique_shop_name()
-
-    unique_slug =
-      unique_name
-      |> String.downcase()
-      |> String.replace(" ", "-")
 
     Enum.into(
       attrs,

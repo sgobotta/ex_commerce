@@ -65,7 +65,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
       {:ok, index_live, _html} =
         live(conn, Routes.catalogue_index_path(conn, :index, brand_id))
 
-      assert index_live |> element("a", "+") |> render_click() =~
+      assert index_live |> element("a#new") |> render_click() =~
                "New Catalogue"
 
       assert_patch(
@@ -99,7 +99,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
         live(conn, Routes.catalogue_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element("#catalogue-#{catalogue_id} a", "Edit")
+             |> element("#catalogue-#{catalogue_id} a#update")
              |> render_click() =~
                "Edit Catalogue"
 
@@ -182,7 +182,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
         live(conn, Routes.catalogue_index_path(conn, :index, brand_id))
 
       assert index_live
-             |> element("#catalogue-#{catalogue_id} a", "Delete")
+             |> element("#catalogue-#{catalogue_id} a#delete")
              |> render_click()
 
       refute has_element?(index_live, "#catalogue-#{catalogue_id}")
@@ -209,7 +209,6 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
           Routes.catalogue_show_path(conn, :show, brand_id, catalogue_id)
         )
 
-      assert html =~ "Show Catalogue"
       assert html =~ catalogue_name
     end
 

@@ -7,8 +7,8 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
+  alias ExCommerce.Checkout.Cart
   alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemVariant}
-  alias ExCommerce.Checkout.{Cart, Order, OrderItem}
 
   @impl true
   def update(%{} = assigns, socket) do
@@ -42,14 +42,14 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
 
   defp render_order_items(order_items, assigns) do
     ~H"""
-    <%= for %OrderItem{} = order_item <- order_items do %>
+    <%= for %Cart.OrderItem{} = order_item <- order_items do %>
       <%= render_order_item(order_item, assigns) %>
     <% end %>
     """
   end
 
   defp render_order_item(
-         %OrderItem{
+         %Cart.OrderItem{
            catalogue_item: %CatalogueItem{name: name, photos: photos},
            quantity: quantity,
            price: price,
@@ -112,14 +112,16 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
           col-span-6 lg:col-span-5 row-span-1
           justify-self-end self-center
         ">
-          <.link class="rounded-xl" phx-click="remove_order_item" phx-value-remove={temp_id}>
+          <.link
+            to={"#"}
+            class="rounded-xl"
+            phx-click="remove_order_item"
+            phx-value-remove={temp_id}
+            data={[confirm: gettext("Delete from order?")]}
+          >
             <.pill bgcolor={"bg-white"} textcolor="text-sky-600"
               outlined
-              class="
-                text-base shadow-button px-2
-                transition-transform ease-in-out duration-100
-                active:scale-90 active:shadow-lg
-              "
+              class="text-base px-2 pressable"
             >
               <%= gettext("Remove") %>
             </.pill>
@@ -130,6 +132,8 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
     """
   end
 
-  defp get_order_items(%{cart: %Cart{order: %Order{order_items: order_items}}}),
-    do: order_items
+  defp get_order_items(%{
+         cart: %Cart{order: %Cart.Order{order_items: order_items}}
+       }),
+       do: order_items
 end
