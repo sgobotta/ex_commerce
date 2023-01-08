@@ -259,6 +259,10 @@ defmodule ExCommerceWeb.LiveHelpers do
   end
 
   def title_bar(assigns) do
+    opts =
+      assigns_to_attributes(assigns)
+      |> Keyword.put_new(:color, "text-sky-500")
+
     ~H"""
     <div class="
       sm:flex sm:items-center sm:justify-between
@@ -267,11 +271,11 @@ defmodule ExCommerceWeb.LiveHelpers do
       sm:px-0 lg:px-0 sm:h-16
     ">
       <div class="flex-1 min-w-0">
-        <h1 class="
+        <h1 class={"
           text-2xl font-medium text-sky-600
-          leading-6 text-gray-900
+          leading-6 #{Keyword.fetch!(opts, :color)}
           sm:truncate with-outline
-        ">
+        "}>
           <%= @title %>
         </h1>
       </div>
