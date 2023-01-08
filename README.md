@@ -17,28 +17,14 @@
 </h4>
 
 <p align="center" style="margin-top: 14px;">
-  <a href="https://github.com/sgobotta/ex_commerce/actions/workflows/dialyzer.yml">
+  <a href="https://github.com/sgobotta/ex_commerce/actions/workflows/ci.yml">
     <img
-      src="https://github.com/sgobotta/ex_commerce/actions/workflows/dialyzer.yml/badge.svg"
+      src="https://github.com/sgobotta/ex_commerce/actions/workflows/ci.yml/badge.svg"
       alt="Code Analysis Status"
     >
   </a>
-  <a href="https://github.com/sgobotta/ex_commerce/actions/workflows/test.yml">
-    <img
-      src="https://github.com/sgobotta/ex_commerce/actions/workflows/test.yml/badge.svg"
-      alt="Tests Status"
-    >
-  </a>
-  <a href="https://github.com/sgobotta/ex_commerce/actions/workflows/lint.yml">
-    <img
-      src="https://github.com/sgobotta/ex_commerce/actions/workflows/lint.yml/badge.svg"
-      alt="Code Format Status"
-    >
-  </a>
-</p>
-
-<p align="center" style="margin-top: 14px;">
-  <a href="https://www.codacy.com/gh/sgobotta/ex_commerce/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgobotta/ex_commerce&amp;utm_campaign=Badge_Grade"
+  <a
+    href="https://www.codacy.com/gh/sgobotta/ex_commerce/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgobotta/ex_commerce&amp;utm_campaign=Badge_Grade"
   >
     <img
       src="https://app.codacy.com/project/badge/Grade/5697c08197114d8d918c251be1b5d8a7"
@@ -51,12 +37,7 @@
       alt="Test Coverage Status"
     />
   </a>
-</p>
-
-<p align="center" style="margin-top: 14px;">
-  <a
-    href="https://github.com/sgobotta/ex_commerce/blob/main/LICENSE"
-  >
+  <a href="https://github.com/sgobotta/ex_commerce/blob/main/LICENSE">
     <img
       src="https://img.shields.io/badge/License-GPL%20v3-white.svg"
       alt="License"

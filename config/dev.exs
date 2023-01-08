@@ -123,7 +123,8 @@ config :git_hooks,
     ],
     pre_push: [
       tasks: [
-        {:mix_task, :check}
+        {:mix_task, :check},
+        {:mix_task, :test}
       ]
     ]
   ]
