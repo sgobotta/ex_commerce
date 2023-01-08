@@ -42,12 +42,12 @@
       </div>
     </div>
 
-    <div id="catalogue_items">
+    <div id="catalogue_items snap-mandatory snap-y">
       <%= for %CatalogueItem{id: catalogue_item_id} = catalogue_item <- @catalogue_items do %>
         <div
           id={"catalogue_item-#{catalogue_item_id}"}
           class="
-            card p-1 md:p-2 my-3
+            card p-1 md:p-2 my-3 snap-center
             flex flex-row sm:flex-row md:sm:flex-row lg:sm:flex-row
             transition duration-300 hover:bg-gray-300 hover:shadow-lg
           "
