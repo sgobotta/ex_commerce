@@ -100,11 +100,9 @@
               <div class="col-span-2 sm:col-span-1">
                 <div class="flex flex-row items-center h-full justify-center">
                   <button class="
-                    bg-black h-7 w-7 rounded-lg
-                    hover:shadow-button hover:scale-105
-                    transition-transform ease-in-out duration-100
-                    active:scale-90 active:shadow-lg cursor-pointer
-                    outline-green-600
+                    h-7 w-7 rounded-lg
+                    cursor-pointer pressable
+                    bg-black outline-green-600
                   "
                     phx-click="add_item"
                   >
@@ -129,10 +127,8 @@
                     <button
                       class={"
                         h-7 w-7 rounded-lg
-                        transition-transform ease-in-out duration-100
+                        cursor-pointer pressable
                         bg-black outline-pink-600
-                        active:scale-90 active:shadow-lg cursor-pointer
-                        hover:shadow-button hover:scale-105
                       "}
                       phx-click="remove_item"
                     >
