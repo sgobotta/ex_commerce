@@ -66,6 +66,8 @@
         %>
       </div>
 
+
+
       <%= label f, :code, gettext("Code"), class: "my-2" %>
       <%= text_input f, :code, class: "input light-bg", placeholder: gettext("An internal code: BEER-000 / CONSULTING-000") %>
       <%= error_tag f, :code %>
@@ -86,52 +88,46 @@
       </div>
 
       <div class="">
-        <div class="flex flex-wrap mx-1 overflow-hidden">
-          <div class="px-1 w-2/6">
-            <label class="my-2"><%= gettext("Code") %></label>
-          </div>
-          <div class="px-1 w-2/6">
-            <label class="my-2"><%= gettext("Type") %></label>
-          </div>
-          <div class="px-1 w-1/6">
-            <label class="my-2"><%= gettext("Price") %></label>
-          </div>
-          <div class="px-1 w-1/6 text-center">
-            <label class="my-2"><%= gettext("Delete") %></label>
-          </div>
-        </div>
-
         <%= inputs_for f, :variants, fn v -> %>
-          <div class="flex flex-wrap mx-1 py-2 overflow-hidden">
-            <div class="px-1 w-2/6">
-              <%= text_input v, :code, class: "input light-bg", placeholder: gettext("An internal code: BEER-000-PINT / CONSULTING-000-WITH-TAX") %>
-              <%= error_tag v, :code %>
+          <div class="card p-2 my-4">
+            <div class="flex flex-col md:flex-row">
+              <div class="basis-1/2">
+                <label class=""><%= gettext("Code") %></label>
+                <div class="px-1">
+                  <%= text_input v, :code, class: "input light-bg", placeholder: gettext("An internal code: BEER-000-PINT / CONSULTING-000-WITH-TAX") %>
+                  <%= error_tag v, :code %>
+                </div>
+              </div>
+              <div class="basis-1/2">
+                <label class=""><%= gettext("Type") %></label>
+                <%= text_input v, :type, class: "input light-bg", placeholder: gettext("Product size, weight or kind: 125gr") %>
+                <%= error_tag v, :type %>
+              </div>
             </div>
-
-            <div class="px-1 w-2/6">
-              <%= text_input v, :type, class: "input light-bg", placeholder: gettext("Product size, weight or kind: 125gr") %>
-              <%= error_tag v, :type %>
-            </div>
-
-            <div class="px-1 w-1/6">
-              <%= number_input v, :price, class: "input light-bg" %>
-              <%= error_tag v, :price %>
-            </div>
-
-            <div class="px-1 w-1/6 flex self-center justify-center">
-              <%= if is_nil(v.data.temp_id) do %>
-                <%= checkbox v, :delete, class: "checkbox warn" %>
-              <% else %>
-                <%= hidden_input v, :temp_id %>
-                <a
-                  href="#"
-                  phx-click="remove_variant"
-                  phx-value-remove={v.data.temp_id}
-                  phx-target={@myself}
-                >
-                  &times
-                </a>
-              <% end %>
+            <div class="flex flex-row mt-1">
+              <div class="inline-flex basis-1/2 items-center justify-between">
+                <label class="basis-1/2"><%= gettext("Price") %></label>
+                <div class="px-1 basis-1/2">
+                  <%= number_input v, :price, class: "input light-bg" %>
+                  <%= error_tag v, :price %>
+                </div>
+              </div>
+              <div class="inline-flex basis-1/2 self-center justify-end">
+                <%= if is_nil(v.data.temp_id) do %>
+                  <label class=""><%= gettext("Mark as deleted?") %></label>
+                  <%= checkbox v, :delete, class: "checkbox warn mx-2" %>
+                <% else %>
+                  <%= hidden_input v, :temp_id %>
+                  <a
+                    href="#"
+                    phx-click="remove_variant"
+                    phx-value-remove={v.data.temp_id}
+                    phx-target={@myself}
+                  >
+                    &times
+                  </a>
+                <% end %>
+              </div>
             </div>
           </div>
         <% end %>
