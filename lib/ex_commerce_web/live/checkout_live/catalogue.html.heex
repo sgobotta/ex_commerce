@@ -110,11 +110,7 @@
               <.link patch={get_item_route(@socket, @brand_slug, @shop_slug, @catalogue, item_id)} class="rounded-xl">
                 <.pill textcolor="text-sky-600"
                   outlined
-                  class="
-                    text-base shadow-button px-2
-                    transition-transform ease-in-out duration-100
-                    active:scale-90 active:shadow-lg
-                  "
+                  class="text-base px-2 pressable"
                 >
                   <%= gettext("Add to order") %>
                 </.pill>

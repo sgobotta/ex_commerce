@@ -3,6 +3,10 @@
     @apply h-10	inline-flex items-center rounded-lg border-gray-800 bg-gray-800 text-gray-100 sm:text-base text-base font-normal px-6 shadow-button-sm transition duration-300 hover:border-gray-800 hover:bg-gray-800 hover:shadow-button-sm hover:translate-x-0 hover:translate-y-0 active:translate-x-1 active:translate-y-1 active:shadow-button-xs focus:bg-gray-800 focus:border-gray-800;
   }
 
+  .pressable {
+    @apply shadow-button-sm translate-x-0 translate-y-0 transition duration-300 hover:shadow-button-sm hover:translate-x-0 hover:translate-y-0 active:translate-x-1 active:translate-y-1 active:shadow-button-xs;
+  }
+
   .close-modal-button {
     @apply float-right w-8 h-8 rounded-full bg-gray-800 border-gray-800 hover:bg-gray-600 hover:border-gray-600 hover:shadow-button focus:bg-gray-400 focus:border-gray-400 text-2xl text-gray-100 text-center;
   }

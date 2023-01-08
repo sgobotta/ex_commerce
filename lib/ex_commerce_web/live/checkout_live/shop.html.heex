@@ -115,10 +115,8 @@
               <%= for %Catalogue{id: catalogue_id, name: catalogue_name} <- @shop.catalogues do %>
                 <div class="
                   p-2 my-10 mx-1 rounded-lg text-center
-                  bg-gray-50 shadow-xl
-                  hover:scale-110
-                  transition-transform ease-in-out duration-100
-                  active:scale-75
+                  bg-gray-50
+                  pressable
                 ">
                   <.link
                     patch={Routes.checkout_catalogue_path(
