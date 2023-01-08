@@ -641,8 +641,9 @@ defmodule ExCommerceWeb.LiveHelpers do
     <div class="
       fixed bottom-8 right-8 rounded-lg w-20 h-20
       bg-gray-300
+      bg-gray-800
       flex justify-center items-center
-      shadow-button-sm scale-100
+      shadow-button-md scale-100
       transition duration-300
       hover:translate-x-0 hover:translate-y-0
       focus:shadow-button-sm
@@ -650,7 +651,11 @@ defmodule ExCommerceWeb.LiveHelpers do
     ">
       <%= live_patch to: to, id: "new" do %>
         <.icon
-          class="base-alert-icon text-gray-500 w-16 h-16"
+          class="
+            base-alert-icon w-16 h-16
+            text-gray-200
+            transition duration-300 scale-100 hover:scale-95 active:scale-85
+          "
           name={:plus}
           outlined={true}
         />
