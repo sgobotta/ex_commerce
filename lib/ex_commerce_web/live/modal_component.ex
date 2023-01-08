@@ -8,7 +8,7 @@ defmodule ExCommerceWeb.ModalComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div id={@id} class="phx-modal px-1" phx-remove={hide_modal()}
+    <div id={@id} class="phx-modal" phx-remove={hide_modal()}
       phx-capture-click="close"
       phx-window-keydown="close"
       phx-key="escape"
@@ -16,7 +16,7 @@ defmodule ExCommerceWeb.ModalComponent do
       phx-page-loading>
 
       <div class="
-        phx-modal-content p-0 card relative
+        phx-modal-content sm:rounded-lg p-0 relative
         w-full sm:w-10/12 md:w-8/12 lg:w-8/12
         sm:px-0
       ">
