@@ -112,14 +112,16 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
           col-span-6 lg:col-span-5 row-span-1
           justify-self-end self-center
         ">
-          <.link class="rounded-xl" phx-click="remove_order_item" phx-value-remove={temp_id}>
+          <.link
+            to={"#"}
+            class="rounded-xl"
+            phx-click="remove_order_item"
+            phx-value-remove={temp_id}
+            data={[confirm: gettext("Delete from order?")]}
+          >
             <.pill bgcolor={"bg-white"} textcolor="text-sky-600"
               outlined
-              class="
-                text-base shadow-button px-2
-                transition-transform ease-in-out duration-100
-                active:scale-90 active:shadow-lg
-              "
+              class="text-base px-2 pressable"
             >
               <%= gettext("Remove") %>
             </.pill>
