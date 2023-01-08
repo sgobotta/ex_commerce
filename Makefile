@@ -185,3 +185,9 @@ test.wip.watch: SHELL:=/bin/bash
 test.wip.watch:
 	@echo "🧪👁️  Watching test suites tagged with wip..."
 	@source ${LOCAL_ENV_FILE} && mix test.watch --only wip
+
+#📙 translations: @ Extract new untranslated phrases and merge translations to avaialble languages. This command uses fuzzy auto-generated transaltions, it generally needs a manual update to each language afterwards.
+translations: SHELL:=/bin/bash
+translations:
+	@mix gettext.extract
+	@mix gettext.merge priv/gettext
