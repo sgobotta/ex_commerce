@@ -1,5 +1,5 @@
 @layer base {
-  a, a svg.base-alert-icon, button, input, select, textarea {
+  a svg.base-alert-icon, input, select, textarea {
     @apply focus:ring-0 focus:outline focus:outline-4 focus:outline-sky-500 !important;
   }
 
