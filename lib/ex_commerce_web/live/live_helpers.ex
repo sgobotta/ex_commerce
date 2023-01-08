@@ -38,6 +38,7 @@ defmodule ExCommerceWeb.LiveHelpers do
           class="
             w-6 h-6 inline-block mr-2 rounded-full
             border border-gray-200 flex-no-shrink
+            focus:outline focus:outline-4 focus:outline-sky-500
           "
         />
       </label>
@@ -269,7 +270,7 @@ defmodule ExCommerceWeb.LiveHelpers do
         <h1 class="
           text-2xl font-medium text-sky-600
           leading-6 text-gray-900
-          sm:truncate focus:outline-none
+          sm:truncate with-outline
         ">
           <%= @title %>
         </h1>
@@ -599,17 +600,17 @@ defmodule ExCommerceWeb.LiveHelpers do
           assigns
           |> assign(
             :bgcolor,
-            assigns.bgcolor <>
-              " outline outline-1 outline-offset-0 outline-sky-600"
+            assigns.bgcolor
           )
       end
 
     ~H"""
     <p class={"
-      p-1 rounded-xl
+      p-1 rounded-lg
       #{@class} #{@bgcolor} #{@textcolor} #{@textsize}
 
       text-ellipsis overflow-hidden whitespace-nowrap
+      focus:outline focus:outline-4
     "}>
       <%= render_slot(@inner_block) %>
     </p>
