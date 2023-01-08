@@ -21,7 +21,6 @@ defmodule ExCommerceWeb.MountHelpers do
   alias ExCommerce.Repo
   alias ExCommerceWeb.Router.Helpers, as: Routes
 
-  @default_locale "en"
   @default_timezone "UTC"
   @default_timezone_offset 0
 
