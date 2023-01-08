@@ -48,7 +48,7 @@ config :phoenix, :json_library, Jason
 #
 
 config :ex_commerce, ExCommerceWeb.Cldr,
-  # a single locale, for fast compilation in dev / tes
+  # a single locale, for fast compilation in dev / test
   locales: ["en"]
 
 config :ex_cldr,

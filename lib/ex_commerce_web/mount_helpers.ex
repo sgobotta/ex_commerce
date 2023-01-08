@@ -37,7 +37,7 @@ defmodule ExCommerceWeb.MountHelpers do
   def assign_defaults(socket, params, session) do
     socket
     |> assign_user(session)
-    |> assign_locale()
+    |> assign_locale(session)
     |> assign_timezone()
     |> assign_timezone_offset()
     |> assign_navigation_helpers(params)
@@ -52,10 +52,10 @@ defmodule ExCommerceWeb.MountHelpers do
   Mount helper to assign defaults values to the socket. Includes: `%User{}` and
   browser locale, timezone and timezone offset.
   """
-  def assign_public_defaults(socket, params, _session) do
+  def assign_public_defaults(socket, params, session) do
     socket
     |> assign_user(%{})
-    |> assign_locale()
+    |> assign_locale(session)
     |> assign_timezone()
     |> assign_timezone_offset()
     |> assign_navigation_helpers(params)
@@ -483,9 +483,9 @@ defmodule ExCommerceWeb.MountHelpers do
     |> assign_new(:user, fn -> user end)
   end
 
-  defp assign_locale(socket) do
-    locale = get_connect_params(socket)["locale"] || @default_locale
-    assign(socket, locale: locale)
+  defp assign_locale(socket, %{"locale" => locale}) do
+    Gettext.put_locale(Gettext, locale)
+    socket
   end
 
   defp assign_timezone(socket) do
