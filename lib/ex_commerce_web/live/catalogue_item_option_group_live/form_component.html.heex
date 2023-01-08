@@ -3,7 +3,7 @@
     <.title_bar title={@title} />
   </div>
 
-  <div class="px-6 py-2">
+  <div class="px-2 sm:px-6 py-2">
     <%= form_for @changeset, "#", [
         id: "catalogue_item_option_group-form",
         phx_target: @myself,
@@ -70,94 +70,86 @@
       </div>
 
       <div class="">
-        <div class="flex flex-wrap mx-1 overflow-hidden">
-          <div class="px-3 w-1/12 text-center">
-            <label class="my-2"><%= gettext("Visible?") %></label>
-          </div>
-          <div class="px-3 w-2/12">
-            <label class="my-2"><%= gettext("Price % discount") %></label>
-          </div>
-          <div class="px-3 w-2/12">
-            <label class="my-2"><%= gettext("Price Preview") %></label>
-          </div>
-          <div class="px-3 w-3/12">
-            <label class="my-2"><%= gettext("Catalogue Item") %></label>
-          </div>
-          <div class="px-3 w-3/12">
-            <label class="my-2"><%= gettext("Item Variant") %></label>
-          </div>
-          <div class="px-3 w-1/12 text-center">
-            <label class="my-2"><%= gettext("Delete") %></label>
-          </div>
-        </div>
-
         <%= inputs_for f, :options, fn o -> %>
-          <div class="flex flex-wrap mx-1 py-2 overflow-hidden">
-            <div class="px-3 w-1/12 flex self-center justify-center">
-              <%= checkbox o, :is_visible, class: "checkbox" %>
-              <%= error_tag o, :is_visible %>
-            </div>
+          <div class="card p-2 my-4">
+            <div class="flex flex-col sm:flex-row">
+              <div class="flex flex-col">
+                <div class="">
+                  <label class=""><%= gettext("Catalogue Item") %></label>
+                  <%=
+                    options = build_catalogue_item_options(@catalogue_items)
+                    select o, :catalogue_item_id, options,
+                      prompt: get_catalogue_items_prompt(options, o),
+                      selected: get_selected_catalogue_item(options),
+                      disabled: is_catalogue_item_disabled(options),
+                      class: "w-full input px-4 light-bg"
+                  %>
+                  <%= error_tag o, :catalogue_item_id %>
+                </div>
 
-            <div class="px-3 w-2/12">
-              <%= number_input o, :price_modifier,
-                    step: 1,
-                    min: 0,
-                    max: 100,
-                    class: "input light-bg"
-              %>
-              <%= error_tag o, :price_modifier %>
+                <div class="my-2">
+                  <label class=""><%= gettext("Item Variant") %></label>
+                  <%=
+                    options = get_catalogue_item_variant_options(
+                      @changeset,
+                      @catalogue_items,
+                      o
+                    )
+                    select o, :catalogue_item_variant_id, options,
+                      prompt: get_catalogue_item_variant_prompt(options, o),
+                      selected: nil,
+                      disabled: is_catalogue_item_variant_disabled(options, o),
+                      class: "w-full input light-bg px-4"
+                  %>
+                  <%= error_tag o, :catalogue_item_variant_id %>
+                </div>
+              </div>
+              <div class="
+                flex flex-row sm:flex-col items-center sm:items-stretch sm:justify-between
+                sm:mx-1 my-2
+              ">
+                <label class="basis-1/3"><%= gettext("Discount %") %></label>
+                <div class="basis-1/3 mx-1 sm:mb-1">
+                  <%= number_input o, :price_modifier,
+                        step: 1,
+                        min: 0,
+                        max: 100,
+                        class: "input light-bg"
+                  %>
+                  <%= error_tag o, :price_modifier %>
+                </div>
+                <div class="basis-1/3 mx-1">
+                  <%= number_input o, :price_preview, class: "disabled-input darker", disabled: true %>
+                  <%= error_tag o, :price_preview %>
+                </div>
+              </div>
             </div>
-
-            <div class="px-3 w-2/12">
-              <%= number_input o, :price_preview, class: "disabled-input", disabled: true %>
-              <%= error_tag o, :price_preview %>
-            </div>
-
-            <div class="px-3 w-3/12">
-              <%=
-                options = build_catalogue_item_options(@catalogue_items)
-                select o, :catalogue_item_id, options,
-                  prompt: get_catalogue_items_prompt(options, o),
-                  selected: get_selected_catalogue_item(options),
-                  disabled: is_catalogue_item_disabled(options),
-                  class: "w-full input px-4 light-bg"
-              %>
-              <%= error_tag o, :catalogue_item_id %>
-            </div>
-
-            <div class="px-3 w-3/12">
-              <%=
-                options = get_catalogue_item_variant_options(
-                  @changeset,
-                  @catalogue_items,
-                  o
-                )
-                select o, :catalogue_item_variant_id, options,
-                  prompt: get_catalogue_item_variant_prompt(options, o),
-                  selected: nil,
-                  disabled: is_catalogue_item_variant_disabled(options, o),
-                  class: "w-full input light-bg px-4"
-              %>
-              <%= error_tag o, :catalogue_item_variant_id %>
-            </div>
-
-            <div class="px-3 w-1/12 flex self-center justify-center">
-              <%= if is_nil(o.data.temp_id) do %>
-                <%= checkbox o, :delete, class: "checkbox warn" %>
-              <% else %>
-                <%= hidden_input o, :temp_id %>
-                <a
-                  href="#"
-                  phx-click="remove_option"
-                  phx-value-remove={o.data.temp_id}
-                  phx-target={@myself}
-                >
-                  <.icon name={:trash} outlined class="
-                    text-rose-500
-                    flex-shrink-0 h-8 w-8
-                  "/>
-                </a>
-              <% end %>
+            <div class="flex flex-row">
+              <div class="inline-flex basis-1/2">
+                <label class=""><%= gettext("Visible?") %></label>
+                <%= checkbox o, :is_visible, class: "checkbox mx-2" %>
+                <%= error_tag o, :is_visible %>
+              </div>
+              <div class="inline-flex basis-1/2 justify-end">
+                <%= if is_nil(o.data.temp_id) do %>
+                  <label class=""><%= gettext("Mark as deleted?") %></label>
+                  <%= checkbox o, :delete, class: "checkbox warn mx-2" %>
+                <% else %>
+                  <%= hidden_input o, :temp_id %>
+                  <a
+                    class="mx-2"
+                    href="#"
+                    phx-click="remove_option"
+                    phx-value-remove={o.data.temp_id}
+                    phx-target={@myself}
+                  >
+                    <.icon name={:trash} outlined class="
+                      text-rose-500
+                      flex-shrink-0 h-8 w-8
+                    "/>
+                  </a>
+                <% end %>
+              </div>
             </div>
           </div>
         <% end %>

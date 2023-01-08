@@ -15,6 +15,10 @@
     @apply rounded-lg border-gray-300 bg-gray-200 h-auto !important;
   }
 
+  .disabled-input.darker {
+    @apply bg-gray-300 !important;
+  }
+
   .checkbox {
     @apply block w-6 h-6 ring-2 ring-gray-300 ring-offset-gray-300 focus:ring-1 focus:ring-gray-300 focus:ring-offset-gray-300 cursor-pointer !important;
   }
