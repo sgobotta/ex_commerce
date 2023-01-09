@@ -290,14 +290,14 @@ defmodule ExCommerceWeb.LiveHelpers do
     ~H"""
     <div
       id="connection-status"
-      class="base-alert hidden bg-red-50 fade-in-scale"
+      class="w-[98%] base-alert hidden bg-rose-100 fade-in-scale"
       js-show={show("#connection-status")}
       js-hide={hide("#connection-status")}
     >
       <div class="flex">
         <div class="flex-shrink-0">
           <svg
-            class="base-alert-icon animate-spin -ml-1 mr-3 text-red-800"
+            class="base-alert-icon animate-spin -ml-1 mr-3 text-rose-500"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -320,7 +320,7 @@ defmodule ExCommerceWeb.LiveHelpers do
         </div>
         <div class="ml-3">
           <p
-            class="text-xl font-medium text-red-800"
+            class="text-xl font-medium text-rose-500"
             role="alert"
           >
             <%= render_slot(@inner_block) %>
