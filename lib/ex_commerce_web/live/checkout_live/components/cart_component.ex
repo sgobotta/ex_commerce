@@ -22,7 +22,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
     ~H"""
     <div class="">
       <div class="px-4">
-        <.title_bar title="Order Items" />
+        <.title_bar title={gettext("Order Items")} />
       </div>
 
       <div class="px-6 py-2">
@@ -59,7 +59,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
          assigns
        ) do
     ~H"""
-    <div class="lg:col-span-1 flex">
+    <div class="lg:col-span-1 flex sm:-ml-4 md:-ml-8 lg:-ml-4 xl:-ml-8 2xl:-ml-12 3xl:-ml-16">
       <div class="basis-1/12 self-center">
       </div>
       <div class="
@@ -84,48 +84,57 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
             <% end %>
           </div>
         </div>
-        <div class="col-span-10 lg:col-span-9 row-span-1">
-          <p class="
-            text-xl text-black font-medium
-            text-ellipsis overflow-hidden whitespace-nowrap
-          ">
-          (<%= quantity %>) <%= name %>
-          </p>
-        </div>
-        <div class="col-span-10 lg:col-span-9 row-span-1">
-          <p class="
-            text-base text-gray-700
-            text-ellipsis overflow-hidden whitespace-nowrap
-          ">
-            <%= type %>
-          </p>
-        </div>
-        <div class="col-span-5 lg:col-span-5 row-span-1 self-center">
-          <p class="
-            tracking-wider font-bold text-xl text-sky-600
-            text-ellipsis overflow-hidden whitespace-nowrap
-          ">
-            $<%= price %>
-          </p>
-        </div>
         <div class="
-          col-span-6 lg:col-span-5 row-span-1
-          justify-self-end self-center
+          col-span-10 lg:col-span-9 row-span-3
+          sm:ml-4 md:ml-8 lg:-ml-4 xl:-ml-8 2xl:-ml-12 3xl:-ml-20
+          -mr-8 sm:-mr-8 md:-mr-8 lg:-mr-12 xl:-mr-16 2xl:-mr-16 3xl:-mr-20
+          flex flex-col justify-between
         ">
-          <.link
-            to={"#"}
-            class="rounded-xl"
-            phx-click="remove_order_item"
-            phx-value-remove={temp_id}
-            data={[confirm: gettext("Delete from order?")]}
-          >
-            <.pill bgcolor={"bg-white"} textcolor="text-sky-600"
-              outlined
-              class="text-base px-2 pressable"
-            >
-              <%= gettext("Remove") %>
-            </.pill>
-          </.link>
+          <div class="">
+            <p class="
+              text-base text-black font-medium
+              text-ellipsis overflow-hidden whitespace-nowrap
+            ">
+            (<%= quantity %>) <%= name %>
+            </p>
+          </div>
+          <div class="">
+            <p class="
+              text-base text-gray-700 font-normal
+              text-ellipsis overflow-hidden whitespace-nowrap
+            ">
+              <%= type %>
+            </p>
+          </div>
+          <div class="flex flex-row justify-between items-center">
+            <div class="self-center">
+              <p class="
+                tracking-wider font-bold text-xl text-sky-600
+                text-ellipsis overflow-hidden whitespace-nowrap
+              ">
+                $<%= price %>
+              </p>
+            </div>
+            <div class="
+
+              justify-self-end self-center
+            ">
+              <.link
+                to={"#"}
+                class="rounded-xl"
+                phx-click="remove_order_item"
+                phx-value-remove={temp_id}
+                data={[confirm: gettext("Delete from order?")]}
+              >
+                <.pill bgcolor={"bg-white"} textcolor="text-sky-600"
+                  outlined
+                  class="text-base px-2 pressable"
+                >
+                  <%= gettext("Remove") %>
+                </.pill>
+              </.link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

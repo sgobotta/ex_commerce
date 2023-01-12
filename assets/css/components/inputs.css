@@ -1,6 +1,6 @@
 @layer components {
   .input {
-    @apply rounded-lg border-gray-300 transition duration-200 focus:ring-sky-600 focus:border-sky-600 h-auto !important;
+    @apply rounded-lg border-gray-300 transition duration-200 h-auto !important;
   }
 
   .input-slug {
@@ -37,7 +37,6 @@ input[type=checkbox] {
   border: none;
   border-radius: 25%;
   color: rgb(2 132 199);
-  outline: none;
   transition: background .2s,
     transform .2s;
 }
@@ -48,17 +47,14 @@ input[type=checkbox]:hover {
 
 input[type=checkbox]:focus {
   background-color: #d1d5db;
-  outline: none;
   border: none;
   border-radius: 25%;
-  outline: none;
 }
 
 input[type=checkbox]:checked {
   background-color: rgb(2 132 199);
   color: rgb(2 132 199);
   border-radius: 25%;
-  outline: none;
 }
 
 input[type=radio] + label span,

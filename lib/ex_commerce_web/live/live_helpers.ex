@@ -38,6 +38,7 @@ defmodule ExCommerceWeb.LiveHelpers do
           class="
             w-6 h-6 inline-block mr-2 rounded-full
             border border-gray-200 flex-no-shrink
+            focus:outline focus:outline-4 focus:outline-sky-500
           "
         />
       </label>
@@ -258,6 +259,10 @@ defmodule ExCommerceWeb.LiveHelpers do
   end
 
   def title_bar(assigns) do
+    opts =
+      assigns_to_attributes(assigns)
+      |> Keyword.put_new(:color, "text-sky-500")
+
     ~H"""
     <div class="
       sm:flex sm:items-center sm:justify-between
@@ -266,11 +271,11 @@ defmodule ExCommerceWeb.LiveHelpers do
       sm:px-0 lg:px-0 sm:h-16
     ">
       <div class="flex-1 min-w-0">
-        <h1 class="
+        <h1 class={"
           text-2xl font-medium text-sky-600
-          leading-6 text-gray-900
-          sm:truncate focus:outline-none
-        ">
+          leading-6 #{Keyword.fetch!(opts, :color)}
+          sm:truncate with-outline
+        "}>
           <%= @title %>
         </h1>
       </div>
@@ -285,14 +290,14 @@ defmodule ExCommerceWeb.LiveHelpers do
     ~H"""
     <div
       id="connection-status"
-      class="base-alert hidden bg-red-50 fade-in-scale"
+      class="w-[98%] base-alert hidden bg-rose-100 fade-in-scale"
       js-show={show("#connection-status")}
       js-hide={hide("#connection-status")}
     >
       <div class="flex">
         <div class="flex-shrink-0">
           <svg
-            class="base-alert-icon animate-spin -ml-1 mr-3 text-red-800"
+            class="base-alert-icon animate-spin -ml-1 mr-3 text-rose-500"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -315,7 +320,7 @@ defmodule ExCommerceWeb.LiveHelpers do
         </div>
         <div class="ml-3">
           <p
-            class="text-xl font-medium text-red-800"
+            class="text-xl font-medium text-rose-500"
             role="alert"
           >
             <%= render_slot(@inner_block) %>
@@ -599,17 +604,17 @@ defmodule ExCommerceWeb.LiveHelpers do
           assigns
           |> assign(
             :bgcolor,
-            assigns.bgcolor <>
-              " outline outline-1 outline-offset-0 outline-sky-600"
+            assigns.bgcolor
           )
       end
 
     ~H"""
     <p class={"
-      p-1 rounded-xl
+      p-1 rounded-lg
       #{@class} #{@bgcolor} #{@textcolor} #{@textsize}
 
       text-ellipsis overflow-hidden whitespace-nowrap
+      focus:outline focus:outline-4
     "}>
       <%= render_slot(@inner_block) %>
     </p>

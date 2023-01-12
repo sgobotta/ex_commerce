@@ -27,7 +27,7 @@
     href="https://www.codacy.com/gh/sgobotta/ex_commerce/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgobotta/ex_commerce&amp;utm_campaign=Badge_Grade"
   >
     <img
-      src="https://app.codacy.com/project/badge/Grade/5697c08197114d8d918c251be1b5d8a7"
+      src="https://app.codacy.com/project/badge/Grade/3e15a3b02af74d50b9b1be071ebb9110"
       alt="Code Quality Status"
       />
     </a>

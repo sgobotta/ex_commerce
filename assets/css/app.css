@@ -8,6 +8,7 @@
 @import "./widgets/collapsables.css";
 @import "./widgets/scrollbar.css";
 
+@import "./base/base.css";
 @import "./base/fonts.css";
 @import "./base/forms.css";
 @import "./base/tables.css";

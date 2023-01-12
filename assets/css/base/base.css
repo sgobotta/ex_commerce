@@ -1,0 +1,9 @@
+@layer base {
+  a svg.base-alert-icon, input, select, textarea {
+    @apply focus:ring-0 focus:outline focus:outline-4 focus:outline-sky-500 !important;
+  }
+
+  .with-outline {
+    @apply focus:outline focus:outline-4 focus:outline-sky-500 !important;
+  }
+}

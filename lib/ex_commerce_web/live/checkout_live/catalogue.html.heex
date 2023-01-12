@@ -27,7 +27,7 @@
     ),
     opts: %{
       cart: @cart,
-      content_classes: "sm:mt-12"
+      content_classes: "mt-12"
     }
   %>
 <% end %>
@@ -108,10 +108,16 @@
               col-span-6 lg:col-span-5 row-span-1
               justify-self-end self-center
             ">
-              <.link patch={get_item_route(@socket, @brand_slug, @shop_slug, @catalogue, item_id)} class="rounded-xl">
-                <.pill textcolor="text-sky-600"
+              <.link
+                class="rounded-lg"
+                patch={get_item_route(@socket, @brand_slug, @shop_slug, @catalogue, item_id)}
+                tabindex="1"
+              >
+                <.pill
+                  textcolor="text-sky-600"
+                  bgcolor="bg-gray-200"
                   outlined
-                  class="text-base px-2 pressable"
+                  class="px-2 text-base pressable"
                 >
                   <%= gettext("Add to order") %>
                 </.pill>
