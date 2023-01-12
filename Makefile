@@ -150,11 +150,11 @@ server:
 #🐳 start: @ Starts docker-compose services
 start: SHELL:=/bin/bash
 start:
-	@source .env && docker-compose up -d
+	@source .env && tilt up
 
 #🐳 stop: @ Shuts down docker-compose services
 stop:
-	@docker-compose down
+	@tilt down
 
 #🧪 test: @ Runs all test suites
 test: MIX_ENV=test
