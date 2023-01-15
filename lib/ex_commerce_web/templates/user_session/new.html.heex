@@ -18,6 +18,8 @@
         <%= checkbox f, :remember_me, class: "checkbox mx-2" %>
       </div>
 
+      <%= raw Recaptcha.Template.display() %>
+
       <div class="flex justify-end my-6">
         <%= submit gettext("Log in"), class: "button" %>
       </div>
