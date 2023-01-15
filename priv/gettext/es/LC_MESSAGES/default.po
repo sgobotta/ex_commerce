@@ -91,16 +91,16 @@ msgstr ""
 msgid "Add an option"
 msgstr ""
 
-#: lib/ex_commerce_web/live/checkout_live/catalogue.html.heex:174
+#: lib/ex_commerce_web/live/checkout_live/catalogue.html.heex:180
 #: lib/ex_commerce_web/live/checkout_live/order.ex:231
 #: lib/ex_commerce_web/live/checkout_live/order_details.ex:234
 #, elixir-autogen, elixir-format
 msgid "Add products to your order"
 msgstr ""
 
-#: lib/ex_commerce_web/live/checkout_live/catalogue.html.heex:116
-#: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:336
-#: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:362
+#: lib/ex_commerce_web/live/checkout_live/catalogue.html.heex:122
+#: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:332
+#: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:358
 #: lib/ex_commerce_web/live/places/show.html.heex:184
 #, elixir-autogen, elixir-format
 msgid "Add to order"
@@ -374,7 +374,7 @@ msgstr ""
 msgid "Characterized by floral, fruity, citrus-like, piney, resinous American hops"
 msgstr ""
 
-#: lib/ex_commerce_web/live/checkout_live/catalogue.html.heex:158
+#: lib/ex_commerce_web/live/checkout_live/catalogue.html.heex:164
 #, elixir-autogen, elixir-format
 msgid "Checkout"
 msgstr ""
@@ -395,12 +395,12 @@ msgstr ""
 msgid "Choose a banner picture"
 msgstr ""
 
-#: lib/ex_commerce_web/mount_helpers.ex:91
+#: lib/ex_commerce_web/mount_helpers.ex:90
 #, elixir-autogen, elixir-format
 msgid "Choose a brand"
 msgstr ""
 
-#: lib/ex_commerce_web/mount_helpers.ex:175
+#: lib/ex_commerce_web/mount_helpers.ex:174
 #, elixir-autogen, elixir-format
 msgid "Choose a catalogue"
 msgstr ""
@@ -410,7 +410,7 @@ msgstr ""
 msgid "Choose a picture"
 msgstr ""
 
-#: lib/ex_commerce_web/mount_helpers.ex:120
+#: lib/ex_commerce_web/mount_helpers.ex:119
 #, elixir-autogen, elixir-format
 msgid "Choose a shop"
 msgstr ""
@@ -420,7 +420,7 @@ msgstr ""
 msgid "Choose an item picture"
 msgstr ""
 
-#: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:161
+#: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:157
 #, elixir-autogen, elixir-format
 msgid "Choose one of the folowing"
 msgstr ""
@@ -568,7 +568,7 @@ msgstr ""
 msgid "Current password"
 msgstr ""
 
-#: lib/ex_commerce_web/live/checkout_live/components/cart_component.ex:120
+#: lib/ex_commerce_web/live/checkout_live/components/cart_component.ex:127
 #, elixir-autogen, elixir-format
 msgid "Delete from order?"
 msgstr ""
@@ -721,7 +721,7 @@ msgid "File size can be up to 2 MB. Use wide images."
 msgstr ""
 
 #: lib/ex_commerce_web/templates/user_reset_password/new.html.heex:3
-#: lib/ex_commerce_web/templates/user_session/new.html.heex:27
+#: lib/ex_commerce_web/templates/user_session/new.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Forgot your password?"
 msgstr ""
@@ -814,7 +814,7 @@ msgstr ""
 #: lib/ex_commerce_web/templates/user_registration/new.html.heex:32
 #: lib/ex_commerce_web/templates/user_reset_password/edit.html.heex:27
 #: lib/ex_commerce_web/templates/user_reset_password/new.html.heex:16
-#: lib/ex_commerce_web/templates/user_session/new.html.heex:22
+#: lib/ex_commerce_web/templates/user_session/new.html.heex:24
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Log in"
@@ -992,7 +992,7 @@ msgid "Optional"
 msgstr ""
 
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.html.heex:53
-#: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:204
+#: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:200
 #: lib/ex_commerce_web/live/places/show.html.heex:281
 #, elixir-autogen, elixir-format
 msgid "Options"
@@ -1091,13 +1091,13 @@ msgstr ""
 #: lib/ex_commerce_web/templates/user_registration/new.html.heex:26
 #: lib/ex_commerce_web/templates/user_reset_password/edit.html.heex:26
 #: lib/ex_commerce_web/templates/user_reset_password/new.html.heex:15
-#: lib/ex_commerce_web/templates/user_session/new.html.heex:26
+#: lib/ex_commerce_web/templates/user_session/new.html.heex:28
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:81
 #, elixir-autogen, elixir-format
 msgid "Register"
 msgstr ""
 
-#: lib/ex_commerce_web/live/checkout_live/components/cart_component.ex:126
+#: lib/ex_commerce_web/live/checkout_live/components/cart_component.ex:133
 #, elixir-autogen, elixir-format
 msgid "Remove"
 msgstr ""
@@ -1319,37 +1319,37 @@ msgstr ""
 msgid "The cart is empty"
 msgstr ""
 
-#: lib/ex_commerce_web/mount_helpers.ex:511
+#: lib/ex_commerce_web/mount_helpers.ex:510
 #, elixir-autogen, elixir-format
 msgid "The given brand could not be found"
 msgstr ""
 
-#: lib/ex_commerce_web/mount_helpers.ex:531
+#: lib/ex_commerce_web/mount_helpers.ex:530
 #, elixir-autogen, elixir-format
 msgid "The given catalogue category could not be found"
 msgstr ""
 
-#: lib/ex_commerce_web/mount_helpers.ex:523
+#: lib/ex_commerce_web/mount_helpers.ex:522
 #, elixir-autogen, elixir-format
 msgid "The given catalogue could not be found"
 msgstr ""
 
-#: lib/ex_commerce_web/mount_helpers.ex:540
+#: lib/ex_commerce_web/mount_helpers.ex:539
 #, elixir-autogen, elixir-format
 msgid "The given catalogue item could not be found"
 msgstr ""
 
-#: lib/ex_commerce_web/mount_helpers.ex:549
+#: lib/ex_commerce_web/mount_helpers.ex:548
 #, elixir-autogen, elixir-format
 msgid "The given catalogue item option group could not be found"
 msgstr ""
 
-#: lib/ex_commerce_web/mount_helpers.ex:517
+#: lib/ex_commerce_web/mount_helpers.ex:516
 #, elixir-autogen, elixir-format
 msgid "The given shop could not be found"
 msgstr ""
 
-#: lib/ex_commerce_web/mount_helpers.ex:194
+#: lib/ex_commerce_web/mount_helpers.ex:193
 #, elixir-autogen, elixir-format
 msgid "The item could not be found, please choose another one."
 msgstr ""
@@ -1405,7 +1405,7 @@ msgid "User confirmed successfully."
 msgstr ""
 
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:84
-#: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:150
+#: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:146
 #, elixir-autogen, elixir-format
 msgid "Variants"
 msgstr ""
@@ -1431,13 +1431,13 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: lib/ex_commerce_web/controllers/user_auth.ex:216
+#: lib/ex_commerce_web/controllers/user_auth.ex:239
 #, elixir-autogen, elixir-format
 msgid "You must confirm your email to access this page."
 msgstr ""
 
-#: lib/ex_commerce_web/controllers/user_auth.ex:202
-#: lib/ex_commerce_web/controllers/user_auth.ex:244
+#: lib/ex_commerce_web/controllers/user_auth.ex:225
+#: lib/ex_commerce_web/controllers/user_auth.ex:267
 #, elixir-autogen, elixir-format
 msgid "You must log in to access this page."
 msgstr ""
@@ -1484,4 +1484,59 @@ msgstr ""
 #: lib/ex_commerce_web/live/places/show.ex:82
 #, elixir-autogen, elixir-format
 msgid "[Shop Name]"
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_settings_controller.ex:32
+#, elixir-autogen, elixir-format
+msgid "A link to confirm your email change has been sent to the new address."
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_settings_controller.ex:70
+#, elixir-autogen, elixir-format
+msgid "Email change link is invalid or it has expired."
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_settings_controller.ex:63
+#, elixir-autogen, elixir-format
+msgid "Email changed successfully."
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_session_controller.ex:30
+#, elixir-autogen, elixir-format
+msgid "Invalid Captcha"
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_auth.ex:107
+#, elixir-autogen, elixir-format
+msgid "Invalid captcha"
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_session_controller.ex:22
+#, elixir-autogen, elixir-format
+msgid "Invalid email or password"
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_session_controller.ex:46
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Logged out successfully."
+msgstr ""
+
+#: lib/ex_commerce_web/live/checkout_live/components/cart_component.ex:25
+#, elixir-autogen, elixir-format
+msgid "Order Items"
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_settings_controller.ex:50
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Password updated successfully."
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_registration_controller.ex:25
+#, elixir-autogen, elixir-format
+msgid "Please check %{email} inbox."
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_session_controller.ex:37
+#, elixir-autogen, elixir-format
+msgid "Something's wrong, please try again later or contact support,"
 msgstr ""

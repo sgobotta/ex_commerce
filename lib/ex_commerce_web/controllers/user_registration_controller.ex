@@ -20,7 +20,10 @@ defmodule ExCommerceWeb.UserRegistrationController do
           )
 
         conn
-        |> put_flash(:info, "Please check #{user.email} inbox.")
+        |> put_flash(
+          :info,
+          gettext("Please check %{email} inbox.", email: user.email)
+        )
         |> put_session(
           :user_return_to,
           Routes.user_settings_path(conn, :email_sent)
