@@ -6,4 +6,8 @@
   .with-outline {
     @apply focus:outline focus:outline-4 focus:outline-sky-500 !important;
   }
+
+  .with-outline-sm {
+    @apply focus:outline focus:outline-2 focus:outline-sky-500 !important;
+  }
 }
