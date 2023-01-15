@@ -34,7 +34,7 @@ defmodule ExCommerce.MixProject do
   def application do
     [
       mod: {ExCommerce.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :recaptcha, :runtime_tools]
     ]
   end
 
@@ -86,8 +86,9 @@ defmodule ExCommerce.MixProject do
       {:cloudex,
        git: "https://github.com/sgobotta/cloudex.git", branch: "main"},
       # Others
-      {:tzdata, "~> 1.0.0"},
-      {:decimal, "~> 2.0"}
+      {:decimal, "~> 2.0"},
+      {:recaptcha, "~> 3.0"},
+      {:tzdata, "~> 1.0.0"}
     ]
   end
 
