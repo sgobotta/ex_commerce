@@ -16,6 +16,7 @@ defmodule ExCommerceWeb.UserAuth do
   @max_age 60 * 60 * 24 * 60
   @remember_me_cookie "_ex_commerce_web_user_remember_me"
   @remember_me_options [sign: true, max_age: @max_age, same_site: "Lax"]
+  @recaptcha_timeout :timer.seconds(40)
 
   def on_mount(
         :ensure_authenticated,
@@ -82,6 +83,29 @@ defmodule ExCommerceWeb.UserAuth do
     )
     |> maybe_write_remember_me_cookie(token, params)
     |> redirect(to: user_return_to || signed_in_path(conn))
+  end
+
+  @doc """
+  Given a recaptcha response, checks the challenge passed within the accepted
+  timeout value to return an `:ok` atom or an error tuple with a reason.
+  """
+  @spec validate_recaptcha(Recaptcha.Response.t()) ::
+          :ok | {:recaptcha_error, String.t()}
+  def validate_recaptcha(%Recaptcha.Response{
+        challenge_ts: challenge_ts,
+        hostname: _hostname
+      }) do
+    now = DateTime.utc_now()
+
+    {:ok, challenge_date_time, _offset} = DateTime.from_iso8601(challenge_ts)
+
+    case DateTime.diff(now, challenge_date_time, :millisecond) do
+      diff when diff > 1 and diff <= @recaptcha_timeout ->
+        :ok
+
+      _diff ->
+        {:recaptcha_error, gettext("Invalid captcha")}
+    end
   end
 
   defp maybe_write_remember_me_cookie(conn, token, %{"remember_me" => "true"}) do
