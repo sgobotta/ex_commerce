@@ -128,3 +128,7 @@ config :git_hooks,
       ]
     ]
   ]
+
+# ReCAPTCHA
+config :recaptcha,
+  secret: "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
