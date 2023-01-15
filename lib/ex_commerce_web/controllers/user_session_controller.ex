@@ -6,13 +6,14 @@ defmodule ExCommerceWeb.UserSessionController do
 
   require Logger
 
+  action_fallback ExCommerceWeb.UserFallbackController
+
   def new(conn, _params) do
     render(conn, "new.html", error_message: nil)
   end
 
   def create(conn, %{"user" => user_params} = params) do
-    with {:ok, response} <- Recaptcha.verify(params["g-recaptcha-response"]),
-         :ok <- UserAuth.validate_recaptcha(response) do
+    with :ok <- UserAuth.validate_recaptcha(params) do
       %{"email" => email, "password" => password} = user_params
 
       if user = Accounts.get_user_by_email_and_password(email, password) do
@@ -22,22 +23,6 @@ defmodule ExCommerceWeb.UserSessionController do
           error_message: gettext("Invalid email or password")
         )
       end
-    else
-      {:recaptcha_error, message} ->
-        render(conn, "new.html", error_message: message)
-
-      {:error, [:timeout_or_duplicate]} ->
-        render(conn, "new.html", error_message: gettext("Invalid Captcha"))
-
-      error ->
-        Logger.error("Unhandled error: #{inspect(error)}")
-
-        render(conn, "new.html",
-          error_message:
-            gettext(
-              "Something's wrong, please try again later or contact support,"
-            )
-        )
     end
   end
 
