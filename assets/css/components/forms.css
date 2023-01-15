@@ -12,7 +12,7 @@
   }
 
   .user-form.input {
-    @apply rounded-lg border-gray-300 transition duration-200 focus:ring-sky-600 focus:border-sky-600 h-auto bg-gray-200 !important;
+    @apply rounded-lg border-gray-300 transition duration-200 focus:ring-sky-600 focus:border-sky-600 h-auto bg-gray-200 text-base !important;
   }
 
   .user-form.section-title {
