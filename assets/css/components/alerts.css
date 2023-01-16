@@ -26,4 +26,24 @@
   .base-alert-close-icon {
     @apply w-4 h-4;
   }
+
+  /* Alerts and form errors */
+  .alert {
+    @apply p-3 mb-5 border-1 border-solid border-transparent rounded;
+  }
+  .alert-info {
+    @apply text-sky-500 bg-sky-50 border-sky-200 z-50;
+  }
+  .alert-warning {
+    @apply text-yellow-500 bg-yellow-50 border-yellow-200 z-50;
+  }
+  .alert-danger {
+    @apply text-rose-500 bg-rose-50 border-rose-200 z-50;
+  }
+  .alert p {
+    @apply mb-0;
+  }
+  .alert:empty {
+    @apply hidden;
+  }
 }

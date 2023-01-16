@@ -30,6 +30,10 @@
   .user-form.link {
     @apply text-lg text-blue-500 hover:text-blue-300 transition duration-200;
   }
+
+  .invalid-feedback {
+    @apply text-base block text-rose-500;
+  }
 }
 
 form {
