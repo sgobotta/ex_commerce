@@ -59,6 +59,9 @@ defmodule ExCommerceWeb.BrandLive.FormComponent do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
+
+      {:error, _multi_case, %Ecto.Changeset{} = changeset, _changes} ->
+        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 end
