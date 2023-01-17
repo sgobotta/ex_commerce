@@ -70,6 +70,7 @@ module.exports = {
       scale: {
         '80': '0.8',
         '85': '0.85',
+        '98': '0.96',
         'default': '1',
         'mirror': '-1'
       },
