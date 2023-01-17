@@ -18,8 +18,4 @@ defmodule ExCommerceWeb.UserFallbackController do
   def call(conn, {:recaptcha_error, message}) do
     render(conn, "new.html", error_message: message)
   end
-
-  def call(conn, {:error, [:timeout_or_duplicate]}) do
-    render(conn, "new.html", error_message: gettext("Invalid Captcha"))
-  end
 end
