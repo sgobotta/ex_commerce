@@ -1,5 +1,4 @@
 <div>
-
   <div class="px-4">
     <.title_bar title={@title} />
   </div>
@@ -30,9 +29,9 @@
           ">
             <%= URI.parse(ExCommerceWeb.Endpoint.url()).host %>/
           </span>
-          <%= text_input f, :slug, class: "input-slug light-bg" %>
-          <%= error_tag f, :slug %>
+          <%= text_input f, :slug, class: "input input-slug light-bg" %>
         </div>
+        <%= error_tag f, :slug %>
       </div>
 
       <div class="flex justify-end mt-6">
