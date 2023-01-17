@@ -16,8 +16,11 @@ defmodule ExCommerceWeb.UserAuth do
   @max_age 60 * 60 * 24 * 60
   @remember_me_cookie "_ex_commerce_web_user_remember_me"
   @remember_me_options [sign: true, max_age: @max_age, same_site: "Lax"]
-  @recaptcha_timeout :timer.seconds(40)
+
   @recaptcha_invalid_msg gettext("Invalid captcha, please try again.")
+  @recaptcha_timeout_msg gettext("Validation took too long, please try again.")
+  @recaptcha_response_field "g-recaptcha-response"
+  @recaptcha_timeout :timer.seconds(40)
 
   def on_mount(
         :ensure_authenticated,
@@ -87,18 +90,30 @@ defmodule ExCommerceWeb.UserAuth do
   end
 
   @doc """
+  Wrapper to `verify/2` of the `#{Recaptcha}` module.
+  """
+  @spec verify_recaptcha(map()) ::
+          {:ok, Recaptcha.Response.t()} | {:error, [atom()]}
+  def verify_recaptcha(params)
+      when not is_map_key(params, @recaptcha_response_field),
+      do: {:recaptcha_error, @recaptcha_invalid_msg}
+
+  def verify_recaptcha(params),
+    do: Recaptcha.verify(params[@recaptcha_response_field])
+
+  @doc """
   Given a recaptcha response, checks the challenge passed within the accepted
   timeout value to return an `:ok` atom or an error tuple with a reason.
   """
   @spec validate_recaptcha(map()) :: :ok | {:recaptcha_error, String.t()}
   def validate_recaptcha(params)
-      when not is_map_key(params, "g-recaptcha-response"),
+      when not is_map_key(params, @recaptcha_response_field),
       do: {:recaptcha_error, @recaptcha_invalid_msg}
 
   def validate_recaptcha(params) do
     now = DateTime.utc_now()
 
-    case Recaptcha.verify(params["g-recaptcha-response"]) do
+    case verify_recaptcha(params) do
       {:ok,
        %Recaptcha.Response{
          challenge_ts: challenge_ts,
@@ -110,11 +125,10 @@ defmodule ExCommerceWeb.UserAuth do
 
         if diff <= @recaptcha_timeout,
           do: :ok,
-          else: {:recaptcha_error, @recaptcha_invalid_msg}
+          else: {:recaptcha_error, @recaptcha_timeout_msg}
 
       {:error, [:timeout_or_duplicate]} ->
-        {:recaptcha_error,
-         gettext("Validation took too long, please try again.")}
+        {:recaptcha_error, @recaptcha_timeout_msg}
 
       {:error, _errors} ->
         {:recaptcha_error, @recaptcha_invalid_msg}
@@ -255,6 +269,12 @@ defmodule ExCommerceWeb.UserAuth do
       |> halt()
     end
   end
+
+  @doc """
+  Returns the field name where the recaptcha result is assigned.
+  """
+  @spec get_recaptcha_response_field :: String.t()
+  def get_recaptcha_response_field, do: @recaptcha_response_field
 
   defp assign_current_user(socket, nil) do
     LiveView.assign_new(socket, :current_user, fn -> nil end)
