@@ -4,8 +4,6 @@ defmodule ExCommerceWeb.UserSessionController do
   alias ExCommerce.Accounts
   alias ExCommerceWeb.UserAuth
 
-  require Logger
-
   action_fallback ExCommerceWeb.UserFallbackController
 
   def new(conn, _params) do
