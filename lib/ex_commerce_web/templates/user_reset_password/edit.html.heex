@@ -1,5 +1,5 @@
 <div class="l-centered h-screen bg-gray-200">
-  <div class="card">
+  <div class="card light">
     <h1 class="user-form section-title-lg"><%= gettext("Reset password") %></h1>
 
     <%= form_for @changeset, Routes.user_reset_password_path(@conn, :update, @token), fn f -> %>
@@ -17,7 +17,7 @@
       <%= password_input f, :password_confirmation, required: true, placeholder: gettext("Password confirmation"), class: "user-form input" %>
       <%= error_tag f, :password_confirmation %>
 
-      <div class="flex justify-end mt-6">
+      <div class="flex justify-end my-6">
         <%= submit gettext("Reset password"), class: "button" %>
       </div>
     <% end %>
