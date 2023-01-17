@@ -2,30 +2,35 @@ defmodule ExCommerceWeb.UserResetPasswordController do
   use ExCommerceWeb, :controller
 
   alias ExCommerce.Accounts
+  alias ExCommerceWeb.UserAuth
+
+  action_fallback ExCommerceWeb.UserFallbackController
 
   plug :get_user_by_reset_password_token when action in [:edit, :update]
 
   def new(conn, _params) do
-    render(conn, "new.html")
+    render(conn, "new.html", error_message: nil)
   end
 
-  def create(conn, %{"user" => %{"email" => email}}) do
-    if user = Accounts.get_user_by_email(email) do
-      Accounts.deliver_user_reset_password_instructions(
-        user,
-        &Routes.user_reset_password_url(conn, :edit, &1)
-      )
-    end
+  def create(conn, %{"user" => %{"email" => email}} = params) do
+    with :ok <- UserAuth.validate_recaptcha(params) do
+      if user = Accounts.get_user_by_email(email) do
+        Accounts.deliver_user_reset_password_instructions(
+          user,
+          &Routes.user_reset_password_url(conn, :edit, &1)
+        )
+      end
 
-    # Regardless of the outcome, show an impartial success/error message.
-    conn
-    |> put_flash(
-      :info,
-      gettext(
-        "If your email is in our system, you will receive instructions to reset your password shortly."
+      # Regardless of the outcome, show an impartial success/error message.
+      conn
+      |> put_flash(
+        :info,
+        gettext(
+          "If your email is in our system, you will receive instructions to reset your password shortly."
+        )
       )
-    )
-    |> redirect(to: "/")
+      |> redirect(to: "/")
+    end
   end
 
   def edit(conn, _params) do
