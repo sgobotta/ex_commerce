@@ -32,7 +32,7 @@
   }
 
   .invalid-feedback {
-    @apply text-base block text-rose-500;
+    @apply text-base block text-rose-700;
   }
 }
 
