@@ -141,16 +141,20 @@
             class={"
               group flex items-center
               py-3 px-4 mx-2 rounded-full
-              uppercase text-lg font-medium text-gray-700 hover:text-white
-              hover:bg-purple-400
+              uppercase text-lg font-medium text-gray-700
+              hover:text-purple-300
               transition duration-200
             "}
           >
-            <.icon name={:login} outlined class="
-              text-gray-400 group-hover:text-gray-500
-              mr-2 flex-shrink-0 h-6 w-6
-            "/>
-              <%= gettext("Log in") %>
+            <div class="inline-flex items-center">
+              <.icon name={:login} outlined class="
+                flex-shrink-0 h-6 w-6
+                text-gray-400 group-hover:text-gray-500
+              "/>
+              <span class="hidden md:block px-1">
+                <%= gettext("Log in") %>
+              </span>
+            </div>
           </.link>
           <%= render(ExCommerceWeb.ButtonsView, "register_button") %>
         <% end %>
