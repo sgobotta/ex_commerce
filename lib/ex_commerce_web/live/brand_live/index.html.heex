@@ -47,18 +47,18 @@
           </:info>
           <:actions>
             <span class="px-2">
-              <%= live_redirect to: Routes.overview_index_path(@socket, :index, brand.id), class: "shadow-lg transition duration-300 scale-100 active:scale-[0.98] active:shadow-none" do %>
-                <.icon outlined={true} name={:cog} class="base-alert-icon text-orange-500 font-normal"/>
+              <%= live_redirect to: Routes.overview_index_path(@socket, :index, brand.id), class: "" do %>
+                <.icon outlined={true} name={:cog} class="base-alert-icon text-orange-400 hover:text-orange-700 pressable rounded-lg bg-gray-100 p-1"/>
               <% end %>
             </span>
             <span class="px-2">
-              <%= live_redirect to: Routes.brand_show_path(@socket, :show, brand.id), class: "shadow-lg transition duration-300 scale-100 active:scale-[0.98] active:shadow-none" do %>
-                <.icon outlined={true} name={:eye} class="base-alert-icon text-sky-500 font-normal"/>
+              <%= live_redirect to: Routes.brand_show_path(@socket, :show, brand.id), class: "" do %>
+                <.icon outlined={true} name={:eye} class="base-alert-icon text-sky-400 hover:text-sky-700 pressable rounded-lg bg-gray-100 p-1"/>
               <% end %>
             </span>
             <span class="px-2">
               <%= live_patch to: Routes.brand_index_path(@socket, :edit, brand.id), id: "update" do %>
-                <.icon outlined={true} name={:pencil} class="base-alert-icon text-green-500"/>
+                <.icon outlined={true} name={:pencil} class="base-alert-icon text-green-400 hover:text-green-700 pressable rounded-lg bg-gray-100 p-1"/>
               <% end %>
             </span>
           </:actions>
