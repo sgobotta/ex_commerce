@@ -136,6 +136,7 @@
             </div>
           </.link>
         <% else %>
+          <%= render(ExCommerceWeb.ButtonsView, "register_button") %>
           <.link
             navigate={Routes.user_session_path(ExCommerceWeb.Endpoint, :new)}
             class={"
@@ -156,7 +157,6 @@
               </span>
             </div>
           </.link>
-          <%= render(ExCommerceWeb.ButtonsView, "register_button") %>
         <% end %>
       </div>
     </div>
