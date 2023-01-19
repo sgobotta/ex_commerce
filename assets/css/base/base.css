@@ -14,4 +14,8 @@
   .with-outline.gray, .with-outline-sm.gray {
     @apply focus:outline-gray-700 !important;
   }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply outline-none !important
+  }
 }
