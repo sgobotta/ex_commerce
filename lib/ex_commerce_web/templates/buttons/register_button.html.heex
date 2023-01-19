@@ -7,6 +7,8 @@
   "
 do %>
   <div class="inline-flex items-center">
-    <span class="px-1 text-sm"><%= gettext("Start for free")  %></span>
+    <span class={"px-1 #{@size}"}>
+      <%= @text %>
+    </span>
   </div>
 <% end %>
