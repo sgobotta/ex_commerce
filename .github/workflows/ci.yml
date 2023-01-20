@@ -20,6 +20,8 @@ env:
   CLOUDEX_API_KEY: ${{ secrets.CLOUDEX_API_KEY }}
   CLOUDEX_CLOUD_NAME: ${{ secrets.CLOUDEX_CLOUD_NAME }}
   CLOUDEX_SECRET: ${{ secrets.CLOUDEX_SECRET }}
+  # Captcha
+  RECAPTCHA_PUBLIC_KEY: ${{ secrets.RECAPTCHA_PUBLIC_KEY }}
   # Postgres env
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
@@ -55,6 +57,7 @@ jobs:
           GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
           MIX_ENV: dev
           OTP_VERSION: ${{ env.OTP_VERSION }}
+          RECAPTCHA_PUBLIC_KEY: ${{ env.RECAPTCHA_PUBLIC_KEY }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           UPLOADS_PATH: priv/static/uploads/
@@ -86,6 +89,7 @@ jobs:
           GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
           MIX_ENV: test
           OTP_VERSION: ${{ env.OTP_VERSION }}
+          RECAPTCHA_PUBLIC_KEY: ${{ env.RECAPTCHA_PUBLIC_KEY }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           UPLOADS_PATH: priv/static/uploads/
@@ -117,6 +121,7 @@ jobs:
           GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
           MIX_ENV: prod
           OTP_VERSION: ${{ env.OTP_VERSION }}
+          RECAPTCHA_PUBLIC_KEY: ${{ env.RECAPTCHA_PUBLIC_KEY }}
           POSTGRES_HOSTNAME: ${{ env.POSTGRES_HOSTNAME }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
