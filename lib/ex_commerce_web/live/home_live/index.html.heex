@@ -1,25 +1,206 @@
-<div>
-  <div id="welcome" class="l-centered h-screen bg-purple-200">
-    <div class="">
-      Welcome layout
+<div class="snap-proximity snap-x">
+  <div id="welcome" class="snap-center l-centered bg-white">
+    <div class="py-12 px-4">
+      <h1 class="text-sky-300 text-4xl font-semibold text-left">
+        <%= gettext("Start building your online store today!") %>
+      </h1>
+    </div>
+    <div class="px-4 text-left space-y-6 text-black font-semibold">
+      <p class="text-xl">
+        <%= gettext("Simplify online sales for your business") %>
+      </p>
+      <p class="text-xl">
+        <%= gettext("Manage different shops within your brands") %>
+      </p>
+      <p class="text-xl">
+        <%= gettext("Offer a variety of catalogues to your customers") %>
+      </p>
+    </div>
+    <div class="py-4">
+      <%= Phoenix.View.render(
+        ExCommerceWeb.ButtonsView,
+        "register_button",
+        %{size: "text-xl", text: gettext("Register")}
+      ) %>
     </div>
   </div>
 
-  <div id="carousel" class="l-centered h-screen-1/4 bg-red-200">
-    <div class="">
-      Corousel (recently added shops)
+  <div
+    id="benefits"
+    class="
+      flex flex-col md:flex-row justify-around items-center
+      snap-center
+      space-y-8 md:space-y-0 p-16
+    bg-sky-200
+    "
+  >
+    <div class="card p-2 bg-white h-72 w-64 m-0 text-xl flex flex-col justify-between">
+      <div class="self-center">
+        <%= render_svg("hero/online_shopping", class: "w-44 h-44", id: "hero-onlineshopping") %>
+      </div>
+      <div class="text-center text-lg font-normal text-purple-400">
+        <%= gettext("Offer custom-tailored catalogues for your customers") %>
+      </div>
+    </div>
+    <div class="card p-2 bg-white h-72 w-64 m-0 text-xl flex flex-col justify-between">
+      <div class="self-center">
+        <%= render_svg("hero/team_work", class: "w-44 h-44", id: "hero-teamwork") %>
+      </div>
+      <div class="text-center text-lg font-normal text-teal-400">
+        <%= gettext("Expand your reach within your community") %>
+      </div>
+    </div>
+    <div class="card p-2 bg-white h-72 w-64 m-0 text-xl flex flex-col justify-between">
+      <div class="self-center">
+        <%= render_svg("hero/message", class: "w-44 h-44", id: "hero-message") %>
+      </div>
+      <div class="text-center text-lg font-normal text-rose-400">
+        <%= gettext("Receive order messages from your phone") %>
+      </div>
     </div>
   </div>
 
-  <div id="benefits" class="l-centered h-screen-1/2 bg-yellow-200">
-    <div class="relative">
-      Benefits (cards)
+  <div id="features" class="snap-center l-centered bg-white px-4 py-12">
+    <div class="py-4">
+      <h2 class="text-sky-300 text-2xl md:text-3xl font-semibold text-left">
+        <%= gettext("Discover what ExCommerce is made of!") %>
+      </h2>
+    </div>
+    <div class="flex flex-col md:flex-row md:w-full md:justify-evenly items-center">
+      <div class="px-6 text-left self-start">
+        <ol class="space-y-4">
+          <li>
+            <div class="flex flex-row space-x-1">
+              <div class="h-6 w-6">
+                <.icon outlined={true} name={:library} class="icon text-gray-500"/>
+              </div>
+              <span class="text-base font-medium">
+                <%= gettext("Create brands that empower your business") %>
+              </span>
+            </div>
+          </li>
+          <li>
+            <div class="flex flex-row space-x-1">
+              <div class="h-6 w-6">
+                <.icon outlined={true} name={:office_building} class="icon text-gray-500"/>
+              </div>
+              <span class="text-base font-medium">
+                <%= gettext("Setup shops within your brand to expand your reach") %>
+              </span>
+            </div>
+          </li>
+          <li>
+            <div class="flex flex-row space-x-1">
+              <div class="h-6 w-6">
+                <.icon outlined={true} name={:cube} class="icon text-gray-500"/>
+              </div>
+              <span class="text-base font-medium">
+                <%= gettext("Define your products, variants and additionals to offer your customers purchase variety") %>
+              </span>
+            </div>
+          </li>
+          <li>
+            <div class="flex flex-row space-x-1">
+              <div class="h-6 w-6">
+                <.icon outlined={true} name={:collection} class="icon text-gray-500"/>
+              </div>
+              <span class="text-base font-medium">
+                <%= gettext("Create and manage additional product options with discounts") %>
+              </span>
+            </div>
+          </li>
+          <li>
+            <div class="flex flex-row space-x-1">
+              <div class="h-6 w-6">
+                <.icon outlined={true} name={:clipboard_list} class="icon text-gray-500"/>
+              </div>
+              <span class="text-base font-medium">
+                <%= gettext("Combine your products across catalogues to create custom menus") %>
+              </span>
+            </div>
+          </li>
+          <li>
+            <div class="flex flex-row space-x-1">
+              <div class="h-6 w-6">
+                <.icon outlined={true} name={:paper_airplane} class="rotate-90 icon text-gray-500"/>
+              </div>
+              <span class="text-base font-medium">
+                <%= gettext("Receive purchase requests in your phone directly from customers") %>
+              </span>
+            </div>
+          </li>
+          <li>
+            <div class="flex flex-row space-x-1">
+              <div class="h-6 w-6">
+                <.icon outlined={true} name={:bell} class="icon text-gray-500"/>
+              </div>
+              <span class="text-base font-medium">
+                <%= gettext("Manage the state of your orders") %>
+              </span>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div>
+        <%= render_svg("hero/success", class: "w-80 h-80", id: "hero-success") %>
+      </div>
     </div>
   </div>
 
-  <div id="plans" class="l-centered h-screen-3/4 bg-green-200">
-    <div class="relative">
-      Features/Plans
+  <div id="about" class="snap-center l-centered bg-white px-4 py-12 xl:mx-56">
+    <div class="py-4">
+      <h2 class="text-sky-300 text-3xl font-semibold text-left">
+        <%= gettext("About the platform") %>
+      </h2>
+    </div>
+    <div class="flex flex-col lg:flex-row lg:justify-evenly items-center">
+      <div class="px-6 text-left self-start">
+        <ol class="space-y-4">
+          <li class="space-y-1">
+            <h3 class="text-2xl font-medium">
+              <%= gettext("What is ExCommerce?") %>
+            </h3>
+            <p class="text-base">
+              <%= gettext("ExCommerce is a platform that let you create your own online stores and receive orders in your phone.") %>
+            </p>
+          </li>
+          <li class="space-y-1">
+            <h3 class="text-2xl font-medium">
+              <%= gettext("What can I do with ExCommerce?") %>
+            </h3>
+            <p class="text-base">
+              <%= gettext("ExCommerce lets you offer products with variants and options, which makes it suitable for versatile food menus. You can also create catalogues for repairing services, consultant services with fees and extra options.") %>
+            </p>
+          </li>
+          <li class="space-y-1">
+            <h3 class="text-2xl font-medium">
+              <%= gettext("How can I share my products?") %>
+            </h3>
+            <p class="text-base">
+              <%= gettext("You can generate QR codes that can be printed out. You choose to generate QR codes for your shops and/or your catalogues so that customers can browse specific menus") %>
+            </p>
+          </li>
+          <li class="space-y-1">
+            <h3 class="text-2xl font-medium">
+              <%= gettext("Do I need to install any software?") %>
+            </h3>
+            <p class="text-base">
+              <%= gettext("No. ExCommerce is completely online. You can manage your shops from your computer or your phone") %>
+            </p>
+          </li>
+          <li class="space-y-1">
+            <h3 class="text-2xl font-medium">
+              <%= gettext("How much does it cost?") %>
+            </h3>
+            <p class="text-base">
+              <%= gettext("ExCommerce is free. We will never charge you for creating a shop or when customers place orders. You can optionally access a set of more advanced features for a monthly fee that can be revoked.") %>
+            </p>
+          </li>
+        </ol>
+      </div>
+      <div class="my-8 lg:my-0">
+        <%= render_svg("hero/welcome", class: "w-80 h-80", id: "hero-welcome") %>
+      </div>
     </div>
   </div>
 </div>

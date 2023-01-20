@@ -1,8 +1,8 @@
 <div class="l-centered h-screen bg-gray-200">
-  <div class="card">
+  <div class="card light">
     <%= form_for @conn, Routes.user_session_path(@conn, :create), [as: :user, class: "m-0"], fn f -> %>
       <%= if @error_message do %>
-        <div class="alert alert-danger">
+        <div class="alert alert-danger alert-form">
           <p><%= @error_message %></p>
         </div>
       <% end %>
@@ -18,8 +18,12 @@
         <%= checkbox f, :remember_me, class: "checkbox mx-2" %>
       </div>
 
+      <div class="mt-4">
+        <.recaptcha />
+      </div>
+
       <div class="flex justify-end my-6">
-        <%= submit gettext("Log in"), class: "button" %>
+        <%= submit gettext("Log in"), class: "button with-outline-sm" %>
       </div>
 
       <div class="flex content-center justify-evenly">

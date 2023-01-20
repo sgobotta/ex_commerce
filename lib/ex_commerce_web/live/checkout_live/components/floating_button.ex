@@ -28,10 +28,10 @@ defmodule ExCommerceWeb.CheckoutLive.Components.FloatingButton do
     <button class="
       flex justify-center rounded-lg py-2 bg-green-400
       w-full sm:w-1/2
-      cursor-pointer shadow-button
-      transition-transform ease-in-out duration-100
-      active:scale-90 active:shadow-lg
-      hover:bg-green-300
+      cursor-pointer shadow-button-sm
+      transition duration-300
+      hover:bg-green-300 hover:shadow-button-sm
+      active:scale-98 active:shadow-button-xs
     "
       tabindex="0"
       phx-click={@on_click_event}

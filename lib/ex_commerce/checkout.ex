@@ -91,7 +91,7 @@ defmodule ExCommerce.Checkout do
 
   @doc """
   Given a `#{Cart.Order}` struct and some `#{Order}` params, returns a tuple
-  with an order or a changeset if the order couldn't be created.
+  with an order or a changeset if the order couldn't be casted.
 
   ## Examples
 

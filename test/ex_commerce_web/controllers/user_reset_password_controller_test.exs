@@ -21,11 +21,16 @@ defmodule ExCommerceWeb.UserResetPasswordControllerTest do
   end
 
   describe "POST /users/reset_password" do
+    alias ExCommerceWeb.UserAuth
+
+    @recaptcha_response_field UserAuth.get_recaptcha_response_field()
+
     @tag :capture_log
     test "sends a new reset password token", %{conn: conn, user: user} do
       conn =
         post(conn, Routes.user_reset_password_path(conn, :create), %{
-          "user" => %{"email" => user.email}
+          "user" => %{"email" => user.email},
+          @recaptcha_response_field => "valid_response"
         })
 
       assert redirected_to(conn) == "/"
@@ -38,7 +43,8 @@ defmodule ExCommerceWeb.UserResetPasswordControllerTest do
     test "does not send reset password token if email is invalid", %{conn: conn} do
       conn =
         post(conn, Routes.user_reset_password_path(conn, :create), %{
-          "user" => %{"email" => "unknown@example.com"}
+          "user" => %{"email" => "unknown@example.com"},
+          @recaptcha_response_field => "valid_response"
         })
 
       assert redirected_to(conn) == "/"

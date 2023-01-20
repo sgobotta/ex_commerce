@@ -8,8 +8,13 @@ defmodule ExCommerceWeb.ButtonsView do
     render("logout_button.html", opts)
   end
 
-  def render("register_button", _assigns) do
-    render("register_button.html", [])
+  def render("register_button", assigns) do
+    opts =
+      assigns
+      |> Map.put_new(:text, gettext("Start for free"))
+      |> Map.put_new(:size, "text-sm")
+
+    render("register_button.html", opts)
   end
 
   def render("admin_dashboard_button", _assigns) do

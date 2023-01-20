@@ -13,6 +13,7 @@ defmodule ExCommerce.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    field :valid_captcha, :boolean, virtual: true, default: false
 
     many_to_many :brands,
                  ExCommerce.Marketplaces.Brand,
@@ -40,7 +41,8 @@ defmodule ExCommerce.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :confirmed_at])
+    |> cast(attrs, [:email, :password, :confirmed_at, :valid_captcha])
+    |> validate_acceptance(:valid_captcha, message: "")
     |> validate_email()
     |> validate_password(opts)
   end

@@ -2,6 +2,7 @@ defmodule ExCommerceWeb.LiveHelpers do
   @moduledoc """
   Implements reusable helpers for live views
   """
+  import Phoenix.HTML, only: [raw: 1]
   import Phoenix.LiveView.Helpers
   import Phoenix.LiveView
   import Phoenix.View
@@ -768,6 +769,15 @@ defmodule ExCommerceWeb.LiveHelpers do
         </div>
       </div>
     <% end %>
+    """
+  end
+
+  @doc """
+  Renders a recaptcha checkbox
+  """
+  def recaptcha(assigns) do
+    ~H"""
+    <%= raw Recaptcha.Template.display() %>
     """
   end
 end

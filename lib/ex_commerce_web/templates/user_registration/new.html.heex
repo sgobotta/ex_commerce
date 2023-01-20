@@ -1,35 +1,42 @@
 <div>
   <%= render ExCommerceWeb.HeaderView, "header.html" %>
 
-  <div class="absolute inset-1/4">
+  <div class="absolute inset-x-8 inset-y-10 md:inset-y-0 md:inset-x-1/4">
 
-    <h1 class="user-form section-title my-20">
-      <%= gettext("Start for free today") %>
-    </h1>
+    <div>
+      <h1 class="user-form section-title my-20 text-center md:text-left">
+        <%= gettext("Start for free today") %>
+      </h1>
 
-    <%= form_for @changeset, Routes.user_registration_path(@conn, :create), fn f -> %>
-      <%= if @changeset.action do %>
-        <div class="alert alert-danger">
-          <p><%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
+      <%= form_for @changeset, Routes.user_registration_path(@conn, :create), fn f -> %>
+        <%= if @changeset.action do %>
+          <div class="alert alert-danger alert-form">
+            <p><%= gettext("Oops, something went wrong! Please check the errors below.") %></p>
+          </div>
+        <% end %>
+
+        <%= label f, :email, gettext("Enter your email"), class: "my-2" %>
+        <%= email_input f, :email, required: true, placeholder: gettext("Email"), class: "user-form input" %>
+        <%= error_tag f, :email %>
+
+        <%= label f, :password, gettext("Enter your password"), class: "my-2" %>
+        <%= password_input f, :password, required: true, placeholder: gettext("Password"), class: "user-form input" %>
+        <%= error_tag f, :password %>
+
+        <div class="mt-4">
+          <.recaptcha />
+        </div>
+        <%= error_tag f, :valid_captcha %>
+
+        <div class="flex justify-end my-6">
+          <%= submit gettext("Register"), class: "button with-outline-sm" %>
         </div>
       <% end %>
 
-      <%= label f, :email, gettext("Enter your email"), class: "my-2" %>
-      <%= email_input f, :email, required: true, placeholder: gettext("Email"), class: "user-form input" %>
-      <%= error_tag f, :email %>
-
-      <%= label f, :password, gettext("Enter your password"), class: "my-2" %>
-      <%= password_input f, :password, required: true, placeholder: gettext("Password"), class: "user-form input" %>
-      <%= error_tag f, :password %>
-
-      <div class="flex justify-end mt-6">
-        <%= submit gettext("Register"), class: "button" %>
-      </div>
-    <% end %>
-
-    <p>
-      <span class="text-2xl"><%= gettext("Already registered?") %></span>
-      <%= link gettext("Log in"), to: Routes.user_session_path(@conn, :new), class: "user-form link" %>
-    </p>
+      <p>
+        <span class="text-xl"><%= gettext("Already registered?") %></span>
+        <%= link gettext("Log in"), to: Routes.user_session_path(@conn, :new), class: "user-form link" %>
+      </p>
+    </div>
   </div>
 </div>

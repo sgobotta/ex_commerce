@@ -2,4 +2,8 @@
   .card {
     @apply p-8 bg-gray-200 rounded-lg shadow-xl;
   }
+
+  .card.light {
+    @apply bg-gray-100 !important;
+  }
 }

@@ -105,7 +105,7 @@
     <div class="flex-1 flex justify-between px-4 sm:px-6 lg:px-8">
       <div class="flex-1 flex items-center">
         <.link navigate="#">
-          <span class="h-8 w-auto text-2xl ml-1 font-medium">
+          <span class="w-auto text-2xl ml-1 text-gray-700 font-medium">
             <%= gettext("ExCommerce") %>
           </span>
         </.link>
@@ -119,36 +119,44 @@
             method={:delete}
             class={"
               group flex items-center
-              py-3 px-4 mx-2 rounded-full
+              p-2 mx-2 rounded-full
               uppercase text-lg font-medium text-gray-700
               hover:text-purple-300
               transition duration-200
             "}
           >
-            <.icon name={:logout} outlined class="
-              text-gray-400 group-hover:text-gray-500
-              mr-2 flex-shrink-0 h-6 w-6
-            "/>
-              <%= gettext("Sign out") %>
+            <div class="inline-flex items-center">
+              <.icon name={:logout} outlined class="
+                flex-shrink-0 h-6 w-6
+                text-gray-400 group-hover:text-gray-500
+              "/>
+              <span class="hidden md:block px-1">
+                <%= gettext("Sign out") %>
+              </span>
+            </div>
           </.link>
         <% else %>
+          <%= render(ExCommerceWeb.ButtonsView, "register_button") %>
           <.link
             navigate={Routes.user_session_path(ExCommerceWeb.Endpoint, :new)}
             class={"
               group flex items-center
-              py-3 px-4 mx-2 rounded-full
-              uppercase text-lg font-medium text-gray-700 hover:text-white
-              hover:bg-purple-400
+              p-2 mx-3 rounded-full
+              uppercase text-lg font-medium text-gray-700
+              hover:text-purple-300
               transition duration-200
             "}
           >
-            <.icon name={:login} outlined class="
-              text-gray-400 group-hover:text-gray-500
-              mr-2 flex-shrink-0 h-6 w-6
-            "/>
-              <%= gettext("Log in") %>
+            <div class="inline-flex items-center">
+              <.icon name={:login} outlined class="
+                flex-shrink-0 h-6 w-6
+                text-gray-400 group-hover:text-gray-500
+              "/>
+              <span class="hidden md:block px-1">
+                <%= gettext("Log in") %>
+              </span>
+            </div>
           </.link>
-          <%= render(ExCommerceWeb.ButtonsView, "register_button") %>
         <% end %>
       </div>
     </div>

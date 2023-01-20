@@ -51,9 +51,12 @@
 
 + [Docker](https://docs.docker.com/engine/install/ubuntu/)
 + [Docker Compose](https://docs.docker.com/compose/install/)
-+ [Elixir `1.11.4`](https://elixir-lang.org/install.html)
++ [Tilt](https://docs.tilt.dev/install.html#linux)
++ [Elixir `1.12.3`](https://elixir-lang.org/install.html)
 + [Erlang `23.3.4`](https://erlang.org/doc/installation_guide/users_guide.html)
 + [Node `14.16.1`](https://nodejs.org/es/)
+
+Tilt can be installed by running just the curl command in the link above. It's used for local development exclusively.
 
 Elixir, Erlang and Node can also be installed using [`asdf`](https://asdf-vm.com/#/core-manage-asdf?id=install). [Personal installation notes](https://gist.github.com/sgobotta/514a3e452f7bc37c558fc93a2768ccd2).
 

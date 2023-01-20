@@ -25,9 +25,14 @@ defmodule ExCommerceWeb.UserSessionControllerTest do
   end
 
   describe "POST /users/log_in" do
+    alias ExCommerceWeb.UserAuth
+
+    @recaptcha_response_field UserAuth.get_recaptcha_response_field()
+
     test "logs the user in", %{conn: conn, user: user} do
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
+          @recaptcha_response_field => "valid_response",
           "user" => %{
             "email" => user.email,
             "password" => valid_user_password()
@@ -48,6 +53,7 @@ defmodule ExCommerceWeb.UserSessionControllerTest do
     test "logs the user in with remember me", %{conn: conn, user: user} do
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
+          @recaptcha_response_field => "valid_response",
           "user" => %{
             "email" => user.email,
             "password" => valid_user_password(),
@@ -64,6 +70,7 @@ defmodule ExCommerceWeb.UserSessionControllerTest do
         conn
         |> init_test_session(user_return_to: "/foo/bar")
         |> post(Routes.user_session_path(conn, :create), %{
+          @recaptcha_response_field => "valid_response",
           "user" => %{
             "email" => user.email,
             "password" => valid_user_password()
@@ -79,6 +86,7 @@ defmodule ExCommerceWeb.UserSessionControllerTest do
     } do
       conn =
         post(conn, Routes.user_session_path(conn, :create), %{
+          @recaptcha_response_field => "valid_response",
           "user" => %{"email" => user.email, "password" => "invalid_password"}
         })
 

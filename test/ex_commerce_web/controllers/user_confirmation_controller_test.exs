@@ -19,11 +19,16 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
   end
 
   describe "POST /users/confirm" do
+    alias ExCommerceWeb.UserAuth
+
+    @recaptcha_response_field UserAuth.get_recaptcha_response_field()
+
     @tag :capture_log
     test "sends a new confirmation token", %{conn: conn, user: user} do
       conn =
         post(conn, Routes.user_confirmation_path(conn, :create), %{
-          "user" => %{"email" => user.email}
+          "user" => %{"email" => user.email},
+          @recaptcha_response_field => "valid_response"
         })
 
       assert redirected_to(conn) == Routes.user_settings_path(conn, :email_sent)
@@ -41,7 +46,8 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
 
       conn =
         post(conn, Routes.user_confirmation_path(conn, :create), %{
-          "user" => %{"email" => user.email}
+          "user" => %{"email" => user.email},
+          @recaptcha_response_field => "valid_response"
         })
 
       assert redirected_to(conn) == Routes.user_settings_path(conn, :email_sent)
@@ -52,7 +58,8 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
     test "does not send confirmation token if email is invalid", %{conn: conn} do
       conn =
         post(conn, Routes.user_confirmation_path(conn, :create), %{
-          "user" => %{"email" => "unknown@example.com"}
+          "user" => %{"email" => "unknown@example.com"},
+          @recaptcha_response_field => "valid_response"
         })
 
       assert redirected_to(conn) == Routes.user_settings_path(conn, :email_sent)
@@ -69,7 +76,7 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
         end)
 
       conn = get(conn, Routes.user_confirmation_path(conn, :confirm, token))
-      assert redirected_to(conn) == Routes.overview_index_path(conn, :index)
+      assert redirected_to(conn) == Routes.brand_index_path(conn, :index)
       assert get_flash(conn, :info) =~ "User confirmed successfully"
       assert Accounts.get_user!(user.id).confirmed_at
       refute get_session(conn, :user_token)

@@ -25,7 +25,7 @@ defmodule ExCommerceWeb.Endpoint do
     at: "/",
     from: :ex_commerce,
     gzip: Mix.env() == :prod,
-    only: ~w(assets fonts images favicon.ico robots.txt uploads)
+    only: ~w(assets fonts images svg favicon.ico robots.txt uploads)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
