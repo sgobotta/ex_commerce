@@ -22,6 +22,7 @@ env:
   CLOUDEX_SECRET: ${{ secrets.CLOUDEX_SECRET }}
   # Captcha
   RECAPTCHA_PUBLIC_KEY: ${{ secrets.RECAPTCHA_PUBLIC_KEY }}
+  RECAPTCHA_SECRET: ${{ secrets.RECAPTCHA_SECRET }}
   # Postgres env
   POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
   POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
@@ -58,6 +59,7 @@ jobs:
           MIX_ENV: dev
           OTP_VERSION: ${{ env.OTP_VERSION }}
           RECAPTCHA_PUBLIC_KEY: ${{ env.RECAPTCHA_PUBLIC_KEY }}
+          RECAPTCHA_SECRET: ${{ env.RECAPTCHA_SECRET }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           UPLOADS_PATH: priv/static/uploads/
@@ -90,6 +92,7 @@ jobs:
           MIX_ENV: test
           OTP_VERSION: ${{ env.OTP_VERSION }}
           RECAPTCHA_PUBLIC_KEY: ${{ env.RECAPTCHA_PUBLIC_KEY }}
+          RECAPTCHA_SECRET: ${{ env.RECAPTCHA_SECRET }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
           UPLOADS_PATH: priv/static/uploads/
@@ -122,6 +125,7 @@ jobs:
           MIX_ENV: prod
           OTP_VERSION: ${{ env.OTP_VERSION }}
           RECAPTCHA_PUBLIC_KEY: ${{ env.RECAPTCHA_PUBLIC_KEY }}
+          RECAPTCHA_SECRET: ${{ env.RECAPTCHA_SECRET }}
           POSTGRES_HOSTNAME: ${{ env.POSTGRES_HOSTNAME }}
           POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ env.POSTGRES_USER }}
