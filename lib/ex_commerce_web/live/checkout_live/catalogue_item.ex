@@ -216,7 +216,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   #
 
   def render_option_price(price, price_modifier, assigns) do
-    assigns = assign(assigns, :price, get_price(price))
+    assigns = Map.put(assigns.assigns, :price, get_price(price))
 
     case Decimal.eq?(price_modifier, Decimal.new(0)) do
       true ->
@@ -229,7 +229,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
       false ->
         assigns =
           assigns
-          |> assign(:discount_price, get_price(price, price_modifier))
+          |> Map.put(:discount_price, get_price(price, price_modifier))
 
         ~H"""
         <p class="font-medium text-sm text-black line line-through">
