@@ -219,9 +219,8 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
 
   defp consume_media_files(
          socket,
-         %Shop{avatars: avatars, banners: banners} = shop
+         %Shop{avatars: avatars, banners: banners, brand_id: brand_id} = shop
        ) do
-    %{brand: %Brand{id: brand_id}} = socket.assigns
     upload_opts = [folder: brand_id, tags: brand_id]
 
     :ok =

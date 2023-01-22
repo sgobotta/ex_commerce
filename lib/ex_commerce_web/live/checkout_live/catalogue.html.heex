@@ -108,7 +108,7 @@
               col-span-6 lg:col-span-5 row-span-1
               justify-self-end self-center
             ">
-              <.link
+              <.custom_link
                 class="rounded-lg"
                 patch={get_item_route(@socket, @brand_slug, @shop_slug, @catalogue, item_id)}
                 tabindex="1"
@@ -121,7 +121,7 @@
                 >
                   <%= gettext("Add to order") %>
                 </.pill>
-              </.link>
+              </.custom_link>
             </div>
           </div>
         </div>

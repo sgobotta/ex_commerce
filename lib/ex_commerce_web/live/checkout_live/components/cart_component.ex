@@ -119,7 +119,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
 
               justify-self-end self-center
             ">
-              <.link
+              <.custom_link
                 to={"#"}
                 class="rounded-xl"
                 phx-click="remove_order_item"
@@ -132,7 +132,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
                 >
                   <%= gettext("Remove") %>
                 </.pill>
-              </.link>
+              </.custom_link>
             </div>
           </div>
         </div>

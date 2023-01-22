@@ -2,9 +2,21 @@ defmodule ExCommerceWeb.LiveHelpers do
   @moduledoc """
   Implements reusable helpers for live views
   """
+  import ExCommerceWeb.Components.IconComponent
+
+  import Phoenix.Component,
+    only: [
+      assign: 3,
+      assign_new: 3,
+      assigns_to_attributes: 1,
+      live_component: 1,
+      live_flash: 2,
+      render_slot: 1,
+      sigil_H: 2
+    ]
+
   import Phoenix.HTML, only: [raw: 1]
   import Phoenix.LiveView.Helpers
-  import Phoenix.LiveView
   import Phoenix.View
 
   alias Phoenix.LiveView.JS
@@ -434,7 +446,7 @@ defmodule ExCommerceWeb.LiveHelpers do
       >
         <div class="py-1" role="none">
           <%= for link <- @link do %>
-            <.link
+            <.custom_link
               tabindex="-1"
               role="menuitem"
               class="
@@ -447,7 +459,7 @@ defmodule ExCommerceWeb.LiveHelpers do
                 focus:ring-offset-gray-100 focus:ring-blue-500
               "
               {link}
-            ><%= render_slot(link) %></.link>
+            ><%= render_slot(link) %></.custom_link>
           <% end %>
         </div>
       </div>
@@ -532,7 +544,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     |> JS.remove_attribute("aria-expanded", to: to)
   end
 
-  def link(%{navigate: _to} = assigns) do
+  def custom_link(%{navigate: _to} = assigns) do
     assigns = assign_new(assigns, :class, fn -> nil end)
 
     ~H"""
@@ -547,7 +559,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
-  def link(%{patch: to} = assigns) do
+  def custom_link(%{patch: to} = assigns) do
     opts = assigns |> assigns_to_attributes() |> Keyword.put(:to, to)
     assigns = assign(assigns, :opts, opts)
 
@@ -556,7 +568,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
-  def link(%{} = assigns) do
+  def custom_link(%{} = assigns) do
     opts =
       assigns
       |> assigns_to_attributes()
@@ -572,18 +584,21 @@ defmodule ExCommerceWeb.LiveHelpers do
   def icon(assigns) do
     assigns =
       assigns
-      |> assign_new(:outlined, fn -> false end)
-      |> assign_new(:class, fn -> "w-4 h-4 inline-block" end)
-      |> assign_new(:"aria-hidden", fn ->
+      |> Map.put_new_lazy(:outlined, fn -> true end)
+      |> Map.put_new_lazy(:solid, fn -> false end)
+      |> Map.put_new_lazy(:class, fn -> "w-4 h-4 inline-block" end)
+      |> Map.put_new_lazy(:"aria-hidden", fn ->
         !Map.has_key?(assigns, :"aria-label")
       end)
 
+    # <%= if @outlined do %>
+    #   <%= apply(Heroicons, :building_library, [assigns_to_attributes(assigns, [:outline, :name]) |> Enum.into(%{})]) %>
+    # <% else %>
+    #   <%= apply(Heroicons, :building_library, [assigns_to_attributes(assigns, [:solid, :name]) |> Enum.into(%{})]) %>
+    # <% end %>
+
     ~H"""
-    <%= if @outlined do %>
-      <%= apply(Heroicons.Outline, @name, [assigns_to_attributes(assigns, [:outlined, :name])]) %>
-    <% else %>
-      <%= apply(Heroicons.Solid, @name, [assigns_to_attributes(assigns, [:outlined, :name])]) %>
-    <% end %>
+    <.render_icon name={@name} outline={@outlined} class={@class} solid={@solid} />
     """
   end
 
@@ -764,7 +779,7 @@ defmodule ExCommerceWeb.LiveHelpers do
               hover:bg-green-300 focus:ring-offset-green-50 focus:ring-green-600
             "
           >
-            <.icon name={:x} class="base-alert-close-icon" />
+            <.icon name={:x_mark} class="base-alert-close-icon" />
           </button>
         </div>
       </div>

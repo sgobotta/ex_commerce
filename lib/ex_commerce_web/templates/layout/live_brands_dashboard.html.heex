@@ -52,16 +52,16 @@
     </div>
 
     <div class="flex-shrink-0 flex items-center px-4">
-      <.link navigate="#"}>
+      <.custom_link navigate="#"}>
         <.icon
-          name={:library}
+          name={:building_library}
           class="w-8 h-8 text-blue-600 -mt-2 inline-block"
           outlined
         />
         <span class="h-8 w-auto text-2xl ml-1 font-bold">
           <%= gettext("ExCommerce") %>
         </span>
-      </.link>
+      </.custom_link>
     </div>
     <div class="mt-5 flex-1 h-0 overflow-y-auto">
       <%= if @current_user do %>
@@ -89,16 +89,16 @@
     bg-gray-100
   ">
     <div class="flex items-center flex-shrink-0 px-6">
-      <.link navigate="#">
+      <.custom_link navigate="#">
         <.icon
-          name={:library}
+          name={:building_library}
           class="w-8 h-8 text-blue-600 -mt-2 inline-block"
           outlined
         />
         <span class="h-8 w-auto text-2xl ml-1 font-bold">
           <%= gettext("ExCommerce") %>
         </span>
-      </.link>
+      </.custom_link>
     </div>
     <!-- Sidebar component, swap this element with another sidebar if you like -->
     <div class="h-0 flex-1 flex flex-col overflow-y-auto">
@@ -137,6 +137,7 @@
         text-gray-500
         focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500
         lg:hidden
+        with-ring-sm
       "
       phx-click={show_mobile_sidebar()}
     >
@@ -192,7 +193,7 @@
     <%= gettext("Re-establishing connection...") %>
   </.connection_status>
 
-  <.live_component module={ExCommerceWeb.LayoutComponent} id="layout" />
+  <%= Phoenix.Component.live_component %{module: ExCommerceWeb.LayoutComponent, id: "layout"} %>
 
   <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none">
     <%= @inner_content %>

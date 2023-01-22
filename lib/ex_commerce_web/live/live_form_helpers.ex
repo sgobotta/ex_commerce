@@ -26,10 +26,19 @@ defmodule ExCommerceWeb.LiveFormHelpers do
       defp get_photos([], _opts), do: []
 
       defp get_photos([photo | _photos] = photos, opts) do
+        # FIXME: we shouldn't equal to nil
         case Enum.find(photos, nil, fn %Photo{state: state} ->
-               state != :delete
+               state != :delete or state == nil
              end) do
           nil ->
+            :ok =
+              Logger.warn(
+                "#{__MODULE__} (get_photos/2) :: No non :delete photos found. Returning a placeholder. photos=#{inspect(photos)}"
+              )
+
+            get_photos([], opts)
+
+          %Photo{state: nil} ->
             :ok =
               Logger.warn(
                 "#{__MODULE__} (get_photos/2) :: No non :delete photos found. Returning a placeholder. photos=#{inspect(photos)}"

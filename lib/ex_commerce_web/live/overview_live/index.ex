@@ -2,8 +2,7 @@ defmodule ExCommerceWeb.OverviewLive.Index do
   @moduledoc false
 
   use ExCommerceWeb,
-      {:live_view,
-       layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}}
+      {:live_view, layout: {ExCommerceWeb.LayoutView, :live_main_dashboard}}
 
   @impl true
   def mount(params, session, socket) do

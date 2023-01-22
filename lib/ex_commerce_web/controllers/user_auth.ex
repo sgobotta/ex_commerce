@@ -3,8 +3,9 @@ defmodule ExCommerceWeb.UserAuth do
   Controller for user authentication.
   """
   import ExCommerceWeb.Gettext
-  import Plug.Conn
+  import Phoenix.Component, only: [assign: 3, assign_new: 3]
   import Phoenix.Controller
+  import Plug.Conn, except: [assign: 3]
 
   alias ExCommerce.Accounts
   alias ExCommerceWeb.Router.Helpers, as: Routes
@@ -207,8 +208,8 @@ defmodule ExCommerceWeb.UserAuth do
       end
 
     conn
-    |> assign(:current_user, user)
-    |> assign(:visitor, visitor)
+    |> Plug.Conn.assign(:current_user, user)
+    |> Plug.Conn.assign(:visitor, visitor)
   end
 
   defp ensure_user_token(conn) do
@@ -276,20 +277,20 @@ defmodule ExCommerceWeb.UserAuth do
   @spec get_recaptcha_response_field :: String.t()
   def get_recaptcha_response_field, do: @recaptcha_response_field
 
-  defp assign_current_user(socket, nil) do
-    LiveView.assign_new(socket, :current_user, fn -> nil end)
-    |> LiveView.assign(:visitor, true)
+  defp assign_current_user(%LiveView.Socket{} = socket, nil) do
+    assign_new(socket, :current_user, fn -> nil end)
+    |> assign(:visitor, true)
   end
 
-  defp assign_current_user(socket, user_token) do
-    LiveView.assign_new(
+  defp assign_current_user(%LiveView.Socket{} = socket, user_token) do
+    assign_new(
       socket,
       :current_user,
       fn ->
         Accounts.get_user_by_session_token!(user_token)
       end
     )
-    |> LiveView.assign(:visitor, false)
+    |> assign(:visitor, false)
   end
 
   defp redirect_require_login(socket) do

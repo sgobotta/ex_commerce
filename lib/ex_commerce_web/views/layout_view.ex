@@ -29,7 +29,7 @@ defmodule ExCommerceWeb.LayoutView do
     ~H"""
     <div class="space-y-1">
       <%= if @current_user do %>
-        <.link
+        <.custom_link
           navigate={Routes.brand_index_path(Endpoint, :index)}
           class={"
             text-gray-700 hover:text-gray-900 group flex items-center
@@ -41,7 +41,7 @@ defmodule ExCommerceWeb.LayoutView do
           aria-current={if @active_tab == :brands, do: "true", else: "false"}
         >
           <.icon
-            name={:library} outlined
+            name={:building_library} outlined
             class="
               flex-shrink-0
               mr-3
@@ -50,9 +50,9 @@ defmodule ExCommerceWeb.LayoutView do
             "
           />
           <%= gettext("Brands") %>
-        </.link>
+        </.custom_link>
 
-        <.link
+        <.custom_link
           navigate={Routes.overview_index_path(Endpoint, :index, @brand.id)}
           class={"
             text-gray-700 hover:text-gray-900 group flex items-center
@@ -73,8 +73,8 @@ defmodule ExCommerceWeb.LayoutView do
             "
           />
           <%= gettext("Home") %>
-        </.link>
-        <.link
+        </.custom_link>
+        <.custom_link
           navigate={Routes.shop_index_path(Endpoint, :index, @brand.id)}
           class={"
             text-gray-700 hover:text-gray-900 group flex items-center
@@ -85,10 +85,10 @@ defmodule ExCommerceWeb.LayoutView do
           "}
           aria-current={if @active_tab == :shops, do: "true", else: "false"}
         >
-          <.icon name={:office_building} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon name={:building_office} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Shops") %>
-        </.link>
-        <.link
+        </.custom_link>
+        <.custom_link
           navigate={Routes.catalogue_index_path(Endpoint, :index, @brand.id)}
           class={"
             text-gray-700 hover:text-gray-900 group flex items-center
@@ -99,10 +99,10 @@ defmodule ExCommerceWeb.LayoutView do
           "}
           aria-current={if @active_tab == :catalogues, do: "true", else: "false"}
         >
-          <.icon name={:clipboard_list} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon name={:clipboard_document_list} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Catalogues") %>
-        </.link>
-        <.link
+        </.custom_link>
+        <.custom_link
           navigate={Routes.catalogue_category_index_path(Endpoint, :index, @brand.id)}
           class={"
             text-gray-700 hover:text-gray-900 group flex items-center
@@ -115,8 +115,8 @@ defmodule ExCommerceWeb.LayoutView do
         >
           <.icon name={:bookmark} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Categories") %>
-        </.link>
-        <.link
+        </.custom_link>
+        <.custom_link
           navigate={Routes.catalogue_item_index_path(Endpoint, :index, @brand.id)}
           class={"
             text-gray-700 hover:text-gray-900 group flex items-center
@@ -129,8 +129,8 @@ defmodule ExCommerceWeb.LayoutView do
         >
           <.icon name={:cube} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Items") %>
-        </.link>
-        <.link
+        </.custom_link>
+        <.custom_link
           navigate={Routes.catalogue_item_option_group_index_path(
             Endpoint,
             :index,
@@ -145,11 +145,11 @@ defmodule ExCommerceWeb.LayoutView do
           "}
           aria-current={if @active_tab == :catalogue_item_option_groups, do: "true", else: "false"}
         >
-          <.icon name={:collection} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon name={:rectangle_stack} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Option Groups") %>
-        </.link>
+        </.custom_link>
       <% else %>
-        <.link navigate={Routes.user_session_path(Endpoint, :new)}
+        <.custom_link navigate={Routes.user_session_path(Endpoint, :new)}
           class="
             text-gray-700 hover:text-gray-900
             hover:bg-gray-50
@@ -166,7 +166,7 @@ defmodule ExCommerceWeb.LayoutView do
               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
           <%= gettext("Sign in") %>
-        </.link>
+        </.custom_link>
       <% end %>
     </div>
     """
@@ -175,7 +175,7 @@ defmodule ExCommerceWeb.LayoutView do
   def home_sidebar_nav_links(assigns) do
     ~H"""
     <div class="space-y-1">
-      <.link
+      <.custom_link
         class="
           text-gray-700 hover:text-gray-900 group flex items-center
           px-2 py-2
@@ -187,8 +187,8 @@ defmodule ExCommerceWeb.LayoutView do
       >
         <.icon name={:home} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
         <%= gettext("Welcome") %>
-      </.link>
-      <.link
+      </.custom_link>
+      <.custom_link
         class="
           text-gray-700 hover:text-gray-900 group flex items-center
           px-2 py-2
@@ -198,10 +198,10 @@ defmodule ExCommerceWeb.LayoutView do
         href="#carousel"
         aria-current="false"
       >
-        <.icon name={:search} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+        <.icon name={:magnifying_glass} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
         <%= gettext("Search") %>
-      </.link>
-      <.link
+      </.custom_link>
+      <.custom_link
         class="
           text-gray-700 hover:text-gray-900 group flex items-center
           px-2 py-2
@@ -213,8 +213,8 @@ defmodule ExCommerceWeb.LayoutView do
       >
         <.icon name={:information_circle} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
         <%= gettext("About") %>
-      </.link>
-      <.link
+      </.custom_link>
+      <.custom_link
         class="
           text-gray-700 hover:text-gray-900 group flex items-center
           px-2 py-2
@@ -224,9 +224,9 @@ defmodule ExCommerceWeb.LayoutView do
         href="#plans"
         aria-current="false"
       >
-        <.icon name={:support} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+        <.icon name={:lifebuoy} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
         <%= gettext("Support") %>
-      </.link>
+      </.custom_link>
     </div>
     """
   end

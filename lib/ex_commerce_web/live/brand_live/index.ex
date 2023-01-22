@@ -3,8 +3,7 @@ defmodule ExCommerceWeb.BrandLive.Index do
   Lists available brands
   """
   use ExCommerceWeb,
-      {:live_view,
-       layout: {ExCommerceWeb.LayoutView, "live_brands_dashboard.html"}}
+      {:live_view, layout: {ExCommerceWeb.LayoutView, :live_brands_dashboard}}
 
   alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces

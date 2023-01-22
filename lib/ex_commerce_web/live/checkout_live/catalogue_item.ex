@@ -5,7 +5,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   use ExCommerceWeb, {
     :live_view,
-    layout: {ExCommerceWeb.LayoutView, "live_checkout.html"}
+    layout: {ExCommerceWeb.LayoutView, :live_checkout}
   }
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
@@ -216,21 +216,27 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   #
 
   def render_option_price(price, price_modifier, assigns) do
+    assigns = assign(assigns, :price, get_price(price))
+
     case Decimal.eq?(price_modifier, Decimal.new(0)) do
       true ->
         ~H"""
         <p class="font-medium text-sm text-black">
-          <%= get_price(price) %>
+          <%= @price %>
         </p>
         """
 
       false ->
+        assigns =
+          assigns
+          |> assign(:discount_price, get_price(price, price_modifier))
+
         ~H"""
         <p class="font-medium text-sm text-black line line-through">
-          <%= get_price(price) %>
+          <%= @price %>
         </p>
         <p class="font-medium text-sm text-green-400">
-          <%= get_price(price, price_modifier) %>
+          <%= @discount_price %>
         </p>
         """
     end
