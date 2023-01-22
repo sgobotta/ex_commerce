@@ -8,11 +8,11 @@
   }
 
   .close-modal-button {
-    @apply float-right w-8 h-8 rounded-full bg-gray-800 border-gray-800 hover:bg-gray-600 hover:border-gray-600 hover:shadow-button focus:bg-gray-400 focus:border-gray-400 text-2xl text-gray-100 text-center;
+    @apply float-right w-8 h-8 rounded-lg text-center text-2xl text-gray-700 bg-gray-100 hover:bg-gray-300 focus:bg-gray-300 translate-x-0 translate-y-0 active:translate-x-1 active:translate-y-1 transition duration-300;
   }
 
   .mini-cancel-button {
-    @apply float-right w-8 h-8 rounded-full bg-gray-800 border-gray-800 hover:bg-gray-600 hover:border-gray-600 hover:shadow-button focus:bg-gray-400 focus:border-gray-400 text-2xl text-gray-100 text-center;
+    @apply float-right w-8 h-8 rounded-lg text-2xl text-gray-700 text-center bg-gray-100 hover:bg-rose-300 focus:bg-rose-400 focus:text-gray-100 transition duration-300;
   }
 
   .pill-button {
