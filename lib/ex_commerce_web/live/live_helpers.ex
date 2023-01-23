@@ -380,7 +380,7 @@ defmodule ExCommerceWeb.LiveHelpers do
 
     ~H"""
     <!-- User account dropdown -->
-    <div class="px-3 mt-6 relative inline-block text-left">
+    <div class="px-3 mt-6 relative inline-block text-left w-full">
       <div>
         <button
           id={@id}
