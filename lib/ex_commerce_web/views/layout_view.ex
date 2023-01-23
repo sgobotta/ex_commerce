@@ -41,7 +41,7 @@ defmodule ExCommerceWeb.LayoutView do
           aria-current={if @active_tab == :brands, do: "true", else: "false"}
         >
           <.icon
-            name={:building_library} outlined
+            name={:building_office_2} outlined
             class="
               flex-shrink-0
               mr-3
@@ -99,7 +99,7 @@ defmodule ExCommerceWeb.LayoutView do
           "}
           aria-current={if @active_tab == :catalogues, do: "true", else: "false"}
         >
-          <.icon name={:clipboard_document_list} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon name={:book_open} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Catalogues") %>
         </.custom_link>
         <.custom_link
@@ -127,7 +127,7 @@ defmodule ExCommerceWeb.LayoutView do
           "}
           aria-current={if @active_tab == :catalogue_items, do: "true", else: "false"}
         >
-          <.icon name={:cube} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon name={:swatch} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Items") %>
         </.custom_link>
         <.custom_link
@@ -145,7 +145,7 @@ defmodule ExCommerceWeb.LayoutView do
           "}
           aria-current={if @active_tab == :catalogue_item_option_groups, do: "true", else: "false"}
         >
-          <.icon name={:rectangle_stack} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon name={:squares_2x2} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Option Groups") %>
         </.custom_link>
       <% else %>
