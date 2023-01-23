@@ -52,9 +52,9 @@
 + [Docker](https://docs.docker.com/engine/install/ubuntu/)
 + [Docker Compose](https://docs.docker.com/compose/install/)
 + [Tilt](https://docs.tilt.dev/install.html#linux)
-+ [Elixir `1.12.3`](https://elixir-lang.org/install.html)
-+ [Erlang `23.3.4`](https://erlang.org/doc/installation_guide/users_guide.html)
-+ [Node `14.16.1`](https://nodejs.org/es/)
++ [Elixir `1.14.3`](https://elixir-lang.org/install.html)
++ [Erlang `25.2.1`](https://erlang.org/doc/installation_guide/users_guide.html)
++ [Node `16.13.1`](https://nodejs.org/es/)
 
 Tilt can be installed by running just the curl command in the link above. It's used for local development exclusively.
 
@@ -133,20 +133,29 @@ make help
 make
 ```
 
-#### Docker services commands
+#### Start services with Tilt
 
-Docker services are defined in [`docker-compose.yml`](docker-compose.yml).
+All services are defined in the *Tiltfile* file. There, docker services, defined in [`docker-compose.yml`](docker-compose.yml), are used for third party integrations.
 
-> *Starts dockerized services.*
+> *Starts all services.*
 
 ```bash
 make start
 ```
 
-> *Stops dockerized services.*
+> *Stops all services.*
 
 ```bash
 make stop
+```
+
+> *Disable the application service. This is useful if you want to run the elixir server with `make start`.*
+
+```bash
+# Disables the app service in Tilt.
+tilt disable app
+# Starts the elixir service with mix
+make server
 ```
 
 #### Configuration commands
@@ -255,4 +264,4 @@ The Docker services include a [`PostgreSql`](https://www.postgresql.org/) and a 
 
 ## License
 
-***TODO***
+[AGPL v3.0](./LICENSE)
