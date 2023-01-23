@@ -85,7 +85,7 @@ defmodule ExCommerceWeb.LayoutView do
           "}
           aria-current={if @active_tab == :shops, do: "true", else: "false"}
         >
-          <.icon name={:building_office} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon name={:building_storefront} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Shops") %>
         </.custom_link>
         <.custom_link
