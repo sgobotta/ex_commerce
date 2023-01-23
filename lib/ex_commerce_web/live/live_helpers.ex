@@ -597,12 +597,6 @@ defmodule ExCommerceWeb.LiveHelpers do
         !Map.has_key?(assigns, :"aria-label")
       end)
 
-    # <%= if @outlined do %>
-    #   <%= apply(Heroicons, :building_library, [assigns_to_attributes(assigns, [:outline, :name]) |> Enum.into(%{})]) %>
-    # <% else %>
-    #   <%= apply(Heroicons, :building_library, [assigns_to_attributes(assigns, [:solid, :name]) |> Enum.into(%{})]) %>
-    # <% end %>
-
     ~H"""
     <.render_icon name={@name} outline={@outlined} class={@class} solid={@solid} />
     """
