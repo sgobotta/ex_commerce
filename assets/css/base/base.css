@@ -16,11 +16,11 @@
   }
 
   .with-ring {
-    @apply focus:ring focus:ring-inset focus:ring-4 focus:ring-sky-500 !important;
+    @apply focus:ring-inset focus:ring-4 focus:ring-sky-500 !important;
   }
 
   .with-ring-sm {
-    @apply focus:ring focus:ring-inset focus:ring-2 focus:ring-sky-500 !important;
+    @apply focus:ring-inset focus:ring-2 focus:ring-sky-500 !important;
   }
 
   .with-ring.gray, .with-ring-sm.gray {
