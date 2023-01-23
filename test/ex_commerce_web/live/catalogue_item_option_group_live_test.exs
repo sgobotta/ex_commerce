@@ -89,7 +89,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
     end
 
     defp submit_new_catalogue_item_option_group(conn, view, brand_id, attrs) do
-      {:ok, _, html} =
+      {:ok, _view, html} =
         view
         |> form("#catalogue_item_option_group-form")
         |> render_submit(%{catalogue_item_option_group: attrs})
@@ -246,7 +246,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
                catalogue_item_option_group: @invalid_attrs
              )
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         index_live
         |> form("#catalogue_item_option_group-form",
           catalogue_item_option_group: @update_attrs

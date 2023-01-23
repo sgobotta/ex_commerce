@@ -83,7 +83,7 @@ defmodule ExCommerce.Marketplaces do
       nil
 
   """
-  @spec get_shop_by_brand_slug(binary(), binary()) :: %Shop{} | nil
+  @spec get_shop_by_brand_slug(binary(), binary()) :: Shop.t() | nil
   def get_shop_by_brand_slug(brand_slug, shop_slug) do
     query =
       from shop in Shop,
@@ -206,7 +206,7 @@ defmodule ExCommerce.Marketplaces do
       nil
 
   """
-  @spec get_brand_by(atom(), any()) :: %Brand{} | nil
+  @spec get_brand_by(atom(), any()) :: Brand.t() | nil
   def get_brand_by(key, value) do
     Repo.get_by(Brand, [{key, value}])
   end

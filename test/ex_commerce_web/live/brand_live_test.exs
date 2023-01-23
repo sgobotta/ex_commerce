@@ -44,7 +44,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
              |> form("#brand-form", brand: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         index_live
         |> form("#brand-form", brand: @create_attrs)
         |> render_submit()
@@ -72,7 +72,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
              |> form("#brand-form", brand: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         index_live
         |> form("#brand-form", brand: @update_attrs)
         |> render_submit()
@@ -164,7 +164,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
              |> form("#brand-form", brand: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         show_live
         |> form("#brand-form", brand: @update_attrs)
         |> render_submit()

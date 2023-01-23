@@ -41,7 +41,7 @@ defmodule ExCommerceNumeric do
   @spec format_price(binary() | integer() | float() | Decimal.t(),
           round_places: integer()
         ) ::
-          %Decimal{}
+          Decimal.t()
   def format_price(value, opts \\ []) do
     [round_places: round_places] =
       _opts =
