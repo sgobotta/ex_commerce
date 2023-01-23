@@ -8,7 +8,7 @@
   }
 
   .close-modal-button {
-    @apply float-right w-8 h-8 rounded-lg text-center text-2xl text-gray-700 bg-gray-100 hover:bg-gray-300 focus:bg-gray-300 translate-x-0 translate-y-0 active:translate-x-1 active:translate-y-1 transition duration-300;
+    @apply float-right w-8 h-8 rounded-lg text-center text-2xl text-gray-700 bg-gray-100 hover:bg-gray-300 focus:bg-gray-300 active:bg-gray-200 transition duration-300;
   }
 
   .mini-cancel-button {
