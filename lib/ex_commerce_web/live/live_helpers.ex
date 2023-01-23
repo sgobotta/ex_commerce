@@ -37,16 +37,18 @@ defmodule ExCommerceWeb.LiveHelpers do
   # Button helpers
   #
 
-  def selection_input(%{type: "radio", id: id} = assigns) do
+  def selection_input(%{type: "radio"} = assigns) do
     attrs = assigns_to_attributes(assigns)
+
+    assigns = assign(assigns, :attrs, attrs)
 
     ~H"""
     <div class="flex justify-center p-2">
       <input
-        {attrs}
+        {@attrs}
         class="hidden"
       />
-      <label for={id} class="flex items-center cursor-pointer">
+      <label for={@id} class="flex items-center cursor-pointer">
         <span
           class="
             w-6 h-6 inline-block mr-2 rounded-full
@@ -62,6 +64,8 @@ defmodule ExCommerceWeb.LiveHelpers do
   def selection_input(%{type: "checkbox"} = assigns) do
     attrs = assigns_to_attributes(assigns)
 
+    assigns = assign(assigns, :attrs, attrs)
+
     ~H"""
     <input
       class="
@@ -69,7 +73,7 @@ defmodule ExCommerceWeb.LiveHelpers do
         ring-2 ring-gray-300 ring-offset-gray-300
         focus:ring-1 focus:ring-gray-300 focus:ring-offset-gray-300
       "
-      {attrs}
+      {@attrs}
     />
     """
   end
@@ -276,6 +280,8 @@ defmodule ExCommerceWeb.LiveHelpers do
       assigns_to_attributes(assigns)
       |> Keyword.put_new(:color, "text-sky-500")
 
+    assigns = assign(assigns, :color, Keyword.fetch!(opts, :color))
+
     ~H"""
     <div class="
       sm:flex sm:items-center sm:justify-between
@@ -286,8 +292,8 @@ defmodule ExCommerceWeb.LiveHelpers do
       <div class="flex-1 min-w-0">
         <h1 class={"
           text-2xl font-medium text-sky-600
-          leading-6 #{Keyword.fetch!(opts, :color)}
-          sm:truncate with-outline
+          leading-6 #{@color}
+          sm:truncate
         "}>
           <%= @title %>
         </h1>
@@ -637,10 +643,10 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
-  def list_card(%{id: id} = assigns) do
+  def list_card(assigns) do
     ~H"""
     <div
-      id={id}
+      id={@id}
       class="
         card p-4 md:p-8
         flex flex-col sm:flex-row md:sm:flex-row lg:sm:flex-row
@@ -658,7 +664,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
-  def floating_button(%{to: to} = assigns) do
+  def floating_button(assigns) do
     ~H"""
     <div class="
       fixed bottom-8 right-8 rounded-lg w-20 h-20
@@ -671,7 +677,7 @@ defmodule ExCommerceWeb.LiveHelpers do
       focus:shadow-button-sm
       active:translate-x-1 active:translate-y-1 active:shadow-button-xs
     ">
-      <%= live_patch to: to, id: "new" do %>
+      <%= live_patch to: @to, id: "new" do %>
         <.icon
           class="
             base-alert-icon w-16 h-16

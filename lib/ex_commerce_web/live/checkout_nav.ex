@@ -1,7 +1,8 @@
 defmodule ExCommerceWeb.CheckoutNav do
   @moduledoc false
 
-  use Phoenix.LiveView
+  import Phoenix.LiveView
+  import Phoenix.Component
 
   alias ExCommerce.Checkout.Cart
 

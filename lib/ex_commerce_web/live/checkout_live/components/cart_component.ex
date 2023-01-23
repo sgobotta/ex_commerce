@@ -12,9 +12,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
 
   @impl true
   def update(%{} = assigns, socket) do
-    {:ok,
-     socket
-     |> assign(assigns)}
+    {:ok, assign(socket, :order_items, get_order_items(assigns.opts))}
   end
 
   @impl true
@@ -22,42 +20,62 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
     ~H"""
     <div class="">
       <div class="px-4">
-        <.title_bar title={gettext("Order Items")} />
+        <.title_bar title={gettext("Order")} />
       </div>
 
       <div class="px-6 py-2">
         <div class="lg:grid">
-          <%= render_order_items(get_order_items(@opts), assigns) %>
+          <%= if @order_items == [] do %>
+            <.render_empty_cart />
+          <% else %>
+            <%= for %Cart.OrderItem{
+              catalogue_item: %CatalogueItem{name: name, photos: photos},
+              quantity: quantity,
+              price: price,
+              variant: %CatalogueItemVariant{type: variant_type},
+              temp_id: temp_id
+            } <- @order_items do %>
+              <.render_order_item
+                name={name}
+                price={price}
+                quantity={quantity}
+                temp_id={temp_id}
+                variant_type={variant_type}
+              >
+                <:photos>
+                  <%= for photo <- get_photos(photos, [
+                    use_placeholder: true,
+                    type: :avatar
+                  ]) do %>
+                    <%= render_image([
+                      source: get_photo_source(@socket, photo),
+                      size_classes: "w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32"
+                    ]) %>
+                  <% end %>
+                </:photos>
+              </.render_order_item>
+            <% end %>
+          <% end %>
         </div>
       </div>
     </div>
     """
   end
 
-  defp render_order_items([], assigns) do
+  defp render_empty_cart(assigns) do
     ~H"""
-    <%= gettext("The cart is empty") %>
+    <div class="flex flex-col items-center">
+      <.icon
+        outlined={true}
+        name={:shopping_cart}
+        class="text-gray-400 w-16 h-16 my-8"
+      />
+      <span class="text-lg text-gray-500"><%= gettext("The cart is empty") %></span>
+    </div>
     """
   end
 
-  defp render_order_items(order_items, assigns) do
-    ~H"""
-    <%= for %Cart.OrderItem{} = order_item <- order_items do %>
-      <%= render_order_item(order_item, assigns) %>
-    <% end %>
-    """
-  end
-
-  defp render_order_item(
-         %Cart.OrderItem{
-           catalogue_item: %CatalogueItem{name: name, photos: photos},
-           quantity: quantity,
-           price: price,
-           variant: %CatalogueItemVariant{type: type},
-           temp_id: temp_id
-         },
-         assigns
-       ) do
+  defp render_order_item(assigns) do
     ~H"""
     <div class="lg:col-span-1 flex sm:-ml-4 md:-ml-8 lg:-ml-4 xl:-ml-8 2xl:-ml-12 3xl:-ml-16">
       <div class="basis-1/12 self-center">
@@ -73,15 +91,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
           h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32
         ">
           <div class="absolute -left-10 lg:-left-16">
-            <%= for photo <- get_photos(photos, [
-              use_placeholder: true,
-              type: :avatar
-            ]) do %>
-              <%= render_image([
-                source: get_photo_source(@socket, photo),
-                size_classes: "w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 h-16 sm:h-20 md:h-24 lg:h-28 xl:h-32"
-              ]) %>
-            <% end %>
+            <%= render_slot(@photos) %>
           </div>
         </div>
         <div class="
@@ -95,7 +105,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
               text-base text-black font-medium
               text-ellipsis overflow-hidden whitespace-nowrap
             ">
-            (<%= quantity %>) <%= name %>
+            (<%= @quantity %>) <%= @name %>
             </p>
           </div>
           <div class="">
@@ -103,7 +113,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
               text-base text-gray-700 font-normal
               text-ellipsis overflow-hidden whitespace-nowrap
             ">
-              <%= type %>
+              <%= @variant_type %>
             </p>
           </div>
           <div class="flex flex-row justify-between items-center">
@@ -112,18 +122,15 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
                 tracking-wider font-bold text-xl text-sky-600
                 text-ellipsis overflow-hidden whitespace-nowrap
               ">
-                $<%= price %>
+                $<%= @price %>
               </p>
             </div>
-            <div class="
-
-              justify-self-end self-center
-            ">
+            <div class="justify-self-end self-center">
               <.custom_link
                 to={"#"}
                 class="rounded-xl"
                 phx-click="remove_order_item"
-                phx-value-remove={temp_id}
+                phx-value-remove={@temp_id}
                 data={[confirm: gettext("Delete from order?")]}
               >
                 <.pill bgcolor={"bg-white"} textcolor="text-sky-600"

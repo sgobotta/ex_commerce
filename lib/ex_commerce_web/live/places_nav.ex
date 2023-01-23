@@ -1,7 +1,8 @@
 defmodule ExCommerceWeb.PlacesNav do
   @moduledoc false
 
-  use Phoenix.LiveView
+  import Phoenix.LiveView
+  import Phoenix.Component
 
   def on_mount(:check_action, _params, _session, socket) do
     {:cont,
