@@ -715,7 +715,7 @@ defmodule ExCommerceWeb.LiveHelpers do
             bg-red-50 text-red-500
             hover:bg-red-300 focus:ring-offset-red-50 focus:ring-red-600
           ">
-            <.icon name={:x} class="base-alert-close-icon" />
+            <.icon name={:x_mark} class="base-alert-close-icon" />
           </button>
         </div>
       </div>
@@ -750,7 +750,7 @@ defmodule ExCommerceWeb.LiveHelpers do
               focus:ring-offset-yellow-50 focus:ring-yellow-600
             "
           >
-            <.icon name={:x} class="base-alert-close-icon" />
+            <.icon name={:x_mark} class="base-alert-close-icon" />
           </button>
         </div>
       </div>
