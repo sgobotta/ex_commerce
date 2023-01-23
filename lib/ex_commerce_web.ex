@@ -40,6 +40,8 @@ defmodule ExCommerceWeb do
       # Include shared imports and aliases for views
       import PhoenixInlineSvg.Helpers
 
+      import Phoenix.Component
+
       unquote(view_helpers())
     end
   end
@@ -48,7 +50,7 @@ defmodule ExCommerceWeb do
     quote do
       @opts Keyword.merge(
               [
-                layout: {ExCommerceWeb.LayoutView, "live.html"},
+                layout: {ExCommerceWeb.LayoutView, :live},
                 container:
                   {:div,
                    class: "relative h-screen flex overflow-hidden bg-white"}

@@ -5,7 +5,7 @@
     bg-gray-100 shadow-lg z-50
   ">
     <!-- Back Button -->
-    <.link
+    <.custom_link
       patch={@return_to}
       class={"
         text-sky-600 group flex items-center
@@ -26,10 +26,10 @@
       <div class="text-xl group-active:scale-90">
         <%= @nav_title %>
       </div>
-    </.link>
+    </.custom_link>
     <!-- Cart -->
     <%= if @cart_visible && ExCommerce.Checkout.valid_checkout?(@cart) do %>
-      <.link
+      <.custom_link
         patch={@cart_path}
         class={"
           text-sky-600 group flex items-center
@@ -47,7 +47,7 @@
             group-active:scale-90
           "
         />
-      </.link>
+      </.custom_link>
     <% else %>
       <div
         class={"

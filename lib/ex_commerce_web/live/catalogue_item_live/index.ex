@@ -5,7 +5,7 @@ defmodule ExCommerceWeb.CatalogueItemLive.Index do
 
   use ExCommerceWeb, {
     :live_view,
-    layout: {ExCommerceWeb.LayoutView, "live_main_dashboard.html"}
+    layout: {ExCommerceWeb.LayoutView, :live_main_dashboard}
   }
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes

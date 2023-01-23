@@ -2,6 +2,7 @@ defmodule ExCommerceWeb.MountHelpers do
   @moduledoc """
   Responsible for implementing reusable mount helpers
   """
+  import Phoenix.Component, only: [assign: 2, assign: 3, assign_new: 3]
   import Phoenix.LiveView
   import ExCommerceWeb.Gettext
 

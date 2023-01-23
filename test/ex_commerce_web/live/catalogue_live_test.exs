@@ -77,7 +77,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
              |> form("#catalogue-form", catalogue: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         index_live
         |> form("#catalogue-form", catalogue: @create_attrs)
         |> render_submit()
@@ -112,7 +112,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
              |> form("#catalogue-form", catalogue: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         index_live
         |> form("#catalogue-form", catalogue: @update_attrs)
         |> render_submit()
@@ -310,7 +310,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
              |> form("#catalogue-form", catalogue: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         show_live
         |> form("#catalogue-form", catalogue: @update_attrs)
         |> render_submit()

@@ -2,6 +2,7 @@ defmodule ExCommerceWeb.AdminNav do
   @moduledoc false
 
   import Phoenix.LiveView
+  import Phoenix.Component
 
   alias ExCommerceWeb.{
     BrandLive,

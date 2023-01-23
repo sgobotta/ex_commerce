@@ -52,11 +52,11 @@
     </div>
 
     <div class="flex-shrink-0 flex items-center px-4">
-      <.link navigate="#"}>
+      <.custom_link navigate="#"}>
         <span class="h-8 w-auto text-2xl ml-1 font-medium">
           <%= gettext("ExCommerce") %>
         </span>
-      </.link>
+      </.custom_link>
     </div>
     <div class="mt-5 flex-1 h-0 overflow-y-auto">
       <nav class="px-2">
@@ -89,14 +89,14 @@
         px-4
         border-r border-gray-200
         text-gray-500
-        focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500
         lg:hidden
+        with-ring-sm
       "
       phx-click={show_mobile_sidebar()}
     >
       <span class="sr-only"><%= gettext("Open sidebar") %></span>
       <.icon
-        name={:menu}
+        name={:bars_3}
         class="w-8 h-8 text-gray-500 -mt-2 inline-block"
         outlined
       />
@@ -104,17 +104,17 @@
 
     <div class="flex-1 flex justify-between px-4 sm:px-6 lg:px-8">
       <div class="flex-1 flex items-center">
-        <.link navigate="#">
+        <.custom_link navigate="#">
           <span class="w-auto text-2xl ml-1 text-gray-700 font-medium">
             <%= gettext("ExCommerce") %>
           </span>
-        </.link>
+        </.custom_link>
       </div>
       <div class="flex items-center">
         <!-- Profile dropdown TODO -->
         <%= if @current_user do %>
           <%= render(ExCommerceWeb.ButtonsView, "admin_dashboard_button")  %>
-          <.link
+          <.custom_link
             href={Routes.user_session_path(Endpoint, :delete)}
             method={:delete}
             class={"
@@ -126,7 +126,7 @@
             "}
           >
             <div class="inline-flex items-center">
-              <.icon name={:logout} outlined class="
+              <.icon name={:arrow_left_on_rectangle} outlined class="
                 flex-shrink-0 h-6 w-6
                 text-gray-400 group-hover:text-gray-500
               "/>
@@ -134,10 +134,10 @@
                 <%= gettext("Sign out") %>
               </span>
             </div>
-          </.link>
+          </.custom_link>
         <% else %>
           <%= render(ExCommerceWeb.ButtonsView, "register_button") %>
-          <.link
+          <.custom_link
             navigate={Routes.user_session_path(ExCommerceWeb.Endpoint, :new)}
             class={"
               group flex items-center
@@ -148,7 +148,7 @@
             "}
           >
             <div class="inline-flex items-center">
-              <.icon name={:login} outlined class="
+              <.icon name={:arrow_right_on_rectangle} outlined class="
                 flex-shrink-0 h-6 w-6
                 text-gray-400 group-hover:text-gray-500
               "/>
@@ -156,7 +156,7 @@
                 <%= gettext("Log in") %>
               </span>
             </div>
-          </.link>
+          </.custom_link>
         <% end %>
       </div>
     </div>
@@ -169,7 +169,7 @@
     <%= gettext("Re-establishing connection...") %>
   </.connection_status>
 
-  <.live_component module={ExCommerceWeb.LayoutComponent} id="layout" />
+  <%= Phoenix.Component.live_component %{module: ExCommerceWeb.LayoutComponent, id: "layout"} %>
 
   <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none">
     <%= @inner_content %>

@@ -37,6 +37,14 @@ defmodule ExCommerceWeb.LiveFormHelpers do
 
             get_photos([], opts)
 
+          %Photo{state: nil} ->
+            :ok =
+              Logger.warn(
+                "#{__MODULE__} (get_photos/2) :: No non :delete photos found. Returning a placeholder. photos=#{inspect(photos)}"
+              )
+
+            get_photos([], opts)
+
           %Photo{state: :local} = photo ->
             :ok =
               Logger.warn(

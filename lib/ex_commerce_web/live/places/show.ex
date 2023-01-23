@@ -5,7 +5,7 @@ defmodule ExCommerceWeb.PlaceLive.Show do
 
   use ExCommerceWeb, {
     :live_view,
-    layout: {ExCommerceWeb.LayoutView, "live_places.html"}
+    layout: {ExCommerceWeb.LayoutView, :live_places}
   }
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes

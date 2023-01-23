@@ -70,7 +70,7 @@
                   </p>
                   <div class="flex flex-row">
                     <div class="pt-1">
-                      <.icon name={:location_marker} outlined class="
+                      <.icon name={:map_pin} outlined class="
                         text-sky-600
                         flex-shrink-0 h-4 w-4
                       "/>
@@ -118,7 +118,7 @@
                   bg-gray-50
                   pressable
                 ">
-                  <.link
+                  <.custom_link
                     patch={Routes.checkout_catalogue_path(
                       @socket,
                       :index,
@@ -128,7 +128,7 @@
                     )}
                   >
                     <div class="flex justify-center">
-                      <.icon name={:clipboard_list} outlined class="
+                      <.icon name={:book_open} outlined class="
                         text-sky-600
                         mr-2 flex-shrink-0 h-16 w-16
                       "/>
@@ -138,7 +138,7 @@
                         <%= catalogue_name %>
                       </p>
                     </div>
-                  </.link>
+                  </.custom_link>
                 </div>
               <% end %>
             </div>

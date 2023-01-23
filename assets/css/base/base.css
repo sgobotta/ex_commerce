@@ -15,6 +15,18 @@
     @apply focus:outline-gray-700 !important;
   }
 
+  .with-ring {
+    @apply focus:ring-inset focus:ring-4 focus:ring-sky-500 !important;
+  }
+
+  .with-ring-sm {
+    @apply focus:ring-inset focus:ring-2 focus:ring-sky-500 !important;
+  }
+
+  .with-ring.gray, .with-ring-sm.gray {
+    @apply focus:ring-gray-700 !important;
+  }
+
   .icon {
     @apply h-6 w-6;
   }

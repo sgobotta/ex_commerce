@@ -2,9 +2,21 @@ defmodule ExCommerceWeb.LiveHelpers do
   @moduledoc """
   Implements reusable helpers for live views
   """
+  import ExCommerceWeb.Components.IconComponent
+
+  import Phoenix.Component,
+    only: [
+      assign: 3,
+      assign_new: 3,
+      assigns_to_attributes: 1,
+      live_component: 1,
+      live_flash: 2,
+      render_slot: 1,
+      sigil_H: 2
+    ]
+
   import Phoenix.HTML, only: [raw: 1]
   import Phoenix.LiveView.Helpers
-  import Phoenix.LiveView
   import Phoenix.View
 
   alias Phoenix.LiveView.JS
@@ -25,16 +37,18 @@ defmodule ExCommerceWeb.LiveHelpers do
   # Button helpers
   #
 
-  def selection_input(%{type: "radio", id: id} = assigns) do
+  def selection_input(%{type: "radio"} = assigns) do
     attrs = assigns_to_attributes(assigns)
+
+    assigns = assign(assigns, :attrs, attrs)
 
     ~H"""
     <div class="flex justify-center p-2">
       <input
-        {attrs}
+        {@attrs}
         class="hidden"
       />
-      <label for={id} class="flex items-center cursor-pointer">
+      <label for={@id} class="flex items-center cursor-pointer">
         <span
           class="
             w-6 h-6 inline-block mr-2 rounded-full
@@ -50,6 +64,8 @@ defmodule ExCommerceWeb.LiveHelpers do
   def selection_input(%{type: "checkbox"} = assigns) do
     attrs = assigns_to_attributes(assigns)
 
+    assigns = assign(assigns, :attrs, attrs)
+
     ~H"""
     <input
       class="
@@ -57,7 +73,7 @@ defmodule ExCommerceWeb.LiveHelpers do
         ring-2 ring-gray-300 ring-offset-gray-300
         focus:ring-1 focus:ring-gray-300 focus:ring-offset-gray-300
       "
-      {attrs}
+      {@attrs}
     />
     """
   end
@@ -264,6 +280,8 @@ defmodule ExCommerceWeb.LiveHelpers do
       assigns_to_attributes(assigns)
       |> Keyword.put_new(:color, "text-sky-500")
 
+    assigns = assign(assigns, :color, Keyword.fetch!(opts, :color))
+
     ~H"""
     <div class="
       sm:flex sm:items-center sm:justify-between
@@ -274,8 +292,8 @@ defmodule ExCommerceWeb.LiveHelpers do
       <div class="flex-1 min-w-0">
         <h1 class={"
           text-2xl font-medium text-sky-600
-          leading-6 #{Keyword.fetch!(opts, :color)}
-          sm:truncate with-outline
+          leading-6 #{@color}
+          sm:truncate
         "}>
           <%= @title %>
         </h1>
@@ -362,7 +380,7 @@ defmodule ExCommerceWeb.LiveHelpers do
 
     ~H"""
     <!-- User account dropdown -->
-    <div class="px-3 mt-6 relative inline-block text-left">
+    <div class="px-3 mt-6 relative inline-block text-left w-full">
       <div>
         <button
           id={@id}
@@ -434,7 +452,7 @@ defmodule ExCommerceWeb.LiveHelpers do
       >
         <div class="py-1" role="none">
           <%= for link <- @link do %>
-            <.link
+            <.custom_link
               tabindex="-1"
               role="menuitem"
               class="
@@ -447,7 +465,7 @@ defmodule ExCommerceWeb.LiveHelpers do
                 focus:ring-offset-gray-100 focus:ring-blue-500
               "
               {link}
-            ><%= render_slot(link) %></.link>
+            ><%= render_slot(link) %></.custom_link>
           <% end %>
         </div>
       </div>
@@ -532,7 +550,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     |> JS.remove_attribute("aria-expanded", to: to)
   end
 
-  def link(%{navigate: _to} = assigns) do
+  def custom_link(%{navigate: _to} = assigns) do
     assigns = assign_new(assigns, :class, fn -> nil end)
 
     ~H"""
@@ -547,7 +565,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
-  def link(%{patch: to} = assigns) do
+  def custom_link(%{patch: to} = assigns) do
     opts = assigns |> assigns_to_attributes() |> Keyword.put(:to, to)
     assigns = assign(assigns, :opts, opts)
 
@@ -556,7 +574,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
-  def link(%{} = assigns) do
+  def custom_link(%{} = assigns) do
     opts =
       assigns
       |> assigns_to_attributes()
@@ -572,18 +590,15 @@ defmodule ExCommerceWeb.LiveHelpers do
   def icon(assigns) do
     assigns =
       assigns
-      |> assign_new(:outlined, fn -> false end)
-      |> assign_new(:class, fn -> "w-4 h-4 inline-block" end)
-      |> assign_new(:"aria-hidden", fn ->
+      |> Map.put_new_lazy(:outlined, fn -> true end)
+      |> Map.put_new_lazy(:solid, fn -> false end)
+      |> Map.put_new_lazy(:class, fn -> "w-4 h-4 inline-block" end)
+      |> Map.put_new_lazy(:"aria-hidden", fn ->
         !Map.has_key?(assigns, :"aria-label")
       end)
 
     ~H"""
-    <%= if @outlined do %>
-      <%= apply(Heroicons.Outline, @name, [assigns_to_attributes(assigns, [:outlined, :name])]) %>
-    <% else %>
-      <%= apply(Heroicons.Solid, @name, [assigns_to_attributes(assigns, [:outlined, :name])]) %>
-    <% end %>
+    <.render_icon name={@name} outline={@outlined} class={@class} solid={@solid} />
     """
   end
 
@@ -622,10 +637,10 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
-  def list_card(%{id: id} = assigns) do
+  def list_card(assigns) do
     ~H"""
     <div
-      id={id}
+      id={@id}
       class="
         card p-4 md:p-8
         flex flex-col sm:flex-row md:sm:flex-row lg:sm:flex-row
@@ -643,7 +658,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     """
   end
 
-  def floating_button(%{to: to} = assigns) do
+  def floating_button(assigns) do
     ~H"""
     <div class="
       fixed bottom-8 right-8 rounded-lg w-20 h-20
@@ -656,7 +671,7 @@ defmodule ExCommerceWeb.LiveHelpers do
       focus:shadow-button-sm
       active:translate-x-1 active:translate-y-1 active:shadow-button-xs
     ">
-      <%= live_patch to: to, id: "new" do %>
+      <%= live_patch to: @to, id: "new" do %>
         <.icon
           class="
             base-alert-icon w-16 h-16
@@ -694,7 +709,7 @@ defmodule ExCommerceWeb.LiveHelpers do
             bg-red-50 text-red-500
             hover:bg-red-300 focus:ring-offset-red-50 focus:ring-red-600
           ">
-            <.icon name={:x} class="base-alert-close-icon" />
+            <.icon name={:x_mark} class="base-alert-close-icon" />
           </button>
         </div>
       </div>
@@ -729,7 +744,7 @@ defmodule ExCommerceWeb.LiveHelpers do
               focus:ring-offset-yellow-50 focus:ring-yellow-600
             "
           >
-            <.icon name={:x} class="base-alert-close-icon" />
+            <.icon name={:x_mark} class="base-alert-close-icon" />
           </button>
         </div>
       </div>
@@ -764,7 +779,7 @@ defmodule ExCommerceWeb.LiveHelpers do
               hover:bg-green-300 focus:ring-offset-green-50 focus:ring-green-600
             "
           >
-            <.icon name={:x} class="base-alert-close-icon" />
+            <.icon name={:x_mark} class="base-alert-close-icon" />
           </button>
         </div>
       </div>

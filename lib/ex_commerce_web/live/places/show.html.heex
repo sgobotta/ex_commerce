@@ -12,7 +12,7 @@
             </p>
             <div class="flex flex-row">
               <div class="pt-1">
-                <.icon name={:location_marker} outlined class="
+                <.icon name={:map_pin} outlined class="
                   text-sky-600
                   flex-shrink-0 h-4 w-4
                 "/>
@@ -62,7 +62,7 @@
             transition-transform ease-in-out duration-100
             active:scale-75
           ">
-            <.link
+            <.custom_link
               patch={Routes.place_show_path(
                 @socket,
                 :show_catalogue,
@@ -72,7 +72,7 @@
               )}
             >
               <div class="flex justify-center">
-                <.icon name={:clipboard_list} outlined class="
+                <.icon name={:book_open} outlined class="
                   text-sky-600
                   mr-2 flex-shrink-0 h-16 w-16
                 "/>
@@ -82,7 +82,7 @@
                   <%= catalogue_name %>
                 </p>
               </div>
-            </.link>
+            </.custom_link>
           </div>
         <% end %>
       </div>
@@ -163,7 +163,7 @@
                   col-span-6 lg:col-span-5 row-span-1
                   justify-self-end self-center
                 ">
-                  <.link
+                  <.custom_link
                     patch={Routes.place_show_path(
                       @socket,
                       :show_item,
@@ -183,7 +183,7 @@
                     >
                       <%= gettext("Add to order") %>
                     </.pill>
-                  </.link>
+                  </.custom_link>
                 </div>
               </div>
             </div>
@@ -219,7 +219,7 @@
               "
                 phx-click="add_item"
               >
-                <.icon name={:plus_sm} class="text-white"/>
+                <.icon name={:plus_small} class="text-white"/>
               </div>
               <div class="px-4 text-center">
                 <span class="
@@ -241,7 +241,7 @@
                 "}
                 phx-click="remove_item"
               >
-                <.icon name={:minus_sm} class="text-white"/>
+                <.icon name={:minus_small} class="text-white"/>
               </div>
             </div>
           </div>

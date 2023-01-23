@@ -7,6 +7,8 @@ defmodule ExCommerce.Marketplaces.Brand do
 
   alias ExCommerce.{Accounts, Marketplaces, Offerings, Uploads}
 
+  @type t :: %__MODULE__{}
+
   @fields [:name, :slug]
 
   @primary_key {:id, :binary_id, autogenerate: true}

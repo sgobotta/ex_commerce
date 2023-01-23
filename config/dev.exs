@@ -62,8 +62,7 @@ config :ex_commerce, ExCommerceWeb.Endpoint,
 config :ex_commerce, ExCommerceWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
-      ~r"priv/static/[^uploads].*(png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/.*(js|css)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/ex_commerce_web/(live|views)/.*(ex)$",
       ~r"lib/ex_commerce_web/templates/.*(eex)$"

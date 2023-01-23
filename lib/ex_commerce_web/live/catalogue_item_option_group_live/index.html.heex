@@ -55,17 +55,17 @@
           <:actions>
             <span class="px-2">
               <%= live_redirect to: Routes.catalogue_item_option_group_show_path(@socket, :show, @brand.id, catalogue_item_option_group_id), class: "shadow-lg transition duration-300 scale-100 active:scale-[0.98] active:shadow-none" do %>
-                <.icon outlined={true} name={:eye} class="base-alert-icon text-sky-500 font-normal"/>
+                <.icon outlined={true} name={:eye} class="base-alert-icon pressable action text-sky-500"/>
               <% end %>
             </span>
             <span class="px-2">
               <%= live_patch to: Routes.catalogue_item_option_group_index_path(@socket, :edit, @brand.id, catalogue_item_option_group_id), id: "update" do %>
-                <.icon outlined={true} name={:pencil} class="base-alert-icon text-green-500"/>
+                <.icon outlined={true} name={:pencil} class="base-alert-icon pressable action text-green-500"/>
               <% end %>
             </span>
             <span class="px-2">
               <%= link to: "#", id: "delete", phx_click: "delete", phx_value_id: catalogue_item_option_group_id, data: [confirm: gettext("Are you sure?")] do %>
-                <.icon outlined={true} name={:trash} class="base-alert-icon text-rose-500"/>
+                <.icon outlined={true} name={:trash} class="base-alert-icon pressable action text-rose-500"/>
               <% end %>
             </span>
           </:actions>

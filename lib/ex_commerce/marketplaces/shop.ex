@@ -9,6 +9,8 @@ defmodule ExCommerce.Marketplaces.Shop do
   alias ExCommerce.Offerings.{Catalogue, Relations}
   alias ExCommerce.Uploads
 
+  @type t :: %__MODULE__{}
+
   @fields [
     :name,
     :slug,

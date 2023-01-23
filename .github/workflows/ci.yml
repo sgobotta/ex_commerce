@@ -14,8 +14,8 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # General env
   MIX_ENV: test
-  ELIXIR_VERSION: 1.12.3
-  OTP_VERSION: 23.3
+  ELIXIR_VERSION: 1.14
+  OTP_VERSION: 25.2
   # Cloudinary env
   CLOUDEX_API_KEY: ${{ secrets.CLOUDEX_API_KEY }}
   CLOUDEX_CLOUD_NAME: ${{ secrets.CLOUDEX_CLOUD_NAME }}

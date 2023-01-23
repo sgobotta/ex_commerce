@@ -64,7 +64,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
     end
 
     defp submit_new_shop(conn, view, brand_id, create_attrs) do
-      {:ok, _, html} =
+      {:ok, _view, html} =
         view
         |> form("#shop-form", shop: create_attrs)
         |> render_submit()
@@ -159,7 +159,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
              |> form("#shop-form", shop: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         index_live
         |> form("#shop-form", shop: @update_attrs)
         |> render_submit()
@@ -326,7 +326,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
              |> form("#shop-form", shop: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, _, html} =
+      {:ok, _view, html} =
         show_live
         |> form("#shop-form", shop: @update_attrs)
         |> render_submit()

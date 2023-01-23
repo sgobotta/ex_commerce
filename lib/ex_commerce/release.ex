@@ -66,7 +66,18 @@ defmodule ExCommerce.Release do
 
   defp repos, do: Application.fetch_env!(@app, :ecto_repos)
 
-  defp load_app, do: Application.load(@app)
+  defp load_app do
+    case Application.load(@app) do
+      :ok ->
+        :ok
+
+      {:error, error} ->
+        :ok =
+          Logger.warn(
+            "Error while loading application error=#{inspect(error, pretty: true)}"
+          )
+    end
+  end
 
   defp eval_seed(repo, filename, app) do
     seeds_file = get_path(repo, filename, app)

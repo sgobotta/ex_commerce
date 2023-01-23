@@ -5,7 +5,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
 
   use ExCommerceWeb, {
     :live_view,
-    layout: {ExCommerceWeb.LayoutView, "live_checkout.html"}
+    layout: {ExCommerceWeb.LayoutView, :live_checkout}
   }
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
