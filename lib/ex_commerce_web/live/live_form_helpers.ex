@@ -26,9 +26,8 @@ defmodule ExCommerceWeb.LiveFormHelpers do
       defp get_photos([], _opts), do: []
 
       defp get_photos([photo | _photos] = photos, opts) do
-        # FIXME: we shouldn't equal to nil
         case Enum.find(photos, nil, fn %Photo{state: state} ->
-               state != :delete or state == nil
+               state != :delete
              end) do
           nil ->
             :ok =
