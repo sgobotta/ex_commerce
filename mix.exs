@@ -87,6 +87,7 @@ defmodule ExCommerce.MixProject do
        git: "https://github.com/sgobotta/cloudex.git", branch: "main"},
       # Others
       {:decimal, "~> 2.0"},
+      {:qrcode_ex, "~> 0.1.1"},
       {:recaptcha, "~> 3.0"},
       {:tzdata, "~> 1.0.0"}
     ]
