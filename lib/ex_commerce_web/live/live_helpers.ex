@@ -646,6 +646,7 @@ defmodule ExCommerceWeb.LiveHelpers do
         flex flex-col sm:flex-row md:sm:flex-row lg:sm:flex-row
         justify-between m-4
         transition duration-300 hover:bg-gray-300 hover:shadow-lg
+        space-y-4
       "
     >
       <div class="flex flex-col">

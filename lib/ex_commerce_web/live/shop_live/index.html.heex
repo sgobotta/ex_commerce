@@ -64,7 +64,7 @@
             </span>
             <span class="px-2">
               <%= link to: "#", id: "delete", phx_click: "delete", phx_value_id: shop_id, data: [confirm: gettext("Are you sure?")] do %>
-                <.icon outlined={true} name={:trash} class="base-alert-icon pressable action text-rose-500"/>
+                <.icon outlined={true} name={:trash} class="base-alert-icon pressable action text-rose-500 cursor-default"/>
               <% end %>
             </span>
           </:actions>
