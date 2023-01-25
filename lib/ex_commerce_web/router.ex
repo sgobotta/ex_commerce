@@ -131,6 +131,8 @@ defmodule ExCommerceWeb.Router do
              CatalogueItemOptionGroupLive.Show,
              :show
 
+        live "/qr-codes", QrCodeLive.Index, :index
+
         # ----------------------------------------------------------------------
         # Brand scoped routes
         #
@@ -209,6 +211,14 @@ defmodule ExCommerceWeb.Router do
             live "/:catalogue_item_option_group_id/show/edit",
                  CatalogueItemOptionGroupLive.Show,
                  :edit
+          end
+
+          # --------------------------------------------------------------------
+          # QR Codes routes
+          #
+
+          scope "/qr-codes" do
+            live "/", QrCodeLive.Index, :index
           end
         end
       end

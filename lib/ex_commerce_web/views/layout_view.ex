@@ -148,6 +148,24 @@ defmodule ExCommerceWeb.LayoutView do
           <.icon name={:squares_2x2} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
           <%= gettext("Option Groups") %>
         </.custom_link>
+        <.custom_link
+          navigate={Routes.qr_code_index_path(
+            Endpoint,
+            :index,
+            @brand.id
+          )}
+          class={"
+            text-gray-700 hover:text-gray-900 group flex items-center
+            px-2 py-2
+            text-2xl font-medium
+            rounded-md
+            #{if @active_tab == :qr_codes, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
+          "}
+          aria-current={if @active_tab == :qr_codes, do: "true", else: "false"}
+        >
+          <.icon name={:qr_code} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <%= gettext("QR Codes") %>
+        </.custom_link>
       <% else %>
         <.custom_link navigate={Routes.user_session_path(Endpoint, :new)}
           class="

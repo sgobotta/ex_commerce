@@ -219,7 +219,12 @@ defmodule ExCommerceWeb.MountHelpers do
   # ----------------------------------------------------------------------------
   # Brands helpers
 
-  @spec assign_brand_or_redirect(Phoenix.LiveView.Socket.t(), map(), map()) ::
+  @spec assign_brand_or_redirect(
+          Phoenix.LiveView.Socket.t(),
+          map(),
+          map(),
+          keyword()
+        ) ::
           Phoenix.LiveView.Socket.t()
   @doc """
   Useful for `:brand_id` scoped routes or routes that need brand params
@@ -227,8 +232,24 @@ defmodule ExCommerceWeb.MountHelpers do
   Checks a `brand_id` param is present to assign a valid %Brand{} to the
   socket or redirect.
   """
-  def assign_brand_or_redirect(socket, %{"brand_id" => brand_id}, _session) do
+  def assign_brand_or_redirect(socket, params, session, opts \\ [])
+
+  def assign_brand_or_redirect(
+        socket,
+        %{"brand_id" => brand_id},
+        _session,
+        opts
+      ) do
     %{user: %User{brands: brands}} = socket.assigns
+
+    preload_fields =
+      Keyword.get(opts, :preload_fields,
+        shops: [:avatars, :banners],
+        catalogues: [:categories],
+        catalogue_categories: [:items, :catalogues],
+        catalogue_items: [:variants, :photos],
+        catalogue_item_option_groups: []
+      )
 
     case find_by(brands, :id, brand_id) do
       nil ->
@@ -238,18 +259,12 @@ defmodule ExCommerceWeb.MountHelpers do
         socket
         |> assign(
           :brand,
-          Repo.preload(brand,
-            shops: [:avatars, :banners],
-            catalogues: [:categories],
-            catalogue_categories: [:items, :catalogues],
-            catalogue_items: [:variants, :photos],
-            catalogue_item_option_groups: []
-          )
+          Repo.preload(brand, preload_fields)
         )
     end
   end
 
-  def assign_brand_or_redirect(socket, _params, _session),
+  def assign_brand_or_redirect(socket, _params, _session, _opts),
     do: brands_redirect(socket, to: Routes.brand_index_path(socket, :index))
 
   # ----------------------------------------------------------------------------

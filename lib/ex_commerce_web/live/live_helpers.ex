@@ -732,7 +732,7 @@ defmodule ExCommerceWeb.LiveHelpers do
         phx-hook="Flash"
       >
         <div class="base-alert-container text-yellow-700">
-          <.icon name={:exclamation} class="base-alert-icon"/>
+          <.icon name={:exclamation_circle} class="base-alert-icon"/>
           <p class="base-alert-text" role="alert">
             <%= live_flash(@flash, @kind) %>
           </p>
