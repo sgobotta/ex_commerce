@@ -34,7 +34,7 @@ defmodule ExCommerceWeb.QrController do
   # ----------------------------------------------------------------------------
   # Validation helpers
 
-  @spec decode_params(map()) :: map()
+  @spec decode_params(map()) :: {:ok, map()}
   defp decode_params(params) do
     {:ok, params}
   end
