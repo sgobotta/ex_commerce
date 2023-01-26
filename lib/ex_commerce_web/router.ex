@@ -214,7 +214,7 @@ defmodule ExCommerceWeb.Router do
           end
 
           # --------------------------------------------------------------------
-          # QR Codes routes
+          # Admin QR Codes routes
           #
 
           scope "/qr-codes" do
@@ -222,6 +222,13 @@ defmodule ExCommerceWeb.Router do
           end
         end
       end
+    end
+
+    # --------------------------------------------------------------------------
+    # Public QR Codes routes
+    #
+    scope "/qr-codes" do
+      get "/", QrController, :detour
     end
   end
 
