@@ -49,6 +49,7 @@ defmodule ExCommerceWeb.QrCodeLive.Index do
         <div class="">
           <p class="form-field-hint text-yellow-500">
             <%= gettext("Note that deleting a shop or menu will cause any printed QR code to fail finding the link to your online shop.") %>
+            <%= gettext("You can still rename the shop or the catalogue.") %>
           </p>
         </div>
       </div>
