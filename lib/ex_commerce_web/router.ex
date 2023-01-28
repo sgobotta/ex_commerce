@@ -223,13 +223,6 @@ defmodule ExCommerceWeb.Router do
         end
       end
     end
-
-    # --------------------------------------------------------------------------
-    # Public QR Codes routes
-    #
-    scope "/qr-codes" do
-      get "/", QrController, :detour
-    end
   end
 
   # Other scopes may use custom stacks.
@@ -251,6 +244,17 @@ defmodule ExCommerceWeb.Router do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: ExCommerceWeb.Telemetry
     end
+  end
+
+  ## Public routes
+
+  scope "/", ExCommerceWeb do
+    pipe_through [:browser]
+
+    # --------------------------------------------------------------------------
+    # Public QR Codes routes
+    #
+    get "/qr-codes", QrController, :detour
   end
 
   ## Authentication routes
