@@ -50,10 +50,11 @@ defmodule ExCommerce.Checkout do
   Given a #{Cart} validates the are order items in the #{Cart.Order} to
   checkout.
   """
-  @spec valid_checkout?(Cart.t()) :: boolean()
-  def valid_checkout?(%Cart{order: %Cart.Order{order_items: order_items}}) do
-    length(order_items) > 0
-  end
+  @spec valid_checkout?(Cart.t() | nil) :: boolean()
+  def valid_checkout?(nil), do: false
+
+  def valid_checkout?(%Cart{order: %Cart.Order{order_items: order_items}}),
+    do: length(order_items) > 0
 
   @doc """
   Given a #{Cart} returns the amount of totals items in the current
