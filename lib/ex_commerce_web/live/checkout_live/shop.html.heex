@@ -10,7 +10,7 @@
       class="flex justify-center"
     >
       <div class={"
-        w-full sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-6/12
+        w-full sm:w-11/12 md:w-9/12 lg:w-8/12 xl:w-9/12
         h-60   sm:h-64   md:h-72   lg:h-80   xl:h-80
       "}>
         <img
@@ -28,7 +28,11 @@
       animate={[y: [0]]}
       transition={[duration: 0.6]}
       exit={[y: [-1000]]}
-      class="flex justify-center absolute top-44"
+      class="
+        flex justify-center
+        absolute
+        top-44 sm:top-56 lg:top-60 xl:top-72
+      "
     >
       <div class="w-32 h-32 bg-transparent">
         <div class="">
@@ -105,16 +109,17 @@
             </p>
 
             <div class="
-              grid grid-cols-3
-              gap-1 mx-4
-              sm:gap-14 sm:mx-12
-              md:gap-28 md:mx-26
-              lg:gap-40 lg:mx-40
-              xl:gap-56 xl:mx-56
+              inline-flex
+              snap-proximity snap-x
+              overflow-auto no-scrollbar
+              mx-4 sm:mx-12 my-6
+              p-3
+              space-x-2
             ">
               <%= for %Catalogue{id: catalogue_id, name: catalogue_name} <- @shop.catalogues do %>
                 <div class="
-                  p-2 my-10 mx-1 rounded-lg text-center
+                  snap-center
+                  p-2 rounded-lg text-center shrink-0
                   bg-gray-50
                   pressable
                 ">
@@ -134,7 +139,7 @@
                       "/>
                     </div>
                     <div class="flex justify-center">
-                      <p class="text-xl text-gray-700">
+                      <p class="text-xl text-gray-700 font-medium">
                         <%= catalogue_name %>
                       </p>
                     </div>
