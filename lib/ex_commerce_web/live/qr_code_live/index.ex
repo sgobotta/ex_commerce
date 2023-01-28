@@ -10,6 +10,7 @@ defmodule ExCommerceWeb.QrCodeLive.Index do
 
   alias ExCommerce.Marketplaces.Shop
   alias ExCommerce.Offerings.Catalogue
+  alias ExCommerce.QrCodes
 
   alias ExCommerceWeb.Router.Helpers, as: Routes
 
@@ -142,20 +143,27 @@ defmodule ExCommerceWeb.QrCodeLive.Index do
 
   @spec generate_shop_url(Ecto.UUID.t(), Ecto.UUID.t()) :: String.t()
   defp generate_shop_url(brand_id, shop_id) do
-    Routes.checkout_shop_path(ExCommerceWeb.Endpoint, :index, brand_id, shop_id)
+    encoded_args =
+      %{to: "checkout_shop", brand_id: brand_id, shop_id: shop_id}
+      |> QrCodes.encode_args!()
+
+    Routes.qr_path(ExCommerceWeb.Endpoint, :detour, args: encoded_args)
     |> join_host()
   end
 
   @spec generate_catalogue_url(Ecto.UUID.t(), Ecto.UUID.t(), Ecto.UUID.t()) ::
           String.t()
   defp generate_catalogue_url(brand_id, shop_id, catalogue_id) do
-    Routes.checkout_catalogue_path(
-      ExCommerceWeb.Endpoint,
-      :index,
-      brand_id,
-      shop_id,
-      catalogue_id
-    )
+    encoded_args =
+      %{
+        to: "checkout_catalogue",
+        brand_id: brand_id,
+        shop_id: shop_id,
+        catalogue_id: catalogue_id
+      }
+      |> QrCodes.encode_args!()
+
+    Routes.qr_path(ExCommerceWeb.Endpoint, :detour, args: encoded_args)
     |> join_host()
   end
 

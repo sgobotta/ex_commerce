@@ -8,6 +8,7 @@ defmodule ExCommerceWeb.QrController do
   alias ExCommerce.Marketplaces.{Brand, Shop}
   alias ExCommerce.Offerings
   alias ExCommerce.Offerings.Catalogue
+  alias ExCommerce.QrCodes
 
   alias ExCommerceWeb.Router.Helpers, as: Routes
 
@@ -18,26 +19,36 @@ defmodule ExCommerceWeb.QrController do
   """
   @spec detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def detour(conn, params) do
-    with {:ok, decoded_params} <- decode_params(params),
-         {:ok, params} <- validate_params(decoded_params),
-         {:ok, route} <- get_redirection_route(params["to"], params) do
+    with {:ok, decoded_params} <- decode_args(params["args"]),
+         {:ok, validated_params} <- validate_params(decoded_params),
+         {:ok, route} <-
+           get_redirection_route(validated_params["to"], validated_params) do
       redirect(conn, to: route)
     else
-      _error ->
+      error ->
+        Logger.debug(
+          "Handled error on :detour action error=#{inspect(error, pretty: true)} params=#{inspect(params, pretty: true)}"
+        )
+
         redirect(conn, to: "/")
     end
   rescue
-    _error ->
+    error ->
+      Logger.debug(
+        "Error thrown on :detour action error=#{inspect(error, pretty: true)} params=#{inspect(params, pretty: true)}"
+      )
+
       redirect(conn, to: "/")
   end
 
   # ----------------------------------------------------------------------------
   # Validation helpers
 
-  @spec decode_params(map()) :: {:ok, map()}
-  defp decode_params(params) do
-    {:ok, params}
-  end
+  @spec decode_args(String.t() | nil) ::
+          {:ok, map()} | {:error, :decode_error, reason :: binary()}
+  defp decode_args(nil), do: {:error, :invalid_args}
+
+  defp decode_args(encoded_args), do: QrCodes.decode_args(encoded_args)
 
   @spec validate_params(map()) :: {:ok, map()} | {:error, :not_found}
   defp validate_params(params) do

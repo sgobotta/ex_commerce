@@ -19,8 +19,9 @@ defmodule ExCommerceWeb.QrControllerTest do
         slug: shop_slug
       }
     } do
-      path_params = [to: "checkout_shop", brand_id: brand_id, shop_id: shop_id]
-      conn = do_get(conn, path_params)
+      params = %{to: "checkout_shop", brand_id: brand_id, shop_id: shop_id}
+      args = Jason.encode!(params) |> Base.encode64()
+      conn = do_get(conn, args: args)
 
       assert redirected_to(conn) ==
                Routes.checkout_shop_path(conn, :index, brand_slug, shop_slug)
@@ -35,14 +36,15 @@ defmodule ExCommerceWeb.QrControllerTest do
       },
       catalogue: %Catalogue{id: catalogue_id}
     } do
-      path_params = [
+      params = %{
         to: "checkout_catalogue",
         brand_id: brand_id,
         shop_id: shop_id,
         catalogue_id: catalogue_id
-      ]
+      }
 
-      conn = do_get(conn, path_params)
+      args = Jason.encode!(params) |> Base.encode64()
+      conn = do_get(conn, args: args)
 
       assert redirected_to(conn) ==
                Routes.checkout_catalogue_path(
