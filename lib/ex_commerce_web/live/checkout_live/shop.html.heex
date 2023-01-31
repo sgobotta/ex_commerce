@@ -1,4 +1,4 @@
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full justify-between">
   <div class="basis-2/4 flex flex-col w-full justify-start items-center">
     <!-- Banner -->
     <LiveMotion.motion
@@ -44,7 +44,7 @@
       </div>
     </LiveMotion.motion>
   </div>
-  <div class="flex items-end basis-2/4 self-center h-full">
+  <div class="">
     <LiveMotion.motion
       id="shop-content"
       initial={[y: [1000]]}
@@ -103,18 +103,18 @@
             </div>
           </div>
 
-          <div class="basis-full bg-gray-100 h-full">
+          <div class="basis-full bg-gray-100 h-full overflow-hidden">
             <p class="p-4 text-sky-600 text-xl">
               <%= gettext("Available Catalogues") %>
             </p>
 
             <div class="
-              inline-flex
+              inline-flex justify-start
               snap-proximity snap-x
-              overflow-auto no-scrollbar
-              mx-4 sm:mx-12 my-6
+              overflow-scroll no-scrollbar
+              my-6
               p-3
-              space-x-2
+              space-x-6 w-full mr-6
             ">
               <%= for %Catalogue{id: catalogue_id, name: catalogue_name} <- @shop.catalogues do %>
                 <div class="
@@ -122,6 +122,8 @@
                   p-2 rounded-lg text-center shrink-0
                   bg-gray-50
                   pressable
+                  overflow-scroll
+                  w-40
                 ">
                   <.custom_link
                     patch={Routes.checkout_catalogue_path(
