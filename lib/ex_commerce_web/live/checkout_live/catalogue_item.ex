@@ -31,6 +31,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
       socket
       |> assign_public_defaults(params, session)
       |> assign_shop_by_slug_or_redirect(params)
+      |> assign(:container_class, "container-base")
       |> assign(:cart_visible, true)
       |> assign(:brand_slug, params["brand"])
       |> assign(:shop_slug, params["shop"])

@@ -33,6 +33,7 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
      |> assign_public_defaults(params, session)
      |> assign_shop_by_slug_or_redirect(params)
      |> ExCommerceWeb.CheckoutNav.maybe_assign_cart(params, session)
+     |> assign(:container_class, "container-lg")
      |> assign(:cart_visible, true)
      |> assign(:brand_slug, params["brand"])
      |> assign(:shop_slug, params["shop"])}

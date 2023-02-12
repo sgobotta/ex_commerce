@@ -70,9 +70,12 @@
   </nav>
 
   <!-- Main -->
-  <div class="
-    basis-full container bg-gray-300 h-full overflow-y-scroll no-scrollbar"
-  >
+  <div class={"
+  bg-gray-300 
+    basis-full h-full
+    overflow-y-scroll no-scrollbar
+    #{@container_class}
+  "}>
     <%= @inner_content %>
   </div>
 </main>
