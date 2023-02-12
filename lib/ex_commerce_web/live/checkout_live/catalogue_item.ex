@@ -20,6 +20,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     CatalogueItemVariant
   }
 
+  alias ExCommerceWeb.CheckoutLive.Components
+
   alias Phoenix.LiveView
 
   import ExCommerceWeb.Utils

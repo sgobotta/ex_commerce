@@ -7,8 +7,12 @@
     @apply flex justify-center items-center flex-col;
   }
 
+  .container-sm {
+    @apply self-center max-w-full lg:max-w-5xl;
+  }
+
   .container-base {
-    @apply self-center max-w-full;
+    @apply self-center max-w-full sm:max-w-7xl;
   }
 
   .container-lg {

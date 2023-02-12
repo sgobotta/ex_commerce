@@ -35,7 +35,7 @@
   %>
 <% end %>
 
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full container-sm">
   <div class="
     basis-2/4 flex flex-col w-full justify-center items-center shrink-0
   ">
@@ -303,24 +303,19 @@
     transition={[]}
     exit={[y: [1000]]}
     class="
-      fixed bottom-4 flex justify-center px-4
-      max-w-7xl w-full z-50
+      fixed flex justify-center self-center
+      bottom-4 px-4
+      w-full z-50
     "
+    tabindex="0"
   >
-
-    <%= if valid_form?(@changeset) do %>
-      <button class="
-        flex justify-center rounded-lg py-2 bg-green-400
-        w-full sm:w-1/2
-        cursor-pointer shadow-button
-        transition-transform ease-in-out duration-100
-        active:scale-90 active:shadow-lg
-        hover:bg-green-300
-      "
-        tabindex="0"
-        phx-change="validate"
-        phx-click="add_to_order"
-      >
+    <.live_component
+      module={Components.FloatingButton}
+      id="checkout-button"
+      enabled={valid_form?(@changeset)}
+      on_click_event="add_to_order"
+    >
+      <:enabled_content>
         <div class="flex flex-row">
           <div class="px-2">
             <p class="font-medium text-white">
@@ -339,14 +334,9 @@
             "/>
           </div>
         </div>
-      </button>
-    <% else %>
-      <div class="
-        flex justify-center rounded-lg py-2 bg-gray-400
-        w-full sm:w-1/2
-        cursor-not-allowed shadow-button
-      ">
+      </:enabled_content>
 
+      <:disabled_content>
         <div class="flex flex-row">
           <div class="px-2">
             <p class="font-medium text-white">
@@ -365,7 +355,7 @@
             "/>
           </div>
         </div>
-      </div>
-    <% end %>
+      </:disabled_content>
+    </.live_component>
   </LiveMotion.motion>
 </div>
