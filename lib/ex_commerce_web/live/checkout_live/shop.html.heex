@@ -1,17 +1,18 @@
 <div class="flex flex-col h-full justify-between">
   <div class="basis-2/4 flex flex-col w-full justify-start items-center">
-    <!-- Banner -->
+    <!-- Banner Start -->
     <LiveMotion.motion
       id="shop-banner"
       initial={[y: [-1000]]}
       animate={[y: [0]]}
       transition={[duration: 0.3]}
       exit={[y: [-1000]]}
-      class="flex justify-center"
+      class="flex justify-center w-full"
     >
       <div class={"
-        w-full sm:w-11/12 md:w-9/12 lg:w-8/12 xl:w-9/12
-        h-60   sm:h-64   md:h-72   lg:h-80   xl:h-80
+        flex justify-center
+        w-full sm:w-11/12 md:w-full lg:w-full xl:w-full
+        h-62   sm:h-64   md:h-72   lg:h-80   xl:h-80
       "}>
         <img
           src={@banner_source}
@@ -21,7 +22,8 @@
         />
       </div>
     </LiveMotion.motion>
-    <!-- Logo -->
+    <!-- Banner End -->
+    <!-- Logo Start -->
     <LiveMotion.motion
       id="shop-logo"
       initial={[y: [-1000]]}
@@ -31,7 +33,7 @@
       class="
         flex justify-center
         absolute
-        top-44 sm:top-56 lg:top-60 xl:top-72
+        top-60 sm:top-56 md:top-64 lg:top-72 xl:top-72
       "
     >
       <div class="w-32 h-32 bg-transparent">
@@ -43,7 +45,9 @@
         </div>
       </div>
     </LiveMotion.motion>
+    <!-- Logo End -->
   </div>
+  <!-- Content Start -->
   <div class="">
     <LiveMotion.motion
       id="shop-content"
@@ -155,4 +159,5 @@
       </div>
     </LiveMotion.motion>
   </div>
+  <!-- Content End -->
 </div>
