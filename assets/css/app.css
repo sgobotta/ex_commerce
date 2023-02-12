@@ -26,14 +26,6 @@
 
 /* General styles */
 
-.container{
-  margin: 0 auto;
-  max-width: 80.0rem;
-  padding: 0 0;
-  position: relative;
-  width: 100%
-}
-
 select {
   width: auto;
 }

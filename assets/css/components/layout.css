@@ -6,4 +6,21 @@
   .l-centered {
     @apply flex justify-center items-center flex-col;
   }
+
+  .container-base {
+    @apply self-center max-w-full;
+  }
+
+  .container-lg {
+    @apply self-center max-w-6xl;
+  }
+
+  /* .container{
+    @apply margin
+    margin: 0 auto;
+    max-width: 80.0rem;
+    padding: 0 0;
+    position: relative;
+    width: 100%
+  } */
 }
