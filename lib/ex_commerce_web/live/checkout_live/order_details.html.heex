@@ -14,139 +14,124 @@
   %>
 <% end %>
 
-<div class="flex flex-col h-full items-center">
-  <div class="
-    basis-1/4 flex flex-col w-full justify-center items-center shrink-0
-  " />
-  <div class="flex basis-3/4 w-full justify-center">
-    <div class="w-full sm:w-full md:w-10/12 lg:w-10/12 xl:w-2/3">
-      <LiveMotion.motion
-        id="item-content"
-        initial={[y: [1000]]}
-        animate={[y: [0]]}
-        transition={[]}
-        exit={[y: [1000]]}
-        class="h-full w-full"
-      >
-        <div class={"z-50 bg-transparent h-full"}>
-          <div class={"
-            bg-gray-100
-            border-t-4 border-gray-200
-            rounded-t-5xl shadow-button
-            h-full mb-40
-          "}>
-            <div class="flex justify-center py-2">
-              <div class="rounded-sm self-center shadow-inner bg-gray-300 h-1 w-16" />
-            </div>
+<.live_component module={Components.RollingOrder} id="rolling-order-details">
+  <:main_slot>
+    <div class={"
+      bg-gray-100
+      border-t-4 border-gray-200
+      rounded-t-5xl shadow-button
+      h-full mb-40
+    "}>
+      <div class="flex justify-center py-2">
+        <div class="rounded-sm self-center shadow-inner bg-gray-300 h-1 w-16" />
+      </div>
 
-            <div class="pt-6 px-8">
-              <div class="grid grid-cols-6">
-                <div class="col-span-6 sm:col-span-5">
-                  <div class="mb-4">
-                    <h1 class="mt-1 text-2xl text-sky-500 font-medium">
-                      <%= gettext("Complete your order details") %>
-                    </h1>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="basis-full px-6">
-              <%= form_for @changeset, "#", [
-                id: "order-form",
-                phx_change: "validate",
-                class: "mb-0"
-              ], fn f -> %>
-
-                <%= label f, :buyer_name, gettext("Name"), class: "p-2 text-sky-600 text-xl" %>
-                <%= text_input f, :buyer_name,
-                  style: "background-color: white;",
-                  class: "input shadow-button",
-                  placeholder: gettext("Enter your name") %>
-                <%= error_tag f, :buyer_name %>
-
-                <%= label f, :address, gettext("Address"), class: "p-2 text-sky-600 text-xl" %>
-                <%= text_input f, :address,
-                  style: "background-color: white;",
-                  class: "input shadow-button",
-                  placeholder: gettext("Enter your address") %>
-                <%= error_tag f, :address %>
-
-                <%= label f, :note, class: "p-2 text-sky-600 text-xl" %>
-                <%= textarea f, :note,
-                  style: "background-color: white;",
-                  class: "input shadow-button",
-                  rows: 5,
-                  placeholder: gettext("Enter notes for the market") %>
-                <%= error_tag f, :note %>
-
-              <% end %>
+      <div class="pt-6 px-8">
+        <div class="grid grid-cols-6">
+          <div class="col-span-6 sm:col-span-5">
+            <div class="mb-4">
+              <h1 class="mt-1 text-2xl text-sky-500 font-medium">
+                <%= gettext("Complete your order details") %>
+              </h1>
             </div>
           </div>
         </div>
-      </LiveMotion.motion>
+      </div>
+
+      <div class="basis-full px-6">
+        <%= form_for @changeset, "#", [
+          id: "order-form",
+          phx_change: "validate",
+          class: "mb-0"
+        ], fn f -> %>
+
+          <%= label f, :buyer_name, gettext("Name"), class: "p-2 text-sky-600 text-xl" %>
+          <%= text_input f, :buyer_name,
+            style: "background-color: white;",
+            class: "input shadow-button",
+            placeholder: gettext("Enter your name") %>
+          <%= error_tag f, :buyer_name %>
+
+          <%= label f, :address, gettext("Address"), class: "p-2 text-sky-600 text-xl" %>
+          <%= text_input f, :address,
+            style: "background-color: white;",
+            class: "input shadow-button",
+            placeholder: gettext("Enter your address") %>
+          <%= error_tag f, :address %>
+
+          <%= label f, :note, class: "p-2 text-sky-600 text-xl" %>
+          <%= textarea f, :note,
+            style: "background-color: white;",
+            class: "input shadow-button",
+            rows: 5,
+            placeholder: gettext("Enter notes for the market") %>
+          <%= error_tag f, :note %>
+
+        <% end %>
+      </div>
     </div>
-  </div>
-
-  <LiveMotion.motion
-    id="checkout-button"
-    initial={[y: [400]]}
-    animate={[y: [0]]}
-    transition={[]}
-    exit={[y: [400]]}
-    class="
-      fixed bottom-4 flex justify-center px-4
-      max-w-7xl w-full z-50
-    "
-  >
-    <.live_component
-      module={Components.FloatingButton}
+  </:main_slot>
+  <:button_slot>
+    <LiveMotion.motion
       id="checkout-button"
-      enabled={valid_checkout?(@changeset, @cart)}
-      on_click_event="submit_details"
+      initial={[y: [400]]}
+      animate={[y: [0]]}
+      transition={[]}
+      exit={[y: [400]]}
+      class="
+        fixed bottom-4 flex justify-center px-4
+        max-w-7xl w-full z-50
+      "
     >
-      <:enabled_content>
-        <div class="flex flex-row">
-          <div class="px-2">
-            <p class="font-medium text-white">
-              (<%= get_order_items(@cart) %>)
-            </p>
+      <.live_component
+        module={Components.FloatingButton}
+        id="checkout-button"
+        enabled={valid_checkout?(@changeset, @cart)}
+        on_click_event="submit_details"
+      >
+        <:enabled_content>
+          <div class="flex flex-row">
+            <div class="px-2">
+              <p class="font-medium text-white">
+                (<%= get_order_items(@cart) %>)
+              </p>
+            </div>
+            <div class="px-2">
+              <p class="font-medium text-white">
+                <%= get_order_price(@cart) %>
+              </p>
+            </div>
+            <div class="px-2">
+              <p class="font-medium text-white">
+                <%= get_button_text(@changeset, @cart) %>
+              </p>
+            </div>
+            <div class="pt-1">
+              <.icon name={:shopping_bag} outlined class="
+                text-white
+                flex-shrink-0 h-7 w-7
+              "/>
+            </div>
           </div>
-          <div class="px-2">
-            <p class="font-medium text-white">
-              <%= get_order_price(@cart) %>
-            </p>
-          </div>
-          <div class="px-2">
-            <p class="font-medium text-white">
-              <%= get_button_text(@changeset, @cart) %>
-            </p>
-          </div>
-          <div class="pt-1">
-            <.icon name={:shopping_bag} outlined class="
-              text-white
-              flex-shrink-0 h-7 w-7
-            "/>
-          </div>
-        </div>
-      </:enabled_content>
+        </:enabled_content>
 
-      <:disabled_content>
-        <div class="flex flex-row">
-          <div class="px-2">
-            <p class="font-medium text-white text-center">
-              <%= get_button_text(@changeset, @cart) %>
-            </p>
+        <:disabled_content>
+          <div class="flex flex-row">
+            <div class="px-2">
+              <p class="font-medium text-white text-center">
+                <%= get_button_text(@changeset, @cart) %>
+              </p>
+            </div>
+            <div class="pt-1 self-center">
+              <.icon name={:shopping_bag} outlined class="
+                pr-2
+                text-white
+                flex-shrink-0 h-7 w-7
+              "/>
+            </div>
           </div>
-          <div class="pt-1 self-center">
-            <.icon name={:shopping_bag} outlined class="
-              pr-2
-              text-white
-              flex-shrink-0 h-7 w-7
-            "/>
-          </div>
-        </div>
-      </:disabled_content>
-    </.live_component>
-  </LiveMotion.motion>
-</div>
+        </:disabled_content>
+      </.live_component>
+    </LiveMotion.motion>
+  </:button_slot>
+</.live_component>
