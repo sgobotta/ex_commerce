@@ -14,76 +14,79 @@
   %>
 <% end %>
 
-<div class="flex flex-col h-full">
+<div class="flex flex-col h-full items-center">
   <div class="
     basis-1/4 flex flex-col w-full justify-center items-center shrink-0
   " />
-  <div class="flex items-end basis-2/4 self-center w-full sm:w-full md:w-10/12 lg:w-10/12 xl:w-2/3">
-    <LiveMotion.motion
-      id="item-content"
-      initial={[y: [1000]]}
-      animate={[y: [0]]}
-      transition={[]}
-      exit={[y: [1000]]}
-      class="h-full w-full"
-    >
-      <div class={"z-50 bg-transparent h-full"}>
-        <div class={"
-          bg-white
-          border-t-4 border-gray-200
-          rounded-t-5xl shadow-button
-          h-full
-        "}>
-          <div class="flex justify-center py-2">
-            <div class="rounded-sm self-center shadow-inner bg-gray-300 h-1 w-16" />
-          </div>
+  <div class="flex basis-3/4 w-full justify-center">
+    <div class="w-full sm:w-full md:w-10/12 lg:w-10/12 xl:w-2/3">
+      <LiveMotion.motion
+        id="item-content"
+        initial={[y: [1000]]}
+        animate={[y: [0]]}
+        transition={[]}
+        exit={[y: [1000]]}
+        class="h-full w-full"
+      >
+        <div class={"z-50 bg-transparent h-full"}>
+          <div class={"
+            bg-gray-100
+            border-t-4 border-gray-200
+            rounded-t-5xl shadow-button
+            h-full mb-40
+          "}>
+            <div class="flex justify-center py-2">
+              <div class="rounded-sm self-center shadow-inner bg-gray-300 h-1 w-16" />
+            </div>
 
-          <div class="pt-6 px-8">
-            <div class="grid grid-cols-6">
-              <div class="col-span-6 sm:col-span-5">
-                <div class="mb-4">
-                  <h1 class="mt-1 text-2xl text-sky-500 font-medium">
-                    <%= gettext("Complete your order details") %>
-                  </h1>
+            <div class="pt-6 px-8">
+              <div class="grid grid-cols-6">
+                <div class="col-span-6 sm:col-span-5">
+                  <div class="mb-4">
+                    <h1 class="mt-1 text-2xl text-sky-500 font-medium">
+                      <%= gettext("Complete your order details") %>
+                    </h1>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="basis-full bg-gray-100 h-full px-6 pb-40">
-            <%= form_for @changeset, "#", [
-              id: "order-form",
-              phx_change: "validate",
-              class: "mb-0"
-            ], fn f -> %>
+            <div class="basis-full px-6">
+              <%= form_for @changeset, "#", [
+                id: "order-form",
+                phx_change: "validate",
+                class: "mb-0"
+              ], fn f -> %>
 
-              <%= label f, :buyer_name, gettext("Name"), class: "p-2 text-sky-600 text-xl" %>
-              <%= text_input f, :buyer_name,
-                style: "background-color: white;",
-                class: "input shadow-button",
-                placeholder: gettext("Enter your name") %>
-              <%= error_tag f, :buyer_name %>
+                <%= label f, :buyer_name, gettext("Name"), class: "p-2 text-sky-600 text-xl" %>
+                <%= text_input f, :buyer_name,
+                  style: "background-color: white;",
+                  class: "input shadow-button",
+                  placeholder: gettext("Enter your name") %>
+                <%= error_tag f, :buyer_name %>
 
-              <%= label f, :address, gettext("Address"), class: "p-2 text-sky-600 text-xl" %>
-              <%= text_input f, :address,
-                style: "background-color: white;",
-                class: "input shadow-button",
-                placeholder: gettext("Enter your address") %>
-              <%= error_tag f, :address %>
+                <%= label f, :address, gettext("Address"), class: "p-2 text-sky-600 text-xl" %>
+                <%= text_input f, :address,
+                  style: "background-color: white;",
+                  class: "input shadow-button",
+                  placeholder: gettext("Enter your address") %>
+                <%= error_tag f, :address %>
 
-              <%= label f, :note, class: "p-2 text-sky-600 text-xl" %>
-              <%= textarea f, :note,
-                style: "background-color: white;",
-                class: "input shadow-button",
-                placeholder: gettext("Enter notes for the market") %>
-              <%= error_tag f, :note %>
+                <%= label f, :note, class: "p-2 text-sky-600 text-xl" %>
+                <%= textarea f, :note,
+                  style: "background-color: white;",
+                  class: "input shadow-button",
+                  rows: 5,
+                  placeholder: gettext("Enter notes for the market") %>
+                <%= error_tag f, :note %>
 
-            <% end %>
+              <% end %>
+            </div>
           </div>
         </div>
-      </div>
-    </LiveMotion.motion>
-  </div>  
+      </LiveMotion.motion>
+    </div>
+  </div>
 
   <LiveMotion.motion
     id="checkout-button"

@@ -8,15 +8,18 @@
   }
 
   .container-sm {
-    @apply self-center max-w-full lg:max-w-5xl;
+    @apply self-center max-w-full lg:max-w-5xl w-full;
   }
 
   .container-base {
     @apply self-center max-w-full sm:max-w-7xl;
   }
+  .container-base.full {
+    @apply w-full;
+  }
 
   .container-lg {
-    @apply self-center max-w-6xl;
+    @apply self-center max-w-6xl w-full;
   }
 
   /* .container{
