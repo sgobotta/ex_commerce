@@ -175,19 +175,23 @@
                       </p>
                     </div>
                     <div class="basis-2/6 sm:basis-1/6 flex justify-end">
-                      <p class="text-lg text-black font-medium">
-                        <%= get_price(price) %>
-                      </p>
-                    </div>
-                    <div class="basis-1/6">
-                      <.selection_input
-                        id={"variant-radio-#{variant_id}"}
-                        type="radio"
-                        name="variant-selection-radio"
-                        value={variant_id}
-                        phx-click="select_variant"
-                        checked={variant_selected?(@changeset, variant_id)}
-                      />
+                      <div class="flex flex-row">
+                        <div class="basis-1/2 mx-4 self-center">
+                          <p class="text-lg text-black font-medium">
+                            <%= get_price(price) %>
+                          </p>
+                        </div>
+                        <div class="basis-1/2 mx-4">
+                          <.selection_input
+                            id={"variant-radio-#{variant_id}"}
+                            type="radio"
+                            name="variant-selection-radio"
+                            value={variant_id}
+                            phx-click="select_variant"
+                            checked={variant_selected?(@changeset, variant_id)}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 <% end %>
