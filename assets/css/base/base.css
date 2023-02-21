@@ -15,6 +15,10 @@
     @apply focus:outline-gray-700 !important;
   }
 
+  .with-outline.warn, .with-outline-sm.warn {
+    @apply focus:outline-rose-500 !important;
+  }
+
   .with-ring {
     @apply focus:ring-inset focus:ring-4 focus:ring-sky-500 !important;
   }
