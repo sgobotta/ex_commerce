@@ -54,7 +54,7 @@ defmodule ExCommerceWeb.LiveHelpers do
           class="
             w-6 h-6 inline-block mr-2 rounded-full
             border border-gray-200 flex-no-shrink
-            focus:outline focus:outline-4 focus:outline-sky-500
+            with-outline
           "
         />
       </label>
@@ -72,7 +72,7 @@ defmodule ExCommerceWeb.LiveHelpers do
       class="
         checkbox m-auto block w-6 h-6
         ring-2 ring-gray-300 ring-offset-gray-300
-        focus:ring-1 focus:ring-gray-300 focus:ring-offset-gray-300
+        with-outline-sm
       "
       {@attrs}
     />

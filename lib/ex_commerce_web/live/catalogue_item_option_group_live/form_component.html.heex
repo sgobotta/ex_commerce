@@ -133,7 +133,7 @@
               <div class="inline-flex basis-1/2 justify-end">
                 <%= if is_nil(o.data.temp_id) do %>
                   <label class=""><%= gettext("Mark as deleted?") %></label>
-                  <%= checkbox o, :delete, class: "checkbox warn mx-2" %>
+                  <%= checkbox o, :delete, class: "with-outline checkbox warn mx-2 " %>
                 <% else %>
                   <%= hidden_input o, :temp_id %>
                   <a
