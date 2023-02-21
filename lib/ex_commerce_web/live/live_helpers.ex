@@ -808,25 +808,20 @@ defmodule ExCommerceWeb.LiveHelpers do
   end
 
   def qr_code(%{type: :svg} = assigns) do
-    qr_code =
-      QrCodes.encode(assigns.content)
-      |> QrCodes.svg(width: assigns.width)
-
     encoded_img =
       QrCodes.encode(assigns.content)
-      |> QrCodes.png(width: 100)
+      |> QrCodes.png(width: assigns.width)
       |> Base.encode64()
 
     img_src = "data:image/png;base64,#{encoded_img}"
 
     assigns =
       assigns
-      |> assign(:qr_code, qr_code)
       |> assign(:img_src, img_src)
 
     ~H"""
     <a href={@img_src} download={@filename}>
-      <%= raw(@qr_code) %>
+      <img src={@img_src} width={@width} />
     </a>
     """
   end
