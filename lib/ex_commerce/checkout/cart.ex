@@ -78,7 +78,7 @@ defmodule ExCommerce.Checkout.Cart do
 
   ## Examples:
 
-      iex> update_order(%Cart{}, %Cart.Order{buyer_name: "Some name"})
+      iex> set_order(%Cart{}, %Cart.Order{buyer_name: "Some name"})
       %ExCommerce.Checkout.Cart{
         id: "caf6c585d9ba724539d27b301a5ebd22e904fa5023cc1f888adc13529898e5ea",
         order: %Cart.Order{buyer_name: "Some name"},
@@ -139,6 +139,7 @@ defmodule ExCommerce.Checkout.Cart do
             )
           ]
       )
+      |> update_order_price()
 
     :ok = CartServer.set_order(server, order)
 
@@ -173,12 +174,32 @@ defmodule ExCommerce.Checkout.Cart do
         end
       )
 
-    %Cart.Order{} = order = %Cart.Order{order | order_items: order_items}
+    %Cart.Order{} =
+      order =
+      %Cart.Order{order | order_items: order_items}
+      |> update_order_price()
 
     :ok = CartServer.set_order(server, order)
 
     %Cart{cart | order: order}
   end
+
+  @doc """
+  Given a #{Cart} struct, returns the sum of items present in the order.
+  """
+  @spec get_order_price(Cart.t()) :: Decimal.t()
+  def get_order_price(%Cart{order: %Cart.Order{} = order}) do
+    # TODO: Should just retrieve the price from the Order struct.
+    calculate_price(order)
+  end
+
+  @spec update_order_price(Cart.Order.t()) :: Cart.Order.t()
+  defp update_order_price(%Cart.Order{} = order),
+    do: %Cart.Order{order | price: calculate_price(order)}
+
+  @spec calculate_price(Cart.Order.t()) :: Decimal.t()
+  defp calculate_price(%Cart.Order{} = order),
+    do: Cart.Order.calculate_price(order)
 
   defp maybe_start_server(%Cart{id: id} = cart) do
     case maybe_get_server(cart) do

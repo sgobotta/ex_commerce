@@ -67,24 +67,67 @@ defmodule ExCommerce.Checkout.CartTest do
       %Cart.Order{buyer_name: ^name} = Cart.get_order(cart)
     end
 
+    test "get_order_price/1 returns the Cart total price expressed in Decimal" do
+      id = generate_id()
+
+      %Cart{order: %Cart.Order{price: price}} =
+        cart =
+        %Cart{order: %Cart.Order{order_items: [%Cart.OrderItem{}]}} =
+        new(id)
+        |> Cart.add_to_order(%Cart.OrderItem{
+          temp_id: "123",
+          price: Decimal.new("42.37")
+        })
+
+      ^price = Cart.get_order_price(cart)
+    end
+
     test "add_to_order/2 returns a new Cart struct with an updated order" do
       id = generate_id()
 
-      %Cart{order: %Cart.Order{order_items: [%Cart.OrderItem{}]}} =
-        new(id)
-        |> Cart.add_to_order(%Cart.OrderItem{})
+      %Cart{order: %Cart.Order{order_items: [], price: initial_price}} =
+        cart = new(id)
+
+      assert Decimal.eq?(initial_price, Decimal.new("0"))
+
+      order_item_price = Decimal.new("42.37")
+
+      %Cart{
+        order: %Cart.Order{
+          order_items: [%Cart.OrderItem{}],
+          price: updated_price
+        }
+      } = Cart.add_to_order(cart, %Cart.OrderItem{price: order_item_price})
+
+      assert Decimal.eq?(updated_price, order_item_price)
     end
 
     test "remove_from_order/2 returns a new Cart struct with an updated order" do
       id = generate_id()
 
-      %Cart{} =
-        cart =
-        %Cart{order: %Cart.Order{order_items: [%Cart.OrderItem{}]}} =
-        new(id)
-        |> Cart.add_to_order(%Cart.OrderItem{temp_id: "123"})
+      %Cart{
+        order: %Cart.Order{order_items: [], price: %Decimal{} = initial_price}
+      } = cart = new(id)
 
-      %Cart{order: %Cart.Order{order_items: []}} =
+      assert Decimal.eq?(initial_price, Decimal.new("0"))
+
+      order_item_price = Decimal.new("42.37")
+
+      %Cart{
+        order: %Cart.Order{
+          order_items: [%Cart.OrderItem{}],
+          price: %Decimal{} = updated_price
+        }
+      } =
+        cart =
+        Cart.add_to_order(cart, %Cart.OrderItem{
+          temp_id: "123",
+          price: order_item_price
+        })
+
+      assert Decimal.eq?(updated_price, order_item_price)
+
+      %Cart{order: %Cart.Order{order_items: [], price: ^initial_price}} =
         Cart.remove_from_order(cart, "123")
     end
 

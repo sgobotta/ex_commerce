@@ -23,7 +23,7 @@ defmodule ExCommerce.Checkout.Cart.Order do
     field :address, :string
     field :note, :string
 
-    field :price, :decimal
+    field :price, :decimal, default: Decimal.new(0)
 
     embeds_many :order_items, Cart.OrderItem
 
@@ -105,5 +105,18 @@ defmodule ExCommerce.Checkout.Cart.Order do
       :shop_id
     ])
     |> Map.put(:order_items, cart_order_items)
+  end
+
+  @doc """
+  Given an `#{__MODULE__}` returns the calculated price of it's order items.
+  """
+  @spec calculate_price(t()) :: Decimal.t()
+  def calculate_price(%__MODULE__{order_items: []}), do: Decimal.new(0)
+
+  def calculate_price(%__MODULE__{order_items: order_items}) do
+    order_items
+    |> Enum.reduce(0, fn %Cart.OrderItem{price: price}, acc ->
+      ExCommerceNumeric.add(acc, price)
+    end)
   end
 end
