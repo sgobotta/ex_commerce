@@ -185,13 +185,10 @@ defmodule ExCommerce.Checkout.Cart do
   end
 
   @doc """
-  Given a #{Cart} struct, returns the sum of items present in the order.
+  Given a #{Cart} struct, returns the current order price.
   """
   @spec get_order_price(Cart.t()) :: Decimal.t()
-  def get_order_price(%Cart{order: %Cart.Order{} = order}) do
-    # TODO: Should just retrieve the price from the Order struct.
-    calculate_price(order)
-  end
+  def get_order_price(%Cart{order: %Cart.Order{price: price}}), do: price
 
   @spec update_order_price(Cart.Order.t()) :: Cart.Order.t()
   defp update_order_price(%Cart.Order{} = order),
