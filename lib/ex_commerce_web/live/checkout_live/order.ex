@@ -158,19 +158,25 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
 
     %Cart{order: order} = cart = Checkout.update_cart_order(cart, changeset)
 
-    {:ok, %Order{} = order} =
-      Checkout.from_cart_order(order, %{
-        brand_name: brand_name,
-        catalogue_code: catalogue_code,
-        catalogue_name: catalogue_name,
-        shop_name: shop_name
-      })
+    case Checkout.from_cart_order(order, %{
+           brand_name: brand_name,
+           catalogue_code: catalogue_code,
+           catalogue_name: catalogue_name,
+           shop_name: shop_name
+         }) do
+      {:ok, %Order{} = order} ->
+        socket
+        |> assign(:changeset, changeset)
+        |> assign(:order, order)
+        |> assign_cart(cart)
+        |> assign_href(valid?)
 
-    socket
-    |> assign(:changeset, changeset)
-    |> assign(:order, order)
-    |> assign_cart(cart)
-    |> assign_href(valid?)
+      {:error, %Ecto.Changeset{errors: _errors, valid?: false} = changeset} ->
+        socket
+        |> assign(:changeset, changeset)
+        |> assign(:order, order)
+        |> assign_cart(cart)
+    end
   end
 
   defp assign_catalogue(socket, catalogue_id),
