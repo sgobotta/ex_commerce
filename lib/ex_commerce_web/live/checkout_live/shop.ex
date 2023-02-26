@@ -21,6 +21,7 @@ defmodule ExCommerceWeb.CheckoutLive.Shop do
      |> assign_public_defaults(params, session)
      |> assign_shop_by_slug_or_redirect(params)
      |> assign(:container_class, "container-base")
+     |> assign(:cart_enabled, false)
      |> assign(:cart_visible, false)
      |> assign(:brand_slug, params["brand"])
      |> assign(:shop_slug, params["shop"])}

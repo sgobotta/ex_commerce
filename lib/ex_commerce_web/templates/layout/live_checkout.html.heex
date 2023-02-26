@@ -28,44 +28,46 @@
       </div>
     </.custom_link>
     <!-- Cart -->
-    <%= if @cart_visible && ExCommerce.Checkout.valid_checkout?(@cart) do %>
-      <.custom_link
-        patch={@cart_path}
-        class={"
-          text-sky-600 group flex items-center
-          text-2xl font-medium
-          rounded-md
-          hover:text-sky-300
-        "}
-        aria-current="false"
-      >
-        <.icon
-          name={:shopping_cart} outlined
-          class="
-            flex-shrink-0
-            h-6 w-6
-            group-active:scale-90
-          "
-        />
-      </.custom_link>
-    <% else %>
-      <div
-        class={"
-          text-gray-400 group flex items-center
-          text-2xl font-medium
-          rounded-md
-        "}
-        aria-current="false"
-      >
-        <.icon
-          name={:shopping_cart} outlined
-          class="
-            flex-shrink-0
-            h-6 w-6
-            cursor-not-allowed
-          "
-        />
-      </div>
+    <%= if @cart_visible do %>
+      <%= if @cart_enabled && ExCommerce.Checkout.valid_checkout?(@cart) do %>
+        <.custom_link
+          patch={@cart_path}
+          class={"
+            text-sky-600 group flex items-center
+            text-2xl font-medium
+            rounded-md
+            hover:text-sky-300
+          "}
+          aria-current="false"
+        >
+          <.icon
+            name={:shopping_cart} outlined
+            class="
+              flex-shrink-0
+              h-6 w-6
+              group-active:scale-90
+            "
+          />
+        </.custom_link>
+      <% else %>
+        <div
+          class={"
+            text-gray-400 group flex items-center
+            text-2xl font-medium
+            rounded-md
+          "}
+          aria-current="false"
+        >
+          <.icon
+            name={:shopping_cart} outlined
+            class="
+              flex-shrink-0
+              h-6 w-6
+              cursor-not-allowed
+            "
+          />
+        </div>
+      <% end %>
     <% end %>
   </nav>
 
