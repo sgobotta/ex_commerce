@@ -52,9 +52,9 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
       shop_slug: shop_slug
     } = socket.assigns
 
-    socket = assign_cart(socket, cart)
-
-    LiveView.redirect(socket,
+    socket
+    |> assign_cart(Checkout.set_order_price(cart))
+    |> LiveView.redirect(
       to:
         Routes.checkout_order_path(
           socket,
