@@ -72,21 +72,28 @@ defmodule ExCommerce.Checkout do
   Given a #{Cart} returns the total price of the current #{Cart.Order}.
   """
   @spec get_order_price(Cart.t()) :: ExCommerceNumeric.t()
-  def get_order_price(%Cart{order: %Cart.Order{order_items: order_items}}) do
-    order_items
-    |> Enum.reduce(0, fn %Cart.OrderItem{price: price}, acc ->
-      ExCommerceNumeric.add(acc, price)
-    end)
+  def get_order_price(%Cart{order: %Cart.Order{}} = cart),
+    do: Cart.get_order_price(cart)
+
+  def get_order_price(%Cart{order: _cart_order}), do: Decimal.new(0)
+
+  @doc """
+  Given a #{Cart}, calculates and updates an order with it's current price to
+  return a new Cart.
+  """
+  @spec set_order_price(Cart.t()) :: Cart.t()
+  def set_order_price(%Cart{order: %Cart.Order{} = order} = cart) do
+    %Cart.Order{} =
+      cart_order = Cart.Order.apply_price(order, get_order_price(cart))
+
+    Cart.set_order(cart, cart_order)
   end
 
   @doc """
   Given a `#{Cart}` struct returns a message that represents an order.
   """
   @spec get_order_message(Cart.t()) :: String.t()
-  def get_order_message(%Cart{order: %Cart.Order{} = order} = cart) do
-    %Cart.Order{} = order = Cart.Order.apply_price(order, get_order_price(cart))
-
-    %Cart{} = cart = Cart.set_order(cart, order)
+  def get_order_message(%Cart{order: %Cart.Order{}} = cart) do
     ExCommerceNotifications.get_order_message(:whatsapp, cart)
   end
 
