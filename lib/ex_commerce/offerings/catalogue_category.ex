@@ -20,6 +20,8 @@ defmodule ExCommerce.Offerings.CatalogueCategory do
   @fields [:code, :name, :description]
   @foreign_fields [:brand_id]
 
+  @type t :: %__MODULE__{}
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "catalogue_categories" do
