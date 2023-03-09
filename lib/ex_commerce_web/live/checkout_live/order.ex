@@ -13,6 +13,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
   alias ExCommerce.Checkout
   alias ExCommerce.Checkout.{Cart, Order}
 
+  alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.{Brand, Shop}
 
   alias ExCommerce.Offerings.Catalogue
@@ -27,7 +28,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
       :ok,
       socket
       |> assign_public_defaults(params, session)
-      |> assign_shop_by_slug_or_redirect(params)
+      |> assign_shop_by_slug_or_redirect(params, &Marketplaces.preload_brand/1)
       |> assign(:container_class, "container-base full")
       |> assign(:cart_enabled, true)
       |> assign(:cart_visible, true)

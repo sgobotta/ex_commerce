@@ -139,7 +139,12 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
   @spec assign_catalogue(Phoenix.LiveView.Socket.t(), Ecto.UUID.t()) ::
           Phoenix.LiveView.Socket.t()
   defp assign_catalogue(socket, catalogue_id),
-    do: assign_catalogue_by_id_or_redirect(socket, catalogue_id)
+    do:
+      assign_catalogue_by_id_or_redirect(
+        socket,
+        catalogue_id,
+        &Offerings.preload_public_catalogue/1
+      )
 
   @spec assign_cart_path(
           Phoenix.LiveView.Socket.t(),
