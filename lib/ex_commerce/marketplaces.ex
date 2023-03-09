@@ -7,6 +7,7 @@ defmodule ExCommerce.Marketplaces do
 
   alias ExCommerce.Accounts.User
   alias ExCommerce.Marketplaces.{Brand, Shop}
+  alias ExCommerce.Offerings
   alias ExCommerce.Repo
 
   @doc """
@@ -409,5 +410,78 @@ defmodule ExCommerce.Marketplaces do
       change_brand_user(%BrandUser{}, %{user_id: user_id, brand_id: brand_id})
     end)
     |> Repo.transaction()
+  end
+
+  # ----------------------------------------------------------------------------
+  # Public facing views
+  #
+
+  alias ExCommerce.Offerings.{
+    Catalogue,
+    CatalogueCategory
+  }
+
+  @doc """
+  Given a `#{Shop}` struct, returns the same struct with it's brand preloaded.
+  """
+  @spec preload_brand(Shop.t()) :: Shop.t()
+  def preload_brand(%Shop{} = shop), do: Repo.preload(shop, [:brand])
+
+  @doc """
+  Given a `#{Shop}`struct, preloads shop relationships. Catalogues will only be
+  preloaded if they've items related to it.
+  """
+  @spec preload_public_shop(Shop.t()) :: Shop.t()
+  def preload_public_shop(shop) do
+    preload_categories_query =
+      from c in CatalogueCategory,
+        join: i in assoc(c, :items),
+        preload: [items: [variants: []]],
+        where:
+          fragment(
+            "EXISTS (SELECT 1 FROM catalogue_categories_items cci WHERE cci.catalogue_category_id = ? AND cci.catalogue_item_id = ?)",
+            c.id,
+            i.id
+          ),
+        distinct: true
+
+    # preload catalogues only if it has at least one of :categories related to
+    # it.
+    preload_catalogues_query =
+      from cat in Catalogue,
+        join: c in assoc(cat, :categories),
+        preload: [categories: ^preload_categories_query],
+        where:
+          fragment(
+            "EXISTS (SELECT 1 FROM catalogues_categories cc WHERE cc.catalogue_id = ? AND cc.catalogue_category_id = ?)",
+            cat.id,
+            c.id
+          ),
+        distinct: true
+
+    # preload options with the modified queries
+    preload_opts = [
+      avatars: [],
+      banners: [],
+      brand: [],
+      catalogues: preload_catalogues_query
+    ]
+
+    Repo.preload(shop, preload_opts)
+    |> filter_empty_catalogues()
+  end
+
+  @spec filter_empty_catalogues(Shop.t()) :: Shop.t()
+  defp filter_empty_catalogues(%Shop{catalogues: catalogues} = shop) do
+    catalogues =
+      Enum.filter(catalogues, fn
+        %Catalogue{categories: []} ->
+          false
+
+        %Catalogue{categories: _categories} = catalogue ->
+          length(Offerings.filter_empty_categories(catalogue)) > 0
+      end)
+
+    %Shop{shop | catalogues: catalogues}
   end
 end

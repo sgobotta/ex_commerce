@@ -1017,4 +1017,75 @@ defmodule ExCommerce.Offerings do
       attrs
     )
   end
+
+  # ----------------------------------------------------------------------------
+  # Public facing views
+  #
+
+  @doc """
+  Given a `#{Catalogue}`struct, preloads catalogue relationships.
+  """
+  @spec preload_public_catalogue(Catalogue.t()) :: Catalogue.t()
+  def preload_public_catalogue(catalogue) do
+    preload_variants_query = from v in CatalogueItemVariant, distinct: true
+
+    preload_items_query =
+      from i in CatalogueItem,
+        join: v in assoc(i, :variants),
+        preload: [photos: [], variants: ^preload_variants_query],
+        distinct: true
+
+    preload_categories_query =
+      from c in CatalogueCategory,
+        join: i in assoc(c, :items),
+        preload: [items: ^preload_items_query],
+        where:
+          fragment(
+            "EXISTS (SELECT 1 FROM catalogue_categories_items ci WHERE ci.catalogue_category_id = ? AND ci.catalogue_item_id = ?)",
+            c.id,
+            i.id
+          ),
+        distinct: true
+
+    # preload options with the modified queries
+    preload_opts = [
+      categories: preload_categories_query
+    ]
+
+    Repo.preload(catalogue, preload_opts)
+  end
+
+  @doc """
+  Given a `#{Catalogue}` struct, filters out those categories with no item
+  associations to return a catalogue category list.
+  It is expected the catalogue categories and the category items are preloaded
+  beforehand.
+  """
+  @spec filter_empty_categories(Catalogue.t()) :: [CatalogueCategory.t()]
+  def filter_empty_categories(%Catalogue{categories: categories}) do
+    Enum.filter(categories, fn
+      %CatalogueCategory{items: []} ->
+        false
+
+      %CatalogueCategory{items: _items} = catalogue_category ->
+        length(filter_empty_items(catalogue_category)) > 0
+    end)
+  end
+
+  @doc """
+  Given a `#{CatalogueCategory}` struct, filters out those items with no
+  variant associations to return an item list.
+  It is expected the category items and the item variants are preloaded
+  beforehand.
+  """
+  @spec filter_empty_items(CatalogueCategory.t()) :: [CatalogueItem.t()]
+  def filter_empty_items(%CatalogueCategory{items: items}) do
+    Enum.filter(items, fn
+      %CatalogueItem{variants: []} ->
+        false
+
+      %CatalogueItem{variants: _variants} ->
+        true
+    end)
+  end
 end
