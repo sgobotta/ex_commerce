@@ -76,11 +76,22 @@ defmodule ExCommerceWeb.MountHelpers do
   # ----------------------------------------------------------------------------
   # Brand helpers
 
+  @doc """
+  Given a socket assigns a list of available brands.
+  """
+  @spec assign_brands(Phoenix.LiveView.Socket.t()) ::
+          Phoenix.LiveView.Socket.t()
   def assign_brands(socket) do
     socket
     |> assign(:brands, Marketplaces.list_brands())
   end
 
+  @doc """
+  Given a socket and map of params, assigns a `:brand` to the socket if a
+  `#{Brand}` struct exists or redirects the view to a place search path view.
+  """
+  @spec assign_brand_by_slug_or_redirect(Phoenix.LiveView.Socket.t(), map()) ::
+          Phoenix.LiveView.Socket.t()
   def assign_brand_by_slug_or_redirect(socket, %{"brand" => slug}) do
     case Marketplaces.get_brand_by(:slug, slug) do
       nil ->
@@ -101,65 +112,52 @@ defmodule ExCommerceWeb.MountHelpers do
   Given a socket, a map and an options keyword for ecto preloading, returns a
   socket with a shop assign or redirects to the shop selection screen.
   """
-  @spec assign_shop_by_slug_or_redirect(Phoenix.Socket.t(), map(), keyword()) ::
-          Phoenix.Socket.t()
+  @spec assign_shop_by_slug_or_redirect(
+          Phoenix.Socket.t(),
+          map(),
+          function()
+        ) :: Phoenix.Socket.t()
   def assign_shop_by_slug_or_redirect(
         socket,
         %{
           "brand" => brand_slug,
           "shop" => shop_slug
         },
-        _preload_opts \\ []
+        preload_func \\ & &1
       ) do
-    case Marketplaces.get_shop_by_brand_slug(brand_slug, shop_slug) do
-      nil ->
-        redirect_with_flash(
-          socket,
-          to: Routes.place_search_path(socket, :search),
-          kind: :info,
-          message: gettext("Choose a shop")
-        )
+    %Shop{} = shop = Marketplaces.get_shop_by_brand_slug(brand_slug, shop_slug)
 
-      %Shop{} = shop ->
-        socket
-        |> assign(
-          :shop,
-          Repo.preload(
-            shop,
-            avatars: [],
-            banners: [],
-            brand: [],
-            catalogues: [
-              categories: [
-                items: [
-                  option_groups: [],
-                  photos: [],
-                  variants: []
-                ]
-              ]
-            ]
-          )
-        )
-    end
+    assign(socket, :shop, preload_func.(shop))
+  rescue
+    _error ->
+      redirect_with_flash(
+        socket,
+        to: Routes.place_search_path(socket, :search),
+        kind: :info,
+        message: gettext("Choose a shop")
+      )
   end
 
-  def assign_catalogue_by_id_or_redirect(socket, catalogue_id) do
+  @doc """
+  Given a socket, a catalogue id and a preload function, assigns a catalogue
+  with it's fields preloaded.
+  If the catalogue is not found, then the view is redirected to a shop checkout
+  view.
+  """
+  @spec assign_catalogue_by_id_or_redirect(
+          Phoenix.LiveView.Socket.t(),
+          Ecto.UUID.t(),
+          function()
+        ) :: Phoenix.LiveView.Socket.t()
+  def assign_catalogue_by_id_or_redirect(
+        socket,
+        catalogue_id,
+        preload_func \\ & &1
+      ) do
     %Catalogue{} = catalogue = Offerings.get_catalogue!(catalogue_id)
 
     socket
-    |> assign(
-      :catalogue,
-      Repo.preload(
-        catalogue,
-        categories: [
-          items: [
-            option_groups: [],
-            photos: [],
-            variants: []
-          ]
-        ]
-      )
-    )
+    |> assign(:catalogue, preload_func.(catalogue))
   rescue
     _error ->
       redirect_with_flash(
@@ -176,40 +174,48 @@ defmodule ExCommerceWeb.MountHelpers do
       )
   end
 
+  @doc """
+  Given a socket and a catalogue item id assigns a `:catalogue_item` if a
+  `#{CatalogueItem}` struct exists or redirects to a checkout catalogue view.
+  """
+  @spec assign_catalogue_item_by_id_or_redirect(
+          Phoenix.LiveView.Socket.t(),
+          Ecto.UUID.t()
+        ) :: Phoenix.LiveView.Socket.t()
   def assign_catalogue_item_by_id_or_redirect(socket, catalogue_item_id) do
-    case Offerings.get_catalogue_item(catalogue_item_id) do
-      nil ->
-        redirect_with_flash(
-          socket,
-          to:
-            Routes.place_show_path(
-              socket,
-              :show_catalogue,
-              socket.assigns.brand.id,
-              socket.assigns.shop.id,
-              socket.assigns.catalogue.id
-            ),
-          kind: :info,
-          message:
-            gettext("The item could not be found, please choose another one.")
-        )
+    %CatalogueItem{} =
+      catalogue_item = Offerings.get_catalogue_item!(catalogue_item_id)
 
-      %CatalogueItem{} = catalogue_item ->
-        socket
-        |> assign(
-          :catalogue_item,
-          Repo.preload(
-            catalogue_item,
-            option_groups: [
-              options: [
-                catalogue_item_variant: [:catalogue_item]
-              ]
-            ],
-            photos: [],
-            variants: []
-          )
-        )
-    end
+    socket
+    |> assign(
+      :catalogue_item,
+      Repo.preload(
+        catalogue_item,
+        option_groups: [
+          options: [
+            catalogue_item_variant: [:catalogue_item]
+          ]
+        ],
+        photos: [],
+        variants: []
+      )
+    )
+  rescue
+    _error ->
+      redirect_with_flash(
+        socket,
+        to:
+          Routes.checkout_catalogue_path(
+            socket,
+            :index,
+            socket.assigns.shop.brand.slug,
+            socket.assigns.shop.slug,
+            socket.assigns.catalogue.id
+          ),
+        kind: :info,
+        message:
+          gettext("The item could not be found, please choose another one.")
+      )
   end
 
   # ============================================================================
