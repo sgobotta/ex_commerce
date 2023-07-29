@@ -5,7 +5,9 @@ export MIX_ENV ?= dev
 LOCAL_ENV_FILE = .env
 PROD_ENV_FILE = .env.prod
 APP_NAME = `grep 'APP_NAME=' .env | sed -e 's/\[//g' -e 's/ //g' -e 's/APP_NAME=//'`
-DOCKER_BUILD_NAME = ${APP_NAME}_app
+DOCKERFILE_DIR = devops/builder/
+CONTAINER_NAME = ex_commerce_app
+IMAGE_NAME = ex_commerce_app
 
 export GREEN=\033[0;32m
 export NOFORMAT=\033[0m
@@ -40,9 +42,46 @@ clean.uploads:
 	@source ${LOCAL_ENV_FILE} && \
 		find ${UPLOADS_PATH} -path ${UPLOADS_PATH}/.gitkeep -prune -o -name "*.*" -exec /bin/rm -f {} \;
 
-#🚀 deploy.heroku: @ Deploys the current branch to heroku main
-deploy.heroku:
-	@git push heroku $(shell git rev-parse --abbrev-ref HEAD):main
+#🐳 devops.build: @ Builds a new image for the service.
+docker.build:
+	@docker build ./ -f $(DOCKERFILE_DIR)/Dockerfile -t $(CONTAINER_NAME)
+
+#🐳 docker.connect: @ Connect to the running container
+docker.connect:
+	@docker exec -it $(CONTAINER_NAME) /bin/sh
+
+#🐳 docker.delete: @ Delete the docker container
+docker.delete: CONTAINER_NAME:=$(CONTAINER_NAME)
+docker.delete:
+	@docker rm $(CONTAINER_NAME) 2> /dev/null || true
+
+#🐳 docker.logs: @ Show logs for the docker container
+docker.logs: CONTAINER_NAME:=$(CONTAINER_NAME)
+docker.logs:
+	@docker logs $(CONTAINER_NAME) -f
+
+#🐳 docker.release: @ Re-create a docker image and run it
+docker.release: PORT:=5000
+docker.release: INTERNAL_PORT:=5001
+docker.release: docker.stop docker.delete docker.build docker.run
+
+#🐳 docker.rerun: @ Stops and deletes old container to re-run a fresh new container
+docker.rerun: PORT:=5000
+docker.rerun: INTERNAL_PORT:=5001
+docker.rerun: docker.stop docker.delete docker.run
+
+#🐳 docker.run: @ Run the docker container
+docker.run: PORT:=5000
+docker.run: INTERNAL_PORT:=5001
+docker.run: CONTAINER_NAME:=$(CONTAINER_NAME)
+docker.run: IMAGE_NAME:=$(IMAGE_NAME)
+docker.run:
+	@docker run --detach --name $(CONTAINER_NAME) --network devops_ex_commerce_storage -p $(PORT):$(INTERNAL_PORT) --env PORT=$(INTERNAL_PORT) --env-file .env.prod $(IMAGE_NAME)
+
+#🐳 docker.stop: @ Stop the docker container
+docker.stop: CONTAINER_NAME:=$(CONTAINER_NAME)
+docker.stop:
+	@docker container stop $(CONTAINER_NAME) 2> /dev/null || true
 
 #📖 docs: @ Generates HTML documentation
 docs:
@@ -147,15 +186,6 @@ server: SHELL:=/bin/bash
 server:
 	@source ${LOCAL_ENV_FILE} && iex --name ${APP_NAME}@127.0.0.1 -S mix phx.server
 
-#🐳 start: @ Starts docker-compose services
-start: SHELL:=/bin/bash
-start:
-	@source .env && tilt up
-
-#🐳 stop: @ Shuts down docker-compose services
-stop:
-	@tilt down
-
 #🧪 test: @ Runs all test suites
 test: MIX_ENV=test
 test: SHELL:=/bin/bash
@@ -190,4 +220,5 @@ test.wip.watch:
 translations: SHELL:=/bin/bash
 translations:
 	@mix gettext.extract
-	@mix gettext.merge priv/gettext
+	@mix gettext.merge priv/gettext --locale es_AR
+	@mix gettext.merge priv/gettext --locale en
