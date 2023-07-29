@@ -49,14 +49,14 @@
 
 ### Requirements
 
-+ [Docker](https://docs.docker.com/engine/install/ubuntu/)
-+ [Docker Compose](https://docs.docker.com/compose/install/)
-+ [Tilt](https://docs.tilt.dev/install.html#linux)
+The ex_commerce app needs the elixir language to be installed. You can install it manually or via the `asdf` package manager, using the fixed version from the *.tool-versions* files
+
++ Ubuntu/Debian SO
++ [asdf `latest`](https://asdf-vm.com/guide/getting-started.html#_2-download-asdf)
 + [Elixir `1.14.3`](https://elixir-lang.org/install.html)
 + [Erlang `25.2.1`](https://erlang.org/doc/installation_guide/users_guide.html)
 + [Node `16.13.1`](https://nodejs.org/es/)
-
-Tilt can be installed by running just the curl command in the link above. It's used for local development exclusively.
++ [Docker `24.0.2`](https://docs.docker.com/desktop/install/ubuntu/) (optional): used to run dockerized images of the backend
 
 Elixir, Erlang and Node can also be installed using [`asdf`](https://asdf-vm.com/#/core-manage-asdf?id=install). [Personal installation notes](https://gist.github.com/sgobotta/514a3e452f7bc37c558fc93a2768ccd2).
 
@@ -116,10 +116,20 @@ cp .env.example .env
 
 + `SENDGRID_API_KEY`: Sendgrid API key.
 
-#### PgAdmin
+#### Cloudex credentials
 
-+ `PGADMIN_DEFAULT_EMAIL`: email to access the Postgres Admin instance in the `pgadmin` container.
-+ `PGADMIN_DEFAULT_PASSWORD`: password to access the Postgres Admin instance in the `pgadmin` container.
++ `CLOUDEX_API_KEY`: the cloudex api key.
++ `CLOUDEX_SECRET`: the cloudex secret key.
++ `CLOUDEX_CLOUD_NAME`: the cloudex name of the cloud.
+
+#### The assigned directory for uploads
+
++ `UPLOADS_PATH`: the assigned path for uploads.
+
+#### Captcha credentials
+
++ `RECAPTCHA_PUBLIC_KEY`: the public key for the captcha service.
++ `RECAPTCHA_SECRET`: the secret key for the captcha service.
 
 ### Useful commands
 
@@ -131,31 +141,6 @@ This project uses **Makefile** to interact with the Elixir server, the postgres 
 make help
 # Shortcut
 make
-```
-
-#### Start services with Tilt
-
-All services are defined in the *Tiltfile* file. There, docker services, defined in [`docker-compose.yml`](docker-compose.yml), are used for third party integrations.
-
-> *Starts all services.*
-
-```bash
-make start
-```
-
-> *Stops all services.*
-
-```bash
-make stop
-```
-
-> *Disable the application service. This is useful if you want to run the elixir server with `make start`.*
-
-```bash
-# Disables the app service in Tilt.
-tilt disable app
-# Starts the elixir service with mix
-make server
 ```
 
 #### Configuration commands
@@ -253,14 +238,6 @@ Once the environment file and the project is properly set up, a development serv
 
 + Visit [`localhost:4000`](http://localhost:4000) from your browser to access the application main page.
 + Visit [`localhost:4000/dashboard`](http://localhost:4000/dashboard/home) from your browser to access a devellopment dashboard with information about your app.
-
-### Database adminstration
-
-The Docker services include a [`PostgreSql`](https://www.postgresql.org/) and a [`pgAdmin`](https://www.pgadmin.org/) instances.
-
-+ Visit [`localhost:5050`](http://localhost:5050/) from your browser and use credentials configured in your [`.env`](.env.example) file to access the admin dhasboard.
-+ Go to ***Object*** -> ***Create*** -> ***Server*** and type in a server name of your liking, e.g.: Dockerized Server.
-+ Then, in the `Connection` tab use `main_db` as host (just how [`docker-compose.yml`](docker-compose.yml) defines the database service) and *Database* credentials configured in [`.env`](.env.example) to access the db.
 
 ## License
 
