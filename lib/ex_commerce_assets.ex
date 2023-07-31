@@ -16,7 +16,8 @@ defmodule ExCommerceAssets do
   Takes a list of items, a map with options and delegates the call to the
   configured driver and finally upload images.
   """
-  @spec upload_list_with_options(list(map), map) :: list()
+  @spec upload_list_with_options(list(map), map) ::
+          {:ok, list(Cloudex.UploadedImage.t())} | :error
   def upload_list_with_options(items, options) do
     driver(get_driver()).upload_list_with_options(items, options)
   end

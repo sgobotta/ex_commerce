@@ -26,7 +26,8 @@ defmodule ExCommerce.Offerings.RelationsFixtures do
   @doc """
   Generate a catalogue_category_item.
   """
-  @spec catalogue_category_item_fixture(map) :: Relations.CatalogueCategoryItem
+  @spec catalogue_category_item_fixture(map) ::
+          Relations.CatalogueCategoryItem.t()
   def catalogue_category_item_fixture(attrs \\ %{}) do
     %Offerings.CatalogueItem{id: item_id} = CatalogueItemsFixtures.create(attrs)
 
@@ -48,7 +49,7 @@ defmodule ExCommerce.Offerings.RelationsFixtures do
   @doc """
   Generate a catalogue_category.
   """
-  @spec catalogue_category_fixture(map) :: Relations.CatalogueCategory
+  @spec catalogue_category_fixture(map) :: Relations.CatalogueCategory.t()
   def catalogue_category_fixture(attrs \\ %{}) do
     %Offerings.Catalogue{id: catalogue_id} = CataloguesFixtures.create(attrs)
 
@@ -71,7 +72,7 @@ defmodule ExCommerce.Offerings.RelationsFixtures do
   Generate a catalogue_item_option_group_item
   """
   @spec catalogue_item_option_group_item_fixture(map()) ::
-          Relations.CatalogueItemOptionGroupItem
+          Relations.CatalogueItemOptionGroupItem.t()
   def catalogue_item_option_group_item_fixture(attrs \\ %{}) do
     {:ok,
      %Relations.CatalogueItemOptionGroupItem{} =

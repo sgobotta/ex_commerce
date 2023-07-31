@@ -7,6 +7,8 @@ defmodule ExCommerce.Offerings.Relations.CatalogueItemOptionGroupItem do
 
   alias ExCommerce.Offerings.{CatalogueItem, CatalogueItemOptionGroup}
 
+  @type t :: %__MODULE__{}
+
   @fields [:visible]
   @foreign_fields [:catalogue_item_option_group_id, :catalogue_item_id]
 

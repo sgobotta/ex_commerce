@@ -10,10 +10,12 @@ defmodule ExCommerceAssets.Driver do
   @doc """
   Takes a list of maps with file path and options to upload thumbnails.
   """
-  @callback upload_thumbnails_with_options(list(map()), map()) :: list()
+  @callback upload_thumbnails_with_options(list(map()), map()) ::
+              {:ok, list(Cloudex.UploadedImage.t())} | :error
 
   @doc """
   Takes a list of maps with file path and options to upload images.
   """
-  @callback upload_list_with_options(list(map()), map()) :: list()
+  @callback upload_list_with_options(list(map()), map()) ::
+              {:ok, list(Cloudex.UploadedImage.t())} | :error
 end
