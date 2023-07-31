@@ -9,18 +9,16 @@ DOCKERFILE_DIR = devops/builder/
 CONTAINER_NAME = ex_commerce_app
 IMAGE_NAME = ex_commerce_app
 
+# Add env variables if needed
+ifneq (,$(wildcard ${LOCAL_ENV_FILE}))
+	include ${LOCAL_ENV_FILE}
+    export
+endif
+
 export GREEN=\033[0;32m
 export NOFORMAT=\033[0m
 
 default: help
-
-#🐳 build: @ Builds a docker image
-build: SHELL:=/bin/bash
-build:
-	@source ${LOCAL_ENV_FILE} && \
-	docker build \
-		--build-arg UPLOADS_PATH=${UPLOADS_PATH} \
-		-t ${APP_NAME} .
 
 #🔍 check: @ Runs all code verifications
 check: check.lint check.dialyzer test
@@ -42,9 +40,13 @@ clean.uploads:
 	@source ${LOCAL_ENV_FILE} && \
 		find ${UPLOADS_PATH} -path ${UPLOADS_PATH}/.gitkeep -prune -o -name "*.*" -exec /bin/rm -f {} \;
 
-#🐳 devops.build: @ Builds a new image for the service.
+#🐳 docker.build: @ Builds a new image for the service.
 docker.build:
-	@docker build ./ -f $(DOCKERFILE_DIR)/Dockerfile -t $(CONTAINER_NAME)
+	@docker build \
+		./ \
+		--build-arg UPLOADS_PATH=${UPLOADS_PATH} \
+		-f $(DOCKERFILE_DIR)/Dockerfile \
+		-t $(CONTAINER_NAME)
 
 #🐳 docker.connect: @ Connect to the running container
 docker.connect:
@@ -105,9 +107,10 @@ help:
 
 #💻 lint: @ Formats code
 lint: SHELL:=/bin/bash
+lint: MIX_ENV=dev
 lint:
-	@source ${LOCAL_ENV_FILE} && mix format
-	@source ${LOCAL_ENV_FILE} && mix check.credo
+	@mix format
+	@mix check.credo
 
 #💣 reset: @ Cleans dependencies then re-installs and compiles them for all envs
 reset: SHELL:=/bin/bash
@@ -115,15 +118,17 @@ reset: reset.dev reset.test
 
 #💣 reset.dev: @ Cleans dependencies then re-installs and compiles them1 for dev env
 reset.dev: SHELL:=/bin/bash
+reset.dev: MIX_ENV=dev
 reset.dev:
 	@echo "🧹 Cleaning db and dependencies for dev..."
-	@source ${LOCAL_ENV_FILE} && MIX_ENV=dev mix reset
+	@mix reset
 
 #💣 reset.test: @ Cleans dependencies then re-installs and compiles them1 for test env
 reset.test: SHELL:=/bin/bash
+reset.test: MIX_ENV=test
 reset.test:
 	@echo "🧹 Cleaning db and dependencies for test..."
-	@source ${LOCAL_ENV_FILE} && MIX_ENV=test mix reset
+	@mix reset
 
 #💣 reset.ecto: @ Resets database for all envs
 reset.ecto: SHELL:=/bin/bash
@@ -131,24 +136,17 @@ reset.ecto: reset.ecto.dev reset.ecto.test
 
 #💣 reset.ecto.dev: @ Resets database for dev env
 reset.ecto.dev: SHELL:=/bin/bash
+reset.ecto.dev: MIX_ENV=dev
 reset.ecto.dev:
 	@echo "🧹 Cleaning db for dev env..."
-	@source ${LOCAL_ENV_FILE} && MIX_ENV=dev mix reset.ecto
+	@mix reset.ecto
 
 #💣 reset.ecto.test: @ Resets database for test env
 reset.ecto.test: SHELL:=/bin/bash
+reset.ecto.test: MIX_ENV=test
 reset.ecto.test:
 	@echo "🧹 Cleaning db for test env..."
-	@source ${LOCAL_ENV_FILE} && MIX_ENV=test mix reset.ecto
-
-#🐳 run: @ Runs a docker build
-run:
-	@docker run \
-		-p 5000:5000 \
-		--env-file ${PROD_ENV_FILE} \
-		--name ${DOCKER_BUILD_NAME} \
-		--net ${APP_NAME}_default \
-		ex_commerce
+	@mix reset.ecto
 
 #📦 setup: @ Installs dependencies and set up database for dev and test envs
 setup: SHELL:=/bin/bash
@@ -156,13 +154,15 @@ setup: setup.dev setup.test
 
 #📦 setup.dev: @ Installs dependencies and set up database for dev env
 setup.dev: SHELL:=/bin/bash
+setup.dev: MIX_ENV=dev
 setup.dev:
-	@source ${LOCAL_ENV_FILE} && MIX_ENV=dev mix setup
+	@mix setup
 
 #📦 setup.test: @ Installs dependencies and set up database for test env
 setup.test: SHELL:=/bin/bash
+setup.test: MIX_ENV=test
 setup.test:
-	@source ${LOCAL_ENV_FILE} && MIX_ENV=test mix setup
+	@mix setup
 
 #📦 setup.deps: @ Installs dependencies for development
 setup.deps: setup.deps.dev setup.deps.test
@@ -173,48 +173,52 @@ setup.deps.ci:
 
 #📦 setup.deps.dev: @ Installs dependencies only for dev env
 setup.deps.dev: SHELL:=/bin/bash
+setup.deps.dev: MIX_ENV=dev
 setup.deps.dev:
-	@source ${LOCAL_ENV_FILE} && MIX_ENV=dev mix install
+	@mix install
 
 #📦 setup.deps.test: @ Installs dependencies only for test env
 setup.deps.test: SHELL:=/bin/bash
+setup.deps.test: MIX_ENV=test
 setup.deps.test:
-	@source ${LOCAL_ENV_FILE} && MIX_ENV=test mix install
+	@mix install
 
 #💻 server: @ Starts a server with an interactive elixir shell.
 server: SHELL:=/bin/bash
 server:
-	@source ${LOCAL_ENV_FILE} && iex --name ${APP_NAME}@127.0.0.1 -S mix phx.server
+	@iex --name ${APP_NAME}@127.0.0.1 -S mix phx.server
 
 #🧪 test: @ Runs all test suites
-test: MIX_ENV=test
 test: SHELL:=/bin/bash
+test: MIX_ENV=test
 test:
-	@source ${LOCAL_ENV_FILE} && mix test
+	@mix test
 
 #🧪 test.cover: @ Runs all tests and generates a coverage report
-test.cover: MIX_ENV=test
 test.cover: SHELL:=/bin/bash
+test.cover: MIX_ENV=testMIX_ENV=test
 test.cover:
-	@source ${LOCAL_ENV_FILE} && mix coveralls.html
+	@mix coveralls.html
 
 #🧪 test.watch: @ Runs and watches all test suites
 test.watch: SHELL:=/bin/bash
+test.watch: MIX_ENV=test
 test.watch:
 	@echo "🧪👁️  Watching all test suites..."
-	@source ${LOCAL_ENV_FILE} && mix test.watch
+	@mix test.watch
 
 #🧪 test.wip: @ Runs test suites that match the wip tag
-test.wip: MIX_ENV=test
 test.wip: SHELL:=/bin/bash
+test.wip: MIX_ENV=test
 test.wip:
-	@source ${LOCAL_ENV_FILE} && mix test --only wip
+	@mix test --only wip
 
 #🧪 test.wip.watch: @ Runs and watches test suites that match the wip tag
 test.wip.watch: SHELL:=/bin/bash
+test.wip.watch: MIX_ENV=test
 test.wip.watch:
 	@echo "🧪👁️  Watching test suites tagged with wip..."
-	@source ${LOCAL_ENV_FILE} && mix test.watch --only wip
+	@mix test.watch --only wip
 
 #📙 translations: @ Extract new untranslated phrases and merge translations to avaialble languages. This command uses fuzzy auto-generated transaltions, it generally needs a manual update to each language afterwards.
 translations: SHELL:=/bin/bash

@@ -52,7 +52,7 @@ defmodule ExCommerce.MixProject do
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.15", only: [:test]},
       {:git_hooks, "~> 0.6.2", only: [:dev], runtime: false},
-      {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false},
+      {:mix_test_watch, "~> 1.0", only: [:test], runtime: false},
       # Documentation
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       # Phoenix default apps
@@ -104,7 +104,6 @@ defmodule ExCommerce.MixProject do
       # Setup the whole application
       setup: ["deps.get", "deps.compile", "compile", "setup.ecto", "setup.web"],
       "setup.ecto": [
-        "ecto.drop",
         "ecto.create",
         "ecto.migrate",
         "run priv/repo/seeds.exs"
