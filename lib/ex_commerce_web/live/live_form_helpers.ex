@@ -3,6 +3,7 @@ defmodule ExCommerceWeb.LiveFormHelpers do
   Implements reusable helpers for live forms
   """
 
+  require ExCommerceWeb.Gettext
   alias Phoenix.LiveView
 
   alias ExCommerce.Uploads
@@ -48,7 +49,7 @@ defmodule ExCommerceWeb.LiveFormHelpers do
           %Photo{state: :local} = photo ->
             :ok =
               Logger.warn(
-                "#{__MODULE__} (get_photos/2) :: No :uploaded photo found. Returning a local photo. photo=#{inspect(photo)}"
+                "#{__MODULE__} (get_photos/2) :: No :uploaded photo found. Returning a local photo. id=#{inspect(photo.id)} type=#{inspect(photo.type)} state=#{inspect(photo.state)}"
               )
 
             [photo]
@@ -147,9 +148,9 @@ defmodule ExCommerceWeb.LiveFormHelpers do
   @doc """
   Given a socket, a form changeset attribute, an uploads path, uploads options
   and a list of photos, consumes uploaded entries to copy them locally and sends
-  them for uploading to the Assets application to returns a tuple where the
-  first element is a list of uploaded photos and the second element is a list
-  of already uploaded photos.
+  them for uploading to the Assets application to return am :ok tuple where the
+  second element is a list of uploaded photos and the second element is the
+  given socket.
   """
   @spec consume_uploads(
           LiveView.Socket.t(),
@@ -157,19 +158,34 @@ defmodule ExCommerceWeb.LiveFormHelpers do
           binary(),
           keyword(),
           list(map)
-        ) :: :ok
+        ) ::
+          {:ok, list(Photo.t()), LiveView.Socket.t()} | {:error, :upload_error}
   def consume_uploads(socket, attr, uploads_path, upload_opts, photos) do
     consumed_entries = consume_entries(socket, attr, uploads_path)
-    uploaded_images = upload_thumbnails(consumed_entries, upload_opts)
 
-    :ok =
-      Enum.each(photos, fn %Photo{} = photo ->
-        attrs = maybe_mark_uploaded(photo, uploaded_images)
-
-        {:ok, %Photo{}} = Uploads.update_photo(photo, attrs)
-      end)
+    with {:ok, uploaded_images} <-
+           upload_thumbnails(consumed_entries, upload_opts),
+         updated_photos <- update_photos(photos, uploaded_images) do
+      {:ok, updated_photos, socket}
+    else
+      _error ->
+        {:error, :upload_error}
+    end
   end
 
+  @spec update_photos(list(map()), list(Cloudex.UploadedImage.t())) ::
+          list(Photo.t())
+  defp update_photos(photos, uploaded_images) do
+    Enum.map(photos, fn %Photo{} = photo ->
+      attrs = maybe_mark_uploaded(photo, uploaded_images)
+
+      {:ok, %Photo{} = photo} = Uploads.update_photo(photo, attrs)
+
+      photo
+    end)
+  end
+
+  @spec maybe_mark_uploaded(Photo.t(), list(Cloudex.UploadedImage.t())) :: map()
   defp maybe_mark_uploaded(%Photo{}, []), do: %{}
 
   defp maybe_mark_uploaded(%Photo{uuid: uuid}, uploaded_images) do
@@ -212,6 +228,7 @@ defmodule ExCommerceWeb.LiveFormHelpers do
   # Private helpers
   #
 
+  @spec consume_entries(LiveView.Socket.t(), atom(), String.t()) :: list()
   defp consume_entries(socket, attr, uploads_path) do
     LiveView.consume_uploaded_entries(socket, attr, fn meta,
                                                        %LiveView.UploadEntry{
@@ -225,6 +242,8 @@ defmodule ExCommerceWeb.LiveFormHelpers do
     end)
   end
 
+  @spec upload_thumbnails(list(), keyword()) ::
+          {:ok, list(Cloudex.UploadedImage.t())} | :error
   defp upload_thumbnails(entries, upload_opts) do
     items =
       Enum.map(entries, fn {file_path, %LiveView.UploadEntry{}} ->

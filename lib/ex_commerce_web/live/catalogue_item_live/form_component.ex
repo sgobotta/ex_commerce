@@ -219,6 +219,15 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
+
+      {:error, :upload_error} ->
+        {:noreply,
+         socket
+         |> put_flash(
+           :error,
+           gettext("There was an error while uploading a file")
+         )
+         |> push_redirect(to: socket.assigns.patch_to)}
     end
   end
 
@@ -254,16 +263,19 @@ defmodule ExCommerceWeb.CatalogueItemLive.FormComponent do
     upload_opts = [folder: brand_id, tags: brand_id]
 
     # Consumes uploads via the live form helper
-    :ok =
-      consume_uploads(
-        socket,
-        :photos,
-        @uploads_path,
-        upload_opts,
-        photos
-      )
+    case consume_uploads(
+           socket,
+           :photos,
+           @uploads_path,
+           upload_opts,
+           photos
+         ) do
+      {:ok, _updated_photos, _socket} ->
+        {:ok, catalogue_item}
 
-    {:ok, catalogue_item}
+      {:error, :upload_error} = error ->
+        error
+    end
   end
 
   # ----------------------------------------------------------------------------

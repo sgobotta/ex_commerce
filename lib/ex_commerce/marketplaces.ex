@@ -162,7 +162,9 @@ defmodule ExCommerce.Marketplaces do
     Shop.changeset(shop, attrs)
   end
 
-  defp after_save({:ok, struct}, func), do: {:ok, _struct} = func.(struct)
+  @spec after_save({:ok, Shop.t()} | {:error, Ecto.Changeset.t()}, fun()) ::
+          {:ok, Shop.t()} | {:error, Ecto.Changeset.t()} | {:error, any()}
+  defp after_save({:ok, struct}, func), do: func.(struct)
 
   defp after_save(error, _func), do: error
 

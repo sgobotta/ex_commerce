@@ -17,6 +17,8 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
     Utils
   }
 
+  require Logger
+
   @app_host System.get_env("APP_HOST")
 
   @uploads_path get_uploads_path()
@@ -113,6 +115,15 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :changeset, changeset)}
+
+      {:error, :upload_error} ->
+        {:noreply,
+         socket
+         |> put_flash(
+           :error,
+           gettext("There was an error while uploading a file")
+         )
+         |> push_redirect(to: socket.assigns.patch_to)}
     end
   end
 
@@ -150,6 +161,15 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
+
+      {:error, :upload_error} ->
+        {:noreply,
+         socket
+         |> put_flash(
+           :error,
+           gettext("There was an error while uploading a file")
+         )
+         |> push_redirect(to: socket.assigns.patch_to)}
     end
   end
 
@@ -223,24 +243,23 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
        ) do
     upload_opts = [folder: brand_id, tags: brand_id]
 
-    :ok =
-      consume_uploads(
-        socket,
-        :avatars,
-        @uploads_path,
-        upload_opts,
-        avatars
-      )
-
-    :ok =
-      consume_uploads(
-        socket,
-        :banners,
-        @uploads_path,
-        upload_opts,
-        banners
-      )
-
-    {:ok, shop}
+    with {:ok, _updated_photos, _socket} <-
+           consume_uploads(
+             socket,
+             :avatars,
+             @uploads_path,
+             upload_opts,
+             avatars
+           ),
+         {:ok, _updated_photos, _socket} <-
+           consume_uploads(
+             socket,
+             :banners,
+             @uploads_path,
+             upload_opts,
+             banners
+           ) do
+      {:ok, shop}
+    end
   end
 end
