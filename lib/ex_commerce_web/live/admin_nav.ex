@@ -5,6 +5,7 @@ defmodule ExCommerceWeb.AdminNav do
   import Phoenix.Component
 
   alias ExCommerceWeb.QrCodeLive
+
   alias ExCommerceWeb.{
     BrandLive,
     CatalogueCategoryLive,

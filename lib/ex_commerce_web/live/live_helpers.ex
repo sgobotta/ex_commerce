@@ -54,7 +54,7 @@ defmodule ExCommerceWeb.LiveHelpers do
           class="
             w-6 h-6 inline-block mr-2 rounded-full
             border border-gray-200 flex-no-shrink
-            with-outline
+            with-ring
           "
         />
       </label>

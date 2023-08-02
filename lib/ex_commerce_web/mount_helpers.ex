@@ -504,6 +504,24 @@ defmodule ExCommerceWeb.MountHelpers do
     |> assign_new(:user, fn -> user end)
   end
 
+  def assign_avatar_image_source(
+        %{assigns: %{user: %User{email: email}}} = socket
+      ) do
+    image_source =
+      "https://ui-avatars.com/api/"
+      |> URI.parse()
+      |> URI.append_query("name=#{email}")
+      |> URI.append_query("background=random")
+      |> URI.to_string()
+
+    socket
+    |> assign(:avatar_image_source, image_source)
+  end
+
+  def assign_avatar_image_source(socket) do
+    assign_new(socket, :avatar_image_source, fn -> nil end)
+  end
+
   defp assign_locale(socket, %{"locale" => locale}) do
     Gettext.put_locale(Gettext, locale)
     socket

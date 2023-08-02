@@ -10,10 +10,19 @@ defmodule ExCommerceWeb.LayoutView do
   import ExCommerceWeb.Gettext
 
   def sidebar_account_dropdown(assigns) do
+    image_source =
+      "https://ui-avatars.com/api/"
+      |> URI.parse()
+      |> URI.append_query("name=#{assigns.current_user.email}")
+      |> URI.append_query("background=random")
+      |> URI.to_string()
+
+    assigns = assign(assigns, :image_source, image_source)
+
     ~H"""
     <.dropdown id={@id}>
-      <:img src={"https://images.unsplash.com/photo-1610397095767-84a5b4736cbd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"}/>
-      <:title><%= gettext("User Name") %></:title>
+      <:img src={@image_source}/>
+      <:title><%= gettext("Username") %></:title>
       <:subtitle><%= @current_user.email %></:subtitle>
 
       <:link

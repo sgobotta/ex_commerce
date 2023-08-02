@@ -1,6 +1,10 @@
 @layer base {
   a svg.base-alert-icon, input, select, textarea {
-    @apply focus:ring-0 focus:outline focus:outline-4 focus:outline-sky-500 !important;
+    @apply focus:ring-2 focus:outline focus:ring-sky-500 focus:outline-sky-500 !important;
+  }
+
+  .with-ring {
+    @apply focus:outline focus:ring-2 focus:ring-sky-500 !important;
   }
 
   .with-outline {
@@ -11,11 +15,11 @@
     @apply focus:outline focus:outline-2 focus:outline-sky-500 !important;
   }
 
-  .with-outline.gray, .with-outline-sm.gray {
+  .with-ring.gray, .with-outline.gray, .with-outline-sm.gray {
     @apply focus:outline-gray-700 !important;
   }
 
-  .with-outline.warn, .with-outline-sm.warn {
+  .with-ring.warn, .with-outline.warn, .with-outline-sm.warn {
     @apply focus:outline-rose-500 !important;
   }
 

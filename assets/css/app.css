@@ -26,6 +26,10 @@
 
 /* General styles */
 
+html {
+  @apply selection:text-white selection:bg-sky-500
+}
+
 select {
   width: auto;
 }
