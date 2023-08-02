@@ -103,7 +103,7 @@ help:
 	@echo "	make ${GREEN}server${NOFORMAT}	- Starts a development server"
 	@echo "	make ${GREEN}stop${NOFORMAT}	- Stops docker services"
 	@echo ""
-	@grep -E '[a-zA-Z\.\-]+:.*?@ .*$$' $(MAKEFILE_LIST)| tr -d '#'  | awk 'BEGIN {FS = ":.*?@ "}; {printf "${GREEN}%-30s${NOFORMAT} %s\n", $$1, $$2}'
+	@grep -E '[a-zA-Z\.\-]+:.*?@ .*$$' $(firstword $(MAKEFILE_LIST))| tr -d '#'  | awk 'BEGIN {FS = ":.*?@ "}; {printf "${GREEN}%-30s${NOFORMAT} %s\n", $$1, $$2}'
 
 #💻 lint: @ Formats code
 lint: SHELL:=/bin/bash
