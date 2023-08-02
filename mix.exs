@@ -51,7 +51,7 @@ defmodule ExCommerce.MixProject do
       {:credo, "~> 1.6.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.15", only: [:test]},
-      {:git_hooks, "~> 0.6.2", only: [:dev], runtime: false},
+      {:git_hooks, "~> 0.7.3", only: [:dev], runtime: false},
       {:mix_test_watch, "~> 1.0", only: [:test], runtime: false},
       # Documentation
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
