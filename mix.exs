@@ -60,10 +60,10 @@ defmodule ExCommerce.MixProject do
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 3.2.0"},
+      {:phoenix_html, "~> 3.3.0"},
       {:phoenix_live_reload, "~> 1.3.3", only: :dev},
-      {:phoenix_live_dashboard, "~> 0.7.2"},
-      {:phoenix_live_view, "~> 0.18.11"},
+      {:phoenix_live_dashboard, "~> 0.8.0"},
+      {:phoenix_live_view, "~> 0.19.5"},
       {:floki, ">= 0.30.0"},
       {:telemetry_metrics, "~> 0.6.1"},
       {:telemetry_poller, "~> 0.5"},
@@ -79,7 +79,7 @@ defmodule ExCommerce.MixProject do
       {:ex_cldr_plugs, "~> 1.2"},
       # Web Helpers
       {:phoenix_inline_svg, "~> 1.4"},
-      {:heroicons, "~> 0.5.2"},
+      {:heroicons, "~> 0.5.3"},
       {:live_motion, "~> 0.3.0"},
       {:tailwind, "~> 0.1.9", runtime: Mix.env() == :dev},
       # Assets handling deps
