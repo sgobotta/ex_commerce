@@ -157,6 +157,7 @@ setup.dev: SHELL:=/bin/bash
 setup.dev: MIX_ENV=dev
 setup.dev:
 	@mix setup
+	@mix git_hooks.install
 
 #📦 setup.test: @ Installs dependencies and set up database for test env
 setup.test: SHELL:=/bin/bash
