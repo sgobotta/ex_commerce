@@ -13,6 +13,8 @@ defmodule ExCommerce.Repo.Migrations.CreateBrandsUsers do
       timestamps()
     end
 
+    create unique_index(:brands_users, [:user_id, :brand_id])
+
     create index(:brands_users, [:user_id])
     create index(:brands_users, [:brand_id])
   end
