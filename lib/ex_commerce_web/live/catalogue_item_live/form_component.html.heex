@@ -119,12 +119,16 @@
                 <% else %>
                   <%= hidden_input v, :temp_id %>
                   <a
+                    class="mx-2 rounded-lg"
                     href="#"
                     phx-click="remove_variant"
                     phx-value-remove={v.data.temp_id}
                     phx-target={@myself}
                   >
-                    &times
+                    <.icon name={:trash} outlined class="
+                      text-rose-500
+                      flex-shrink-0 h-8 w-8
+                    "/>
                   </a>
                 <% end %>
               </div>
