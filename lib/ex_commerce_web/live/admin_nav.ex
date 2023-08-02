@@ -4,6 +4,7 @@ defmodule ExCommerceWeb.AdminNav do
   import Phoenix.LiveView
   import Phoenix.Component
 
+  alias ExCommerceWeb.QrCodeLive
   alias ExCommerceWeb.{
     BrandLive,
     CatalogueCategoryLive,
@@ -49,6 +50,9 @@ defmodule ExCommerceWeb.AdminNav do
 
   defp get_active_tab(CatalogueItemOptionGroupLive.Show, _action),
     do: :catalogue_item_option_groups
+
+  defp get_active_tab(QrCodeLive.Index, _action),
+    do: :qr_codes
 
   defp get_active_tab(_view, _action), do: nil
 end

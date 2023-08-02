@@ -30,4 +30,20 @@
     position: relative;
     width: 100%
   } */
+
+  .active-nav-item {
+    @apply text-xl font-medium text-sky-600 hover:text-sky-600 group-hover:text-sky-600 bg-gray-200 hover:bg-gray-200 shadow-lg;
+  }
+
+  .inactive-nav-item {
+    @apply text-xl font-normal text-gray-500 hover:text-gray-900 hover:bg-gray-50 group-hover:text-gray-500;
+  }
+
+  .active-nav-item-icon {
+    @apply active-nav-item bg-transparent shadow-none;
+  }
+
+  .inactive-nav-item-icon {
+    @apply inactive-nav-item bg-transparent shadow-none;
+  }
 }
