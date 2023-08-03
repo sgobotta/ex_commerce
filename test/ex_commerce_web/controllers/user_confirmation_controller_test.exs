@@ -14,7 +14,7 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
     test "renders the confirmation page", %{conn: conn} do
       conn = get(conn, Routes.user_confirmation_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "Resend confirmation instructions</h1>"
+      assert response =~ gettext("Resend confirmation instructions") <> "</h1>"
     end
   end
 

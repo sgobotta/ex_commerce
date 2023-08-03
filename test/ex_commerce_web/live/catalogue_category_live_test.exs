@@ -5,7 +5,6 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
   use ExCommerce.ContextCases.OfferingsCase
   use ExCommerceWeb.ConnCase
 
-  import ExCommerceWeb.Gettext
   import Phoenix.LiveViewTest
 
   alias ExCommerce.Offerings
@@ -40,7 +39,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
       {:ok, _index_live, html} =
         live(conn, Routes.catalogue_category_index_path(conn, :index, brand_id))
 
-      assert html =~ "My Catalogue categories"
+      assert html =~ gettext("My Catalogue categories")
       assert html =~ catalogue_category.code
     end
 
@@ -75,7 +74,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
       assert index_live
              |> element("a#new")
              |> render_click() =~
-               "New Catalogue category"
+               gettext("New Catalogue category")
 
       assert_patch(
         index_live,
@@ -97,7 +96,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
           Routes.catalogue_category_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "Catalogue category created successfully"
+      assert html =~ gettext("Catalogue category created successfully")
       assert html =~ "some code"
     end
 
@@ -112,7 +111,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
       assert index_live
              |> element("#catalogue_category-#{catalogue_category_id} a#update")
              |> render_click() =~
-               "Edit Catalogue category"
+               gettext("Edit Catalogue category")
 
       assert_patch(
         index_live,
@@ -139,7 +138,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
           Routes.catalogue_category_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "Catalogue category updated successfully"
+      assert html =~ gettext("Catalogue category updated successfully")
       assert html =~ "some updated code"
     end
 
@@ -354,7 +353,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
         )
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Catalogue category"
+               gettext("Edit Catalogue category")
 
       assert_patch(
         show_live,
@@ -386,7 +385,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
           )
         )
 
-      assert html =~ "Catalogue category updated successfully"
+      assert html =~ gettext("Catalogue category updated successfully")
       assert html =~ "some updated code"
     end
 

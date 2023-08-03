@@ -20,7 +20,7 @@ defmodule ExCommerceWeb.HomeLiveTest do
       {:ok, _index_live, html} =
         live(conn, Routes.overview_index_path(conn, :index, brand_id))
 
-      assert html =~ "Home"
+      assert html =~ gettext("Home")
     end
 
     test "[Failure] visits the overview page - redirects to brands", %{

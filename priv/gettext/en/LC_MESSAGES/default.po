@@ -515,11 +515,6 @@ msgstr ""
 msgid "Create an Options group"
 msgstr ""
 
-#: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:86
-#, elixir-autogen, elixir-format
-msgid "Create at least one or more variants to your item. For example: a hamburguer can be offered in different sizes and prices might vary. Variants can be added as an optional to accompany other items."
-msgstr ""
-
 #: lib/ex_commerce_web/live/catalogue_category_live/index.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Create catalogue/menu categories to group up products of similar nature."
@@ -617,6 +612,7 @@ msgid "Edit Catalogue item"
 msgstr ""
 
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/index.ex:75
+#: lib/ex_commerce_web/live/catalogue_item_option_group_live/show.ex:44
 #, elixir-autogen, elixir-format
 msgid "Edit Catalogue item option group"
 msgstr ""
@@ -683,18 +679,6 @@ msgstr ""
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Enter your password"
-msgstr ""
-
-#: lib/ex_commerce_web/templates/layout/live_brands_dashboard.html.heex:62
-#: lib/ex_commerce_web/templates/layout/live_brands_dashboard.html.heex:99
-#: lib/ex_commerce_web/templates/layout/live_brands_dashboard.html.heex:158
-#: lib/ex_commerce_web/templates/layout/live_home.html.heex:57
-#: lib/ex_commerce_web/templates/layout/live_home.html.heex:110
-#: lib/ex_commerce_web/templates/layout/live_main_dashboard.html.heex:64
-#: lib/ex_commerce_web/templates/layout/live_main_dashboard.html.heex:106
-#: lib/ex_commerce_web/templates/layout/live_main_dashboard.html.heex:170
-#, elixir-autogen, elixir-format
-msgid "ExCommerce"
 msgstr ""
 
 #: lib/ex_commerce_web/live/home_live/index.html.heex:229
@@ -941,8 +925,8 @@ msgid "No"
 msgstr ""
 
 #: lib/ex_commerce_web/live/catalogue_category_live/form_component.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "Only available from 8 a.m. to 12 p.m. / "
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Only available from 8 a.m. to 12 p.m."
 msgstr ""
 
 #: lib/ex_commerce_web/templates/user_registration/new.html.heex:14
@@ -1418,17 +1402,6 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: lib/ex_commerce_web/controllers/user_auth.ex:267
-#, elixir-autogen, elixir-format
-msgid "You must confirm your email to access this page."
-msgstr ""
-
-#: lib/ex_commerce_web/controllers/user_auth.ex:253
-#: lib/ex_commerce_web/controllers/user_auth.ex:301
-#, elixir-autogen, elixir-format
-msgid "You must log in to access this page."
-msgstr ""
-
 #: lib/ex_commerce_web/live/checkout_live/order.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "You will be able to check the status once the order is accepted by the shop."
@@ -1471,19 +1444,9 @@ msgstr ""
 msgid "A link to confirm your email change has been sent to the new address."
 msgstr ""
 
-#: lib/ex_commerce_web/controllers/user_settings_controller.ex:70
-#, elixir-autogen, elixir-format
-msgid "Email change link is invalid or it has expired."
-msgstr ""
-
 #: lib/ex_commerce_web/controllers/user_settings_controller.ex:63
 #, elixir-autogen, elixir-format
 msgid "Email changed successfully."
-msgstr ""
-
-#: lib/ex_commerce_web/controllers/user_session_controller.ex:21
-#, elixir-autogen, elixir-format
-msgid "Invalid email or password"
 msgstr ""
 
 #: lib/ex_commerce_web/controllers/user_session_controller.ex:29
@@ -1688,4 +1651,31 @@ msgstr ""
 #: lib/ex_commerce_web/live/qr_code_live/index.ex:53
 #, elixir-autogen, elixir-format
 msgid "You can still rename the shop or the catalogue."
+msgstr ""
+
+#: lib/ex_commerce_web/templates/layout/live_brands_dashboard.html.heex:62
+#: lib/ex_commerce_web/templates/layout/live_brands_dashboard.html.heex:99
+#: lib/ex_commerce_web/templates/layout/live_brands_dashboard.html.heex:158
+#: lib/ex_commerce_web/templates/layout/live_home.html.heex:57
+#: lib/ex_commerce_web/templates/layout/live_home.html.heex:110
+#: lib/ex_commerce_web/templates/layout/live_main_dashboard.html.heex:64
+#: lib/ex_commerce_web/templates/layout/live_main_dashboard.html.heex:106
+#: lib/ex_commerce_web/templates/layout/live_main_dashboard.html.heex:170
+#, elixir-autogen, elixir-format
+msgid "LiveCommerce"
+msgstr ""
+
+#: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:86
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Create at least one or more variants to your item. For example: a hamburguer can be offered in different sizes and prices. Variants can be added as an optional to accompany other items."
+msgstr ""
+
+#: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:174
+#, elixir-autogen, elixir-format
+msgid "Select option groups"
+msgstr ""
+
+#: lib/ex_commerce_web/live/catalogue_item_option_group_live/show.ex:43
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Show Catalogue item option group"
 msgstr ""

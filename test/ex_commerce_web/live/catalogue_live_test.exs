@@ -34,7 +34,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
       {:ok, _index_live, html} =
         live(conn, Routes.catalogue_index_path(conn, :index, brand_id))
 
-      assert html =~ "My Catalogues"
+      assert html =~ gettext("My Catalogues")
       assert html =~ catalogue_name
     end
 
@@ -67,7 +67,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
         live(conn, Routes.catalogue_index_path(conn, :index, brand_id))
 
       assert index_live |> element("a#new") |> render_click() =~
-               "New Catalogue"
+               gettext("New Catalogue")
 
       assert_patch(
         index_live,
@@ -87,7 +87,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
           Routes.catalogue_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "Catalogue created successfully"
+      assert html =~ gettext("Catalogue created successfully")
       assert html =~ "some name"
     end
 
@@ -102,7 +102,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
       assert index_live
              |> element("#catalogue-#{catalogue_id} a#update")
              |> render_click() =~
-               "Edit Catalogue"
+               gettext("Edit Catalogue")
 
       assert_patch(
         index_live,
@@ -122,7 +122,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
           Routes.catalogue_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "Catalogue updated successfully"
+      assert html =~ gettext("Catalogue updated successfully")
       assert html =~ "some updated name"
     end
 
@@ -300,7 +300,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
         )
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Catalogue"
+               gettext("Edit Catalogue")
 
       assert_patch(
         show_live,
@@ -320,7 +320,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
           Routes.catalogue_show_path(conn, :show, brand_id, catalogue_id)
         )
 
-      assert html =~ "Catalogue updated successfully"
+      assert html =~ gettext("Catalogue updated successfully")
       assert html =~ "some updated name"
     end
 

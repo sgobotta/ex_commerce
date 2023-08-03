@@ -67,7 +67,7 @@ defmodule ExCommerceWeb.UserSettingsController do
         conn
         |> put_flash(
           :error,
-          gettext("Email change link is invalid or it has expired.")
+          dgettext("errors", "Email change link is invalid or it has expired.")
         )
         |> redirect(to: Routes.user_settings_path(conn, :edit))
     end

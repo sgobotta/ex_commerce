@@ -28,7 +28,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
       {:ok, _index_live, html} =
         live(conn, Routes.brand_index_path(conn, :index))
 
-      assert html =~ "My Brands"
+      assert html =~ gettext("My Brands")
       assert html =~ brand_name
     end
 
@@ -51,7 +51,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.brand_index_path(conn, :index))
 
-      assert html =~ "Brand created successfully"
+      assert html =~ gettext("Brand created successfully")
       assert html =~ "some name"
     end
 
@@ -65,7 +65,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
       assert index_live
              |> element("#brand-#{brand_id} a#update")
              |> render_click() =~
-               "Edit Brand"
+               gettext("Edit Brand")
 
       assert_patch(index_live, Routes.brand_index_path(conn, :edit, brand_id))
 
@@ -79,7 +79,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.brand_index_path(conn, :index))
 
-      assert html =~ "Brand updated successfully"
+      assert html =~ gettext("Brand updated successfully")
       assert html =~ "some updated name"
     end
 
@@ -157,7 +157,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
         live(conn, Routes.brand_show_path(conn, :show, brand_id))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Brand"
+               gettext("Edit Brand")
 
       assert_patch(show_live, Routes.brand_show_path(conn, :edit, brand_id))
 
@@ -171,7 +171,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.brand_show_path(conn, :show, brand_id))
 
-      assert html =~ "Brand updated successfully"
+      assert html =~ gettext("Brand updated successfully")
       assert html =~ "some updated name"
     end
 

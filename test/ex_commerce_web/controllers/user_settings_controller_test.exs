@@ -43,7 +43,7 @@ defmodule ExCommerceWeb.UserSettingsControllerTest do
                get_session(conn, :user_token)
 
       assert get_flash(new_password_conn, :info) =~
-               "Password updated successfully"
+               gettext("Password updated successfully.")
 
       assert Accounts.get_user_by_email_and_password(
                user.email,
@@ -63,10 +63,19 @@ defmodule ExCommerceWeb.UserSettingsControllerTest do
         })
 
       response = html_response(old_password_conn, 200)
-      assert response =~ "Settings"
-      assert response =~ "should be at least 12 character(s)"
-      assert response =~ "does not match password"
-      assert response =~ "is not valid"
+      assert response =~ gettext("Settings")
+
+      assert response =~
+               dngettext(
+                 "errors",
+                 "should be at least %{count} character(s)",
+                 "should be at least %{count} character(s)",
+                 12,
+                 %{count: 12}
+               )
+
+      assert response =~ dgettext("errors", "does not match password")
+      assert response =~ dgettext("errors", "is not valid")
 
       assert get_session(old_password_conn, :user_token) ==
                get_session(conn, :user_token)
@@ -84,7 +93,12 @@ defmodule ExCommerceWeb.UserSettingsControllerTest do
         })
 
       assert redirected_to(conn) == Routes.user_settings_path(conn, :edit)
-      assert get_flash(conn, :info) =~ "A link to confirm your email"
+
+      assert get_flash(conn, :info) =~
+               gettext(
+                 "A link to confirm your email change has been sent to the new address."
+               )
+
       assert Accounts.get_user_by_email(user.email)
     end
 
@@ -97,9 +111,12 @@ defmodule ExCommerceWeb.UserSettingsControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "Settings"
-      assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "is not valid"
+      assert response =~ gettext("Settings")
+
+      assert response =~
+               dgettext("errors", "must have the @ sign and no spaces")
+
+      assert response =~ dgettext("errors", "is not valid")
     end
   end
 
@@ -127,7 +144,7 @@ defmodule ExCommerceWeb.UserSettingsControllerTest do
     } do
       conn = get(conn, Routes.user_settings_path(conn, :confirm_email, token))
       assert redirected_to(conn) == Routes.user_settings_path(conn, :edit)
-      assert get_flash(conn, :info) =~ "Email changed successfully"
+      assert get_flash(conn, :info) =~ gettext("Email changed successfully.")
       refute Accounts.get_user_by_email(user.email)
       assert Accounts.get_user_by_email(email)
 

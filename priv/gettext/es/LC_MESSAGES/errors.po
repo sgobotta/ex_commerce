@@ -85,3 +85,44 @@ msgstr "debe ser mayor o igual a %{number}"
 
 msgid "must be equal to %{number}"
 msgstr "debe ser igual a %{number}"
+
+#: lib/ex_commerce_web/controllers/user_settings_controller.ex:70
+#, elixir-autogen, elixir-format
+msgid "Email change link is invalid or it has expired."
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_session_controller.ex:21
+#, elixir-autogen, elixir-format
+msgid "Invalid email or password"
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_auth.ex:270
+#, elixir-autogen, elixir-format
+msgid "You must confirm your email to access this page."
+msgstr ""
+
+#: lib/ex_commerce_web/controllers/user_auth.ex:255
+#: lib/ex_commerce_web/controllers/user_auth.ex:304
+#, elixir-autogen, elixir-format
+msgid "You must log in to access this page."
+msgstr ""
+
+#: lib/ex_commerce/accounts/user.ex:111
+#, elixir-autogen, elixir-format
+msgid "did not change"
+msgstr "No cambió"
+
+#: lib/ex_commerce/accounts/user.ex:131
+#, elixir-autogen, elixir-format
+msgid "does not match password"
+msgstr "La contraseña no coincide"
+
+#: lib/ex_commerce/accounts/user.ex:173
+#, elixir-autogen, elixir-format, fuzzy
+msgid "is not valid"
+msgstr "No es válido"
+
+#: lib/ex_commerce/accounts/user.ex:55
+#, elixir-autogen, elixir-format
+msgid "must have the @ sign and no spaces"
+msgstr "Debe contener @ y no debe contener espacios"

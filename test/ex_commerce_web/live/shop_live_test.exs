@@ -49,7 +49,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
 
     defp navigate_new_shop(conn, view, brand_id) do
       assert view |> element("a#new") |> render_click() =~
-               "New Shop"
+               gettext("New Shop")
 
       assert_patch(view, Routes.shop_index_path(conn, :new, brand_id))
 
@@ -71,7 +71,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.shop_index_path(conn, :index, brand_id))
 
-      assert html =~ "Shop created successfully"
+      assert html =~ gettext("Shop created successfully")
       assert html =~ "some name"
 
       :ok
@@ -85,7 +85,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
       {:ok, _index_live, html} =
         live(conn, Routes.shop_index_path(conn, :index, brand_id))
 
-      assert html =~ "My Shops"
+      assert html =~ gettext("My Shops")
       assert html =~ shop_name
     end
 
@@ -149,7 +149,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
       assert index_live
              |> element("#shop-#{shop_id} a#update")
              |> render_click() =~
-               "Edit Shop"
+               gettext("Edit Shop")
 
       assert_patch(
         index_live,
@@ -166,7 +166,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.shop_index_path(conn, :index, brand_id))
 
-      assert html =~ "Shop updated successfully"
+      assert html =~ gettext("Shop updated successfully")
       assert html =~ "some updated name"
     end
 
@@ -316,7 +316,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
         live(conn, Routes.shop_show_path(conn, :show, brand_id, shop_id))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Shop"
+               gettext("Edit Shop")
 
       assert_patch(
         show_live,
@@ -336,7 +336,7 @@ defmodule ExCommerceWeb.ShopLiveTest do
           Routes.shop_show_path(conn, :show, brand_id, shop_id)
         )
 
-      assert html =~ "Shop updated successfully"
+      assert html =~ gettext("Shop updated successfully")
       assert html =~ "some updated name"
     end
 

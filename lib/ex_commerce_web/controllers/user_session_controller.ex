@@ -18,7 +18,7 @@ defmodule ExCommerceWeb.UserSessionController do
         UserAuth.log_in_user(conn, user, user_params)
       else
         render(conn, "new.html",
-          error_message: gettext("Invalid email or password")
+          error_message: dgettext("errors", "Invalid email or password")
         )
       end
     end
