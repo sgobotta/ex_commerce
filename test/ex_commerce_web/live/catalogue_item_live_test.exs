@@ -6,6 +6,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
   use ExCommerceWeb.ConnCase
   use ExCommerceWeb.UploadsCase
 
+  import ExCommerceWeb.Gettext
   import Phoenix.LiveViewTest
 
   alias ExCommerce.{
@@ -79,7 +80,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
     defp change_new_catalogue_item(view, attrs) do
       assert view
              |> form("#catalogue_item-form", catalogue_item: attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       :ok
     end
@@ -181,7 +182,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
 
       assert index_live
              |> form("#catalogue_item-form", catalogue_item: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         index_live
@@ -418,7 +419,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
 
       assert show_live
              |> form("#catalogue_item-form", catalogue_item: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         show_live

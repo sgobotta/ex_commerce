@@ -4,6 +4,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
   use ExCommerce.ContextCases.MarketplacesCase
   use ExCommerceWeb.ConnCase
 
+  import ExCommerceWeb.Gettext
   import Phoenix.LiveViewTest
 
   alias ExCommerce.Marketplaces
@@ -42,7 +43,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
 
       assert index_live
              |> form("#brand-form", brand: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         index_live
@@ -70,7 +71,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
 
       assert index_live
              |> form("#brand-form", brand: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         index_live
@@ -162,7 +163,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
 
       assert show_live
              |> form("#brand-form", brand: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         show_live

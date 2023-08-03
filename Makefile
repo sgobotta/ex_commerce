@@ -225,5 +225,5 @@ test.wip.watch:
 translations: SHELL:=/bin/bash
 translations:
 	@mix gettext.extract
-	@mix gettext.merge priv/gettext --locale es_AR
+	@mix gettext.merge priv/gettext --locale es
 	@mix gettext.merge priv/gettext --locale en

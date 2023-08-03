@@ -3,8 +3,8 @@ defmodule ExCommerceWeb.Cldr do
   Module configuration for Cldr. See https://hexdocs.pm/ex_cldr/readme.html#backend-module-configuration
   """
   use Cldr,
-    default_locale: "en",
-    locales: ["en"],
+    default_locale: "es",
+    locales: ["en", "es"],
     add_fallback_locales: false,
     gettext: ExCommerceWeb.Gettext,
     data_dir: "./priv/cldr",

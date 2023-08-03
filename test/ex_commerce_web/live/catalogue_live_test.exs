@@ -5,6 +5,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
   use ExCommerce.ContextCases.OfferingsCase
   use ExCommerceWeb.ConnCase
 
+  import ExCommerceWeb.Gettext
   import Phoenix.LiveViewTest
 
   alias ExCommerce.CataloguesFixtures
@@ -75,7 +76,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
 
       assert index_live
              |> form("#catalogue-form", catalogue: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         index_live
@@ -110,7 +111,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
 
       assert index_live
              |> form("#catalogue-form", catalogue: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         index_live
@@ -308,7 +309,7 @@ defmodule ExCommerceWeb.CatalogueLiveTest do
 
       assert show_live
              |> form("#catalogue-form", catalogue: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         show_live

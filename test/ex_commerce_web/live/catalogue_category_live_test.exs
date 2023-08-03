@@ -5,6 +5,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
   use ExCommerce.ContextCases.OfferingsCase
   use ExCommerceWeb.ConnCase
 
+  import ExCommerceWeb.Gettext
   import Phoenix.LiveViewTest
 
   alias ExCommerce.Offerings
@@ -85,7 +86,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
              |> form("#catalogue_category-form",
                catalogue_category: @invalid_attrs
              )
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         index_live
@@ -127,7 +128,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
              |> form("#catalogue_category-form",
                catalogue_category: @invalid_attrs
              )
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         index_live
@@ -369,7 +370,7 @@ defmodule ExCommerceWeb.CatalogueCategoryLiveTest do
              |> form("#catalogue_category-form",
                catalogue_category: @invalid_attrs
              )
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         show_live
