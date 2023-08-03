@@ -121,22 +121,17 @@ msgstr "Admin"
 #: lib/ex_commerce_web/live/home_live/index.html.heex:261
 #, elixir-autogen, elixir-format
 msgid "All rights reserved"
-msgstr ""
+msgstr "Todos los derechos reservados"
 
 #: lib/ex_commerce_web/templates/user_registration/new.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Already registered?"
-msgstr ""
+msgstr "¿Ya estás registrado?"
 
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.html.heex:181
 #, elixir-autogen, elixir-format
 msgid "An Option Group can be assigned to multiple items so that you don't have to recreate options for each of the Items you offer."
-msgstr ""
-
-#: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.html.heex:66
-#, elixir-autogen, elixir-format
-msgid "An Option Group can be assigned to multiple items so that you don't have to recreate options for each of your offered Items."
-msgstr ""
+msgstr "Un grupo de opciones puede ser asignado a múltiples productos. De esa manera, por ejemplo, puedes utilizar las mismas opciones de bebida como acompañamiento de distintos productos en un catálogo."
 
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:72
 #, elixir-autogen, elixir-format
@@ -354,13 +349,13 @@ msgstr "Teléfono celular"
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Change email"
-msgstr ""
+msgstr "Actualizar email"
 
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:38
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Change password"
-msgstr ""
+msgstr "Actualizar contraseña"
 
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:80
 #, elixir-autogen, elixir-format
@@ -376,12 +371,12 @@ msgstr ""
 #: lib/ex_commerce_web/live/checkout_live/catalogue_item.ex:264
 #, elixir-autogen, elixir-format
 msgid "Choose %{amount} of the folowing"
-msgstr ""
+msgstr "Elige %{amount} de las siguientes opciones"
 
 #: lib/ex_commerce_web/views/buttons/buttons_view.ex:27
 #, elixir-autogen, elixir-format
 msgid "Choose Files"
-msgstr ""
+msgstr "Elegir archivo"
 
 #: lib/ex_commerce_web/live/shop_live/form_component.html.heex:115
 #, elixir-autogen, elixir-format
@@ -396,7 +391,7 @@ msgstr "Elegir una marca"
 #: lib/ex_commerce_web/mount_helpers.ex:173
 #, elixir-autogen, elixir-format
 msgid "Choose a catalogue"
-msgstr ""
+msgstr "Elije un catálogo"
 
 #: lib/ex_commerce_web/live/shop_live/form_component.html.heex:64
 #, elixir-autogen, elixir-format
@@ -406,7 +401,7 @@ msgstr "Elegir logo"
 #: lib/ex_commerce_web/mount_helpers.ex:137
 #, elixir-autogen, elixir-format
 msgid "Choose a shop"
-msgstr ""
+msgstr "Elige una tienda"
 
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:63
 #, elixir-autogen, elixir-format
@@ -416,19 +411,19 @@ msgstr "Elije una imagen de producto"
 #: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:157
 #, elixir-autogen, elixir-format
 msgid "Choose one of the folowing"
-msgstr "Elige una de las opciones"
+msgstr "Elige una de lasd opciones"
 
 #: lib/ex_commerce_web/live/checkout_live/order.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "Click Confirm to send a message to the Shop with your order details."
-msgstr ""
+msgstr "Confirma para enviar un mensaje a la tienda con los detalles de tu órden."
 
 #: lib/ex_commerce_web/templates/layout/live_brands_dashboard.html.heex:35
 #: lib/ex_commerce_web/templates/layout/live_home.html.heex:35
 #: lib/ex_commerce_web/templates/layout/live_main_dashboard.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Close sidebar"
-msgstr ""
+msgstr "Cerrar"
 
 #: lib/ex_commerce_web/live/catalogue_category_live/form_component.html.heex:15
 #: lib/ex_commerce_web/live/catalogue_category_live/show.html.heex:51
@@ -445,48 +440,48 @@ msgstr "Código"
 #: lib/ex_commerce_web/live/checkout_live/order_details.ex:210
 #, elixir-autogen, elixir-format
 msgid "Complete the missing fields"
-msgstr ""
+msgstr "Completa los campos vacíos"
 
 #: lib/ex_commerce_web/live/checkout_live/order_details.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Complete your order details"
-msgstr ""
+msgstr "Completa los detalles de tu órden"
 
 #: lib/ex_commerce_web/live/checkout_live/order.ex:236
 #, elixir-autogen, elixir-format
 msgid "Confirm"
-msgstr ""
+msgstr "Confirma"
 
 #: lib/ex_commerce_web/live/checkout_live/order.ex:88
 #, elixir-autogen, elixir-format
 msgid "Confirm Order"
-msgstr ""
+msgstr "Confirmar órden"
 
 #: lib/ex_commerce_web/templates/user_reset_password/edit.html.heex:16
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Confirm new password"
-msgstr ""
+msgstr "Confirma la nueva contraseña"
 
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Confirm the password"
-msgstr ""
+msgstr "Confirma la contraseña"
 
 #: lib/ex_commerce_web/live/checkout_live/order.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Confirm your order"
-msgstr ""
+msgstr "Confirma tu órden"
 
 #: lib/ex_commerce_web/live/checkout_live/order_details.ex:209
 #, elixir-autogen, elixir-format
 msgid "Continue"
-msgstr ""
+msgstr "Continuar"
 
 #: lib/ex_commerce_web/live/home_live/index.html.heex:261
 #, elixir-autogen, elixir-format
 msgid "Cookies Policy"
-msgstr ""
+msgstr "Política de cookies"
 
 #: lib/ex_commerce_web/live/catalogue_category_live/form_component.html.heex:110
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:238
@@ -503,7 +498,7 @@ msgstr "Crea una marca para tu negocio, luego podrás configurar tu tienda."
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.ex:348
 #, elixir-autogen, elixir-format
 msgid "Create a variant for this item first"
-msgstr ""
+msgstr "Crea una variante para éste producto"
 
 #: lib/ex_commerce_web/live/catalogue_category_live/form_component.html.heex:66
 #, elixir-autogen, elixir-format
@@ -513,7 +508,7 @@ msgstr "Crear un producto"
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:194
 #, elixir-autogen, elixir-format
 msgid "Create an Options group"
-msgstr ""
+msgstr "Crea un grupo de opciones"
 
 #: lib/ex_commerce_web/live/catalogue_category_live/index.html.heex:28
 #, elixir-autogen, elixir-format
@@ -538,7 +533,7 @@ msgstr "Crea productos para tus catálogos o menúes."
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Create one or more options to your options group. For example: a Group of drink options that can then be assigned to accompany any other Item."
-msgstr ""
+msgstr "Define una o más opciones para tus grupos de opciones para productos. Por ejemplo: en un grupo de opciones llamado \"Acompaña con una bebida\" puedes asignar productos de bebida."
 
 #: lib/ex_commerce_web/live/shop_live/index.html.heex:20
 #, elixir-autogen, elixir-format
@@ -548,18 +543,18 @@ msgstr "Crea tiendas y permite a tus clientes conocer los detalles de tu negocio
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.ex:295
 #, elixir-autogen, elixir-format
 msgid "Create some items first"
-msgstr ""
+msgstr "Crea un producto"
 
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:26
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Current password"
-msgstr ""
+msgstr "Contraseña actual"
 
 #: lib/ex_commerce_web/live/checkout_live/components/cart_component.ex:134
 #, elixir-autogen, elixir-format
 msgid "Delete from order?"
-msgstr ""
+msgstr "¿Eliminar de la órden?"
 
 #: lib/ex_commerce_web/live/catalogue_category_live/form_component.html.heex:23
 #: lib/ex_commerce_web/live/catalogue_category_live/show.html.heex:59
@@ -630,35 +625,35 @@ msgstr "Editar tienda"
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Enter a new email"
-msgstr ""
+msgstr "Ingresa un nuevo correo"
 
 #: lib/ex_commerce_web/templates/user_reset_password/edit.html.heex:13
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Enter a new password"
-msgstr ""
+msgstr "Ingresa una nueva contraseña"
 
 #: lib/ex_commerce_web/live/checkout_live/order.html.heex:65
 #: lib/ex_commerce_web/live/checkout_live/order_details.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Enter notes for the market"
-msgstr ""
+msgstr "Ingresa indicaciones para tu pedido"
 
 #: lib/ex_commerce_web/live/checkout_live/order.html.heex:58
 #: lib/ex_commerce_web/live/checkout_live/order_details.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Enter your address"
-msgstr ""
+msgstr "Ingresa tu domicilio de entrega"
 
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "Enter your current password"
-msgstr ""
+msgstr "Ingresa tu contraseña actual"
 
 #: lib/ex_commerce_web/templates/user_confirmation/new.html.heex:12
 #: lib/ex_commerce_web/templates/user_registration/new.html.heex:18
@@ -666,20 +661,20 @@ msgstr ""
 #: lib/ex_commerce_web/templates/user_session/new.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Enter your email"
-msgstr ""
+msgstr "Ingresa tu correo"
 
 #: lib/ex_commerce_web/live/checkout_live/order.html.heex:51
 #: lib/ex_commerce_web/live/checkout_live/order_details.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Enter your name"
-msgstr ""
+msgstr "Ingresa tu nombre"
 
 #: lib/ex_commerce_web/templates/user_registration/new.html.heex:22
 #: lib/ex_commerce_web/templates/user_session/new.html.heex:13
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Enter your password"
-msgstr ""
+msgstr "Ingresa tu contraseña"
 
 #: lib/ex_commerce_web/live/home_live/index.html.heex:229
 #, elixir-autogen, elixir-format
@@ -718,17 +713,17 @@ msgstr "Inicio"
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "How many options can be selected."
-msgstr ""
+msgstr "Cantidad máxima de productos que pueden ser seleccionados"
 
 #: lib/ex_commerce_web/controllers/user_confirmation_controller.ex:26
 #, elixir-autogen, elixir-format
 msgid "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
-msgstr ""
+msgstr "Si tu correo se encuentra en nuestro sistema y no ha sido confirmado recibiras un correo con instrucciones en breve."
 
 #: lib/ex_commerce_web/controllers/user_reset_password_controller.ex:28
 #, elixir-autogen, elixir-format
 msgid "If your email is in our system, you will receive instructions to reset your password shortly."
-msgstr ""
+msgstr "Si tu correo se encuentra en nuestro sistema recibirás instrucciones para restablecer tu contraseña en breve."
 
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.html.heex:91
 #, elixir-autogen, elixir-format
@@ -759,32 +754,32 @@ msgstr "Mantener sesión iniciada por 60 días"
 #: lib/ex_commerce_web/live/brand_live/index.ex:57
 #, elixir-autogen, elixir-format
 msgid "Listing Brands"
-msgstr ""
+msgstr "Marcas"
 
 #: lib/ex_commerce_web/live/catalogue_category_live/index.ex:90
 #, elixir-autogen, elixir-format
 msgid "Listing Catalogue categories"
-msgstr ""
+msgstr "Categorías de catálogo"
 
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/index.ex:90
 #, elixir-autogen, elixir-format
 msgid "Listing Catalogue item option groups"
-msgstr ""
+msgstr "Grupos de opciones"
 
 #: lib/ex_commerce_web/live/catalogue_item_live/index.ex:80
 #, elixir-autogen, elixir-format
 msgid "Listing Catalogue items"
-msgstr ""
+msgstr "Productos"
 
 #: lib/ex_commerce_web/live/catalogue_live/index.ex:73
 #, elixir-autogen, elixir-format
 msgid "Listing Catalogues"
-msgstr ""
+msgstr "Catálogos"
 
 #: lib/ex_commerce_web/live/shop_live/index.ex:83
 #, elixir-autogen, elixir-format
 msgid "Listing Shops"
-msgstr ""
+msgstr "Tiendas"
 
 #: lib/ex_commerce_web/templates/layout/live_home.html.heex:157
 #: lib/ex_commerce_web/templates/user_confirmation/new.html.heex:26
@@ -795,18 +790,18 @@ msgstr ""
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:82
 #, elixir-autogen, elixir-format
 msgid "Log in"
-msgstr ""
+msgstr "Acceder"
 
 #: lib/ex_commerce_web/templates/buttons/logout_button.html.heex:1
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:79
 #, elixir-autogen, elixir-format
 msgid "Log out"
-msgstr ""
+msgstr "Salir"
 
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/show.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Mandatory"
-msgstr ""
+msgstr "Obligatorio"
 
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:117
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.html.heex:135
@@ -868,7 +863,7 @@ msgstr "Nombre de marca"
 #: lib/ex_commerce_web/live/shop_live/form_component.html.heex:122
 #, elixir-autogen, elixir-format
 msgid "My online shop"
-msgstr ""
+msgstr "Mi tienda online"
 
 #: lib/ex_commerce_web/live/brand_live/form_component.html.heex:16
 #: lib/ex_commerce_web/live/catalogue_category_live/form_component.html.heex:19
@@ -885,44 +880,44 @@ msgstr "Nombre"
 #: lib/ex_commerce_web/live/brand_live/index.ex:51
 #, elixir-autogen, elixir-format
 msgid "New Brand"
-msgstr ""
+msgstr "Nueva marca"
 
 #: lib/ex_commerce_web/live/catalogue_live/index.ex:67
 #, elixir-autogen, elixir-format
 msgid "New Catalogue"
-msgstr ""
+msgstr "Nuevo catálogo"
 
 #: lib/ex_commerce_web/live/catalogue_category_live/index.ex:81
 #, elixir-autogen, elixir-format
 msgid "New Catalogue category"
-msgstr ""
+msgstr "Nueva categoría de catálogo"
 
 #: lib/ex_commerce_web/live/catalogue_item_live/index.ex:74
 #, elixir-autogen, elixir-format
 msgid "New Catalogue item"
-msgstr ""
+msgstr "Nuevo producto"
 
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/index.ex:81
 #, elixir-autogen, elixir-format
 msgid "New Catalogue item option group"
-msgstr ""
+msgstr "Nuevo grupo de opciones"
 
 #: lib/ex_commerce_web/live/shop_live/index.ex:77
 #, elixir-autogen, elixir-format
 msgid "New Shop"
-msgstr ""
+msgstr "Nueva tienda"
 
 #: lib/ex_commerce_web/templates/user_reset_password/edit.html.heex:12
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "New password"
-msgstr ""
+msgstr "Nueva contraseña"
 
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/show.html.heex:55
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/show.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: lib/ex_commerce_web/live/catalogue_category_live/form_component.html.heex:24
 #, elixir-autogen, elixir-format
@@ -935,20 +930,20 @@ msgstr "Solo disponible de 8 a.m. a 12 p.m."
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Oops, something went wrong! Please check the errors below."
-msgstr ""
+msgstr "Algo salió mal. Revisa los errors debajo."
 
 #: lib/ex_commerce_web/templates/layout/live_brands_dashboard.html.heex:145
 #: lib/ex_commerce_web/templates/layout/live_home.html.heex:98
 #: lib/ex_commerce_web/templates/layout/live_main_dashboard.html.heex:157
 #, elixir-autogen, elixir-format
 msgid "Open sidebar"
-msgstr ""
+msgstr "Abrir"
 
 #: lib/ex_commerce_web/templates/layout/live_brands_dashboard.html.heex:178
 #: lib/ex_commerce_web/templates/layout/live_main_dashboard.html.heex:190
 #, elixir-autogen, elixir-format
 msgid "Open user menu"
-msgstr ""
+msgstr "Abrir"
 
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:153
 #: lib/ex_commerce_web/views/layout_view.ex:184
@@ -977,7 +972,7 @@ msgstr "Opciones"
 #: lib/ex_commerce_web/live/shop_live/form_component.html.heex:143
 #, elixir-autogen, elixir-format
 msgid "Order our organic products today and receive a free gift"
-msgstr ""
+msgstr "ordena tus productos orgánicos hoy y recibe una muestra gratis."
 
 #: lib/ex_commerce_web/live/overview_live/index.html.heex:2
 #, elixir-autogen, elixir-format
@@ -993,74 +988,69 @@ msgstr "Pale Ale"
 #: lib/ex_commerce_web/templates/user_session/new.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Password"
-msgstr ""
+msgstr "Contraseña"
 
 #: lib/ex_commerce_web/templates/user_reset_password/edit.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Password confirmation"
-msgstr ""
+msgstr "Confirmación de contraseña"
 
 #: lib/ex_commerce_web/controllers/user_reset_password_controller.ex:48
 #, elixir-autogen, elixir-format
 msgid "Password reset successfully."
-msgstr ""
-
-#: lib/ex_commerce_web/views/data_display/data_display_view.ex:8
-#, elixir-autogen, elixir-format
-msgid "Placeholder text"
-msgstr ""
+msgstr "Contraseña restablecida."
 
 #: lib/ex_commerce_web/live/catalogue_category_live/index.ex:62
 #, elixir-autogen, elixir-format
 msgid "Please select a brand to continue browsing catalogue categories"
-msgstr ""
+msgstr "Selecciona una marca para continuar"
 
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/index.ex:60
 #, elixir-autogen, elixir-format
 msgid "Please select a brand to continue browsing catalogue item option groups"
-msgstr ""
+msgstr "Selecciona una marca para continuar"
 
 #: lib/ex_commerce_web/live/catalogue_item_live/index.ex:57
 #, elixir-autogen, elixir-format
 msgid "Please select a brand to continue browsing catalogue items"
-msgstr ""
+msgstr "Selecciona una marca para continuar"
 
 #: lib/ex_commerce_web/live/catalogue_live/index.ex:54
 #, elixir-autogen, elixir-format
 msgid "Please select a brand to continue browsing catalogues"
-msgstr ""
+msgstr "Selecciona una marca para continuar"
 
 #: lib/ex_commerce_web/live/shop_live/index.ex:54
 #, elixir-autogen, elixir-format
 msgid "Please select a brand to continue browsing shops"
-msgstr ""
+msgstr "Selecciona una marca para continuar"
 
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:109
 #, elixir-autogen, elixir-format
 msgid "Price"
-msgstr ""
+msgstr "Precio"
 
 #: lib/ex_commerce_web/live/checkout_live/catalogue.ex:180
 #, elixir-autogen, elixir-format
 msgid "Price not available"
-msgstr ""
+msgstr "Precio no disponible"
 
 #: lib/ex_commerce_web/live/home_live/index.html.heex:261
 #, elixir-autogen, elixir-format
 msgid "Privacy Policy"
-msgstr ""
+msgstr "Política de privacidad"
 
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:103
 #, elixir-autogen, elixir-format
 msgid "Product size, weight or kind: 125gr"
-msgstr ""
+msgstr "Tamaño de producto, peso o tipo: 125gr"
 
 #: lib/ex_commerce_web/templates/layout/live_brands_dashboard.html.heex:200
 #: lib/ex_commerce_web/templates/layout/live_home.html.heex:170
 #: lib/ex_commerce_web/templates/layout/live_main_dashboard.html.heex:212
 #, elixir-autogen, elixir-format
 msgid "Re-establishing connection..."
-msgstr ""
+msgstr "Restableciendo conexión..."
 
 #: lib/ex_commerce_web/live/home_live/index.html.heex:23
 #: lib/ex_commerce_web/templates/user_confirmation/new.html.heex:25
@@ -1679,3 +1669,8 @@ msgstr "Seleccione grupos de opciones"
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Show Catalogue item option group"
 msgstr "Opción de producto"
+
+#: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "An Option Group is a group of options. A special price for each option can be defined."
+msgstr "Los grupos de opciones definen opciones para acompañar un producto. Las opciones pueden aplicar precios especiales sobre otros productos."

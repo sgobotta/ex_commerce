@@ -132,11 +132,6 @@ msgstr ""
 msgid "An Option Group can be assigned to multiple items so that you don't have to recreate options for each of the Items you offer."
 msgstr ""
 
-#: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.html.heex:66
-#, elixir-autogen, elixir-format
-msgid "An Option Group can be assigned to multiple items so that you don't have to recreate options for each of your offered Items."
-msgstr ""
-
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "An internal code: BEER-000 / CONSULTING-000"
@@ -1677,4 +1672,9 @@ msgstr ""
 #: lib/ex_commerce_web/live/catalogue_item_option_group_live/show.ex:43
 #, elixir-autogen, elixir-format
 msgid "Show Catalogue item option group"
+msgstr ""
+
+#: lib/ex_commerce_web/live/catalogue_item_option_group_live/form_component.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "An Option Group is a group of options. A special price for each option can be defined."
 msgstr ""

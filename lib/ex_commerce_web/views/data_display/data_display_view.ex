@@ -5,7 +5,7 @@ defmodule ExCommerceWeb.DataDisplayView do
     opts =
       assigns
       |> Map.put_new(:extra_classes, "")
-      |> Map.put_new(:text, gettext("Placeholder text"))
+      |> Map.put_new(:text, gettext("Peekaboo"))
 
     render("tooltip.html", opts)
   end

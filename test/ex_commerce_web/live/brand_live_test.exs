@@ -37,7 +37,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
         live(conn, Routes.brand_index_path(conn, :index))
 
       assert index_live |> element("a#new") |> render_click() =~
-               "New Brand"
+               gettext("New Brand")
 
       assert_patch(index_live, Routes.brand_index_path(conn, :new))
 
