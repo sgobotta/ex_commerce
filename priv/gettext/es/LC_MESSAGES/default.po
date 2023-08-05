@@ -1088,12 +1088,12 @@ msgstr "Restablecer contraseña"
 #: lib/ex_commerce_web/controllers/user_reset_password_controller.ex:65
 #, elixir-autogen, elixir-format
 msgid "Reset password link is invalid or it has expired."
-msgstr ""
+msgstr "El link para restablecer la contraseña no es válido o expiró."
 
 #: lib/ex_commerce_web/live/catalogue_live/form_component.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Saloon Menu / Delivery Menu / Take away Menu, ..."
-msgstr ""
+msgstr "Menu de salón / Menú de delivery / Menú para retirar, ..."
 
 #: lib/ex_commerce_web/live/brand_live/form_component.html.heex:38
 #: lib/ex_commerce_web/live/catalogue_category_live/form_component.html.heex:116
@@ -1112,7 +1112,7 @@ msgstr "Guardar"
 #: lib/ex_commerce_web/live/shop_live/form_component.html.heex:159
 #, elixir-autogen, elixir-format
 msgid "Saving..."
-msgstr ""
+msgstr "Guardando..."
 
 #: lib/ex_commerce_web/live/home_live/index.html.heex:238
 #: lib/ex_commerce_web/views/layout_view.ex:261
@@ -1175,12 +1175,12 @@ msgstr "Enviar instrucciones"
 #: lib/ex_commerce_web/live/checkout_live/order.html.heex:106
 #, elixir-autogen, elixir-format
 msgid "Send order?"
-msgstr ""
+msgstr "Enviar órden?"
 
 #: lib/ex_commerce_web/templates/user_settings/edit.html.heex:4
 #, elixir-autogen, elixir-format
 msgid "Settings"
-msgstr ""
+msgstr "Configuración"
 
 #: lib/ex_commerce_web/live/shop_live/form_component.html.heex:154
 #, elixir-autogen, elixir-format
@@ -1288,37 +1288,37 @@ msgstr "El carro está vacío"
 #: lib/ex_commerce_web/mount_helpers.ex:550
 #, elixir-autogen, elixir-format
 msgid "The given brand could not be found"
-msgstr ""
+msgstr "No se encontró la marca"
 
 #: lib/ex_commerce_web/mount_helpers.ex:570
 #, elixir-autogen, elixir-format
 msgid "The given catalogue category could not be found"
-msgstr ""
+msgstr "No se encontró la categoría"
 
 #: lib/ex_commerce_web/mount_helpers.ex:562
 #, elixir-autogen, elixir-format
 msgid "The given catalogue could not be found"
-msgstr ""
+msgstr "No se encontró el catálogo"
 
 #: lib/ex_commerce_web/mount_helpers.ex:579
 #, elixir-autogen, elixir-format
 msgid "The given catalogue item could not be found"
-msgstr ""
+msgstr "No se encontró el producto"
 
 #: lib/ex_commerce_web/mount_helpers.ex:588
 #, elixir-autogen, elixir-format
 msgid "The given catalogue item option group could not be found"
-msgstr ""
+msgstr "El grupo de optiones no se encontró"
 
 #: lib/ex_commerce_web/mount_helpers.ex:556
 #, elixir-autogen, elixir-format
 msgid "The given shop could not be found"
-msgstr ""
+msgstr "No se encontró la tienda"
 
 #: lib/ex_commerce_web/mount_helpers.ex:217
 #, elixir-autogen, elixir-format
 msgid "The item could not be found, please choose another one."
-msgstr ""
+msgstr "No se encontró el producto, elige otro."
 
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:166
 #, elixir-autogen, elixir-format
@@ -1358,12 +1358,12 @@ msgstr "Utiliza las categorías para agrupar productos que acompañan una misma 
 #: lib/ex_commerce_web/controllers/user_confirmation_controller.ex:58
 #, elixir-autogen, elixir-format
 msgid "User confirmation link is invalid or it has expired."
-msgstr ""
+msgstr "El link de confirmación no es válido o expiró."
 
 #: lib/ex_commerce_web/controllers/user_confirmation_controller.ex:41
 #, elixir-autogen, elixir-format
 msgid "User confirmed successfully."
-msgstr ""
+msgstr "Cuenta confirmada."
 
 #: lib/ex_commerce_web/live/catalogue_item_live/form_component.html.heex:84
 #: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:146
@@ -1533,7 +1533,7 @@ msgstr "¿Cuánto cuesta?"
 #: lib/ex_commerce_web/controllers/user_auth.ex:21
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Invalid captcha, please try again."
-msgstr ""
+msgstr "Captcha no válido, por favor intente de nuevo."
 
 #: lib/ex_commerce_web/live/home_live/index.html.heex:13
 #, elixir-autogen, elixir-format
@@ -1606,7 +1606,7 @@ msgstr "Comienza hoy a crear tu tienda online!"
 #: lib/ex_commerce_web/live/shop_live/form_component.ex:170
 #, elixir-autogen, elixir-format
 msgid "There was an error while uploading a file"
-msgstr ""
+msgstr "Hubo un error al cargar el archivo"
 
 #: lib/ex_commerce_web/live/qr_code_live/index.ex:38
 #, elixir-autogen, elixir-format
@@ -1621,7 +1621,7 @@ msgstr "Nombre de usuario"
 #: lib/ex_commerce_web/controllers/user_auth.ex:22
 #, elixir-autogen, elixir-format
 msgid "Validation took too long, please try again."
-msgstr ""
+msgstr "La validación tomó demasiado tiempo, intentalo de nuevo."
 
 #: lib/ex_commerce_web/live/home_live/index.html.heex:169
 #, elixir-autogen, elixir-format

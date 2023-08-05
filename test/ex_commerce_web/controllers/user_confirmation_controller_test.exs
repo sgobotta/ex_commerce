@@ -91,7 +91,7 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
 
       conn = get(conn, Routes.user_confirmation_path(conn, :confirm, token))
       assert redirected_to(conn) == Routes.brand_index_path(conn, :index)
-      assert get_flash(conn, :info) =~ "User confirmed successfully"
+      assert get_flash(conn, :info) =~ gettext("User confirmed successfully.")
       assert Accounts.get_user!(user.id).confirmed_at
       refute get_session(conn, :user_token)
       assert Repo.all(Accounts.UserToken) == []
@@ -101,7 +101,7 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
       assert redirected_to(conn) == Routes.user_confirmation_path(conn, :new)
 
       assert get_flash(conn, :error) =~
-               "User confirmation link is invalid or it has expired"
+               gettext("User confirmation link is invalid or it has expired.")
 
       # When logged in
       conn =
@@ -118,7 +118,7 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
       assert redirected_to(conn) == Routes.user_confirmation_path(conn, :new)
 
       assert get_flash(conn, :error) =~
-               "User confirmation link is invalid or it has expired"
+               gettext("User confirmation link is invalid or it has expired.")
 
       refute Accounts.get_user!(user.id).confirmed_at
     end
