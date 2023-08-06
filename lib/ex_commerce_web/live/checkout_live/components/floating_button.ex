@@ -32,6 +32,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.FloatingButton do
       transition duration-300
       hover:bg-green-300 hover:shadow-button-sm
       active:scale-98 active:shadow-button-xs
+      with-outline-sm gray
     "
       tabindex="0"
       phx-click={@on_click_event}
