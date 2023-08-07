@@ -27,6 +27,19 @@ defmodule ExCommerce.Checkout.Cart.Order do
 
     embeds_many :order_items, Cart.OrderItem
 
+    embeds_one :payment_method, PaymentMethod do
+      @payment_method_types [:mercadopago, :cash]
+
+      field :type, Ecto.Enum, values: @payment_method_types
+      field :meta, :map, default: %{}
+
+      def changeset(payment_method, attrs) do
+        payment_method
+        |> cast(attrs, [:type, :meta])
+        |> validate_required([:type])
+      end
+    end
+
     timestamps()
   end
 
@@ -42,13 +55,15 @@ defmodule ExCommerce.Checkout.Cart.Order do
         :shop_id
       ] ++ @details_fields
     )
+    |> cast_embed(:payment_method)
     |> validate_required([
       :address,
       :brand_id,
       :buyer_name,
       :catalogue_id,
       :price,
-      :shop_id
+      :shop_id,
+      :payment_method
     ])
   end
 
@@ -56,7 +71,8 @@ defmodule ExCommerce.Checkout.Cart.Order do
   def change_details(order, attrs) do
     order
     |> cast(attrs, @details_fields)
-    |> validate_required([:address, :buyer_name])
+    |> cast_embed(:payment_method)
+    |> validate_required([:address, :buyer_name, :payment_method])
   end
 
   @doc """
