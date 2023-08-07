@@ -56,6 +56,14 @@
               group-active:scale-90
             "
           />
+          <div class="relative">
+            <label class="
+              absolute bottom-1 right-1 text-xs
+              bg-green-300 text-center w-4 h-4 rounded-lg
+            ">
+              <%= ExCommerce.Checkout.Cart.get_total_items(@cart) %>
+            </label>
+          </div>
         </.custom_link>
       <% else %>
         <div

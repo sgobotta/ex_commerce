@@ -190,6 +190,13 @@ defmodule ExCommerce.Checkout.Cart do
   @spec get_order_price(Cart.t()) :: Decimal.t()
   def get_order_price(%Cart{order: %Cart.Order{price: price}}), do: price
 
+  @doc """
+  Given a `#{Cart}` struct, returns the total order items in the cart order.
+  """
+  @spec get_total_items(Cart.t()) :: non_neg_integer()
+  def get_total_items(%Cart{order: %Cart.Order{order_items: order_items}}),
+    do: Enum.count(order_items)
+
   @spec update_order_price(Cart.Order.t()) :: Cart.Order.t()
   defp update_order_price(%Cart.Order{} = order),
     do: %Cart.Order{order | price: calculate_price(order)}

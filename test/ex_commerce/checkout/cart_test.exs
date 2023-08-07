@@ -82,6 +82,21 @@ defmodule ExCommerce.Checkout.CartTest do
       ^price = Cart.get_order_price(cart)
     end
 
+    test "get_total_items/1 returns the number of order_items in the cart" do
+      id = generate_id()
+
+      %Cart{order: %Cart.Order{}} =
+        cart =
+        %Cart{order: %Cart.Order{order_items: [%Cart.OrderItem{}]}} =
+        new(id)
+        |> Cart.add_to_order(%Cart.OrderItem{
+          temp_id: "123",
+          price: Decimal.new("42.37")
+        })
+
+      assert Cart.get_total_items(cart) == 1
+    end
+
     test "add_to_order/2 returns a new Cart struct with an updated order" do
       id = generate_id()
 
