@@ -3,7 +3,7 @@
     @apply rounded-lg border-gray-300 transition duration-200 h-auto !important;
   }
 
-  textarea.input {
+  textarea.input, select.input {
     @apply outline-0 with-ring-sm outline-none !important;
   }
 
