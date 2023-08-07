@@ -45,6 +45,19 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
     {:noreply, assign_changeset(socket, order_params)}
   end
 
+  def handle_event("ignore", _params, socket), do: {:noreply, socket}
+
+  def handle_event(
+        "select_payment_method",
+        %{"type" => payment_method_type},
+        socket
+      ) do
+    {:noreply,
+     assign_changeset(socket, %{
+       "payment_method" => %{"type" => payment_method_type}
+     })}
+  end
+
   def handle_event("submit_details", _params, socket) do
     %{
       brand_slug: brand_slug,
@@ -217,4 +230,25 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
   defp get_order_items(%Cart{} = cart), do: Checkout.get_order_items(cart)
 
   defp get_order_price(%Cart{} = cart), do: "$#{Checkout.get_order_price(cart)}"
+
+  # No db data or user input is present for catalogue item id
+  defp get_payment_methods do
+    [
+      {gettext("Cash"), :cash},
+      {gettext("Mercadopago"), :mercadopago}
+    ]
+  end
+
+  defp payment_checked?(changeset, payment_method_id) do
+    payment_method = Ecto.Changeset.get_field(changeset, :payment_method)
+
+    payment_method_type =
+      if payment_method do
+        payment_method.type
+      else
+        nil
+      end
+
+    payment_method_type == payment_method_id
+  end
 end

@@ -129,7 +129,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     |> assign_nav_title()
   end
 
-  defp assign_changeset(socket, params \\ %{}) do
+  defp assign_changeset(socket) do
     %{
       cart: %Cart{order: %Cart.Order{} = order} = cart,
       catalogue:
@@ -147,13 +147,11 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
         } = _shop
     } = socket.assigns
 
-    params =
-      %{
-        "brand_id" => brand_id,
-        "catalogue_id" => catalogue_id,
-        "shop_id" => shop_id
-      }
-      |> Map.merge(params)
+    params = %{
+      "brand_id" => brand_id,
+      "catalogue_id" => catalogue_id,
+      "shop_id" => shop_id
+    }
 
     %Ecto.Changeset{valid?: valid?} =
       changeset = Checkout.change_cart_order(order, params)
@@ -244,4 +242,25 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
   defp get_order_items(%Cart{} = cart), do: Checkout.get_order_items(cart)
 
   defp get_order_price(%Cart{} = cart), do: "$#{Checkout.get_order_price(cart)}"
+
+  # No db data or user input is present for catalogue item id
+  defp get_payment_methods do
+    [
+      {gettext("Cash"), :cash},
+      {gettext("Mercadopago"), :mercadopago}
+    ]
+  end
+
+  defp payment_checked?(changeset, payment_method_id) do
+    payment_method = Ecto.Changeset.get_field(changeset, :payment_method)
+
+    payment_method_type =
+      if payment_method do
+        payment_method.type
+      else
+        nil
+      end
+
+    payment_method_type == payment_method_id
+  end
 end

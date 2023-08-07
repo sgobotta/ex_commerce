@@ -45,6 +45,28 @@
           class: "mb-0"
         ], fn f -> %>
 
+          <%= label f, :buyer_name, gettext("Payment Method"), class: "p-2 text-sky-600 text-xl" %>
+
+          <div class="flex flex-col">
+            <%= for {payment_method, payment_method_id} <- get_payment_methods() do %>
+              <div class="flex flex-row">
+                <div class="basis-1/2 mx-4">
+                  <label class=""><%= payment_method %></label>
+                </div>
+
+                <.selection_input
+                  checked={payment_checked?(@changeset, payment_method_id)}
+                  id={"payment-method-#{payment_method_id}-radio"}
+                  name={"payment-method-#{payment_method_id}-radio"}
+                  phx-change="ignore"
+                  phx-value-type={payment_method_id}
+                  phx-click="select_payment_method"
+                  type="radio"
+                />
+              </div>
+            <% end %>
+          </div>
+
           <%= label f, :buyer_name, gettext("Name"), class: "p-2 text-sky-600 text-xl" %>
           <%= text_input f, :buyer_name,
             style: "background-color: white;",
