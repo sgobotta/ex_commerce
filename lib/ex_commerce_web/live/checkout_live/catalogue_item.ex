@@ -305,7 +305,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
          "item" => catalogue_item_id
        }) do
     socket
-    |> assign(:page_title, gettext("[Cart]"))
+    |> assign(:page_title, gettext("Cart"))
     |> assign(
       :return_to,
       Routes.checkout_catalogue_item_path(

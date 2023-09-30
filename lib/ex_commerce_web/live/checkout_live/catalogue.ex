@@ -120,7 +120,7 @@ defmodule ExCommerceWeb.CheckoutLive.Catalogue do
          }
        ) do
     socket
-    |> assign(:page_title, gettext("[Cart]"))
+    |> assign(:page_title, gettext("Cart"))
     |> assign(
       :return_to,
       Routes.checkout_catalogue_path(

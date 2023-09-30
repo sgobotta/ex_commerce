@@ -119,7 +119,7 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
          "catalogue" => catalogue_id
        }) do
     socket
-    |> assign(:page_title, gettext("[Create Order]"))
+    |> assign(:page_title, gettext("Complete your order"))
     |> assign(
       :return_to,
       Routes.checkout_catalogue_path(
@@ -146,7 +146,7 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
          }
        ) do
     socket
-    |> assign(:page_title, gettext("[Cart]"))
+    |> assign(:page_title, gettext("Cart"))
     |> assign(
       :return_to,
       Routes.checkout_order_details_path(
