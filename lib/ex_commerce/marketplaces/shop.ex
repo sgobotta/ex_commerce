@@ -26,9 +26,9 @@ defmodule ExCommerce.Marketplaces.Shop do
   schema "shops" do
     field :name, :string
     field :slug, :string
-    field :description, :string, size: 128
+    field :description, :string
     field :telephone, :string
-    field :banner_message, :string, size: 128
+    field :banner_message, :string
     field :address, :string
 
     many_to_many :avatars, Uploads.Photo,
@@ -62,6 +62,8 @@ defmodule ExCommerce.Marketplaces.Shop do
     |> validate_required(@fields ++ @foreign_fields)
     |> format_slug()
     |> unique_constraint(:slug)
+    |> validate_length(:description, max: 128)
+    |> validate_length(:banner_message, max: 128)
   end
 
   defp maybe_assoc_avatars(changeset, %{"avatars" => avatars}),
