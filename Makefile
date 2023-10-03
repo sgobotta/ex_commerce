@@ -45,6 +45,8 @@ docker.build:
 	@docker build \
 		./ \
 		--build-arg UPLOADS_PATH=${UPLOADS_PATH} \
+		--build-arg RECAPTCHA_PUBLIC_KEY=${RECAPTCHA_PUBLIC_KEY} \
+		--build-arg RECAPTCHA_SECRET=${RECAPTCHA_SECRET} \
 		-f $(DOCKERFILE_DIR)/Dockerfile \
 		-t $(CONTAINER_NAME)
 

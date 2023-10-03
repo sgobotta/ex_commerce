@@ -110,7 +110,7 @@ runs:
         mkdir -p /opt/release
         mix release --overwrite
         mv _build/${MIX_ENV}/rel/ex_commerce /opt/release
-        mv entrypoint.sh /opt/release/ex_commerce/entrypoint.sh
+        mv devops/builder/entrypoint.sh /opt/release/ex_commerce/entrypoint.sh
         chmod +x /opt/release/ex_commerce/entrypoint.sh
       env:
         MIX_ENV: ${{ inputs.MIX_ENV }}
