@@ -16,7 +16,7 @@ import Config
 config :ex_commerce, ExCommerceWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   # http: [port: {:system, "PORT"}],
-  # url: [scheme: "https", host: {:system, "APP_HOST"}, port: 443],
+  # url: [scheme: "https", host: {:system, "PHX_HOST"}, port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   check_origin: false
 

@@ -19,7 +19,7 @@ defmodule ExCommerceWeb.ShopLive.FormComponent do
 
   require Logger
 
-  @app_host System.get_env("APP_HOST")
+  @app_host System.get_env("PHX_HOST")
 
   @uploads_path get_uploads_path()
 

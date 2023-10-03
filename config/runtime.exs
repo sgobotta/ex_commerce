@@ -14,7 +14,7 @@ if config_env() == :prod do
     socket_options: maybe_ipv6,
     show_sensitive_data_on_connection_error: false
 
-  host = System.fetch_env!("APP_HOST")
+  host = System.fetch_env!("PHX_HOST")
   port = String.to_integer(System.get_env("PORT", "443"))
 
   case System.get_env("STAGE") do

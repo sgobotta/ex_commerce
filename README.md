@@ -103,7 +103,7 @@ cp .env.example .env
 
 #### App
 
-+ `APP_HOST`: a hsot IP. Example: `127.0.0.1` (local), `192.168.0.xxx` (lan), `0.0.0.0` (lan). This is mostly using in staging or production environments.
++ `PHX_HOST`: a hsot IP. Example: `127.0.0.1` (local), `192.168.0.xxx` (lan), `0.0.0.0` (lan). This is mostly using in staging or production environments.
 
 #### Database
 
