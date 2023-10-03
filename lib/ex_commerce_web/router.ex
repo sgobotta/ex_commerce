@@ -42,9 +42,6 @@ defmodule ExCommerceWeb.Router do
       scope "/places" do
         live "/", PlaceLive.Search, :search
         live "/:brand", PlaceLive.Index, :index
-        live "/:brand/:shop", PlaceLive.Show, :show
-        live "/:brand/:shop/:catalogue", PlaceLive.Show, :show_catalogue
-        live "/:brand/:shop/:catalogue/:item", PlaceLive.Show, :show_item
       end
     end
 
@@ -131,6 +128,8 @@ defmodule ExCommerceWeb.Router do
              CatalogueItemOptionGroupLive.Show,
              :show
 
+        live "/qr-codes", QrCodeLive.Index, :index
+
         # ----------------------------------------------------------------------
         # Brand scoped routes
         #
@@ -210,6 +209,14 @@ defmodule ExCommerceWeb.Router do
                  CatalogueItemOptionGroupLive.Show,
                  :edit
           end
+
+          # --------------------------------------------------------------------
+          # Admin QR Codes routes
+          #
+
+          scope "/qr-codes" do
+            live "/", QrCodeLive.Index, :index
+          end
         end
       end
     end
@@ -234,6 +241,17 @@ defmodule ExCommerceWeb.Router do
       pipe_through :browser
       live_dashboard "/dashboard", metrics: ExCommerceWeb.Telemetry
     end
+  end
+
+  ## Public routes
+
+  scope "/", ExCommerceWeb do
+    pipe_through [:browser]
+
+    # --------------------------------------------------------------------------
+    # Public QR Codes routes
+    #
+    get "/qr-codes", QrController, :detour
   end
 
   ## Authentication routes

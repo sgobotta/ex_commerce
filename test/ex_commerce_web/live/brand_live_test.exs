@@ -4,6 +4,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
   use ExCommerce.ContextCases.MarketplacesCase
   use ExCommerceWeb.ConnCase
 
+  import ExCommerceWeb.Gettext
   import Phoenix.LiveViewTest
 
   alias ExCommerce.Marketplaces
@@ -27,7 +28,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
       {:ok, _index_live, html} =
         live(conn, Routes.brand_index_path(conn, :index))
 
-      assert html =~ "My Brands"
+      assert html =~ gettext("My Brands")
       assert html =~ brand_name
     end
 
@@ -36,13 +37,13 @@ defmodule ExCommerceWeb.BrandLiveTest do
         live(conn, Routes.brand_index_path(conn, :index))
 
       assert index_live |> element("a#new") |> render_click() =~
-               "New Brand"
+               gettext("New Brand")
 
       assert_patch(index_live, Routes.brand_index_path(conn, :new))
 
       assert index_live
              |> form("#brand-form", brand: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         index_live
@@ -50,7 +51,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.brand_index_path(conn, :index))
 
-      assert html =~ "Brand created successfully"
+      assert html =~ gettext("Brand created successfully")
       assert html =~ "some name"
     end
 
@@ -64,13 +65,13 @@ defmodule ExCommerceWeb.BrandLiveTest do
       assert index_live
              |> element("#brand-#{brand_id} a#update")
              |> render_click() =~
-               "Edit Brand"
+               gettext("Edit Brand")
 
       assert_patch(index_live, Routes.brand_index_path(conn, :edit, brand_id))
 
       assert index_live
              |> form("#brand-form", brand: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         index_live
@@ -78,7 +79,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.brand_index_path(conn, :index))
 
-      assert html =~ "Brand updated successfully"
+      assert html =~ gettext("Brand updated successfully")
       assert html =~ "some updated name"
     end
 
@@ -156,13 +157,13 @@ defmodule ExCommerceWeb.BrandLiveTest do
         live(conn, Routes.brand_show_path(conn, :show, brand_id))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Brand"
+               gettext("Edit Brand")
 
       assert_patch(show_live, Routes.brand_show_path(conn, :edit, brand_id))
 
       assert show_live
              |> form("#brand-form", brand: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         show_live
@@ -170,7 +171,7 @@ defmodule ExCommerceWeb.BrandLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.brand_show_path(conn, :show, brand_id))
 
-      assert html =~ "Brand updated successfully"
+      assert html =~ gettext("Brand updated successfully")
       assert html =~ "some updated name"
     end
 

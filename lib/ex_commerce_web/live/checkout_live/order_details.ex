@@ -28,10 +28,11 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
       socket
       |> assign_public_defaults(params, session)
       |> assign_shop_by_slug_or_redirect(params)
+      |> assign(:container_class, "container-base full")
+      |> assign(:cart_enabled, true)
       |> assign(:cart_visible, true)
       |> assign(:brand_slug, params["brand"])
       |> assign(:shop_slug, params["shop"])
-      |> assign_href(false)
     }
   end
 
@@ -44,6 +45,19 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
     {:noreply, assign_changeset(socket, order_params)}
   end
 
+  def handle_event("ignore", _params, socket), do: {:noreply, socket}
+
+  def handle_event(
+        "select_payment_method",
+        %{"type" => payment_method_type},
+        socket
+      ) do
+    {:noreply,
+     assign_changeset(socket, %{
+       "payment_method" => %{"type" => payment_method_type}
+     })}
+  end
+
   def handle_event("submit_details", _params, socket) do
     %{
       brand_slug: brand_slug,
@@ -52,9 +66,9 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
       shop_slug: shop_slug
     } = socket.assigns
 
-    socket = assign_cart(socket, cart)
-
-    LiveView.redirect(socket,
+    socket
+    |> assign_cart(Checkout.set_order_price(cart))
+    |> LiveView.redirect(
       to:
         Routes.checkout_order_path(
           socket,
@@ -105,7 +119,7 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
          "catalogue" => catalogue_id
        }) do
     socket
-    |> assign(:page_title, gettext("[Create Order]"))
+    |> assign(:page_title, gettext("Complete your order"))
     |> assign(
       :return_to,
       Routes.checkout_catalogue_path(
@@ -132,7 +146,7 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
          }
        ) do
     socket
-    |> assign(:page_title, gettext("[Cart]"))
+    |> assign(:page_title, gettext("Cart"))
     |> assign(
       :return_to,
       Routes.checkout_order_details_path(
@@ -164,15 +178,13 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
       }
       |> Map.merge(params)
 
-    %Ecto.Changeset{valid?: valid?} =
-      changeset = Checkout.change_order_details(order, params)
+    %Ecto.Changeset{} = changeset = Checkout.change_order_details(order, params)
 
     %Cart{} = cart = Checkout.update_cart_order(cart, changeset)
 
     socket
     |> assign(:changeset, changeset)
     |> assign_cart(cart)
-    |> assign_href(valid?)
   end
 
   defp assign_catalogue(socket, catalogue_id),
@@ -191,26 +203,6 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
       )
 
     assign(socket, :cart_path, cart_path)
-  end
-
-  def assign_href(socket, true) do
-    %{
-      cart: %Cart{} = cart,
-      shop: %Shop{telephone: telephone}
-    } = socket.assigns
-
-    message = Checkout.get_order_message(cart)
-
-    telephone = String.replace(telephone, " ", "")
-
-    url =
-      "https://web.whatsapp.com/send/?phone=#{telephone}&text=#{message}&type=phone_number&app_absent=0"
-
-    assign(socket, :href, url)
-  end
-
-  def assign_href(socket, false) do
-    assign(socket, :href, nil)
   end
 
   defp assign_nav_title(socket) do
@@ -238,4 +230,25 @@ defmodule ExCommerceWeb.CheckoutLive.OrderDetails do
   defp get_order_items(%Cart{} = cart), do: Checkout.get_order_items(cart)
 
   defp get_order_price(%Cart{} = cart), do: "$#{Checkout.get_order_price(cart)}"
+
+  # No db data or user input is present for catalogue item id
+  defp get_payment_methods do
+    [
+      {gettext("Cash"), :cash},
+      {gettext("Mercadopago"), :mercadopago}
+    ]
+  end
+
+  defp payment_checked?(changeset, payment_method_id) do
+    payment_method = Ecto.Changeset.get_field(changeset, :payment_method)
+
+    payment_method_type =
+      if payment_method do
+        payment_method.type
+      else
+        nil
+      end
+
+    payment_method_type == payment_method_id
+  end
 end

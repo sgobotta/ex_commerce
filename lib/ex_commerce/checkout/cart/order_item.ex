@@ -24,7 +24,7 @@ defmodule ExCommerce.Checkout.Cart.OrderItem do
   @foreign_key_type :binary_id
   embedded_schema do
     field :quantity, :integer
-    field :price, :decimal
+    field :price, :decimal, default: Decimal.new(0)
     field :variants, {:array, :map}, virtual: true, default: []
     field :option_groups, :map, default: %{}
     field :temp_id, :string, virtual: true

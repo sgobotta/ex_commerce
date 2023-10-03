@@ -17,6 +17,25 @@ defmodule ExCommerceWeb do
   and import those modules here.
   """
 
+  @doc """
+  Returns the hostname for the configured endpoint url.
+  """
+  @spec host :: String.t()
+  def host do
+    url = ExCommerceWeb.Endpoint.url()
+
+    case System.fetch_env!("MIX_ENV") |> String.to_atom() do
+      :prod ->
+        url
+        |> URI.parse()
+        |> Map.put(:port, nil)
+        |> URI.to_string()
+
+      _env ->
+        url
+    end
+  end
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: ExCommerceWeb

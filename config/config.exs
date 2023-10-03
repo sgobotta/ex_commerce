@@ -49,7 +49,7 @@ config :phoenix, :json_library, Jason
 
 config :ex_commerce, ExCommerceWeb.Cldr,
   # a single locale, for fast compilation in dev / test
-  locales: ["en"]
+  locales: ["es"]
 
 config :ex_cldr,
   default_backend: ExCommerceWeb.Cldr,

@@ -13,12 +13,16 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
   alias ExCommerce.Checkout
   alias ExCommerce.Checkout.Cart
 
+  alias ExCommerce.Marketplaces
+
   alias ExCommerce.Offerings.{
     CatalogueItem,
     CatalogueItemOption,
     CatalogueItemOptionGroup,
     CatalogueItemVariant
   }
+
+  alias ExCommerceWeb.CheckoutLive.Components
 
   alias Phoenix.LiveView
 
@@ -30,7 +34,9 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
       :ok,
       socket
       |> assign_public_defaults(params, session)
-      |> assign_shop_by_slug_or_redirect(params)
+      |> assign_shop_by_slug_or_redirect(params, &Marketplaces.preload_brand/1)
+      |> assign(:container_class, "container-base")
+      |> assign(:cart_enabled, true)
       |> assign(:cart_visible, true)
       |> assign(:brand_slug, params["brand"])
       |> assign(:shop_slug, params["shop"])
@@ -108,8 +114,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         "check_option",
         %{
           "value" => _on_checked,
-          "option-group-id" => option_group_id,
-          "option-id" => option_id
+          "option_group_id" => option_group_id,
+          "option_id" => option_id
         },
         socket
       ) do
@@ -130,7 +136,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   def handle_event(
         "check_option",
-        %{"option-group-id" => option_group_id, "option-id" => option_id},
+        %{"option_group_id" => option_group_id, "option_id" => option_id},
         socket
       ) do
     changeset =
@@ -150,7 +156,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
 
   def handle_event(
         "choose_option",
-        %{"value" => option_id, "option-group-id" => option_group_id},
+        %{"value" => option_id, "option_group_id" => option_group_id},
         socket
       ) do
     changeset =
@@ -299,7 +305,7 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
          "item" => catalogue_item_id
        }) do
     socket
-    |> assign(:page_title, gettext("[Cart]"))
+    |> assign(:page_title, gettext("Cart"))
     |> assign(
       :return_to,
       Routes.checkout_catalogue_item_path(
@@ -347,14 +353,16 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
         fn socket -> assign_order_item(socket) end
       )
 
-  defp assign_order_item(socket) do
-    %{
-      catalogue_item: %CatalogueItem{
-        id: catalogue_item_id,
-        option_groups: option_groups,
-        variants: variants
-      }
-    } = socket.assigns
+  defp assign_order_item(
+         %Phoenix.LiveView.Socket{
+           assigns: %{catalogue_item: %CatalogueItem{} = ci}
+         } = socket
+       ) do
+    %CatalogueItem{
+      id: catalogue_item_id,
+      option_groups: option_groups,
+      variants: variants
+    } = ci
 
     %Cart.OrderItem{} =
       order_item = %Cart.OrderItem{
@@ -398,6 +406,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     )
   end
 
+  defp assign_order_item(socket), do: socket
+
   defp maybe_assign_photos_sources(socket),
     do:
       maybe_assign(socket, :item_photo_source, fn socket ->
@@ -418,6 +428,8 @@ defmodule ExCommerceWeb.CheckoutLive.CatalogueItem do
     socket
     |> assign(:item_photo_source, item_photo_source)
   end
+
+  defp assign_photos_sources(socket), do: socket
 
   defp assign_option_groups(option_groups) do
     Enum.reduce(option_groups, Map.new(), fn %CatalogueItemOptionGroup{

@@ -38,7 +38,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
           Routes.catalogue_item_option_group_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "My Option Groups"
+      assert html =~ gettext("My Option Groups")
     end
 
     test "[Failure] lists all catalogue_item_option_groups for a brand - redirects to brands when invalid brand id is provided",
@@ -66,7 +66,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
       assert view
              |> element("a#new")
              |> render_click() =~
-               "New Catalogue item option group"
+               gettext("New Catalogue item option group")
 
       assert_patch(
         view,
@@ -98,14 +98,14 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
           Routes.catalogue_item_option_group_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "Catalogue item option group created successfully"
+      assert html =~ gettext("Catalogue item option group created successfully")
 
       :ok
     end
 
     defp add_new_options(view, attrs) do
       view
-      |> element("#catalogue_item-add-option-input", "Add an option")
+      |> element("#catalogue_item-add-option-input", gettext("Add an option"))
       |> render_click()
 
       for {_option_attrs, index} <- Enum.with_index(attrs.options) do
@@ -229,7 +229,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
                "#catalogue_item_option_group-#{catalogue_item_option_group_id} a#update"
              )
              |> render_click() =~
-               "Edit Catalogue item option group"
+               gettext("Edit Catalogue item option group")
 
       assert_patch(
         index_live,
@@ -257,7 +257,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
           Routes.catalogue_item_option_group_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "Catalogue item option group updated successfully"
+      assert html =~ gettext("Catalogue item option group updated successfully")
     end
 
     test "[Failure] updates catalogue_item_option_group in listing - redirects to catalogue item option groups when invalid catalogue item option group id is provided",
@@ -468,7 +468,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
         )
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Catalogue item option group"
+               gettext("Edit Catalogue item option group")
 
       assert_patch(
         show_live,
@@ -504,7 +504,7 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLiveTest do
           )
         )
 
-      assert html =~ "Catalogue item option group updated successfully"
+      assert html =~ gettext("Catalogue item option group updated successfully")
     end
 
     test "[Failure] updates catalogue item option group within modal - redirects to brands when invalid brand id is provided",

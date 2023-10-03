@@ -23,9 +23,22 @@ defmodule ExCommerce.Checkout.Cart.Order do
     field :address, :string
     field :note, :string
 
-    field :price, :decimal
+    field :price, :decimal, default: Decimal.new(0)
 
     embeds_many :order_items, Cart.OrderItem
+
+    embeds_one :payment_method, PaymentMethod do
+      @payment_method_types [:mercadopago, :cash]
+
+      field :type, Ecto.Enum, values: @payment_method_types
+      field :meta, :map, default: %{}
+
+      def changeset(payment_method, attrs) do
+        payment_method
+        |> cast(attrs, [:type, :meta])
+        |> validate_required([:type])
+      end
+    end
 
     timestamps()
   end
@@ -42,13 +55,15 @@ defmodule ExCommerce.Checkout.Cart.Order do
         :shop_id
       ] ++ @details_fields
     )
+    |> cast_embed(:payment_method)
     |> validate_required([
       :address,
       :brand_id,
       :buyer_name,
       :catalogue_id,
       :price,
-      :shop_id
+      :shop_id,
+      :payment_method
     ])
   end
 
@@ -56,7 +71,8 @@ defmodule ExCommerce.Checkout.Cart.Order do
   def change_details(order, attrs) do
     order
     |> cast(attrs, @details_fields)
-    |> validate_required([:address, :buyer_name])
+    |> cast_embed(:payment_method)
+    |> validate_required([:address, :buyer_name, :payment_method])
   end
 
   @doc """
@@ -105,5 +121,18 @@ defmodule ExCommerce.Checkout.Cart.Order do
       :shop_id
     ])
     |> Map.put(:order_items, cart_order_items)
+  end
+
+  @doc """
+  Given an `#{__MODULE__}` returns the calculated price of it's order items.
+  """
+  @spec calculate_price(t()) :: Decimal.t()
+  def calculate_price(%__MODULE__{order_items: []}), do: Decimal.new(0)
+
+  def calculate_price(%__MODULE__{order_items: order_items}) do
+    order_items
+    |> Enum.reduce(0, fn %Cart.OrderItem{price: price}, acc ->
+      ExCommerceNumeric.add(acc, price)
+    end)
   end
 end

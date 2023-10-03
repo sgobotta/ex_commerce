@@ -4,6 +4,8 @@ defmodule ExCommerceAssets.Drivers.CloudexDriver do
   """
   @behaviour ExCommerceAssets.Driver
 
+  require Logger
+
   @doc """
   Given a list of maps with a url and cloudex option attributes, and some
   default options, calls upload with some fixed options for images format and
@@ -20,10 +22,11 @@ defmodule ExCommerceAssets.Drivers.CloudexDriver do
       ...>   ],
       ...>   %{folder: "this-folder-name-is-overwritten-for-the-first-item"}
       ...> )
-      [%Cloudex.UploadedImage{}]
+      {:ok, [%Cloudex.UploadedImage{}]}
 
   """
-  @spec upload_thumbnails_with_options(list(map()), map()) :: list()
+  @spec upload_thumbnails_with_options(list(map()), map()) ::
+          {:ok, list(Cloudex.UploadedImage.t())} | :error
   @impl true
   def upload_thumbnails_with_options(items, options) do
     options =
@@ -53,16 +56,28 @@ defmodule ExCommerceAssets.Drivers.CloudexDriver do
       [%Cloudex.UploadedImage{}]
 
   """
-  @spec upload_list_with_options(list(map()), map()) :: list()
+  @spec upload_list_with_options(list(map()), map()) ::
+          {:ok, list(Cloudex.UploadedImage.t())} | :error
   @impl true
   def upload_list_with_options(items, options) do
     Cloudex.upload_list_with_options(items, options)
     |> parse_response()
   end
 
+  @spec parse_response(Cloudex.upload_result()) ::
+          {:ok, list(Cloudex.UploadedImage.t())} | :error
+  defp parse_response(error: msg) do
+    Logger.error(
+      "There was an error parsing a response from cloudex msg=#{inspect(msg)}"
+    )
+
+    :error
+  end
+
   defp parse_response(upload_response) when is_list(upload_response) do
-    Enum.map(upload_response, fn {:ok, %Cloudex.UploadedImage{} = ui} ->
-      ui
-    end)
+    {:ok,
+     Enum.map(upload_response, fn {:ok, %Cloudex.UploadedImage{} = ui} ->
+       ui
+     end)}
   end
 end

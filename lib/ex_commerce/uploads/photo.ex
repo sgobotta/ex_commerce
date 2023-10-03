@@ -8,6 +8,8 @@ defmodule ExCommerce.Uploads.Photo do
 
   import Ecto.Changeset
 
+  @type t :: %__MODULE__{}
+
   @fields [:local_path, :full_local_path, :state, :uuid, :meta, :type]
 
   @primary_key {:id, :binary_id, autogenerate: true}

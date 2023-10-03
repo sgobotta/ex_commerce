@@ -83,7 +83,7 @@
       <div class="border-b-1 border-gray-300 my-3">
         <p class="mt-4 mb-2 user-form section-subtitle"><%= gettext("Variants") %> (<%= gettext("Optional") %>)</p>
         <p class="pb-2 form-field-description">
-          <%= gettext("Create at least one or more variants to your item. For example: a hamburguer can be offered in different sizes and prices might vary. Variants can be added as an optional to accompany other items.") %>
+          <%= gettext("Create at least one or more variants to your item. For example: a hamburguer can be offered in different sizes and prices. Variants can be added as an optional to accompany other items.") %>
         </p>
       </div>
 
@@ -115,16 +115,20 @@
               <div class="inline-flex basis-1/2 self-center justify-end">
                 <%= if is_nil(v.data.temp_id) do %>
                   <label class=""><%= gettext("Mark as deleted?") %></label>
-                  <%= checkbox v, :delete, class: "checkbox warn mx-2" %>
+                  <%= checkbox v, :delete, class: "with-ring checkbox warn mx-2" %>
                 <% else %>
                   <%= hidden_input v, :temp_id %>
                   <a
+                    class="mx-2 rounded-lg"
                     href="#"
                     phx-click="remove_variant"
                     phx-value-remove={v.data.temp_id}
                     phx-target={@myself}
                   >
-                    &times
+                    <.icon name={:trash} outlined class="
+                      text-rose-500
+                      flex-shrink-0 h-8 w-8
+                    "/>
                   </a>
                 <% end %>
               </div>
@@ -167,7 +171,7 @@
 
       <div class="">
         <div>
-          <%= label f, "Select option groups", class: "my-2" %>
+          <%= label f, gettext("Select option groups"), class: "my-2" %>
           <%=
             options = build_catalogue_item_option_group_options(
               @catalogue_item_option_groups

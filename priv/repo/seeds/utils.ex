@@ -58,13 +58,13 @@ defmodule ExCommerce.Seeds.Utils do
 
       [
         repo: repo,
-        json_file: json_file,
+        json_file_path: json_file_path,
         plural_element: plural_element,
         element_module: element_module,
         date_keys: date_keys
       ] = unquote(opts)
 
-      @json_file json_file
+      @json_file_path json_file_path
       @plural_element plural_element
       @element_module element_module
       @date_keys date_keys
@@ -77,7 +77,9 @@ defmodule ExCommerce.Seeds.Utils do
       """
       @spec populate :: :ok
       def populate do
-        with {:ok, body} <- File.read(@json_file),
+        file_path = "#{:code.priv_dir(:ex_commerce)}/repo/seeds/#{@json_file_path}"
+
+        with {:ok, body} <- File.read(file_path),
           {:ok, elements} <- Jason.decode(body, keys: :atoms) do
 
           elements = for element <- elements do

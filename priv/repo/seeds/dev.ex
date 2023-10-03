@@ -6,17 +6,9 @@ defmodule ExCommerce.Seeds.Dev do
   require Logger
 
   alias ExCommerce.Seeds.{
-    Brands,
-    BrandsUsers,
-    CatalogueCategories,
-    CatalogueItemOptionGroups,
-    CatalogueItemOptions,
-    CatalogueItems,
-    CatalogueItemVariants,
-    Catalogues,
-    Relations,
-    Shops,
-    Users
+    Accounts,
+    Marketplaces,
+    Offerings
   }
 
   @spec populate :: :ok
@@ -27,21 +19,20 @@ defmodule ExCommerce.Seeds.Dev do
     :ok = Logger.info("📌 Starting seeds population process...")
 
     # Run seeds here
-    :ok = Users.populate()
-    :ok = Brands.populate()
-    :ok = BrandsUsers.populate()
-    :ok = Shops.populate()
-    :ok = Catalogues.populate()
-    :ok = CatalogueCategories.populate()
-    :ok = CatalogueItems.populate()
-    :ok = CatalogueItemVariants.populate()
-    :ok = CatalogueItemOptionGroups.populate()
-    :ok = CatalogueItemOptions.populate()
-
-    :ok = Relations.ShopsCatalogues.populate()
-    :ok = Relations.CataloguesCategories.populate()
-    :ok = Relations.CataloguesCategoriesItems.populate()
-    :ok = Relations.CatalogueItemOptionGroupsItems.populate()
+    :ok = Accounts.Users.populate()
+    :ok = Marketplaces.Brands.populate()
+    :ok = Marketplaces.BrandsUsers.populate()
+    :ok = Marketplaces.Shops.populate()
+    :ok = Offerings.Catalogues.populate()
+    :ok = Offerings.CatalogueCategories.populate()
+    :ok = Offerings.CatalogueItems.populate()
+    :ok = Offerings.CatalogueItemVariants.populate()
+    :ok = Offerings.CatalogueItemOptionGroups.populate()
+    :ok = Offerings.CatalogueItemOptions.populate()
+    :ok = Offerings.Relations.ShopsCatalogues.populate()
+    :ok = Offerings.Relations.CataloguesCategories.populate()
+    :ok = Offerings.Relations.CataloguesCategoriesItems.populate()
+    :ok = Offerings.Relations.CatalogueItemOptionGroupsItems.populate()
 
     :ok = Logger.info("🌱 Finished seeds creation for dev environment.")
 

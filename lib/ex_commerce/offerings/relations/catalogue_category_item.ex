@@ -8,6 +8,8 @@ defmodule ExCommerce.Offerings.Relations.CatalogueCategoryItem do
 
   alias ExCommerce.Offerings.{CatalogueCategory, CatalogueItem}
 
+  @type t :: %__MODULE__{}
+
   @fields [:visible]
   @foreign_fields [:catalogue_category_id, :catalogue_item_id]
 

@@ -14,7 +14,7 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
     test "renders the confirmation page", %{conn: conn} do
       conn = get(conn, Routes.user_confirmation_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "Resend confirmation instructions</h1>"
+      assert response =~ gettext("Resend confirmation instructions") <> "</h1>"
     end
   end
 
@@ -32,7 +32,11 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
         })
 
       assert redirected_to(conn) == Routes.user_settings_path(conn, :email_sent)
-      assert get_flash(conn, :info) =~ "If your email is in our system"
+
+      assert get_flash(conn, :info) =~
+               gettext(
+                 "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
+               )
 
       assert Repo.get_by!(Accounts.UserToken, user_id: user.id).context ==
                "confirm"
@@ -51,7 +55,12 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
         })
 
       assert redirected_to(conn) == Routes.user_settings_path(conn, :email_sent)
-      assert get_flash(conn, :info) =~ "If your email is in our system"
+
+      assert get_flash(conn, :info) =~
+               gettext(
+                 "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
+               )
+
       refute Repo.get_by(Accounts.UserToken, user_id: user.id)
     end
 
@@ -63,7 +72,12 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
         })
 
       assert redirected_to(conn) == Routes.user_settings_path(conn, :email_sent)
-      assert get_flash(conn, :info) =~ "If your email is in our system"
+
+      assert get_flash(conn, :info) =~
+               gettext(
+                 "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
+               )
+
       assert Repo.all(Accounts.UserToken) == []
     end
   end
@@ -77,7 +91,7 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
 
       conn = get(conn, Routes.user_confirmation_path(conn, :confirm, token))
       assert redirected_to(conn) == Routes.brand_index_path(conn, :index)
-      assert get_flash(conn, :info) =~ "User confirmed successfully"
+      assert get_flash(conn, :info) =~ gettext("User confirmed successfully.")
       assert Accounts.get_user!(user.id).confirmed_at
       refute get_session(conn, :user_token)
       assert Repo.all(Accounts.UserToken) == []
@@ -87,7 +101,7 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
       assert redirected_to(conn) == Routes.user_confirmation_path(conn, :new)
 
       assert get_flash(conn, :error) =~
-               "User confirmation link is invalid or it has expired"
+               gettext("User confirmation link is invalid or it has expired.")
 
       # When logged in
       conn =
@@ -104,7 +118,7 @@ defmodule ExCommerceWeb.UserConfirmationControllerTest do
       assert redirected_to(conn) == Routes.user_confirmation_path(conn, :new)
 
       assert get_flash(conn, :error) =~
-               "User confirmation link is invalid or it has expired"
+               gettext("User confirmation link is invalid or it has expired.")
 
       refute Accounts.get_user!(user.id).confirmed_at
     end

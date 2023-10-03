@@ -6,6 +6,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
   use ExCommerceWeb.ConnCase
   use ExCommerceWeb.UploadsCase
 
+  import ExCommerceWeb.Gettext
   import Phoenix.LiveViewTest
 
   alias ExCommerce.{
@@ -39,7 +40,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
       {:ok, _index_live, html} =
         live(conn, Routes.catalogue_item_index_path(conn, :index, brand_id))
 
-      assert html =~ "Items"
+      assert html =~ gettext("Items")
       assert html =~ catalogue_item.code
     end
 
@@ -66,7 +67,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
 
     defp navigate_new_catalogue_item(conn, view, brand_id) do
       assert view |> element("a#new") |> render_click() =~
-               "New Catalogue item"
+               gettext("New Catalogue item")
 
       assert_patch(
         view,
@@ -79,7 +80,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
     defp change_new_catalogue_item(view, attrs) do
       assert view
              |> form("#catalogue_item-form", catalogue_item: attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       :ok
     end
@@ -94,7 +95,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
           Routes.catalogue_item_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "Catalogue item created successfully"
+      assert html =~ gettext("Catalogue item created successfully")
       assert html =~ "some code"
 
       :ok
@@ -103,7 +104,10 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
     defp add_new_variants(view, _attrs, variants_attrs) do
       for {_variant_attrs, index} <- Enum.with_index(variants_attrs) do
         view
-        |> element("#catalogue_item-add-variant-input", "Add a variant")
+        |> element(
+          "#catalogue_item-add-variant-input",
+          gettext("Add a variant")
+        )
         |> render_click()
 
         assert view
@@ -167,7 +171,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
       assert index_live
              |> element("#catalogue_item-#{catalogue_item_id} a#update")
              |> render_click() =~
-               "Edit Catalogue item"
+               gettext("Edit Catalogue item")
 
       assert_patch(
         index_live,
@@ -181,7 +185,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
 
       assert index_live
              |> form("#catalogue_item-form", catalogue_item: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         index_live
@@ -192,7 +196,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
           Routes.catalogue_item_index_path(conn, :index, brand_id)
         )
 
-      assert html =~ "Catalogue item updated successfully"
+      assert html =~ gettext("Catalogue item updated successfully")
       assert html =~ "some updated code"
     end
 
@@ -404,7 +408,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
         )
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Catalogue item"
+               gettext("Edit Catalogue item")
 
       assert_patch(
         show_live,
@@ -418,7 +422,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
 
       assert show_live
              |> form("#catalogue_item-form", catalogue_item: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+             |> render_change() =~ dgettext("errors", "can't be blank")
 
       {:ok, _view, html} =
         show_live
@@ -434,7 +438,7 @@ defmodule ExCommerceWeb.CatalogueItemLiveTest do
           )
         )
 
-      assert html =~ "Catalogue item updated successfully"
+      assert html =~ gettext("Catalogue item updated successfully")
       assert html =~ "some updated code"
     end
 

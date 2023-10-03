@@ -11,9 +11,9 @@ defmodule ExCommerceWeb.UserSessionControllerTest do
     test "renders log in page", %{conn: conn} do
       conn = get(conn, Routes.user_session_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "Log in</button>"
-      assert response =~ "Register</a>"
-      assert response =~ "Forgot your password?</a>"
+      assert response =~ gettext("Log in") <> "</button>"
+      assert response =~ gettext("Register") <> "</a>"
+      assert response =~ gettext("Forgot your password?") <> "</a>"
     end
 
     test "redirects if already logged in", %{conn: conn, user: user} do
@@ -91,8 +91,8 @@ defmodule ExCommerceWeb.UserSessionControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "Log in</button>"
-      assert response =~ "Invalid email or password"
+      assert response =~ gettext("Log in") <> "</button>"
+      assert response =~ gettext("Invalid email or password")
     end
   end
 
@@ -105,14 +105,14 @@ defmodule ExCommerceWeb.UserSessionControllerTest do
 
       assert redirected_to(conn) == "/"
       refute get_session(conn, :user_token)
-      assert get_flash(conn, :info) =~ "Logged out successfully"
+      assert get_flash(conn, :info) =~ gettext("Logged out successfully.")
     end
 
     test "succeeds even if the user is not logged in", %{conn: conn} do
       conn = delete(conn, Routes.user_session_path(conn, :delete))
       assert redirected_to(conn) == "/"
       refute get_session(conn, :user_token)
-      assert get_flash(conn, :info) =~ "Logged out successfully"
+      assert get_flash(conn, :info) =~ gettext("Logged out successfully.")
     end
   end
 end

@@ -78,7 +78,7 @@ defmodule ExCommerce.Checkout.Cart do
 
   ## Examples:
 
-      iex> update_order(%Cart{}, %Cart.Order{buyer_name: "Some name"})
+      iex> set_order(%Cart{}, %Cart.Order{buyer_name: "Some name"})
       %ExCommerce.Checkout.Cart{
         id: "caf6c585d9ba724539d27b301a5ebd22e904fa5023cc1f888adc13529898e5ea",
         order: %Cart.Order{buyer_name: "Some name"},
@@ -139,6 +139,7 @@ defmodule ExCommerce.Checkout.Cart do
             )
           ]
       )
+      |> update_order_price()
 
     :ok = CartServer.set_order(server, order)
 
@@ -173,12 +174,36 @@ defmodule ExCommerce.Checkout.Cart do
         end
       )
 
-    %Cart.Order{} = order = %Cart.Order{order | order_items: order_items}
+    %Cart.Order{} =
+      order =
+      %Cart.Order{order | order_items: order_items}
+      |> update_order_price()
 
     :ok = CartServer.set_order(server, order)
 
     %Cart{cart | order: order}
   end
+
+  @doc """
+  Given a #{Cart} struct, returns the current order price.
+  """
+  @spec get_order_price(Cart.t()) :: Decimal.t()
+  def get_order_price(%Cart{order: %Cart.Order{price: price}}), do: price
+
+  @doc """
+  Given a `#{Cart}` struct, returns the total order items in the cart order.
+  """
+  @spec get_total_items(Cart.t()) :: non_neg_integer()
+  def get_total_items(%Cart{order: %Cart.Order{order_items: order_items}}),
+    do: Enum.count(order_items)
+
+  @spec update_order_price(Cart.Order.t()) :: Cart.Order.t()
+  defp update_order_price(%Cart.Order{} = order),
+    do: %Cart.Order{order | price: calculate_price(order)}
+
+  @spec calculate_price(Cart.Order.t()) :: Decimal.t()
+  defp calculate_price(%Cart.Order{} = order),
+    do: Cart.Order.calculate_price(order)
 
   defp maybe_start_server(%Cart{id: id} = cart) do
     case maybe_get_server(cart) do

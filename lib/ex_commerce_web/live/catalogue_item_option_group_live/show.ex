@@ -40,6 +40,6 @@ defmodule ExCommerceWeb.CatalogueItemOptionGroupLive.Show do
     end
   end
 
-  defp page_title(:show), do: "Show Catalogue item option group"
-  defp page_title(:edit), do: "Edit Catalogue item option group"
+  defp page_title(:show), do: gettext("Show Catalogue item option group")
+  defp page_title(:edit), do: gettext("Edit Catalogue item option group")
 end

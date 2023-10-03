@@ -19,6 +19,7 @@ defmodule ExCommerceWeb.LiveHelpers do
   import Phoenix.LiveView.Helpers
   import Phoenix.View
 
+  alias ExCommerce.QrCodes
   alias Phoenix.LiveView.JS
 
   # ----------------------------------------------------------------------------
@@ -53,7 +54,7 @@ defmodule ExCommerceWeb.LiveHelpers do
           class="
             w-6 h-6 inline-block mr-2 rounded-full
             border border-gray-200 flex-no-shrink
-            focus:outline focus:outline-4 focus:outline-sky-500
+            with-ring
           "
         />
       </label>
@@ -71,7 +72,7 @@ defmodule ExCommerceWeb.LiveHelpers do
       class="
         checkbox m-auto block w-6 h-6
         ring-2 ring-gray-300 ring-offset-gray-300
-        focus:ring-1 focus:ring-gray-300 focus:ring-offset-gray-300
+        with-outline-sm
       "
       {@attrs}
     />
@@ -104,6 +105,15 @@ defmodule ExCommerceWeb.LiveHelpers do
   @spec render_tooltip(keyword) :: any
   def render_tooltip(opts \\ []) do
     render(ExCommerceWeb.DataDisplayView, "tooltip", opts)
+  end
+
+  def with_tooltip(assigns) do
+    ~H"""
+    <div class="group relative">
+      <%= render_slot(@inner_block) %>
+      <%= render_tooltip(text: @text) %>
+    </div>
+    """
   end
 
   # ----------------------------------------------------------------------------
@@ -646,6 +656,7 @@ defmodule ExCommerceWeb.LiveHelpers do
         flex flex-col sm:flex-row md:sm:flex-row lg:sm:flex-row
         justify-between m-4
         transition duration-300 hover:bg-gray-300 hover:shadow-lg
+        space-y-4
       "
     >
       <div class="flex flex-col">
@@ -731,7 +742,7 @@ defmodule ExCommerceWeb.LiveHelpers do
         phx-hook="Flash"
       >
         <div class="base-alert-container text-yellow-700">
-          <.icon name={:exclamation} class="base-alert-icon"/>
+          <.icon name={:exclamation_circle} class="base-alert-icon"/>
           <p class="base-alert-text" role="alert">
             <%= live_flash(@flash, @kind) %>
           </p>
@@ -793,6 +804,25 @@ defmodule ExCommerceWeb.LiveHelpers do
   def recaptcha(assigns) do
     ~H"""
     <%= raw Recaptcha.Template.display() %>
+    """
+  end
+
+  def qr_code(%{type: :svg} = assigns) do
+    encoded_img =
+      QrCodes.encode(assigns.content)
+      |> QrCodes.png(width: assigns.width)
+      |> Base.encode64()
+
+    img_src = "data:image/png;base64,#{encoded_img}"
+
+    assigns =
+      assigns
+      |> assign(:img_src, img_src)
+
+    ~H"""
+    <a href={@img_src} download={@filename}>
+      <img src={@img_src} width={@width} />
+    </a>
     """
   end
 end

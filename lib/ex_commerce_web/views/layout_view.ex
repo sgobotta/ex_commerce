@@ -10,10 +10,19 @@ defmodule ExCommerceWeb.LayoutView do
   import ExCommerceWeb.Gettext
 
   def sidebar_account_dropdown(assigns) do
+    image_source =
+      "https://ui-avatars.com/api/"
+      |> URI.parse()
+      |> URI.append_query("name=#{assigns.current_user.email}")
+      |> URI.append_query("background=random")
+      |> URI.to_string()
+
+    assigns = assign(assigns, :image_source, image_source)
+
     ~H"""
     <.dropdown id={@id}>
-      <:img src={"https://images.unsplash.com/photo-1610397095767-84a5b4736cbd?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"}/>
-      <:title><%= gettext("User Name") %></:title>
+      <:img src={@image_source}/>
+      <:title><%= gettext("Username") %></:title>
       <:subtitle><%= @current_user.email %></:subtitle>
 
       <:link
@@ -32,22 +41,19 @@ defmodule ExCommerceWeb.LayoutView do
         <.custom_link
           navigate={Routes.brand_index_path(Endpoint, :index)}
           class={"
-            text-gray-700 hover:text-gray-900 group flex items-center
-            px-2 py-2
-            text-2xl font-medium
-            rounded-md
-            #{if @active_tab == :brands, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
+            group flex items-center px-2 py-2 rounded-md
+            #{if @active_tab == :brands, do: "active-nav-item", else: "inactive-nav-item"}
           "}
           aria-current={if @active_tab == :brands, do: "true", else: "false"}
         >
           <.icon
             name={:building_office_2} outlined
-            class="
+            class={"
               flex-shrink-0
               mr-3
               h-6 w-6
-              text-gray-400 group-hover:text-gray-500
-            "
+              #{if @active_tab == :brands, do: "active-nav-item-icon", else: "inactive-nav-item-icon"}
+            "}
           />
           <%= gettext("Brands") %>
         </.custom_link>
@@ -55,79 +61,102 @@ defmodule ExCommerceWeb.LayoutView do
         <.custom_link
           navigate={Routes.overview_index_path(Endpoint, :index, @brand.id)}
           class={"
-            text-gray-700 hover:text-gray-900 group flex items-center
+            group flex items-center
             px-2 py-2
-            text-2xl font-medium
             rounded-md
-            #{if @active_tab == :overview, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
+            #{if @active_tab == :overview, do: "active-nav-item", else: "inactive-nav-item"}
           "}
           aria-current={if @active_tab == :overview, do: "true", else: "false"}
         >
           <.icon
             name={:home} outlined
-            class="
+            putline
+            class={"
               flex-shrink-0
               mr-3
               h-6 w-6
-              text-gray-400 group-hover:text-gray-500
-            "
+              #{if @active_tab == :overview, do: "active-nav-item-icon", else: "inactive-nav-item-icon"}
+            "}
           />
           <%= gettext("Home") %>
         </.custom_link>
         <.custom_link
           navigate={Routes.shop_index_path(Endpoint, :index, @brand.id)}
           class={"
-            text-gray-700 hover:text-gray-900 group flex items-center
-            px-2 py-2
-            text-2xl font-medium
-            rounded-md
-            #{if @active_tab == :shops, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
+            group flex items-center px-2 py-2 rounded-md
+            #{if @active_tab == :shops, do: "active-nav-item", else: "inactive-nav-item"}
           "}
           aria-current={if @active_tab == :shops, do: "true", else: "false"}
         >
-          <.icon name={:building_storefront} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon
+            name={:building_storefront} outlined
+            class={"
+              flex-shrink-0
+              mr-3
+              h-6 w-6
+              #{if @active_tab == :shops, do: "active-nav-item-icon", else: "inactive-nav-item-icon"}
+            "}
+          />
           <%= gettext("Shops") %>
         </.custom_link>
         <.custom_link
           navigate={Routes.catalogue_index_path(Endpoint, :index, @brand.id)}
           class={"
-            text-gray-700 hover:text-gray-900 group flex items-center
-            px-2 py-2
-            text-2xl font-medium
-            rounded-md
-            #{if @active_tab == :catalogues, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
+            group flex items-center px-2 py-2 rounded-md
+            #{if @active_tab == :catalogues, do: "active-nav-item", else: "inactive-nav-item"}
           "}
           aria-current={if @active_tab == :catalogues, do: "true", else: "false"}
         >
-          <.icon name={:book_open} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon
+            name={:book_open}
+            outlined
+            class={"
+              flex-shrink-0
+              mr-3
+              h-6 w-6
+              #{if @active_tab == :catalogues, do: "active-nav-item-icon", else: "inactive-nav-item-icon"}
+            "}
+          />
           <%= gettext("Catalogues") %>
         </.custom_link>
         <.custom_link
           navigate={Routes.catalogue_category_index_path(Endpoint, :index, @brand.id)}
           class={"
-            text-gray-700 hover:text-gray-900 group flex items-center
-            px-2 py-2
-            text-2xl font-medium
-            rounded-md
-            #{if @active_tab == :catalogue_categories, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
+            group flex items-center px-2 py-2 rounded-md
+            #{if @active_tab == :catalogue_categories, do: "active-nav-item", else: "inactive-nav-item"}
           "}
           aria-current={if @active_tab == :catalogue_categories, do: "true", else: "false"}
         >
-          <.icon name={:bookmark} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon
+            name={:bookmark}
+            outlined
+            class={"
+              flex-shrink-0
+              mr-3
+              h-6 w-6
+              #{if @active_tab == :catalogue_categories, do: "active-nav-item-icon", else: "inactive-nav-item-icon"}
+            "}
+          />
           <%= gettext("Categories") %>
         </.custom_link>
         <.custom_link
           navigate={Routes.catalogue_item_index_path(Endpoint, :index, @brand.id)}
           class={"
-            text-gray-700 hover:text-gray-900 group flex items-center
-            px-2 py-2
-            text-2xl font-medium
-            rounded-md
-            #{if @active_tab == :catalogue_items, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
+            group flex items-center px-2 py-2 rounded-md
+            #{if @active_tab == :catalogue_items, do: "active-nav-item", else: "inactive-nav-item"}
           "}
           aria-current={if @active_tab == :catalogue_items, do: "true", else: "false"}
         >
-          <.icon name={:swatch} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon
+            name={:swatch}
+            outlined
+            class={"
+              flex-shrink-0
+              mr-3
+              h-6 w-6
+              #{if @active_tab == :catalogue_items, do: "active-nav-item-icon", else: "inactive-nav-item-icon"}
+            "}
+          />
           <%= gettext("Items") %>
         </.custom_link>
         <.custom_link
@@ -137,16 +166,46 @@ defmodule ExCommerceWeb.LayoutView do
             @brand.id
           )}
           class={"
-            text-gray-700 hover:text-gray-900 group flex items-center
-            px-2 py-2
-            text-2xl font-medium
-            rounded-md
-            #{if @active_tab == :catalogue_item_option_groups, do: "bg-gray-200 hover:bg-gray-200", else: "hover:bg-gray-50"}
+            group flex items-center px-2 py-2 rounded-md
+            #{if @active_tab == :catalogue_item_option_groups, do: "active-nav-item", else: "inactive-nav-item"}
           "}
           aria-current={if @active_tab == :catalogue_item_option_groups, do: "true", else: "false"}
         >
-          <.icon name={:squares_2x2} outlined class="text-gray-400 group-hover:text-gray-500 mr-3 flex-shrink-0 h-6 w-6"/>
+          <.icon
+            name={:squares_2x2}
+            outlined
+            class={"
+              flex-shrink-0
+              mr-3
+              h-6 w-6
+              #{if @active_tab == :catalogue_item_option_groups, do: "active-nav-item-icon", else: "inactive-nav-item-icon"}
+            "}
+          />
           <%= gettext("Option Groups") %>
+        </.custom_link>
+        <.custom_link
+          navigate={Routes.qr_code_index_path(
+            Endpoint,
+            :index,
+            @brand.id
+          )}
+          class={"
+            group flex items-center px-2 py-2 rounded-md
+            #{if @active_tab == :qr_codes, do: "active-nav-item", else: "inactive-nav-item"}
+          "}
+          aria-current={if @active_tab == :qr_codes, do: "true", else: "false"}
+        >
+          <.icon
+            name={:qr_code}
+            outlined
+            class={"
+              flex-shrink-0
+              mr-3
+              h-6 w-6
+              #{if @active_tab == :qr_codes, do: "active-nav-item-icon", else: "inactive-nav-item-icon"}
+            "}
+          />
+          <%= gettext("QR Codes") %>
         </.custom_link>
       <% else %>
         <.custom_link navigate={Routes.user_session_path(Endpoint, :new)}

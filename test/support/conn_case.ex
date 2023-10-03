@@ -27,6 +27,7 @@ defmodule ExCommerceWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import ExCommerceWeb.ConnCase
+      import ExCommerceWeb.Gettext
 
       alias ExCommerceWeb.Router.Helpers, as: Routes
 

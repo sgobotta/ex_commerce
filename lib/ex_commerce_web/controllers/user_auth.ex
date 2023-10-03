@@ -250,7 +250,10 @@ defmodule ExCommerceWeb.UserAuth do
       conn
     else
       conn
-      |> put_flash(:error, gettext("You must log in to access this page."))
+      |> put_flash(
+        :error,
+        dgettext("errors", "You must log in to access this page.")
+      )
       |> maybe_store_return_to()
       |> redirect(to: Routes.user_session_path(conn, :new))
       |> halt()
@@ -264,7 +267,7 @@ defmodule ExCommerceWeb.UserAuth do
       conn
       |> put_flash(
         :error,
-        gettext("You must confirm your email to access this page.")
+        dgettext("errors", "You must confirm your email to access this page.")
       )
       |> redirect(to: Routes.user_confirmation_path(conn, :create))
       |> halt()
@@ -298,7 +301,7 @@ defmodule ExCommerceWeb.UserAuth do
     |> maybe_store_return_to()
     |> LiveView.put_flash(
       :error,
-      gettext("You must log in to access this page.")
+      dgettext("errors", "You must log in to access this page.")
     )
     |> LiveView.redirect(to: Routes.user_session_path(socket, :new))
   end

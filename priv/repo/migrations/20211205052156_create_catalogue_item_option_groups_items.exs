@@ -25,5 +25,10 @@ defmodule ExCommerce.Repo.Migrations.CreateCatalogueItemOptionGroupsItems do
            ])
 
     create index(:catalogue_item_option_groups_items, [:catalogue_item_id])
+
+    create unique_index(:catalogue_item_option_groups_items, [
+             :catalogue_item_id,
+             :catalogue_item_option_group_id
+           ])
   end
 end

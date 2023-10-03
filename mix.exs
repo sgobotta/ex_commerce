@@ -5,7 +5,7 @@ defmodule ExCommerce.MixProject do
     [
       app: :ex_commerce,
       version: "0.1.0",
-      elixir: "~> 1.12",
+      elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -48,11 +48,11 @@ defmodule ExCommerce.MixProject do
   defp deps do
     [
       # Code quality and Testing
-      {:credo, "~> 1.6.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.2", only: [:dev], runtime: false},
-      {:excoveralls, "~> 0.15", only: [:test]},
-      {:git_hooks, "~> 0.6.2", only: [:dev], runtime: false},
-      {:mix_test_watch, "~> 1.0", only: [:dev], runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
+      {:excoveralls, "~> 0.17.1", only: [:test]},
+      {:git_hooks, "~> 0.7.3", only: [:dev], runtime: false},
+      {:mix_test_watch, "~> 1.0", only: [:test], runtime: false},
       # Documentation
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
       # Phoenix default apps
@@ -60,10 +60,10 @@ defmodule ExCommerce.MixProject do
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 3.2.0"},
+      {:phoenix_html, "~> 3.3.0"},
       {:phoenix_live_reload, "~> 1.3.3", only: :dev},
-      {:phoenix_live_dashboard, "~> 0.7.2"},
-      {:phoenix_live_view, "~> 0.18.11"},
+      {:phoenix_live_dashboard, "~> 0.8.0"},
+      {:phoenix_live_view, "~> 0.19.5"},
       {:floki, ">= 0.30.0"},
       {:telemetry_metrics, "~> 0.6.1"},
       {:telemetry_poller, "~> 0.5"},
@@ -79,7 +79,7 @@ defmodule ExCommerce.MixProject do
       {:ex_cldr_plugs, "~> 1.2"},
       # Web Helpers
       {:phoenix_inline_svg, "~> 1.4"},
-      {:heroicons, "~> 0.5.2"},
+      {:heroicons, "~> 0.5.3"},
       {:live_motion, "~> 0.3.0"},
       {:tailwind, "~> 0.1.9", runtime: Mix.env() == :dev},
       # Assets handling deps
@@ -87,6 +87,7 @@ defmodule ExCommerce.MixProject do
        git: "https://github.com/sgobotta/cloudex.git", branch: "main"},
       # Others
       {:decimal, "~> 2.0"},
+      {:qrcode_ex, "~> 0.1.1"},
       {:recaptcha, "~> 3.0"},
       {:tzdata, "~> 1.0.0"}
     ]
@@ -103,7 +104,6 @@ defmodule ExCommerce.MixProject do
       # Setup the whole application
       setup: ["deps.get", "deps.compile", "compile", "setup.ecto", "setup.web"],
       "setup.ecto": [
-        "ecto.drop",
         "ecto.create",
         "ecto.migrate",
         "run priv/repo/seeds.exs"

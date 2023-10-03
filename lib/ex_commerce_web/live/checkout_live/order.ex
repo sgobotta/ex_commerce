@@ -13,6 +13,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
   alias ExCommerce.Checkout
   alias ExCommerce.Checkout.{Cart, Order}
 
+  alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.{Brand, Shop}
 
   alias ExCommerce.Offerings.Catalogue
@@ -27,7 +28,9 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
       :ok,
       socket
       |> assign_public_defaults(params, session)
-      |> assign_shop_by_slug_or_redirect(params)
+      |> assign_shop_by_slug_or_redirect(params, &Marketplaces.preload_brand/1)
+      |> assign(:container_class, "container-base full")
+      |> assign(:cart_enabled, true)
       |> assign(:cart_visible, true)
       |> assign(:brand_slug, params["brand"])
       |> assign(:shop_slug, params["shop"])
@@ -126,7 +129,7 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
     |> assign_nav_title()
   end
 
-  defp assign_changeset(socket, params \\ %{}) do
+  defp assign_changeset(socket) do
     %{
       cart: %Cart{order: %Cart.Order{} = order} = cart,
       catalogue:
@@ -144,32 +147,36 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
         } = _shop
     } = socket.assigns
 
-    params =
-      %{
-        "brand_id" => brand_id,
-        "catalogue_id" => catalogue_id,
-        "shop_id" => shop_id
-      }
-      |> Map.merge(params)
+    params = %{
+      "brand_id" => brand_id,
+      "catalogue_id" => catalogue_id,
+      "shop_id" => shop_id
+    }
 
     %Ecto.Changeset{valid?: valid?} =
       changeset = Checkout.change_cart_order(order, params)
 
     %Cart{order: order} = cart = Checkout.update_cart_order(cart, changeset)
 
-    {:ok, %Order{} = order} =
-      Checkout.from_cart_order(order, %{
-        brand_name: brand_name,
-        catalogue_code: catalogue_code,
-        catalogue_name: catalogue_name,
-        shop_name: shop_name
-      })
+    case Checkout.from_cart_order(order, %{
+           brand_name: brand_name,
+           catalogue_code: catalogue_code,
+           catalogue_name: catalogue_name,
+           shop_name: shop_name
+         }) do
+      {:ok, %Order{} = order} ->
+        socket
+        |> assign(:changeset, changeset)
+        |> assign(:order, order)
+        |> assign_cart(cart)
+        |> assign_href(valid?)
 
-    socket
-    |> assign(:changeset, changeset)
-    |> assign(:order, order)
-    |> assign_cart(cart)
-    |> assign_href(valid?)
+      {:error, %Ecto.Changeset{errors: _errors, valid?: false} = changeset} ->
+        socket
+        |> assign(:changeset, changeset)
+        |> assign(:order, order)
+        |> assign_cart(cart)
+    end
   end
 
   defp assign_catalogue(socket, catalogue_id),
@@ -235,4 +242,25 @@ defmodule ExCommerceWeb.CheckoutLive.Order do
   defp get_order_items(%Cart{} = cart), do: Checkout.get_order_items(cart)
 
   defp get_order_price(%Cart{} = cart), do: "$#{Checkout.get_order_price(cart)}"
+
+  # No db data or user input is present for catalogue item id
+  defp get_payment_methods do
+    [
+      {gettext("Cash"), :cash},
+      {gettext("Mercadopago"), :mercadopago}
+    ]
+  end
+
+  defp payment_checked?(changeset, payment_method_id) do
+    payment_method = Ecto.Changeset.get_field(changeset, :payment_method)
+
+    payment_method_type =
+      if payment_method do
+        payment_method.type
+      else
+        nil
+      end
+
+    payment_method_type == payment_method_id
+  end
 end

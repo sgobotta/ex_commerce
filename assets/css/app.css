@@ -26,12 +26,8 @@
 
 /* General styles */
 
-.container{
-  margin: 0 auto;
-  max-width: 80.0rem;
-  padding: 0 0;
-  position: relative;
-  width: 100%
+html {
+  @apply selection:text-white selection:bg-sky-500
 }
 
 select {

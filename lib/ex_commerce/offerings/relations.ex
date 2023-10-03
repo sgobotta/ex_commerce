@@ -8,7 +8,7 @@ defmodule ExCommerce.Offerings.Relations do
 
   alias ExCommerce.Offerings.Relations.CatalogueCategoryItem
 
-  @spec list_catalogue_categories_items :: list(CatalogueCategoryItem)
+  @spec list_catalogue_categories_items :: list(CatalogueCategoryItem.t())
   @doc """
   Returns the list of catalogue_categories_items.
 
@@ -22,7 +22,7 @@ defmodule ExCommerce.Offerings.Relations do
     Repo.all(CatalogueCategoryItem)
   end
 
-  @spec get_catalogue_category_item!(binary()) :: CatalogueCategoryItem
+  @spec get_catalogue_category_item!(binary()) :: CatalogueCategoryItem.t()
   @doc """
   Gets a single catalogue_category_item.
 
@@ -40,7 +40,7 @@ defmodule ExCommerce.Offerings.Relations do
   def get_catalogue_category_item!(id), do: Repo.get!(CatalogueCategoryItem, id)
 
   @spec create_catalogue_category_item(map()) ::
-          {:ok, CatalogueCategoryItem} | {:error, Ecto.Changeset.t()}
+          {:ok, CatalogueCategoryItem.t()} | {:error, Ecto.Changeset.t()}
   @doc """
   Creates a catalogue_category_item.
 
@@ -116,7 +116,7 @@ defmodule ExCommerce.Offerings.Relations do
 
   alias ExCommerce.Offerings.Relations.CatalogueCategory
 
-  @spec list_catalogues_categories :: list(CatalogueCategory)
+  @spec list_catalogues_categories :: list(CatalogueCategory.t())
   @doc """
   Returns the list of catalogues_categories.
 
@@ -130,7 +130,7 @@ defmodule ExCommerce.Offerings.Relations do
     Repo.all(CatalogueCategory)
   end
 
-  @spec get_catalogue_category!(binary()) :: CatalogueCategory
+  @spec get_catalogue_category!(binary()) :: CatalogueCategory.t()
   @doc """
   Gets a single catalogue_category.
 
@@ -148,7 +148,7 @@ defmodule ExCommerce.Offerings.Relations do
   def get_catalogue_category!(id), do: Repo.get!(CatalogueCategory, id)
 
   @spec create_catalogue_category(map()) ::
-          {:ok, CatalogueCategory} | {:error, Ecto.Changeset.t()}
+          {:ok, CatalogueCategory.t()} | {:error, Ecto.Changeset.t()}
   @doc """
   Creates a catalogue_category.
 
@@ -330,6 +330,8 @@ defmodule ExCommerce.Offerings.Relations do
       {:error, %Ecto.Changeset{}}
 
   """
+  @spec create_catalogue_item_option_item(map()) ::
+          {:ok, CatalogueItemOptionGroupItem.t()} | {:error, Ecto.Changeset.t()}
   def create_catalogue_item_option_item(attrs \\ %{}) do
     %CatalogueItemOptionGroupItem{}
     |> CatalogueItemOptionGroupItem.changeset(attrs)

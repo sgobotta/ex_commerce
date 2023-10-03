@@ -9,9 +9,9 @@ defmodule ExCommerceWeb.UserRegistrationControllerTest do
     test "renders registration page", %{conn: conn} do
       conn = get(conn, Routes.user_registration_path(conn, :new))
       response = html_response(conn, 200)
-      assert response =~ "Start for free today"
-      assert response =~ "Log in</a>"
-      assert response =~ "Register</button>"
+      assert response =~ gettext("Start for free today")
+      assert response =~ gettext("Log in") <> "</a>"
+      assert response =~ gettext("Register") <> "</button>"
     end
 
     test "redirects if already logged in", %{conn: conn} do
@@ -57,9 +57,19 @@ defmodule ExCommerceWeb.UserRegistrationControllerTest do
         })
 
       response = html_response(conn, 200)
-      assert response =~ "Start for free today"
-      assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "should be at least 12 character"
+      assert response =~ gettext("Start for free today")
+
+      assert response =~
+               dgettext("errors", "must have the @ sign and no spaces")
+
+      assert response =~
+               dngettext(
+                 "errors",
+                 "should be at least %{count} character(s)",
+                 "should be at least %{count} character(s)",
+                 12,
+                 %{count: 12}
+               )
     end
   end
 end

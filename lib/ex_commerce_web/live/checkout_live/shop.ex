@@ -10,6 +10,7 @@ defmodule ExCommerceWeb.CheckoutLive.Shop do
 
   use ExCommerceWeb.LiveFormHelpers, routes: Routes
 
+  alias ExCommerce.Marketplaces
   alias ExCommerce.Marketplaces.Shop
 
   alias ExCommerce.Offerings.Catalogue
@@ -19,7 +20,12 @@ defmodule ExCommerceWeb.CheckoutLive.Shop do
     {:ok,
      socket
      |> assign_public_defaults(params, session)
-     |> assign_shop_by_slug_or_redirect(params)
+     |> assign_shop_by_slug_or_redirect(
+       params,
+       &Marketplaces.preload_public_shop/1
+     )
+     |> assign(:container_class, "container-base")
+     |> assign(:cart_enabled, false)
      |> assign(:cart_visible, false)
      |> assign(:brand_slug, params["brand"])
      |> assign(:shop_slug, params["shop"])}

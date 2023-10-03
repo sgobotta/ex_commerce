@@ -4,6 +4,14 @@
     flex flex-row justify-between w-full p-2
     bg-gray-100 shadow-lg z-50
   ">
+    <p class="alert alert-info text-base fixed top-0 right-7 md:left-0 cursor-pointer z-60" role="alert"
+      phx-click="lv:clear-flash"
+      phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+
+    <p class="alert alert-danger text-base fixed top-0 right-7 md:left-0 cursor-pointer z-60" role="alert"
+      phx-click="lv:clear-flash"
+      phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+
     <!-- Back Button -->
     <.custom_link
       patch={@return_to}
@@ -28,51 +36,64 @@
       </div>
     </.custom_link>
     <!-- Cart -->
-    <%= if @cart_visible && ExCommerce.Checkout.valid_checkout?(@cart) do %>
-      <.custom_link
-        patch={@cart_path}
-        class={"
-          text-sky-600 group flex items-center
-          text-2xl font-medium
-          rounded-md
-          hover:text-sky-300
-        "}
-        aria-current="false"
-      >
-        <.icon
-          name={:shopping_cart} outlined
-          class="
-            flex-shrink-0
-            h-6 w-6
-            group-active:scale-90
-          "
-        />
-      </.custom_link>
-    <% else %>
-      <div
-        class={"
-          text-gray-400 group flex items-center
-          text-2xl font-medium
-          rounded-md
-        "}
-        aria-current="false"
-      >
-        <.icon
-          name={:shopping_cart} outlined
-          class="
-            flex-shrink-0
-            h-6 w-6
-            cursor-not-allowed
-          "
-        />
-      </div>
+    <%= if @cart_visible do %>
+      <%= if @cart_enabled && ExCommerce.Checkout.valid_checkout?(@cart) do %>
+        <.custom_link
+          patch={@cart_path}
+          class={"
+            text-sky-600 group flex items-center
+            text-2xl font-medium
+            rounded-md
+            hover:text-sky-300
+          "}
+          aria-current="false"
+        >
+          <.icon
+            name={:shopping_cart} outlined
+            class="
+              flex-shrink-0
+              h-6 w-6
+              group-active:scale-90
+            "
+          />
+          <div class="relative">
+            <label class="
+              absolute bottom-1 right-1 text-xs
+              bg-green-300 text-center w-4 h-4 rounded-lg
+            ">
+              <%= ExCommerce.Checkout.Cart.get_total_items(@cart) %>
+            </label>
+          </div>
+        </.custom_link>
+      <% else %>
+        <div
+          class={"
+            text-gray-400 group flex items-center
+            text-2xl font-medium
+            rounded-md
+          "}
+          aria-current="false"
+        >
+          <.icon
+            name={:shopping_cart} outlined
+            class="
+              flex-shrink-0
+              h-6 w-6
+              cursor-not-allowed
+            "
+          />
+        </div>
+      <% end %>
     <% end %>
   </nav>
 
   <!-- Main -->
-  <div class="
-    basis-full container bg-gray-300 h-full overflow-y-scroll no-scrollbar"
-  >
+  <div class={"
+  bg-gray-300 
+    basis-full h-full
+    overflow-y-scroll no-scrollbar
+    #{@container_class}
+  "}>
     <%= @inner_content %>
   </div>
 </main>

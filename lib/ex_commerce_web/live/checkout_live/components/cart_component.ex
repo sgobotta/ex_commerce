@@ -18,7 +18,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="">
+    <div class="mb-40">
       <div class="px-4">
         <.title_bar title={gettext("Order")} />
       </div>

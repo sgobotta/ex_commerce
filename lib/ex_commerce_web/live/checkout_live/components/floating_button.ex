@@ -27,11 +27,12 @@ defmodule ExCommerceWeb.CheckoutLive.Components.FloatingButton do
     ~H"""
     <button class="
       flex justify-center rounded-lg py-2 bg-green-400
-      w-full sm:w-1/2
+      w-full md:w-1/2
       cursor-pointer shadow-button-sm
       transition duration-300
       hover:bg-green-300 hover:shadow-button-sm
       active:scale-98 active:shadow-button-xs
+      with-outline-sm gray
     "
       tabindex="0"
       phx-click={@on_click_event}
@@ -45,7 +46,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.FloatingButton do
     ~H"""
     <div class="
       flex justify-center rounded-lg py-2 bg-gray-400
-      w-full sm:w-1/2
+      w-full md:w-1/2
       cursor-not-allowed shadow-button
     ">
       <%= render_slot(@disabled_content) %>
