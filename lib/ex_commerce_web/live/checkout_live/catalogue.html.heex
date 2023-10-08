@@ -42,7 +42,7 @@
   >
     <%= for %CatalogueCategory{name: category_name} = catalogue_category <- @catalogue.categories do %>
       <div class="py-3">
-        <p class="font-bold text-xl tracking-wider text-sky-600 text-center">
+        <p class="font-bold text-lg sm:text-xl tracking-wider text-sky-600 text-center">
           <%= category_name %>
         </p>
       </div>
@@ -82,7 +82,7 @@
               </div>
               <div class="col-span-10 lg:col-span-9 row-span-1">
                 <p class="
-                  text-xl text-black font-medium
+                  text-base sm:text-lg text-black font-medium
                   text-ellipsis overflow-hidden whitespace-nowrap
                 ">
                   <%= item_name  %>
@@ -90,7 +90,7 @@
               </div>
               <div class="col-span-10 lg:col-span-9 row-span-1">
                 <p class="
-                  text-base text-gray-700
+                  text-sm sm:text-base text-gray-700
                   text-ellipsis overflow-hidden whitespace-nowrap
                 ">
                   <%= item_description  %>
@@ -98,7 +98,8 @@
               </div>
               <div class="col-span-5 lg:col-span-5 row-span-1 self-center">
                 <p class="
-                  tracking-wider font-bold text-xl text-sky-600
+                  text-base sm:text-lg
+                  tracking-wider font-bold text-sky-600
                   text-ellipsis overflow-hidden whitespace-nowrap
                 ">
                   <%= get_item_price(item_variants) %>
@@ -149,7 +150,9 @@
       on_click_event="checkout_order"
     >
       <:enabled_content>
-        <div class="flex flex-row">
+        <div class="
+          flex flex-row text-center checkout-button-text
+        ">
           <div class="px-2">
             <p class="font-medium text-white">
               (<%= get_order_items(@cart) %>)
@@ -165,10 +168,10 @@
               <%= gettext("Checkout") %>
             </p>
           </div>
-          <div class="pt-1">
+          <div class="">
             <.icon name={:shopping_bag} outlined class="
-              text-white
-              flex-shrink-0 h-7 w-7
+              flex-shrink-0 text-white
+              checkout-button-icon
             "/>
           </div>
         </div>
@@ -177,15 +180,14 @@
       <:disabled_content>
         <div class="flex flex-row">
           <div class="px-2">
-            <p class="font-medium text-white text-center">
+            <p class="checkout-button-text font-medium text-white text-center">
               <%= gettext("Add products to your order") %>
             </p>
           </div>
-          <div class="pt-1 self-center">
+          <div class="lg:pt-1 self-center">
             <.icon name={:shopping_bag} outlined class="
-              pr-2
-              text-white
-              flex-shrink-0 h-7 w-7
+              text-white flex-shrink-0
+              checkout-button-icon
             "/>
           </div>
         </div>

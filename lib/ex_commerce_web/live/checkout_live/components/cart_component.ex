@@ -96,13 +96,13 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
         </div>
         <div class="
           col-span-10 lg:col-span-9 row-span-3
-          sm:ml-4 md:ml-8 lg:-ml-4 xl:-ml-8 2xl:-ml-12 3xl:-ml-20
-          -mr-8 sm:-mr-8 md:-mr-8 lg:-mr-12 xl:-mr-16 2xl:-mr-16 3xl:-mr-20
+          ml-2 sm:ml-4 md:ml-8 lg:-ml-4 xl:-ml-8 2xl:-ml-12 3xl:-ml-20
+          -mr-6 sm:-mr-8 md:-mr-8 lg:-mr-12 xl:-mr-16 2xl:-mr-16 3xl:-mr-20
           flex flex-col justify-between
         ">
           <div class="">
             <p class="
-              text-base text-black font-medium
+              text-sm sm:text-base text-black font-medium
               text-ellipsis overflow-hidden whitespace-nowrap
             ">
             (<%= @quantity %>) <%= @name %>
@@ -110,7 +110,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
           </div>
           <div class="">
             <p class="
-              text-base text-gray-700 font-normal
+              text-sm sm:text-base text-gray-700 font-normal
               text-ellipsis overflow-hidden whitespace-nowrap
             ">
               <%= @variant_type %>
@@ -119,6 +119,7 @@ defmodule ExCommerceWeb.CheckoutLive.Components.CartComponent do
           <div class="flex flex-row justify-between items-center">
             <div class="self-center">
               <p class="
+                text-sm sm:text-base
                 tracking-wider font-bold text-xl text-sky-600
                 text-ellipsis overflow-hidden whitespace-nowrap
               ">

@@ -76,7 +76,8 @@ module.exports = {
       },
       screens: {
         '2xl': {'max': '1920px', 'min': '1536px'},
-        '3xl': {'raw': '(min-width: 1920px)'}
+        '3xl': {'raw': '(min-width: 1920px)'},
+        'xs': {'max': '640px', 'min': '420px'}
       },
       top: {},
       transitionDuration: {

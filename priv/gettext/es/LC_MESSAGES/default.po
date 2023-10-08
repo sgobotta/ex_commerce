@@ -103,7 +103,7 @@ msgstr "Agregar productos a su orden"
 #: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:351
 #, elixir-autogen, elixir-format
 msgid "Add to order"
-msgstr "Agregar a la orden"
+msgstr "Agregar"
 
 #: lib/ex_commerce_web/live/checkout_live/order.html.heex:54
 #: lib/ex_commerce_web/live/checkout_live/order_details.html.heex:55
@@ -215,7 +215,7 @@ msgstr "Asignar a productos"
 #: lib/ex_commerce_web/live/checkout_live/shop.html.heex:112
 #, elixir-autogen, elixir-format
 msgid "Available Catalogues"
-msgstr "Catálogos disponibles"
+msgstr "Catálogos"
 
 #: lib/ex_commerce_web/live/brand_live/show.html.heex:37
 #: lib/ex_commerce_web/live/catalogue_category_live/show.html.heex:65
@@ -411,7 +411,7 @@ msgstr "Elije una imagen de producto"
 #: lib/ex_commerce_web/live/checkout_live/catalogue_item.html.heex:157
 #, elixir-autogen, elixir-format
 msgid "Choose one of the folowing"
-msgstr "Elige una de lasd opciones"
+msgstr "Elige una de las opciones"
 
 #: lib/ex_commerce_web/live/checkout_live/order.html.heex:79
 #, elixir-autogen, elixir-format
@@ -1072,7 +1072,7 @@ msgstr "Eliminar"
 #: lib/ex_commerce_web/live/checkout_live/catalogue_item.ex:269
 #, elixir-autogen, elixir-format
 msgid "Required"
-msgstr "¿Es requerido?"
+msgstr "Requerido"
 
 #: lib/ex_commerce_web/templates/user_confirmation/new.html.heex:3
 #, elixir-autogen, elixir-format

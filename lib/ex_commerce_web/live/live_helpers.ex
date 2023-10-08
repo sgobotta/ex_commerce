@@ -301,7 +301,7 @@ defmodule ExCommerceWeb.LiveHelpers do
     ">
       <div class="flex-1 min-w-0">
         <h1 class={"
-          text-2xl font-medium text-sky-600
+          text-xl sm:text-2xl font-medium text-sky-600
           leading-6 #{@color}
           sm:truncate
         "}>
