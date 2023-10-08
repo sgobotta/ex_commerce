@@ -48,7 +48,7 @@
       exit={[y: [-1000]]}
       class="flex justify-center"
     >
-      <div class="w-72 h-72 sm:w-72 sm:h-72 bg-transparent">
+      <div class="w-60 h-60 sm:w-72 sm:h-72 bg-transparent">
         <img
           src={@item_photo_source}
           class="rounded-lg shadow-button-sm"
@@ -79,7 +79,7 @@
             <div class="grid grid-cols-6">
               <div class="col-span-4 sm:col-span-5">
                 <div class="mb-4">
-                  <p class="mt-1 text-xl text-black font-bold">
+                  <p class="mt-1 text-lg sm:text-xl text-black font-bold">
                     <%= @catalogue_item.name %>
                   </p>
                   <div class="flex flex-row">
@@ -90,7 +90,7 @@
                       "/>
                     </div>
                     <div class="">
-                      <p class="text-base text-gray-500 italic">
+                      <p class="text-sm lg:text-base text-gray-500 italic">
                         <%= @catalogue_item.description %>
                       </p>
                     </div>
@@ -100,7 +100,7 @@
               <div class="col-span-2 sm:col-span-1">
                 <div class="flex flex-row items-center h-full justify-center">
                   <button class="
-                    h-7 w-7 rounded-lg
+                    h-6 w-6 sm:h-7 sm:w-7 rounded-lg
                     cursor-pointer pressable
                     bg-black outline-green-600
                   "
@@ -110,14 +110,17 @@
                   </button>
                   <div class="text-center w-10">
                     <span class="
-                      text-xl oldstyle-nums text-black font-medium
+                      text-xl lg:text-2xl oldstyle-nums text-black font-medium
                     ">
                       <%= get_quantity(@changeset) %>
                     </span>
                   </div>
                   <%= if @changeset.changes.quantity < 2 do %>
                     <button
-                      class={"h-7 w-7 rounded-lg bg-gray-400 cursor-not-allowed"}
+                      class="
+                        h-6 w-6 sm:h-7 sm:w-7
+                        rounded-lg bg-gray-400 cursor-not-allowed
+                      "
                       tabindex="-1"
                       phx-click="remove_item"
                     >
@@ -125,11 +128,12 @@
                     </button>
                   <% else %>
                     <button
-                      class={"
-                        h-7 w-7 rounded-lg
+                      class="
+                        h-6 w-6 sm:h-7 sm:w-7
+                        rounded-lg
                         cursor-pointer pressable
                         bg-black outline-pink-600
-                      "}
+                      "
                       phx-click="remove_item"
                     >
                       <.icon name={:minus_small} class="text-white"/>
@@ -142,18 +146,18 @@
 
           <div class="basis-full bg-gray-100 h-full px-6 pb-40">
             <div>
-              <p class="p-2 text-sky-600 text-xl">
+              <p class="p-2 text-sky-600 text-lg sm:text-xl text-center">
                 <%= gettext("Variants") %>
               </p>
               <div class="flex flex-row">
                 <div class="pt-1">
                   <.icon name={:information_circle} outlined class="
                     text-gray-500
-                    flex-shrink-0 h-4 w-4
+                    flex-shrink-0 h-3 w-3 sm:h-4 sm:w-4
                   "/>
                 </div>
                 <div class="">
-                  <p class="text-base text-gray-500 italic">
+                  <p class="text-sm sm:text-base text-gray-500 italic">
                     <%= gettext("Choose one of the folowing") %>
                   </p>
                 </div>
@@ -170,14 +174,14 @@
                 
                   <div class="flex flex-row items-center">
                     <div class="basis-4/6 sm:basis-5/6">
-                      <p class="font-semibold text-base text-black">
+                      <p class="font-semibold text-sm sm:text-base text-black">
                         <%= type %>
                       </p>
                     </div>
                     <div class="basis-2/6 sm:basis-1/6 flex justify-end">
                       <div class="flex flex-row">
                         <div class="basis-1/2 mx-4 self-center">
-                          <p class="text-lg text-black font-medium">
+                          <p class="text-sm sm:text-base text-black font-medium">
                             <%= get_price(price) %>
                           </p>
                         </div>
@@ -200,7 +204,7 @@
 
             <%= if @changeset.data.available_option_groups.values != [] do %>
               <div>
-                <p class="p-2 text-sky-600 text-xl">
+                <p class="p-2 text-sky-600 text-lg sm:text-xl text-center">
                   <%= gettext("Options") %>
                 </p>
               </div>
@@ -214,22 +218,22 @@
             } = og <- @changeset.data.available_option_groups.values do %>
               <div class="col-span-6 h-full">
                 <div>
-                  <p class="font-semibold text-xl tracking-wider text-black">
+                  <p class="font-medium text-base sm:text-lg tracking-wider text-black">
                     <%= name %>
                   </p>
                   <div class="flex flex-row">
-                  <div class="pt-1">
-                    <.icon name={:information_circle} outlined class="
-                      text-gray-500
-                      flex-shrink-0 h-4 w-4
-                    "/>
+                    <div class="pt-1">
+                      <.icon name={:information_circle} outlined class="
+                        text-gray-500
+                        flex-shrink-0 h-3 w-3 sm:h-4 sm:w-4
+                      "/>
+                    </div>
+                    <div class="">
+                      <p class="text-sm sm:text-base text-gray-500 italic">
+                        <%= render_option_group_info(og) %>
+                      </p>
+                    </div>
                   </div>
-                  <div class="">
-                    <p class="text-base text-gray-500 italic">
-                      <%= render_option_group_info(og) %>
-                    </p>
-                  </div>
-                </div>
                 </div>
 
                 <%= for %CatalogueItemOption{
@@ -244,50 +248,54 @@
                   },
                   price_modifier: price_modifier
                 } <- options do %>
-                  <div class="flex flex-row items-center my-1">
-                    <div class="basis-4/6 sm:basis-5/6">
-                      <div class="">
-                        <p class="font-medium text-base text-black">
-                          <%= name %>
-                          <span class="font-medium text-sm text-gray-500">
-                          (<%= type %>)
-                          </span>
-                        </p>
+                  <div class="py-2">
+                    <div class="flex flex-row items-center my-1">
+                      <div class="basis-4/6 sm:basis-5/6">
+                        <div class="">
+                          <p class="font-medium text-base text-black">
+                            <%= name %>
+                          </p>
+                          <p class="font-medium text-sm text-gray-500">
+                            (<%= type %>)
+                          </p>
+                        </div>
                       </div>
-                      <div class="">
-                        <p class="font-normal italic text-sm text-gray-500">
-                          <%= description %>
-                        </p>
+                      <div class="basis-2/6 sm:basis-1/6 justify-self-center self-start">
+                        <div class="flex flex-row">
+                          <div class="basis-1/2 mx-4">
+                            <%= render_option_price(price, price_modifier, @socket) %>
+                          </div>
+                          <div class="basis-1/2 mx-4 flex self-start">
+                            <%= if multiple_selection do %>
+                              <.selection_input
+                                type="checkbox"
+                                name={"#{option_group_id}-option-selection"}
+                                checked={option_checked?(:multiple, @changeset, option_group_id, option_id)}
+                                phx-click="check_option"
+                                phx-value-option_id={option_id}
+                                phx-value-option_group_id={option_group_id}
+                                disabled={multiple_select_disabled?(@changeset, option_group_id, option_id)}
+                              />
+                            <% else %>
+                              <.selection_input
+                                checked={option_checked?(:single, @changeset, option_group_id, option_id)}
+                                id={"option-group-#{option_group_id}-radio-#{option_id}"}
+                                name={"option-group-#{option_group_id}-selection-#{option_id}"}
+                                phx-click="choose_option"
+                                phx-value-option_group_id={option_group_id}
+                                type="radio"
+                                value={option_id}
+                              />
+                            <% end %>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="basis-2/6 sm:basis-1/6 justify-self-center self-start">
-                      <div class="flex flex-row">
-                        <div class="basis-1/2 mx-4">
-                          <%= render_option_price(price, price_modifier, @socket) %>
-                        </div>
-                        <div class="basis-1/2 mx-4 flex self-start">
-                          <%= if multiple_selection do %>
-                            <.selection_input
-                              type="checkbox"
-                              name={"#{option_group_id}-option-selection"}
-                              checked={option_checked?(:multiple, @changeset, option_group_id, option_id)}
-                              phx-click="check_option"
-                              phx-value-option_id={option_id}
-                              phx-value-option_group_id={option_group_id}
-                              disabled={multiple_select_disabled?(@changeset, option_group_id, option_id)}
-                            />
-                          <% else %>
-                            <.selection_input
-                              checked={option_checked?(:single, @changeset, option_group_id, option_id)}
-                              id={"option-group-#{option_group_id}-radio-#{option_id}"}
-                              name={"option-group-#{option_group_id}-selection-#{option_id}"}
-                              phx-click="choose_option"
-                              phx-value-option_group_id={option_group_id}
-                              type="radio"
-                              value={option_id}
-                            />
-                          <% end %>
-                        </div>
+                    <div class="basis-6/6 sm:basis-6/6 justify-self-center self-start">
+                      <div class="">
+                        <p class="font-normal italic text-xs sm:text-sm text-gray-500">
+                          <%= description %>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -321,19 +329,19 @@
       <:enabled_content>
         <div class="flex flex-row">
           <div class="px-2">
-            <p class="font-medium text-white">
+            <p class="checkout-button-text font-medium text-white">
               <%= get_total_price(@changeset) %>
             </p>
           </div>
           <div class="px-2">
-            <p class="font-medium text-white">
+            <p class="checkout-button-text font-medium text-white">
               <%= gettext("Add to order") %>
             </p>
           </div>
-          <div class="pt-1">
+          <div class="lg:pt-1">
             <.icon name={:shopping_bag} outlined class="
-              text-white
-              flex-shrink-0 h-7 w-7
+              text-white flex-shrink-0
+              checkout-button-icon
             "/>
           </div>
         </div>
@@ -342,19 +350,19 @@
       <:disabled_content>
         <div class="flex flex-row">
           <div class="px-2">
-            <p class="font-medium text-white">
+            <p class="checkout-button-text font-medium text-white">
               <%= get_total_price(@changeset) %>
             </p>
           </div>
           <div class="px-2">
-            <p class="font-medium text-white">
+            <p class="checkout-button-text font-medium text-white">
               <%= gettext("Add to order") %>
             </p>
           </div>
-          <div class="pt-1">
+          <div class="lg:pt-1">
             <.icon name={:shopping_bag} outlined class="
-              text-white
-              flex-shrink-0 h-7 w-7
+              text-white flex-shrink-0
+              checkout-button-icon
             "/>
           </div>
         </div>

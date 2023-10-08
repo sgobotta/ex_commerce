@@ -30,7 +30,7 @@
         <div class="grid grid-cols-6">
           <div class="col-span-6">
             <div class="mb-4">
-              <h1 class="mt-1 text-2xl text-sky-500 font-medium text-center">
+              <h1 class="mt-1 text-xl sm:text-2xl text-sky-500 font-medium text-center">
                 <%= gettext("Complete your order details") %>
               </h1>
             </div>
@@ -45,13 +45,13 @@
           class: "mb-0"
         ], fn f -> %>
 
-          <%= label f, :buyer_name, gettext("Payment Method"), class: "p-2 text-sky-600 text-xl" %>
+          <%= label f, :buyer_name, gettext("Payment Method"), class: "p-2 text-sky-600 text-lg sm:text-xl font-normal" %>
 
           <div class="flex flex-col">
             <%= for {payment_method, payment_method_id} <- get_payment_methods() do %>
               <div class="flex flex-row">
                 <div class="basis-1/2 mx-4">
-                  <label class=""><%= payment_method %></label>
+                  <label class="text-base sm:text-lg"><%= payment_method %></label>
                 </div>
 
                 <.selection_input
@@ -67,21 +67,21 @@
             <% end %>
           </div>
 
-          <%= label f, :buyer_name, gettext("Name"), class: "p-2 text-sky-600 text-xl" %>
+          <%= label f, :buyer_name, gettext("Name"), class: "p-2 text-sky-600 text-lg sm:text-xl font-normal" %>
           <%= text_input f, :buyer_name,
             style: "background-color: white;",
             class: "input shadow-button",
             placeholder: gettext("Enter your name") %>
           <%= error_tag f, :buyer_name %>
 
-          <%= label f, :address, gettext("Address"), class: "p-2 text-sky-600 text-xl" %>
+          <%= label f, :address, gettext("Address"), class: "p-2 text-sky-600 text-lg sm:text-xl font-normal" %>
           <%= text_input f, :address,
             style: "background-color: white;",
             class: "input shadow-button",
             placeholder: gettext("Enter your address") %>
           <%= error_tag f, :address %>
 
-          <%= label f, :note, class: "p-2 text-sky-600 text-xl" %>
+          <%= label f, :note, class: "p-2 text-sky-600 text-lg sm:text-xl font-normal" %>
           <%= textarea f, :note,
             style: "background-color: white;",
             class: "input shadow-button",
@@ -114,24 +114,24 @@
         <:enabled_content>
           <div class="flex flex-row">
             <div class="px-2">
-              <p class="font-medium text-white">
+              <p class="checkout-button-text font-medium text-white">
                 (<%= get_order_items(@cart) %>)
               </p>
             </div>
             <div class="px-2">
-              <p class="font-medium text-white">
+              <p class="checkout-button-text font-medium text-white">
                 <%= get_order_price(@cart) %>
               </p>
             </div>
             <div class="px-2">
-              <p class="font-medium text-white">
+              <p class="checkout-button-text font-medium text-white">
                 <%= get_button_text(@changeset, @cart) %>
               </p>
             </div>
-            <div class="pt-1">
+            <div class="lg:pt-1">
               <.icon name={:shopping_bag} outlined class="
-                text-white
-                flex-shrink-0 h-7 w-7
+                text-white flex-shrink-0
+                checkout-button-icon
               "/>
             </div>
           </div>
@@ -140,15 +140,14 @@
         <:disabled_content>
           <div class="flex flex-row">
             <div class="px-2">
-              <p class="font-medium text-white text-center">
+              <p class="checkout-button-text font-medium text-white text-center">
                 <%= get_button_text(@changeset, @cart) %>
               </p>
             </div>
-            <div class="pt-1 self-center">
+            <div class="lg:pt-1 self-center">
               <.icon name={:shopping_bag} outlined class="
-                pr-2
-                text-white
-                flex-shrink-0 h-7 w-7
+                text-white flex-shrink-0
+                checkout-button-icon
               "/>
             </div>
           </div>
