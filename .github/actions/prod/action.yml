@@ -137,9 +137,6 @@ runs:
         DB_HOSTNAME: ${{ inputs.POSTGRES_HOSTNAME }}
         DB_PASSWORD: ${{ inputs.POSTGRES_PASSWORD }}
         DB_USERNAME: ${{ inputs.POSTGRES_USER }}
-        # Sendgrid env
-        EX_COMMERCE_FROM_EMAIL: test@email.com
-        SENDGRID_API_KEY: some-sendgrid-api-key
 
     # Test release -------------------------------------------------------------
     - name: Test release
@@ -162,9 +159,6 @@ runs:
         DB_HOSTNAME: ${{ inputs.POSTGRES_HOSTNAME }}
         DB_PASSWORD: ${{ inputs.POSTGRES_PASSWORD }}
         DB_USERNAME: ${{ inputs.POSTGRES_USER }}
-        # Sendgrid env
-        EX_COMMERCE_FROM_EMAIL: test@email.com
-        SENDGRID_API_KEY: some-sendgrid-api-key
 
     # Assert application output ------------------------------------------------
     - name: Assert output
