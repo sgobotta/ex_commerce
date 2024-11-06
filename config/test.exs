@@ -42,8 +42,9 @@ config :ex_commerce, ex_commerce_assets_driver: :test
 #
 
 config :ex_commerce, from_email: "test@ex.commerce"
+config :ex_commerce, from_name: "ExCommerce Test Team"
 
-config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
+config :ex_commerce, ExCommerce.Mailer, adapter: Swoosh.Adapters.Local
 
 # ------------------------------------------------------------------------------
 # Cloudex configuration

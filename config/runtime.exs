@@ -75,10 +75,15 @@ if config_env() == :prod do
   # ----------------------------------------------------------------------------
   # Email configuration
   #
-  config :ex_commerce, from_email: System.fetch_env!("EX_COMMERCE_FROM_EMAIL")
+  config :ex_commerce,
+    from_email: System.fetch_env!("EX_COMMERCE_FROM_EMAIL"),
+    from_name: System.fetch_env!("EX_COMMERCE_FROM_NAME")
 
   config :ex_commerce, ExCommerce.Mailer,
-    api_key: System.fetch_env!("SENDGRID_API_KEY")
+    relay: System.fetch_env!("SMTP_HOST"),
+    port: System.fetch_env!("SMTP_PORT"),
+    username: System.fetch_env!("SMTP_USERNAME"),
+    password: System.fetch_env!("SMTP_PASSWORD")
 
   # ----------------------------------------------------------------------------
   # Cloudex configuration
