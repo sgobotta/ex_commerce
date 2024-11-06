@@ -17,7 +17,9 @@ if config_env() == :prod do
   host = System.fetch_env!("PHX_HOST")
   port = String.to_integer(System.get_env("PORT", "443"))
 
-  case System.get_env("STAGE") do
+  stage = System.get_env("STAGE")
+
+  case stage do
     stage when stage in ["local", "dev", "staging", "prod"] ->
       :ok =
         Logger.warn(
@@ -75,10 +77,25 @@ if config_env() == :prod do
   # ----------------------------------------------------------------------------
   # Email configuration
   #
-  config :ex_commerce, from_email: System.fetch_env!("EX_COMMERCE_FROM_EMAIL")
+  case stage do
+    "local" ->
+      config :ex_commerce,
+        from_email: System.fetch_env!("EX_COMMERCE_FROM_EMAIL"),
+        from_name: System.fetch_env!("EX_COMMERCE_FROM_NAME")
 
-  config :ex_commerce, ExCommerce.Mailer,
-    api_key: System.fetch_env!("SENDGRID_API_KEY")
+      config :ex_commerce, ExCommerce.Mailer, adapter: Swoosh.Adapters.Local
+
+    stage when stage in ["dev", "staging", "prod"] ->
+      config :ex_commerce,
+        from_email: System.fetch_env!("EX_COMMERCE_FROM_EMAIL"),
+        from_name: System.fetch_env!("EX_COMMERCE_FROM_NAME")
+
+      config :ex_commerce, ExCommerce.Mailer,
+        relay: System.fetch_env!("SMTP_HOST"),
+        port: System.fetch_env!("SMTP_PORT"),
+        username: System.fetch_env!("SMTP_USERNAME"),
+        password: System.fetch_env!("SMTP_PASSWORD")
+  end
 
   # ----------------------------------------------------------------------------
   # Cloudex configuration

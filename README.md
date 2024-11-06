@@ -114,7 +114,12 @@ cp .env.example .env
 
 #### Mailing Service
 
-+ `SENDGRID_API_KEY`: Sendgrid API key.
++ `EX_COMMERCE_FROM_NAME`: Sender name.
++ `EX_COMMERCE_FROM_EMAIL`: Sender email.
++ `SMTP_HOST`: The smtp hostname.
++ `SMTP_PORT`: The smtp port (1025 by default)
++ `SMTP_USERNAME`: The authentication username.
++ `SMTP_PASSWORD`: The authentication password.
 
 #### Cloudex credentials
 

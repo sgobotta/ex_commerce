@@ -91,8 +91,9 @@ config :phoenix, :stacktrace_depth, 20
 #
 
 config :ex_commerce, from_email: "dev@ex.commerce"
+config :ex_commerce, from_name: "ExCommerce Development Team"
 
-config :ex_commerce, ExCommerce.Mailer, adapter: Bamboo.LocalAdapter
+config :ex_commerce, ExCommerce.Mailer, adapter: Swoosh.Adapters.Local
 
 # ------------------------------------------------------------------------------
 # Cloudex configuration

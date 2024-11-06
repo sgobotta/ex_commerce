@@ -15,7 +15,7 @@ defmodule ExCommerce.Accounts.UserNotifier do
     Logger.debug(body)
 
     Email.new(to, body, subject)
-    |> Mailer.deliver_now!()
+    |> Mailer.deliver()
 
     {:ok, %{to: to, body: body}}
   end

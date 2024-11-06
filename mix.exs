@@ -73,7 +73,8 @@ defmodule ExCommerce.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       # Email apps
-      {:bamboo, "~> 2.2.0"},
+      {:swoosh, "~> 1.17.2"},
+      {:gen_smtp, "~> 1.1"},
       # i18n and l10n
       {:ex_cldr, "~> 2.34"},
       {:ex_cldr_plugs, "~> 1.2"},

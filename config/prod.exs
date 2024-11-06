@@ -63,10 +63,13 @@ config :ex_commerce, ex_commerce_assets_driver: :cloudex
 # Email configuration
 #
 config :ex_commerce, ExCommerce.Mailer,
-  adapter: Bamboo.SendGridAdapter,
-  hackney_opts: [
-    recv_timeout: :timer.minutes(1)
-  ]
+  adapter: Swoosh.Adapters.SMTP,
+  auth: :always,
+  retries: 2,
+  # can be `true`
+  ssl: true,
+  # can be `:always` or `:never`
+  tls: :if_available
 
 # ------------------------------------------------------------------------------
 # Cloudex configuration (runtime.exs)
